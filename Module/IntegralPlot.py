@@ -18,6 +18,7 @@ sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 from Module import StressPlot as Stress
 from Module import StrainPlot as Strain
 from Module import Path as Pa
+from Module import Image as Img
 from Module import Decoration as Dec
 from Module import SpheresPlot as SP
 from Module import AxisBoundary as AB
@@ -32,7 +33,7 @@ from Module import SpheresGeneration as SG
 def Analysis(which_spheres,input_mode,output_mode,pixel_step):
     
     #surface to reduce scale of calculation
-    surface=SB.SpheresSurface(which_spheres,pixel_step)
+    surface_map=SB.SpheresSurfaceMap(which_spheres,pixel_step)
 
     #calculate stress
     if 'stress' in input_mode:
@@ -49,7 +50,7 @@ def Analysis(which_spheres,input_mode,output_mode,pixel_step):
     ax=plt.subplot()
     mesh_points=In.MeshGrid(ax,discrete_points,pixel_step)
     
-    return In.ImgFlip(In.ImgRotate(In.IDWInterpolation(ax,discrete_points,mesh_points,surface)),0)
+    return Img.ImgFlip(Img.ImgRotate(In.IDWInterpolation(ax,discrete_points,mesh_points,surface_map)),0)
 
 """
 Colormap grey is not recognized. 
@@ -150,23 +151,7 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
         
         number+=1 
         
-    plt.close()
-    
-#============================================================================== 
-#calculate output folder path
-def OutputFolderPath(which_folder_path,input_mode,output_mode):
-    
-    #folder name of input mode
-    input_mode_name=str(input_mode).replace('_',' ')
-    
-    #folder name of output mode
-    output_mode_name=str(output_mode).replace('_',' ')
-    
-    #输出路径
-    output_folder_path=which_folder_path+'\\output\\'+input_mode_name
-    
-    #图片输出路径
-    return output_folder_path+'\\'+output_mode_name+'\\'
+    plt.close()   
 
 #============================================================================== 
 #将文件夹下的所有数据读取并显示形态或应力,单独显示在output文件夹中
@@ -183,7 +168,7 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
     global_axis_boundary=AB.GlobalAxisBoundary(which_folder_path)
        
     #输出文件夹的名字
-    new_output_folder_path=OutputFolderPath(which_folder_path,input_mode,output_mode)
+    new_output_folder_path=Pa.OutputFolderPath(which_folder_path,input_mode,output_mode)
     
     #Gnenerate this Folder
     #Medival fold will be generated as well
@@ -208,6 +193,9 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
         #图片和填充柄
         this_fig=plt.figure(count)
         
+        #give a name
+        this_fig_name=this_new_file_name.strip('.txt').strip('progress')+'.png' 
+        
 #        print(count)
         
         this_ax=plt.subplot()
@@ -224,8 +212,8 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
             
                 break
        
-        print(this_percentage.strip('.').strip('='))  
-        
+        print(this_percentage.strip('.').strip('='))
+                
         #生成颗粒体系
         if test:
             
@@ -249,7 +237,7 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
 #            SpheresPlot(this_spheres)
             
             #图像
-            this_img=In.ImgFlip(spheres_grids.img_color,0)
+            this_img=Img.ImgFlip(spheres_grids.img_color,0)
             plt.imshow(this_img)
             
 #            spheres_grids.Plot()
@@ -257,7 +245,7 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
             #坐标轴和边
             Dec.TicksAndSpines(this_ax)
             plt.axis(np.array(global_axis_boundary)/pixel_step)
-        
+                     
         else:
             
 #            print(this_new_file_name)
@@ -280,16 +268,11 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
 #            print(np.array(global_axis_boundary)/pixel_step)
             
             plt.axis(np.array(global_axis_boundary)/pixel_step)
-
-        #保存一下咯
-        this_fig_name=this_new_file_name.strip('.txt').strip('progress')+'.png'   
+            
+        #save this fig
         this_fig.savefig(new_output_folder_path+this_fig_name,dpi=300,bbox_inches='tight')
-        
-#        cv.imwrite(new_output_folder_path+this_fig_name,
-#                   255*img,
-#                   [int(cv.IMWRITE_PNG_COMPRESSION),0])
-        count+=1 
         
 #        last_time=time.time()
         
+        count+=1 
         plt.close()  

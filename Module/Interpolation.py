@@ -20,8 +20,8 @@ Interpolation Method:
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+import sys,os
+sys.path.append(os.getcwd())
 
 #==============================================================================     
 #事后将其写进类里
@@ -197,11 +197,11 @@ def MeshGrid(ax,which_discrete_points,step,show=False):
 #==============================================================================   
 #反距离加权插值：
 #将离散点discrete_points插至mesh_points网格点上
-#which_surface用于限制点的范围，减少计算量
-def IDWInterpolation(ax,discrete_points,mesh_points,which_surface=None,show=False):
+#which_surface_map用于限制点的范围，减少计算量
+def IDWInterpolation(ax,discrete_points,mesh_points,which_surface_map=None,show=False):
     
     #默认的which_surface是不存在的
-    if which_surface==None:
+    if which_surface_map==None:
         
         which_surface={}
         
@@ -213,7 +213,7 @@ def IDWInterpolation(ax,discrete_points,mesh_points,which_surface=None,show=Fals
 #    print(np.shape(mesh_points))
        
     #先判断which_surface和mesh_points是否匹配
-    if len(which_surface)!=np.shape(mesh_points)[0]:
+    if len(which_surface_map)!=np.shape(mesh_points)[0]:
         
         print('ERROR:Incorrect dimension')
         
@@ -228,7 +228,7 @@ def IDWInterpolation(ax,discrete_points,mesh_points,which_surface=None,show=Fals
         
         for j in range(np.shape(mesh_points)[1]):
             
-            if j>=np.shape(mesh_points)[1]-which_surface[i]:
+            if j>=np.shape(mesh_points)[1]-which_surface_map[i]:
                 
                 z_mesh_points[i,j]=np.nan
                 
@@ -252,72 +252,7 @@ def IDWInterpolation(ax,discrete_points,mesh_points,which_surface=None,show=Fals
 
     return z_mesh_points
         
-'''图像的翻转和旋转'''
-#============================================================================== 
-#翻转
-def ImgFlip(which_img,axis):
-    
-#    print(which_img)
-#    print(which_img[0,0])
-#    print(type(which_img[0,0]))
-#    print(which_img[0,0].dtype)
-    
-    #获取img的第三维度   
-    if isinstance(which_img[0,0],float):
-        
-        new_img=np.zeros((np.shape(which_img)[0],np.shape(which_img)[1]))
-        
-    else:
-           
-        new_img=np.full((np.shape(which_img)[0],np.shape(which_img)[1],3),np.array(len(which_img[0,0])*[0.0]))
-    
-#    print(np.shape(new_img))  
-#    print(np.shape(which_img)) 
-    
-    #沿x轴翻转
-    if axis==0 or axis=='x':
-        
-        for i in range(np.shape(which_img)[0]):
-                        
-            new_img[i,:]=which_img[-(1+i),:]
-            
-    #沿x轴翻转
-    if axis==1 or axis=='y':
-        
-        for j in range(np.shape(which_img)[1]):
-                        
-            new_img[:,j]=which_img[:,-(1+j)]  
-                
-    return new_img
 
-#==============================================================================     
-#旋转：
-def ImgRotate(which_img):
-    
-#    print(which_img[0,0])
-
-#    print(type(which_img[0,0]))
-#    print(which_img[0,0].dtype)
-    
-    #获取img的第三维度   
-    if isinstance(which_img[0,0],float):
-        
-        new_img=np.zeros((np.shape(which_img)[1],np.shape(which_img)[0]))
-        
-    else:
-           
-        new_img=np.full((np.shape(which_img)[1],np.shape(which_img)[0],3),np.array(len(which_img[0,0])*[0.0]))
-    
-#    print(new_img)
-#    print(np.shape(new_img))  
-#    print(np.shape(which_img)) 
-    
-    #赋值
-    for k in range(np.shape(new_img)[0]):
-        
-        new_img[k,:]=which_img[:,k]
-    
-    return new_img
 
 #ax=plt.subplot(3,1,1)
 #discrete_points=GeneratePoints(ax,20,10,20,20,1)

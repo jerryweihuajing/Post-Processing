@@ -138,3 +138,26 @@ def MapsModeFileName(folder_path):
         maps_mode_file_name.append(map_mode_file_name)
         
     return maps_mode_file_name
+
+#============================================================================== 
+#calculate output folder path
+def OutputFolderPath(which_folder_path,input_mode,output_mode):
+    
+    #output for structural deformation is particle
+    if output_mode=='structural_deformation':
+        
+        return which_folder_path+'\\output\\structural deformation\\'
+    
+    else:
+        
+        #folder name of input mode
+        input_mode_name=str(input_mode).replace('_',' ')
+        
+        #folder name of output mode
+        output_mode_name=str(output_mode).replace('_',' ')
+        
+        #输出路径
+        output_folder_path=which_folder_path+'\\output\\'+input_mode_name
+        
+        #图片输出路径
+        return output_folder_path+'\\'+output_mode_name+'\\'

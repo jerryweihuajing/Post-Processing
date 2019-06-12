@@ -29,7 +29,8 @@ from Module import Rasterization as Ra
 #Calculate the pixels up which the spheres take
 #length: length of every single grid
 #factor: expand ratio
-def SpheresSurface(which_spheres,length,factor=1,show=False):
+#return: a mesh object presenting content and img
+def SpheresContent(which_spheres,length,factor=1,show=False):
     
     #首先找出网格的坐标范围
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
@@ -91,49 +92,78 @@ def SpheresSurface(which_spheres,length,factor=1,show=False):
             img_tag_mesh[this_i,this_j]=1
      
 #        print(this_i,this_j)
-            
+               
     #define new mesh
     that_mesh=o_mesh.mesh()
     
-    that_mesh.img_tag=img_tag_mesh
-    that_mesh.content=spheres_content
+    #Rotatation is in need
+    that_mesh.img_tag=In.ImgFlip(In.ImgRotate(img_tag_mesh),0)
+    that_mesh.content=spheres_content   
     
-    #Calculate the elavation
-    #the surface could be calculated, do do the 'left' 'right' 'top' 'bottom'
+    if show:
+        
+        plt.imshow(img_tag_mesh)
+    
+    return that_mesh
+
+'''
+Calculate the elavation
+the surface could be calculated, do do the 'left' 'right' 'top' 'bottom'
+'''
+#============================================================================== 
+#Calculate spheres surface from a mesh object
+#return: an img tag presenting the elavation
+def SpheresSurfaceMap(which_spheres,length,factor=1):
+
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length,show)
  
     #地表的列表
     map_j_i_surface={}
     
-    #Rotatation is in need
-    that_img_tag=In.ImgFlip(In.ImgRotate(that_mesh.img_tag),0)
-    
-    #show or not
-    if show:   
+    #img tag
+    for j in range(np.shape(that_mesh.img_tag)[1]):
         
-        plt.imshow(that_img_tag)
-    
-    #tag矩阵
-    for j in range(np.shape(that_img_tag)[1]):
+        map_j_i_surface[j]=np.shape(that_mesh.img_tag)[0]
         
-        map_j_i_surface[j]=np.shape(that_img_tag)[0]
-        
-        for i in range(np.shape(that_img_tag)[0]):
+        for i in range(np.shape(that_mesh.img_tag)[0]):
 
-            if that_img_tag[i,j]!=0:
+            if that_mesh.img_tag[i,j]!=0:
                 
 #                print(np.shape(that_mesh.img_tag)[0]-i)
                 
                 map_j_i_surface[j]=i
                 
                 break
-         
-#    print(len(map_j_i_surface))    
-#    print(np.shape(which_spheres_grids.img_tag)[1])
+            
+    return map_j_i_surface  
+ 
+#==============================================================================     
+#img to map
+#convenient to plot
+def SpheresSurfaceImg(which_spheres,length,factor=1,show=False):
     
-    return map_j_i_surface
-
-'''draw the outline: surface plus one'''   
-
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length,factor)
+    
+    #img to present the elavation
+    that_img_tag=np.full(np.nan,np.shape(that_mesh.img_tag))    
+    
+    #surface map to img tag
+    for k in range(len(map_j_i_surface)):
+        
+        this_j=list(map_j_i_surface.keys())[k]
+        this_i=list(map_j_i_surface.values())[k]
+    
+        that_img_tag[this_i,this_j]=1
+    
+    #show or not
+    if show:   
+        
+        plt.imshow(that_img_tag)
+      
+    return that_img_tag
+        
 #txt_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #ax=plt.subplot()
 #this_mesh=SP.SpheresGrids(ax,spheres,1)

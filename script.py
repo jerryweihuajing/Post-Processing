@@ -9,11 +9,18 @@ Created on Sun May 26 15:11:51 2019
 @title：执行脚本
 """
 
-import sys
+import numpy as np
+import matplotlib.pyplot as plt
 
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+import sys,os
+
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
 
 from Module import IntegralPlot as IP
+from Module import SpheresGeneration as SG
+from Module import SpheresBoundary as SB
 
 #organize the raw data
 #total path
@@ -22,12 +29,19 @@ folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 4'
 
 print(folder_path)
 
+##spheres objects
+#spheres=SG. GenerateSpheres(folder_path,-2)
+#
+##calcilate the surface
+#surface=SB.SpheresSurface(spheres,10,show=1)
+
 ##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
 
 IP.SinglePlot(folder_path,'stress','structural_deformation',1)
-IP.SinglePlot(folder_path,'stress','mean_normal_stress',1)
-IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',1)
-IP.SinglePlot(folder_path,'periodical_strain','volumetric_strain',1)
+
+#IP.SinglePlot(folder_path,'stress','mean_normal_stress',1)
+#IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',1)
+#IP.SinglePlot(folder_path,'periodical_strain','volumetric_strain',1)
 
 #IP.SinglePlot(folder_path,'periodical_strain','y_normal_strain',10,1)
 

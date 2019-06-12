@@ -8,30 +8,24 @@ Created on Sat May  4 15:25:52 2019
 
 @title：导入应力张量
 """
-
-import sys
 import copy as cp
 import numpy as np
-#import matplotlib
-#matplotlib.use()
-
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
-
 import matplotlib.pyplot as plt
-from matplotlib.font_manager import FontProperties
 
+import sys,os
+
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
+    
 from Object import o_grid
 from Object import o_mesh
 from Object import o_discrete_point
 
-from Module import Path as Pa
+from Module import Image as Img
 from Module import Dictionary as Dict
-from Module import Interpolation as In
 from Module import Rasterization as Ra
-from Module import SpheresBoundary as SB
-from Module import SpheresGeneration as SG
-
-    
+ 
 #==============================================================================
 #绘制所有的sphere对象
 def SpheresPlot(which_spheres):
@@ -351,7 +345,7 @@ def SpheresGrids(ax,which_spheres,length,show=False,method='A',factor=1):
     
     #赋值
     that_mesh.grids=grids
-    that_mesh.img_tag=In.ImgFlip(In.ImgRotate(cp.deepcopy(img_tag_mesh)),0)
-    that_mesh.img_color=In.ImgFlip(In.ImgRotate(cp.deepcopy(img_color_mesh)),0)
+    that_mesh.img_tag=Img.ImgFlip(Img.ImgRotate(cp.deepcopy(img_tag_mesh)),0)
+    that_mesh.img_color=Img.ImgFlip(Img.ImgRotate(cp.deepcopy(img_color_mesh)),0)
     
     return that_mesh

@@ -20,24 +20,6 @@ from Module import SpheresBoundary as SB
 #total path
 folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #
-# 
-#a=GnenrateSpheres(folder_path,2)
-       
-#pixel_step=50
-#
-##spheres objects
-#spheres=SP.GenerateSpheres(which_txt)
-#
-#ax=plt.subplot()
-#
-#spheres_grids=SP.SpheresGrids(ax,spheres,pixel_step)
-#
-##spheres_grids.Plot()
-##In.TicksAndSpines(ax)
-#
-##calcilate the surface
-#surface=SP.Surface(spheres_grids)
-
 #pixel_step=10
 #
 #which_spheres=SP.GenerateSpheres(folder_path,-1)[:100]

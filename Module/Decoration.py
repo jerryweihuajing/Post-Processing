@@ -9,6 +9,8 @@ Created on Tue Jun 11 21:27:13 2019
 @title：Module-Plot Decoration
 """
 
+from matplotlib.font_manager import FontProperties
+
 #==============================================================================
 #用新字体表示中文图名
 def ChineseTitle(which_title):

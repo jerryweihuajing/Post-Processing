@@ -1,0 +1,140 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jun 11 20:57:01 2019
+
+@author:Wei Huajing
+@company:Nanjing University
+@e-mail:jerryweihuajing@126.com
+
+@title：Module-Sort folders and files
+"""
+
+import os
+import sys
+sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+
+from Module import Dictionary as Dict
+
+#============================================================================== 
+#在某路径下判断并创建文件夹
+def GenerateFold(path):
+
+    #去除首位空格
+    path=path.strip()
+    
+    #去除尾部\符号
+    path=path.rstrip("\\")
+ 
+    #判断路径是否存在(True/False)
+    Exist=os.path.exists(path)
+ 
+    #判断结果
+    if not Exist:
+        
+        #如果不存在则创建目录
+        #创建目录操作函数
+        os.makedirs(path)   
+        
+#==============================================================================
+#获取目标路径下所有文件名         
+def file_name(file_dir):   
+    
+    L=[]   
+    
+    for root, dirs, files in os.walk(file_dir):  
+        
+        for file in files:  
+            
+            L.append(file)
+#            
+#            if os.path.splitext(file)[1] == '.csv': 
+#                
+#                L.append(os.path.join(root,file))  
+    return L 
+
+#============================================================================== 
+#根据文件夹路径生成文件名列表
+def GenerateFileNames(folder_path):
+    
+    #获取目标路径下所有文件名
+    file_names=file_name(folder_path)
+    
+    #建立进度与文件名的映射列表
+    map_progress_file_name={}
+    
+    #重新排序
+    for this_file_name in file_names:
+        
+    #    print(this_file_name)
+
+        '''refresh from YADE'''
+        if '.vtk' in this_file_name:
+            
+            init=this_file_name.strip('.vtk').strip('progress').strip('=').split('%')
+            
+        if '.txt' in this_file_name:
+                
+            init=this_file_name.strip('.txt').strip('progress').strip('=').split('%')
+                
+    #    print(init[0],'stress')   
+        
+        #提取出进展
+        progress=float(init[0])
+        
+    #    print(progress)
+        
+        map_progress_file_name[progress]=this_file_name
+        
+    #print(map_progress_file_name)
+    
+    #对file_names进行排序 
+    new_map_progress_file_name=Dict.DictSortByIndex(map_progress_file_name,sorted(list(map_progress_file_name.keys())))
+    
+    #返回新的文件名
+    return list(new_map_progress_file_name.values())
+
+#==============================================================================
+#construct all stress or all strain
+#folder_path: total path
+#mode: 'stress', 'cumulative_strain', 'periodical_strain'
+def ModeFileNames(folder_path,mode):
+      
+    #total input path
+    input_folder_path=folder_path+'\input'
+    
+    #folder name of one mode
+    mode_name=mode.replace('_',' ')
+    
+    #path for input
+    mode_input_folder_path=input_folder_path+'\\'+mode_name
+    
+    #file_names  
+    return GenerateFileNames(mode_input_folder_path)
+
+#==============================================================================
+#construct the link between stress txt and strain vtk
+def MapsModeFileName(folder_path):
+    
+    maps_mode_file_name=[]
+    
+    #all types of data
+    modes=['stress',
+           'cumulative_strain',
+           'periodical_strain']
+    
+    stress_file_names,\
+    cumulative_strain_file_names,\
+    periodical_strain_file_names=[ModeFileNames(folder_path,this_mode) for this_mode in modes]
+    
+    for k in range(len(stress_file_names)):
+        
+        #create the map between mode and file name
+        map_mode_file_name={}
+        
+        map_mode_file_name['stress']=stress_file_names[k]
+        map_mode_file_name['cumulative_strain']=cumulative_strain_file_names[k]
+        map_mode_file_name['periodical_strain']=periodical_strain_file_names[k]
+        
+        maps_mode_file_name.append(map_mode_file_name)
+        
+    return maps_mode_file_name

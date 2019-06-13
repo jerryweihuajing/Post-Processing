@@ -18,14 +18,20 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
 
+from Object import o_grid
+from Object import o_mesh
+
+from Module import Interpolation as In
 from Module import IntegralPlot as IP
 from Module import SpheresGeneration as SG
 from Module import SpheresBoundary as SB
+from Module import SpheresPlot as SP
+from Module import StrainPlot as Strain
 
 #organize the raw data
 #total path
 #对所有路径进行读取与处理
-folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 4'
+folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 
 print(folder_path)
 
@@ -37,14 +43,40 @@ print(folder_path)
 
 ##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
 
-IP.SinglePlot(folder_path,'stress','structural_deformation',1)
+#IP.SinglePlot(folder_path,'stress','structural_deformation',1)
 
-#IP.SinglePlot(folder_path,'stress','mean_normal_stress',1)
-#IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',1)
+#IP.SinglePlot(folder_path,'stress','mean_normal_stress',5)
+#IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',5)
+
 #IP.SinglePlot(folder_path,'periodical_strain','volumetric_strain',1)
 
 #IP.SinglePlot(folder_path,'periodical_strain','y_normal_strain',10,1)
 
+#for kk in range(5):
+#    
+#    folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case '+str(kk)
+#    
+#    print(folder_path)
+    
+    
+which_spheres=SG.GenerateSpheres(folder_path,k)
+    
+surface=SB.SpheresSurfaceMap(which_spheres,10)     
+   
+discrete_points=Strain.DiscreteValueStrain(which_spheres,'cumulative_strain','volumetric_strain')  
+     
+plt.imshow(In.LocalIDWInterpolation(discrete_points,10),cmap='seismic')
+
+discrete_points=Strain.DiscreteValueStrain(which_spheres,'periodical_strain','volumetric_strain')  
+     
+plt.imshow(In.LocalIDWInterpolation(discrete_points,10),cmap='seismic')
+
+
+#img=np.full((12,12),np.nan)
+#   
+#b=In.Neighbor([10,10],2)
+#
+#d=In.NanExpire(img,b)
 
 #for this_folder_name in os.listdir(folders_path):
 #

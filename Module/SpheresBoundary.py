@@ -22,6 +22,7 @@ sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
 from Object import o_mesh
 
+from Module import Image as Img
 from Module import Interpolation as In
 from Module import Rasterization as Ra
 
@@ -97,7 +98,7 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     that_mesh=o_mesh.mesh()
     
     #Rotatation is in need
-    that_mesh.img_tag=In.ImgFlip(In.ImgRotate(img_tag_mesh),0)
+    that_mesh.img_tag=Img.ImgFlip(Img.ImgRotate(img_tag_mesh),0)
     that_mesh.content=spheres_content   
     
     if show:
@@ -116,7 +117,7 @@ the surface could be calculated, do do the 'left' 'right' 'top' 'bottom'
 def SpheresSurfaceMap(which_spheres,length,factor=1):
 
     #fetch the mesh object
-    that_mesh=SpheresContent(which_spheres,length,show)
+    that_mesh=SpheresContent(which_spheres,length)
  
     #地表的列表
     map_j_i_surface={}
@@ -146,6 +147,9 @@ def SpheresSurfaceImg(which_spheres,length,factor=1,show=False):
     #fetch the mesh object
     that_mesh=SpheresContent(which_spheres,length,factor)
     
+    #fetch the surface map
+    map_j_i_surface=SpheresSurfaceMap(which_spheres,length)
+    
     #img to present the elavation
     that_img_tag=np.full(np.nan,np.shape(that_mesh.img_tag))    
     
@@ -163,7 +167,8 @@ def SpheresSurfaceImg(which_spheres,length,factor=1,show=False):
         plt.imshow(that_img_tag)
       
     return that_img_tag
-        
+ 
+       
 #txt_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #ax=plt.subplot()
 #this_mesh=SP.SpheresGrids(ax,spheres,1)

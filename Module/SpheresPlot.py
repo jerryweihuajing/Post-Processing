@@ -78,30 +78,7 @@ attention:1和2面临网格小于颗粒的情况，分辨率受限
 #length为网格边长
 #factor: very important paramete
 '''the calculation corresponding with factor is not correct'''
-def SpheresGrids(ax,which_spheres,length,show=False,method='A',factor=1):
-    
-    #总的color数量和种类
-    color_list=[]
-    
-    #建立映射关系
-    map_tag_color={}
-    map_tag_color[0]=[1.0,1.0,1.0]
-    
-    #建立tag_color映射关系字典
-    for this_sphere in which_spheres:
-        
-        if list(this_sphere.color) not in color_list:
-            
-            color_list.append(list(this_sphere.color))
-    
-            map_tag_color[len(color_list)]=list(this_sphere.color)
-            
-        this_sphere.tag=Dict.DictKeyOfValue(map_tag_color,list(this_sphere.color))
-        
-#    print(map_tag_color)
-    
-    #建立tag列表
-    tag_list=list(map_tag_color.keys())
+def SpheresGrids(which_spheres,length,show=False):
 
     #首先找出网格的坐标范围
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
@@ -159,14 +136,50 @@ def SpheresGrids(ax,which_spheres,length,show=False,method='A',factor=1):
             this_grid.index_x=k_x
             this_grid.index_y=k_y
             this_grid.index=[this_grid.index_x,this_grid.index_y]
-            this_grid.position_x=this_grid.index_x*this_grid.length
-            this_grid.position_y=this_grid.index_y*this_grid.length
+            this_grid.position_x=boundary_x[0]+this_grid.index_x*this_grid.length
+            this_grid.position_y=boundary_y[0]+this_grid.index_y*this_grid.length
             this_grid.position=np.array([this_grid.position_x,this_grid.position_y])
             this_grid.spheres_inside=[]
             
             #involved
             grids.append(this_grid)
-                  
+            
+    return grids
+
+#============================================================================== 
+#transgorm spheres into image
+def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
+
+    #generate spheres grids
+    grids=SpheresGrids(which_spheres,length)
+    
+    #restruct
+    amount_grid_x=max([this_grid.index_x for this_grid in grids])+1
+    amount_grid_y=max([this_grid.index_y for this_grid in grids])+1
+    
+    #总的color数量和种类
+    color_list=[]
+    
+    #建立映射关系
+    map_tag_color={}
+    map_tag_color[0]=[1.0,1.0,1.0]
+    
+    #建立tag_color映射关系字典
+    for this_sphere in which_spheres:
+        
+        if list(this_sphere.color) not in color_list:
+            
+            color_list.append(list(this_sphere.color))
+    
+            map_tag_color[len(color_list)]=list(this_sphere.color)
+            
+        this_sphere.tag=Dict.DictKeyOfValue(map_tag_color,list(this_sphere.color))
+        
+#    print(map_tag_color)
+    
+    #建立tag列表
+    tag_list=list(map_tag_color.keys())    
+    
     if method=='B':
         
         #将sphere投入grid

@@ -27,8 +27,9 @@ class grid:
                  position=None,
                  position_x=None,
                  position_y=None,
+                 map_tag_amount=None,
                  spheres_inside=None,
-                 map_tag_amount=None):       
+                 discreto_points_inside=None):       
         self.Id=Id
         self.tag=tag
         self.color=color
@@ -39,14 +40,25 @@ class grid:
         self.position=position
         self.position_x=position_x
         self.position_y=position_y
-        self.spheres_inside=spheres_inside
         self.map_tag_amount=map_tag_amount
-
-    #判断颗粒是否在grid虚拟边框内部的函数
+        self.spheres_inside=spheres_inside
+        self.discreto_points_inside=discreto_points_inside
+        
+    #判断sphere是否在grid虚拟边框内部的函数
     def SphereInside(self,which_sphere):
         
         if self.position[0]<=which_sphere.position[0]<self.position[0]+self.length and\
            self.position[1]<=which_sphere.position[1]<self.position[1]+self.length:
+            
+            return True   
+        else:
+            return False
+        
+    #判断discrete point是否在grid虚拟边框内部的函数
+    def DiscretePointInside(self,which_discrete_point):
+        
+        if self.position[0]<=which_discrete_point.pos_x<self.position[0]+self.length and\
+           self.position[1]<=which_discrete_point.pos_y<self.position[1]+self.length:
             
             return True   
         else:

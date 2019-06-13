@@ -47,10 +47,7 @@ def Analysis(which_spheres,input_mode,output_mode,pixel_step):
         #calculate the discrete points
         discrete_points=Strain.DiscreteValueStrain(which_spheres,input_mode,output_mode)
         
-    ax=plt.subplot()
-    mesh_points=In.MeshGrid(ax,discrete_points,pixel_step)
-    
-    return Img.ImgFlip(Img.ImgRotate(In.IDWInterpolation(ax,discrete_points,mesh_points,surface_map)),0)
+    return Img.ImgFlip(Img.ImgRotate(In.GlobalIDWInterpolation(discrete_points,pixel_step,surface_map)),0)
 
 """
 Colormap grey is not recognized. 
@@ -88,7 +85,7 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
     global_axis_boundary=AB.GlobalAxisBoundary(which_folder_path)
        
     #输出文件夹的名字
-    new_output_folder_path=OutputFolderPath(which_folder_path,input_mode,output_mode)
+    new_output_folder_path=Pa.OutputFolderPath(which_folder_path,input_mode,output_mode)
     
     #Gnenerate this Folder
     #Medival fold will be generated as well
@@ -97,9 +94,29 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
     #计数器
     number=1
     
+    #construct the map between postfix and colormap
+    postfix=['.txt','.vtk']
+    colormap=['gist_rainbow','seismic'] 
+    
+    map_postfix_colormap=dict(zip(postfix,colormap))
+    
     #绘制不同期次的形态
     for this_new_file_name in input_file_names:
-          
+        
+        print('')
+        print('======')
+
+        #delete the suffix
+        for this_postfix in postfix:
+ 
+            if this_postfix in this_new_file_name:
+            
+                this_percentage=this_new_file_name.strip(this_postfix)
+            
+                break
+       
+        print(this_percentage.strip('.')) 
+        
         #生成颗粒体系
         if test:
             
@@ -119,7 +136,7 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
 #            SpheresPlot(this_spheres)
 
             #图像版形态
-            spheres_grids=SP.SpheresGrids(this_ax,this_spheres,pixel_step)
+            spheres_grids=SP.SpheresImage(this_spheres,pixel_step)
             spheres_grids.Plot()
             
             #坐标轴和边
@@ -133,16 +150,17 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
             #最终矩阵           
             this_img=Analysis(this_spheres,output_mode,pixel_step)
             
-            if '.txt' in this_new_file_name:
+            #select the colormap
+            for this_postfix in postfix:
                 
-                plt.imshow(this_img,cmap='gist_rainbow')  
+                if this_postfix in this_new_file_name:
                 
-            if '.vtk' in this_new_file_name:
+                    plt.imshow(this_img,cmap=map_postfix_colormap[this_postfix]) 
                 
-                plt.imshow(this_img,cmap='seismic')  
+                    break    
             
             #坐标轴和边
-            In.TicksAndSpines(this_ax)
+            Dec.TicksAndSpines(this_ax)
             plt.axis(np.array(global_axis_boundary)/pixel_step)
                   
         #保存一下咯
@@ -189,17 +207,7 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
     for this_new_file_name in input_file_names:    
         
 #        print(time.time()-last_time)
-        
-        #图片和填充柄
-        this_fig=plt.figure(count)
-        
-        #give a name
-        this_fig_name=this_new_file_name.strip('.txt').strip('progress')+'.png' 
-        
-#        print(count)
-        
-        this_ax=plt.subplot()
-              
+                
         print('')
         print('======')
 
@@ -212,8 +220,18 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
             
                 break
        
-        print(this_percentage.strip('.').strip('='))
-                
+        print(this_percentage.strip('.'))
+        
+        #图片和填充柄
+        this_fig=plt.figure(count)
+
+#        print(count)
+        
+        this_ax=plt.subplot()
+        
+        #give a name
+        this_fig_name=this_percentage.strip('.').strip('progress=')+'.png'
+        
         #生成颗粒体系
         if test:
             
@@ -231,7 +249,7 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
         if output_mode=='structural_deformation':
                        
             #图像版形态
-            spheres_grids=SP.SpheresGrids(this_ax,this_spheres,pixel_step)
+            spheres_grids=SP.SpheresImage(this_spheres,pixel_step)
              
             #构造形态的绘制:图形
 #            SpheresPlot(this_spheres)
@@ -251,7 +269,7 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
 #            print(this_new_file_name)
             
             #最终矩阵
-            this_img=In.ImgFlip(Analysis(this_spheres,input_mode,output_mode,pixel_step),0)
+            this_img=Img.ImgFlip(Analysis(this_spheres,input_mode,output_mode,pixel_step),0)
             
             #select the colormap
             for this_postfix in postfix:

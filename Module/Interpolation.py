@@ -17,11 +17,15 @@ Interpolation Method:
 4 Kriging Interpolation
 '''
 
+import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
 import sys,os
 sys.path.append(os.getcwd())
+
+from Module import Image as Img
+from Module import MeshPoints as Mesh
 
 #==============================================================================     
 #事后将其写进类里
@@ -39,80 +43,46 @@ def Distance(pos_A,pos_B):
   
     return np.sqrt(np.sum((pos_A-pos_B)**2))    
 
-     
-#==============================================================================
-#显示二维散点
-def ScatterPlot(ax,which_discrete_points):
+#============================================================================== 
+#genertate the neighbor points
+#pad: size:(size*2+1)X(size*2+1)
+def Neighbor(which_index,pad):
     
-#    #判断类型  
-#    if isinstance(which_discrete_points[0],sphere):
-#        
-#        for this_point in which_discrete_points:
-#            
-#            plt.scatter(this_point.pos_x,this_point.pos_y,color='c')
-        
-    if isinstance(which_discrete_points[0],discrete_point):
-        
-        for this_point in which_discrete_points:
-            
-            plt.scatter(this_point.pos_x,this_point.pos_y,color='c') 
-            
-    if isinstance(which_discrete_points[0],list) and len(which_discrete_points[0])==2:
-        
-        for this_point in which_discrete_points:
-            
-            plt.scatter(this_point[0],this_point[1],color='c') 
-         
-#==============================================================================         
-#生成离散颗粒对象列表
-#width,length为建立插值区域的尺寸
-#m_width,n_length表示width和length的等分数量
-def GeneratePoints(ax,width,length,m_width,n_length,show=False):
-    
-    #结果列表
-    discrete_points=[]
-    
-    for m in range(m_width):
-        
-        for n in range(n_length):
-            
-            #建立新的点
-            this_point=discrete_point()
-            
-            #院有网格上的点坐标
-            original_m=m*width/m_width
-            original_n=n*length/n_length
-            
-            #新的点坐标
-            new_m=original_m+np.random.rand()
-            new_n=original_n+np.random.rand()
-            
-            #开始定义各个属性
-            this_point.pos_x=new_m
-            this_point.pos_y=new_n
-            
-            #z的大小：视情况而定
-            for k in range(5):
-                
-                if k*(width/5)<=original_m<=(k+1)*(width/5):
-                
-                    this_point.pos_z=k
-          
-            #收录进列表里
-            discrete_points.append(this_point)
-    
-    #显示吗哥
-    if show:
-            
-        ScatterPlot(ax,discrete_points)
-            
-    return discrete_points
+    #index plus tuple offset is neighbor index
+    return [(which_index[0]+i,which_index[1]+j)
+            for i in np.linspace(-pad,pad,2*pad+1) 
+            for j in np.linspace(-pad,pad,2*pad+1)]
 
+#============================================================================== 
+#delete nan in index list in an img
+def NanExpire(which_img,index_list):
+    
+    exist_index_list=[]
+    
+    for k in range(len(index_list)):
+        
+        i,j=index_list[k]
+        
+        #index in img
+        if 0<=i<np.shape(which_img)[0] and 0<=j<np.shape(which_img)[1]:
+            
+            if not np.isnan(which_img[int(i),int(j)]):
+            
+                exist_index_list.append(k)
+                
+    print(exist_index_list)
+    
+    return [index_list[this_index] for this_index in exist_index_list]
+            
 #@pysnooper.snoop()
 #==============================================================================     
 #反距离加权：权重
 def InverseDistanceWeight(which_pos,which_other_points):
     
+    if isinstance(which_other_points[0],list):
+        
+        which_other_pos=cp.deepcopy(which_other_points)
+        
     #构造which_other_points的坐标
     which_other_pos=[[this_point.pos_x,this_point.pos_y] for this_point in which_other_points]
     
@@ -128,77 +98,17 @@ def InverseDistanceWeight(which_pos,which_other_points):
         weight.append(1/Distance(which_pos,this_pos)/denominator)
     
     return np.array(weight)
-
-#==============================================================================  
-#构造网格点矩阵
-def MeshGrid(ax,which_discrete_points,step,show=False):
-    
-    #x,y方向上的步长
-    step_x=step_y=step
-    
-    #首先找出网格的坐标范围
-    x_discrete_points=[this_point.pos_x for this_point in which_discrete_points]
-    y_discrete_points=[this_point.pos_y for this_point in which_discrete_points]
-    
-    #xy边界
-    boundary_x=[min(x_discrete_points),max(x_discrete_points)]
-    boundary_y=[min(y_discrete_points),max(y_discrete_points)]
-    
-    #xy边长
-    length_x=boundary_x[1]-boundary_x[0]
-    length_y=boundary_y[1]-boundary_y[0]
-         
-    #xy方向上的网格数
-    amount_grid_x=int(np.ceil(length_x/step_x))
-    amount_grid_y=int(np.ceil(length_y/step_y))
-    
-    #xy方向上的网格交点数
-    amount_mesh_points_x=amount_grid_x+1
-    amount_mesh_points_y=amount_grid_y+1
-    
-    #显示吗哥
-    if show:
-        
-        #x向
-        for k_x in range(amount_mesh_points_x):
-            
-            plt.vlines(boundary_x[0]+k_x*step_x,
-                       boundary_y[0],
-                       boundary_y[0]+amount_grid_y*step_y,
-                       color='k',
-                       linestyles="--")
-            
-        #y向
-        for k_y in range(amount_mesh_points_y):
-            
-            plt.hlines(boundary_y[0]+k_y*step_y,
-                       boundary_x[0],
-                       boundary_x[0]+amount_grid_x*step_x,
-                       color='k',
-                       linestyles="--")
-     
-#    print('length_x:',amount_x)
-#    print('length_y:',amount_y)
-          
-    #生成网格交点的坐标矩阵
-    mesh_points=[]
-    
-    for k_x in range(amount_grid_x):
-        
-        for k_y in range(amount_grid_y):
-            
-            mesh_points.append([boundary_x[0]+k_x*step_x,boundary_y[0]+k_y*step_y])
-            
-#    print(len(mesh_points),amount_x*amount_y)
-    
-    return np.array(mesh_points).reshape((amount_grid_x,amount_grid_y,2)) 
    
 '''surface目的：直接不参与插值计算，节省计算时间'''
 #==============================================================================   
 #反距离加权插值：
 #将离散点discrete_points插至mesh_points网格点上
 #which_surface_map用于限制点的范围，减少计算量
-def IDWInterpolation(ax,discrete_points,mesh_points,which_surface_map=None,show=False):
+#all the discrete points will take part in the interpolation
+def GlobalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=None,show=False):
+    
+    #construct mesh points
+    mesh_points=Mesh.MeshGrid(which_discrete_points,grid_length,show=False)
     
     #默认的which_surface是不存在的
     if which_surface_map==None:
@@ -234,13 +144,17 @@ def IDWInterpolation(ax,discrete_points,mesh_points,which_surface_map=None,show=
                 
                 continue
             
-            this_pos=mesh_points[i,j]
+#            print(mesh_points[i,j])
+            
+            this_pos=mesh_points[i,j]+np.array([grid_length,grid_length])/2
+            
+#            print(this_pos)
 
             #计算各个点的权重
-            weight=InverseDistanceWeight(this_pos,discrete_points)
+            weight=InverseDistanceWeight(this_pos,which_discrete_points)
             
             #值的向量
-            z_discrete_points=np.array([this_discrete_point.pos_z for this_discrete_point in discrete_points])
+            z_discrete_points=np.array([this_discrete_point.pos_z for this_discrete_point in which_discrete_points])
             
             #逐个赋值
             z_mesh_points[i,j]=np.dot(z_discrete_points,weight)
@@ -248,12 +162,138 @@ def IDWInterpolation(ax,discrete_points,mesh_points,which_surface_map=None,show=
     #显示吗哥
     if show:
         
-        ax.imshow(z_mesh_points)  
+        plt.imshow(z_mesh_points)  
 
     return z_mesh_points
+ 
+#==============================================================================  
+#Interpolation in each grid
+#surface is no need: skip the grid which has no discrete point inside
+'''surface is necessary to avoid void mesh point'''
+def LocalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=None,show=False):
+            
+    #generate grid object
+    that_mesh=Mesh.DiscretePointsGrids(which_discrete_points,grid_length)
+
+    #re-define
+    img_tag=that_mesh.img_tag
+    grids=that_mesh.grids
+    
+    #将sphere投入grid
+    for this_grid in grids:
         
+        this_grid.discrete_points_inside=[]
+            
+        for this_discrete_point in which_discrete_points:
+            
+            #judge whether the discrete point is inside
+            if this_grid.DiscretePointInside(this_discrete_point):
 
+                this_grid.discrete_points_inside.append(this_discrete_point)  
+    
+    #IDW
+    for this_grid in grids:
+    
+        if this_grid.discrete_points_inside!=[]:
+                
+#            print(this_grid.position)
+            
+            this_pos=this_grid.position+np.array([this_grid.length,this_grid.length])/2
+            
+#            print(this_pos)
+            
+            #calculate the weight each point
+            this_weight=InverseDistanceWeight(this_pos,this_grid.discrete_points_inside)
+        
+            #值的向量
+            z_discrete_points=np.array([this_discrete_point.pos_z for this_discrete_point in this_grid.discrete_points_inside])
 
+            #逐个赋值
+            img_tag[this_grid.index_x,this_grid.index_y]=np.dot(z_discrete_points,this_weight)
+   
+    #comfortable
+    z_mesh_points=Img.ImgFlip(Img.ImgRotate(img_tag),0)
+    
+    #preview
+    if show:
+        
+        plt.imshow(z_mesh_points)
+    
+    #default: which_surface does not exist
+    if which_surface_map==None:
+        
+        which_surface_map={}
+        
+        for k in range(np.shape(z_mesh_points)[0]):
+            
+            which_surface_map[k]=0
+            
+    print(len(which_surface_map))
+    print(np.shape(z_mesh_points))
+       
+    #先判断which_surface和mesh_points是否匹配
+    if len(which_surface_map)!=np.shape(z_mesh_points)[1]:
+        
+        print('ERROR:Incorrect dimension')
+        
+        return
+    
+    #check where the nan is
+    for j in range(np.shape(z_mesh_points)[1]):
+        
+        for i in range(np.shape(z_mesh_points)[0]):
+            
+            if i>=np.shape(z_mesh_points)[1]-which_surface_map[j]:
+                
+                continue
+            
+            else:
+                
+                #fill the nan by interpolation
+                if np.isnan(z_mesh_points[i,j]):
+                    
+                    this_index=[i,j]
+                    
+                    #Initial a pad
+                    pad=1
+                      
+                    #index of this neighbor
+                    this_neighbor=Neighbor(this_index,pad)
+                       
+                    #expire the nan
+                    this_neighbor_expire_nan=NanExpire(z_mesh_points,this_neighbor)
+
+                    print(this_neighbor_expire_nan)
+                    
+                    #into the loop
+                    while not len(this_neighbor_expire_nan):
+                        
+                        pad+=1
+  
+                        #index of this neighbor
+                        this_neighbor=Neighbor(this_index,pad)
+                           
+                        #expire the nan
+                        this_neighbor_expire_nan=NanExpire(z_mesh_points,this_neighbor)
+                        
+                        print(this_neighbor_expire_nan)
+                    
+                    '''1 直接用邻居网格上的值插'''
+                    #calculate the weight each point
+                    this_weight=InverseDistanceWeight(this_index,this_neighbor_expire_nan)
+                     
+                    #值的向量
+                    z_this_neighbor=np.array([z_mesh_points[this_neighbor_index[0],this_neighbor_index[1]] for this_neighbor_index in this_neighbor_expire_nan])
+        
+                    #逐个赋值
+                    z_mesh_points[this_grid.index_x,this_grid.index_y]=np.dot(z_this_neighbor,this_weight)
+                    
+                    '''2 邻居网格里的散点再做插值'''
+                    
+                    
+    return z_mesh_points
+
+       
 #ax=plt.subplot(3,1,1)
 #discrete_points=GeneratePoints(ax,20,10,20,20,1)
 #

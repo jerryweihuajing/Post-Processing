@@ -149,7 +149,7 @@ def Strain2D(which_strain_tensor):
     distortional_strain=Ts.Tensor2ndInvariant(which_strain_tensor)
     
     #定义新的应变变量
-    that_strain_2D=strain_2D() 
+    that_strain_2D=o_strain_2D.strain_2D() 
     
     #赋值  
     that_strain_2D.strain_tensor=which_strain_tensor

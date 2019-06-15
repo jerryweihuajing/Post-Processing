@@ -30,7 +30,8 @@ from Module import SpheresGeneration as SG
 #which_txt and which_vtk will be mapped soon
 #which_file stands for the file name input txt or vtk
 #scalar: the spheres which take part in calculation
-def Analysis(which_spheres,input_mode,output_mode,pixel_step):
+#mode: 'local' or 'global'
+def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='local'):
     
     #surface to reduce scale of calculation
     surface_map=SB.SpheresSurfaceMap(which_spheres,pixel_step)
@@ -46,8 +47,15 @@ def Analysis(which_spheres,input_mode,output_mode,pixel_step):
     
         #calculate the discrete points
         discrete_points=Strain.DiscreteValueStrain(which_spheres,input_mode,output_mode)
+     
+    if mode=='global':
+    
+        return In.GlobalIDWInterpolation(discrete_points,pixel_step,surface_map)
         
-    return Img.ImgFlip(Img.ImgRotate(In.GlobalIDWInterpolation(discrete_points,pixel_step,surface_map)),0)
+    if mode=='local':
+        
+        return In.LocalIDWInterpolation(discrete_points,pixel_step,surface_map)
+        
 
 """
 Colormap grey is not recognized. 
@@ -276,8 +284,9 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
                 
                 if this_postfix in this_new_file_name:
                 
+#                    plt.imshow(this_img) 
                     plt.imshow(this_img,cmap=map_postfix_colormap[this_postfix]) 
-                
+                    
                     break
                 
             #坐标轴和边

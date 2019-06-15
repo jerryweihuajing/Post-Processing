@@ -113,7 +113,7 @@ the surface could be calculated, do do the 'left' 'right' 'top' 'bottom'
 '''
 #============================================================================== 
 #Calculate spheres surface from a mesh object
-#return: an img tag presenting the elavation
+#return: an dictionary presenting the elavation and coordinates
 def SpheresSurfaceMap(which_spheres,length,factor=1):
 
     #fetch the mesh object
@@ -140,8 +140,8 @@ def SpheresSurfaceMap(which_spheres,length,factor=1):
     return map_j_i_surface  
  
 #==============================================================================     
-#img to map
-#convenient to plot
+#img to map: convenient to plot
+#return: an img tag presenting the elavation
 def SpheresSurfaceImg(which_spheres,length,factor=1,show=False):
     
     #fetch the mesh object
@@ -168,6 +168,90 @@ def SpheresSurfaceImg(which_spheres,length,factor=1,show=False):
       
     return that_img_tag
  
+#============================================================================== 
+#Calculate spheres bottom from a mesh object
+#return: an dictionary presenting the elavation and coordinates
+def SpheresBottomMap(which_spheres,length,factor=1):
+
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length)
+ 
+    #地表的列表
+    map_j_i_bottom={}
+    
+    #img tag
+    for j in range(np.shape(that_mesh.img_tag)[1]):
+        
+        map_j_i_bottom[j]=np.shape(that_mesh.img_tag)[0]
+        
+        for i in range(np.shape(that_mesh.img_tag)[0]-1,-1,-1):
+
+            if that_mesh.img_tag[i,j]!=0:
+                
+#                print(np.shape(that_mesh.img_tag)[0]-i)
+                
+                map_j_i_bottom[j]=i
+                
+                break
+            
+    return map_j_i_bottom 
+
+#==============================================================================     
+#img to map: convenient to plot
+#return: an img tag presenting the elavation
+def SpheresBottomImg(which_spheres,length,factor=1,show=False):
+    
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length,factor)
+    
+    #fetch the bottom map
+    map_j_i_bottom=SpheresBottomMap(which_spheres,length)
+    
+    #img to present the elavation
+    that_img_tag=np.full(np.nan,np.shape(that_mesh.img_tag))    
+    
+    #bottom map to img tag
+    for k in range(len(map_j_i_bottom)):
+        
+        this_j=list(map_j_i_bottom.keys())[k]
+        this_i=list(map_j_i_bottom.values())[k]
+    
+        that_img_tag[this_i,this_j]=1
+    
+    #show or not
+    if show:   
+        
+        plt.imshow(that_img_tag)
+      
+    return that_img_tag
+
+#============================================================================== 
+#Calculate Left boundary from a mesh object
+#return: an dictionary presenting the positions
+def SpheresLeftMap(which_spheres,length,factor=1):
+
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length)
+ 
+    #地表的列表
+    map_j_i_bottom={}
+    
+    #img tag
+    for j in range(np.shape(that_mesh.img_tag)[1]):
+        
+        map_j_i_bottom[j]=np.shape(that_mesh.img_tag)[0]
+        
+        for i in range(np.shape(that_mesh.img_tag)[0]-1,-1,-1):
+
+            if that_mesh.img_tag[i,j]!=0:
+                
+#                print(np.shape(that_mesh.img_tag)[0]-i)
+                
+                map_j_i_bottom[j]=i
+                
+                break
+            
+    return map_j_i_bottom 
        
 #txt_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #ax=plt.subplot()
@@ -175,3 +259,4 @@ def SpheresSurfaceImg(which_spheres,length,factor=1,show=False):
 #
 #plt.figure()
 #plt.imshow(this_mesh.img_tag)
+    

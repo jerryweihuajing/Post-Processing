@@ -31,7 +31,9 @@ from Module import StrainPlot as Strain
 #organize the raw data
 #total path
 #对所有路径进行读取与处理
-folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
+folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 4'
+
+pixel_step=1
 
 print(folder_path)
 
@@ -45,32 +47,33 @@ print(folder_path)
 
 #IP.SinglePlot(folder_path,'stress','structural_deformation',1)
 
-#IP.SinglePlot(folder_path,'stress','mean_normal_stress',5)
-#IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',5)
+IP.SinglePlot(folder_path,'stress','mean_normal_stress',pixel_step)
+IP.SinglePlot(folder_path,'stress','shear_stress',pixel_step)
 
-#IP.SinglePlot(folder_path,'periodical_strain','volumetric_strain',1)
-
-#IP.SinglePlot(folder_path,'periodical_strain','y_normal_strain',10,1)
+IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',pixel_step)
+IP.SinglePlot(folder_path,'periodical_strain','volumetric_strain',pixel_step)
+IP.SinglePlot(folder_path,'cumulative_strain','distortional_strain',pixel_step)
+IP.SinglePlot(folder_path,'periodical_strain','distortional_strain',pixel_step)
 
 #for kk in range(5):
 #    
 #    folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case '+str(kk)
 #    
 #    print(folder_path)
-    
-    
-which_spheres=SG.GenerateSpheres(folder_path,k)
-    
-surface=SB.SpheresSurfaceMap(which_spheres,10)     
-   
-discrete_points=Strain.DiscreteValueStrain(which_spheres,'cumulative_strain','volumetric_strain')  
      
-plt.imshow(In.LocalIDWInterpolation(discrete_points,10),cmap='seismic')
+#pixel_step=1
+#
+#which_spheres=SG.GenerateSpheres(folder_path,-1)
+#    
+#surface=SB.SpheresSurfaceMap(which_spheres,pixel_step)     
+#   
+#discrete_points=Strain.DiscreteValueStrain(which_spheres,'cumulative_strain','volumetric_strain')  
+#     
+#plt.imshow(In.LocalIDWInterpolation(discrete_points,pixel_step,surface),cmap='seismic')
 
-discrete_points=Strain.DiscreteValueStrain(which_spheres,'periodical_strain','volumetric_strain')  
-     
-plt.imshow(In.LocalIDWInterpolation(discrete_points,10),cmap='seismic')
-
+#discrete_points=Strain.DiscreteValueStrain(which_spheres,'periodical_strain','volumetric_strain')  
+#     
+#plt.imshow(In.LocalIDWInterpolation(discrete_points,10),cmap='seismic')
 
 #img=np.full((12,12),np.nan)
 #   
@@ -115,5 +118,3 @@ plt.imshow(In.LocalIDWInterpolation(discrete_points,10),cmap='seismic')
 #SubPlot(folder_path,'structural_deformation',20)
 #SubPlot(folder_path,'mean_normal_stress',20,)
 #SubPlot(folder_path,'maximal_shear_stress',20)
-
-

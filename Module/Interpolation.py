@@ -70,7 +70,7 @@ def NanExpire(which_img,index_list):
             
                 exist_index_list.append(k)
                 
-    print(exist_index_list)
+#    print(exist_index_list)
     
     return [index_list[this_index] for this_index in exist_index_list]
             
@@ -79,12 +79,14 @@ def NanExpire(which_img,index_list):
 #反距离加权：权重
 def InverseDistanceWeight(which_pos,which_other_points):
     
-    if isinstance(which_other_points[0],list):
+    #构造which_other_points的坐标
+    if isinstance(which_other_points[0],list) or isinstance(which_other_points[0],tuple):
         
         which_other_pos=cp.deepcopy(which_other_points)
         
-    #构造which_other_points的坐标
-    which_other_pos=[[this_point.pos_x,this_point.pos_y] for this_point in which_other_points]
+    else:
+
+        which_other_pos=[[this_point.pos_x,this_point.pos_y] for this_point in which_other_points]
     
     #反距离加权的分母
     denominator=np.sum([1/Distance(which_pos,this_pos) for this_pos in which_other_pos])
@@ -164,7 +166,7 @@ def GlobalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=N
         
         plt.imshow(z_mesh_points)  
 
-    return z_mesh_points
+    return Img.ImgFlip(Img.ImgRotate(z_mesh_points),0)
  
 #==============================================================================  
 #Interpolation in each grid
@@ -227,10 +229,11 @@ def LocalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=No
         for k in range(np.shape(z_mesh_points)[0]):
             
             which_surface_map[k]=0
-            
-    print(len(which_surface_map))
-    print(np.shape(z_mesh_points))
-       
+        
+#    print(which_surface_map)
+#    print(len(which_surface_map))
+#    print(np.shape(z_mesh_points))
+#       
     #先判断which_surface和mesh_points是否匹配
     if len(which_surface_map)!=np.shape(z_mesh_points)[1]:
         
@@ -241,56 +244,51 @@ def LocalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=No
     #check where the nan is
     for j in range(np.shape(z_mesh_points)[1]):
         
-        for i in range(np.shape(z_mesh_points)[0]):
-            
-            if i>=np.shape(z_mesh_points)[1]-which_surface_map[j]:
+        for i in range(which_surface_map[j],np.shape(z_mesh_points)[0]):
+                 
+            #fill the nan by interpolation
+            if np.isnan(z_mesh_points[i,j]):
                 
-                continue
-            
-            else:
+                this_index=[i,j]
                 
-                #fill the nan by interpolation
-                if np.isnan(z_mesh_points[i,j]):
+                #Initial a pad
+                pad=1
+                  
+                #index of this neighbor
+                this_neighbor=Neighbor(this_index,pad)
+                   
+                #expire the nan
+                this_neighbor_expire_nan=NanExpire(z_mesh_points,this_neighbor)
+
+#                print(this_neighbor_expire_nan)
+                
+                #into the loop
+                while not len(this_neighbor_expire_nan):
                     
-                    this_index=[i,j]
-                    
-                    #Initial a pad
-                    pad=1
-                      
+                    pad+=1
+  
                     #index of this neighbor
                     this_neighbor=Neighbor(this_index,pad)
                        
                     #expire the nan
                     this_neighbor_expire_nan=NanExpire(z_mesh_points,this_neighbor)
-
-                    print(this_neighbor_expire_nan)
                     
-                    #into the loop
-                    while not len(this_neighbor_expire_nan):
-                        
-                        pad+=1
-  
-                        #index of this neighbor
-                        this_neighbor=Neighbor(this_index,pad)
-                           
-                        #expire the nan
-                        this_neighbor_expire_nan=NanExpire(z_mesh_points,this_neighbor)
-                        
-                        print(this_neighbor_expire_nan)
-                    
-                    '''1 直接用邻居网格上的值插'''
-                    #calculate the weight each point
-                    this_weight=InverseDistanceWeight(this_index,this_neighbor_expire_nan)
-                     
-                    #值的向量
-                    z_this_neighbor=np.array([z_mesh_points[this_neighbor_index[0],this_neighbor_index[1]] for this_neighbor_index in this_neighbor_expire_nan])
-        
-                    #逐个赋值
-                    z_mesh_points[this_grid.index_x,this_grid.index_y]=np.dot(z_this_neighbor,this_weight)
-                    
-                    '''2 邻居网格里的散点再做插值'''
-                    
-                    
+#                    print(this_neighbor_expire_nan)
+                
+                '''1 直接用邻居网格上的值插'''
+                #calculate the weight each point
+                this_weight=InverseDistanceWeight(this_index,this_neighbor_expire_nan)
+                 
+                #值的向量
+                z_this_neighbor=np.array([z_mesh_points[int(this_neighbor_index[0]),
+                                                        int(this_neighbor_index[1])]
+                                                        for this_neighbor_index in this_neighbor_expire_nan])
+                
+                #逐个赋值
+                z_mesh_points[i,j]=np.dot(z_this_neighbor,this_weight)
+                
+                '''2 邻居网格里的散点再做插值'''
+          
     return z_mesh_points
 
        

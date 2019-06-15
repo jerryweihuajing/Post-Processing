@@ -47,13 +47,24 @@ print(folder_path)
 
 #IP.SinglePlot(folder_path,'stress','structural_deformation',1)
 
-IP.SinglePlot(folder_path,'stress','mean_normal_stress',pixel_step)
-IP.SinglePlot(folder_path,'stress','shear_stress',pixel_step)
+#IP.SinglePlot(folder_path,'stress','shear_stress',pixel_step)
+#IP.SinglePlot(folder_path,'stress','mean_normal_stress',pixel_step)
+#
+#IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',pixel_step)
+#IP.SinglePlot(folder_path,'periodical_strain','volumetric_strain',pixel_step)
+#IP.SinglePlot(folder_path,'cumulative_strain','distortional_strain',pixel_step)
+#IP.SinglePlot(folder_path,'periodical_strain','distortional_strain',pixel_step)
 
-IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',pixel_step)
-IP.SinglePlot(folder_path,'periodical_strain','volumetric_strain',pixel_step)
-IP.SinglePlot(folder_path,'cumulative_strain','distortional_strain',pixel_step)
-IP.SinglePlot(folder_path,'periodical_strain','distortional_strain',pixel_step)
+IP.SinglePlot(folder_path,'stress','y_normal_stress',pixel_step)
+IP.SinglePlot(folder_path,'stress','x_normal_stress',pixel_step)
+
+IP.SinglePlot(folder_path,'cumulative_strain','x_normal_strain',pixel_step)
+IP.SinglePlot(folder_path,'periodical_strain','x_normal_strain',pixel_step)
+IP.SinglePlot(folder_path,'cumulative_strain','y_normal_strain',pixel_step)
+IP.SinglePlot(folder_path,'periodical_strain','y_normal_strain',pixel_step)
+
+IP.SinglePlot(folder_path,'cumulative_strain','shear_strain',pixel_step)
+IP.SinglePlot(folder_path,'periodical_strain','shear_strain',pixel_step)
 
 #for kk in range(5):
 #    

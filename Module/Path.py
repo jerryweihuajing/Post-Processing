@@ -96,17 +96,17 @@ def GenerateFileNames(folder_path):
 #==============================================================================
 #construct all stress or all strain
 #folder_path: total path
-#mode: 'stress', 'cumulative_strain', 'periodical_strain'
-def ModeFileNames(folder_path,mode):
+#input_mode: 'stress', 'cumulative_strain', 'periodical_strain'
+def ModeFileNames(folder_path,input_mode):
       
     #total input path
     input_folder_path=folder_path+'\input'
     
     #folder name of one mode
-    mode_name=mode.replace('_',' ')
+    input_mode_name=input_mode.replace('_',' ')
     
     #path for input
-    mode_input_folder_path=input_folder_path+'\\'+mode_name
+    mode_input_folder_path=input_folder_path+'\\'+input_mode_name
     
     #file_names  
     return GenerateFileNames(mode_input_folder_path)

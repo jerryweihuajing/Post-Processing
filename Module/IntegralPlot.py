@@ -12,6 +12,8 @@ Created on Tue Jun 11 21:25:04 2019
 import numpy as np
 import matplotlib.pyplot as plt
 
+from matplotlib import colors
+
 import sys
 sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
@@ -23,19 +25,14 @@ from Module import Decoration as Dec
 from Module import SpheresPlot as SP
 from Module import AxisBoundary as AB
 from Module import Interpolation as In
+from Module import ValueBoundary as VB
 from Module import SpheresBoundary as SB
 from Module import SpheresGeneration as SG
 
 #==============================================================================
-#which_txt and which_vtk will be mapped soon
-#which_file stands for the file name input txt or vtk
-#scalar: the spheres which take part in calculation
-#mode: 'local' or 'global'
-def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='local'):
+#Transform Spheres into discrete points
+def DiscretePoints(which_spheres,input_mode,output_mode):
     
-    #surface to reduce scale of calculation
-    surface_map=SB.SpheresSurfaceMap(which_spheres,pixel_step)
-
     #calculate stress
     if 'stress' in input_mode:
         
@@ -47,6 +44,21 @@ def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='local'):
     
         #calculate the discrete points
         discrete_points=Strain.DiscreteValueStrain(which_spheres,input_mode,output_mode)
+   
+    return discrete_points   
+  
+#==============================================================================
+#which_txt and which_vtk will be mapped soon
+#which_file stands for the file name input txt or vtk
+#scalar: the spheres which take part in calculation
+#mode: 'local' or 'global'
+def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='local'):
+    
+    #surface to reduce scale of calculation
+    surface_map=SB.SpheresSurfaceMap(which_spheres,pixel_step)
+
+    #discrete points to interpolate
+    discrete_points=DiscretePoints(which_spheres,input_mode,output_mode)
      
     if mode=='global':
     
@@ -56,7 +68,6 @@ def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='local'):
         
         return In.LocalIDWInterpolation(discrete_points,pixel_step,surface_map)
         
-
 """
 Colormap grey is not recognized. 
 Possible values are: 
@@ -197,7 +208,7 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
     new_output_folder_path=Pa.OutputFolderPath(which_folder_path,input_mode,output_mode)
     
     #Gnenerate this Folder
-    #Medival fold will be generated as well
+    '''Medival fold will be generated as well'''
     Pa.GenerateFold(new_output_folder_path)
     
     #计数器
@@ -207,10 +218,25 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
     postfix=['.txt','.vtk']
     colormap=['gist_rainbow','seismic'] 
     
-    map_postfix_colormap=dict(zip(postfix,colormap))
+    #construct a map between postfix and cmap
+    map_postfix_cmap=dict(zip(postfix,colormap))
+    
+    '''generate a norm for stress: global norm'''     
+    #stress norm
+    zmin,zmax=VB.GlobalValueBoundary(which_folder_path,input_mode,output_mode)
+    norm_stress=colors.Normalize(vmin=zmin,vmax=zmax)
+    
+    #strain norm
+    norm_strain=colors.Normalize(vmin=-1,vmax=1)
+    
+    #control the tick of colormap
+    norms=[norm_stress,norm_strain]
+    
+    #construct a map between postfix and norm
+    map_postfix_norm=dict(zip(postfix,norms))
     
 #    last_time=time.time()
-    
+       
     #绘制不同期次的形态
     for this_new_file_name in input_file_names:    
         
@@ -278,15 +304,16 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
             
             #最终矩阵
             this_img=Img.ImgFlip(Analysis(this_spheres,input_mode,output_mode,pixel_step),0)
-            
+                     
             #select the colormap
             for this_postfix in postfix:
                 
                 if this_postfix in this_new_file_name:
-                
-#                    plt.imshow(this_img) 
-                    plt.imshow(this_img,cmap=map_postfix_colormap[this_postfix]) 
-                    
+
+                    plt.imshow(this_img,
+                               norm=map_postfix_norm[this_postfix],
+                               cmap=map_postfix_cmap[this_postfix]) 
+                   
                     break
                 
             #坐标轴和边
@@ -303,3 +330,58 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
         
         count+=1 
         plt.close()  
+            
+#==============================================================================    
+#outpupt all kinds of plots
+def TotalOuput(which_folder_path,pixel_step,which_mode_list=None):
+    
+    #posible condition of stress
+    stress_mode=['x_normal_stress',
+                 'y_normal_stress',
+                 'shear_stress',
+                 'mean_normal_stress',
+                 'maximal_shear_stress']
+    
+    #posible condition of stain
+    strain_mode=['x_normal_strain',
+                 'y_normal_strain',
+                 'shear_strain',
+                 'volumetric_strain',
+                 'distortional_strain']
+    
+    #default: all modes
+    if which_mode_list==None:
+        
+        #structural deformation
+        SinglePlot(which_folder_path,'stress','structural_deformation',pixel_step)
+        
+        #stress
+        for this_stress_mode in stress_mode:
+            
+            SinglePlot(which_folder_path,'stress',this_stress_mode,pixel_step)
+            
+        #strain
+        for this_strain_mode in strain_mode:
+            
+            SinglePlot(which_folder_path,'cumulative_strain',this_strain_mode,pixel_step)
+            SinglePlot(which_folder_path,'periodical_strain',this_strain_mode,pixel_step)
+        
+    else:
+        
+        for this_mode in which_mode_list:
+            
+            #structural deformation
+            if this_mode=='structural_deformation':
+ 
+                SinglePlot(which_folder_path,'stress','structural_deformation',pixel_step)
+                
+            #stress
+            if this_mode in stress_mode:
+            
+                SinglePlot(which_folder_path,'stress',this_mode,pixel_step)
+            
+            #strain
+            for this_mode in strain_mode:
+                
+                SinglePlot(which_folder_path,'cumulative_strain',this_mode,pixel_step)
+                SinglePlot(which_folder_path,'periodical_strain',this_mode,pixel_step)

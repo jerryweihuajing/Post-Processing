@@ -6,11 +6,13 @@ Created on Sun May 26 15:11:51 2019
 @company:Nanjing University
 @e-mail:jerryweihuajing@126.com
 
-@title：执行脚本
+@title：execution script
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
+
+from matplotlib import colors
 
 import sys,os
 
@@ -21,111 +23,43 @@ if os.getcwd() not in sys.path:
 from Object import o_grid
 from Object import o_mesh
 
-from Module import Interpolation as In
-from Module import IntegralPlot as IP
-from Module import SpheresGeneration as SG
-from Module import SpheresBoundary as SB
+from Module import Path as Pa
+from Module import ColorBar as CB
 from Module import SpheresPlot as SP
+from Module import IntegralPlot as IP
+from Module import Interpolation as In
+from Module import ValueBoundary as VB
+from Module import SpheresBoundary as SB
+from Module import SpheresGeneration as SG
+
 from Module import StrainPlot as Strain
+from Module import StressPlot as Stress
 
 #organize the raw data
 #total path
 #对所有路径进行读取与处理
-folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 4'
+folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 
 pixel_step=1
 
 print(folder_path)
 
-##spheres objects
-#spheres=SG. GenerateSpheres(folder_path,-2)
-#
-##calcilate the surface
-#surface=SB.SpheresSurface(spheres,10,show=1)
-
 ##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
 
-#IP.SinglePlot(folder_path,'stress','structural_deformation',1)
+#the mode which I search for
+mode_list=['structural_deformation',
+           'mean_normal_stress',
+           'maximal_shear_stress',
+           'volumetric_strain',
+           'distortional_strain']
 
-#IP.SinglePlot(folder_path,'stress','shear_stress',pixel_step)
-#IP.SinglePlot(folder_path,'stress','mean_normal_stress',pixel_step)
-#
-#IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',pixel_step)
-#IP.SinglePlot(folder_path,'periodical_strain','volumetric_strain',pixel_step)
-#IP.SinglePlot(folder_path,'cumulative_strain','distortional_strain',pixel_step)
-#IP.SinglePlot(folder_path,'periodical_strain','distortional_strain',pixel_step)
+#IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',10,1)
 
-IP.SinglePlot(folder_path,'stress','y_normal_stress',pixel_step)
-IP.SinglePlot(folder_path,'stress','x_normal_stress',pixel_step)
-
-IP.SinglePlot(folder_path,'cumulative_strain','x_normal_strain',pixel_step)
-IP.SinglePlot(folder_path,'periodical_strain','x_normal_strain',pixel_step)
-IP.SinglePlot(folder_path,'cumulative_strain','y_normal_strain',pixel_step)
-IP.SinglePlot(folder_path,'periodical_strain','y_normal_strain',pixel_step)
-
-IP.SinglePlot(folder_path,'cumulative_strain','shear_strain',pixel_step)
-IP.SinglePlot(folder_path,'periodical_strain','shear_strain',pixel_step)
-
-#for kk in range(5):
-#    
-#    folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case '+str(kk)
-#    
-#    print(folder_path)
-     
-#pixel_step=1
-#
-#which_spheres=SG.GenerateSpheres(folder_path,-1)
-#    
-#surface=SB.SpheresSurfaceMap(which_spheres,pixel_step)     
-#   
-#discrete_points=Strain.DiscreteValueStrain(which_spheres,'cumulative_strain','volumetric_strain')  
-#     
-#plt.imshow(In.LocalIDWInterpolation(discrete_points,pixel_step,surface),cmap='seismic')
-
-#discrete_points=Strain.DiscreteValueStrain(which_spheres,'periodical_strain','volumetric_strain')  
-#     
-#plt.imshow(In.LocalIDWInterpolation(discrete_points,10),cmap='seismic')
-
-#img=np.full((12,12),np.nan)
-#   
-#b=In.Neighbor([10,10],2)
-#
-#d=In.NanExpire(img,b)
-
-#for this_folder_name in os.listdir(folders_path):
-#
-#    folder_path=folders_path+'\\'+this_folder_name
-#    
-#    #SP.SinglePlot(folder_path,'stress','structural_deformation',20,test=1)
-#    SP.SinglePlot(folder_path,'stress','structural_deformation',1)
-
-#输出哪些哥
-#output_type=['structural_deformation','mean_normal_stress','maximal_shear_stress']
-
-#for this_type in output_type:   
- 
-# 
-#this_folder_name=os.listdir(folders_path)[4]
-#
-##当前参数文件夹的路径
-#folder_path=folders_path+'\\'+this_folder_name
-#
-#print('path:'+folder_path)
-#
-#SP.SinglePlot(folder_path,'structural_deformation',1)
+#Histogram of stress or strain 
+def ValueHistogram(which_spheres,input_mode,output_mode):
     
-#SP.SubPlot(folder_path,output_type,1)
-    
-'''有问题'''
-#folder_path=r'C:\Users\whj\Desktop\L=2000 v=1.0 r=1.0\case 0'
+    return
 
-#SinglePlot(folder_path,'series',20,True)
+#output all images
+IP.TotalOuput(folder_path,pixel_step)
 
-#SinglePlot(folder_path,'structural_deformation',1)
-#SinglePlot(folder_path,'mean_normal_stress',1)
-#SinglePlot(folder_path,'maximal_shear_stress',1)
-
-#图像的axis要乘上步长
-#SubPlot(folder_path,'structural_deformation',20)
-#SubPlot(folder_path,'mean_normal_stress',20,)
-#SubPlot(folder_path,'maximal_shear_stress',20)

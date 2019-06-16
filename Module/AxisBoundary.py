@@ -9,9 +9,11 @@ Created on Tue Jun 11 21:23:09 2019
 @title：Module-Axis Boundary
 """
 
-import sys
+import sys,os
 
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
 
 from Module import Path as Pa
 from Module import SpheresGeneration as SG

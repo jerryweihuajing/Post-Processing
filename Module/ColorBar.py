@@ -9,16 +9,22 @@ Created on Mon May 27 14:01:01 2019
 @title：Module-Calculation about colorbar
 """
 
-import sys
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+import numpy as np
+import sys,os
 
-from Module import SpheresPlot as SP
-from Module import SpheresBoundary as SB
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
 
+from matplotlib import colors
+
+from Module import Path as Pa
+from Module import IntegralPlot as IP
+from Module import SpheresGeneration as SG
 
 #organize the raw data
 #total path
-folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
+#folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #
 #pixel_step=10
 #

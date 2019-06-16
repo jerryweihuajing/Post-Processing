@@ -38,7 +38,7 @@ from Module import StressPlot as Stress
 #organize the raw data
 #total path
 #对所有路径进行读取与处理
-folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
+folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 2'
 
 pixel_step=1
 
@@ -62,4 +62,3 @@ def ValueHistogram(which_spheres,input_mode,output_mode):
 
 #output all images
 IP.TotalOuput(folder_path,pixel_step)
-

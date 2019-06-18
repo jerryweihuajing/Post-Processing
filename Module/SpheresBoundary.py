@@ -21,6 +21,7 @@ import sys
 sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
 from Object import o_mesh
+from Object import o_circle
 
 from Module import Image as Img
 from Module import Interpolation as In
@@ -60,7 +61,7 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     for this_sphere in which_spheres:
             
         #new 2D circle
-        new_circle=Ra.circle()
+        new_circle=o_circle.circle()
         
         new_circle.radius=this_sphere.radius*factor
         new_circle.center=np.array([this_sphere.position[0],this_sphere.position[1]])

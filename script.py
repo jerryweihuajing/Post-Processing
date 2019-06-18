@@ -25,6 +25,7 @@ from Object import o_mesh
 
 from Module import Path as Pa
 from Module import ColorBar as CB
+from Module import Animation as An
 from Module import SpheresPlot as SP
 from Module import IntegralPlot as IP
 from Module import Interpolation as In
@@ -36,29 +37,68 @@ from Module import StrainPlot as Strain
 from Module import StressPlot as Stress
 
 #organize the raw data
-#total path
-#对所有路径进行读取与处理
-folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 2'
+folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 1'
 
-pixel_step=1
-
-print(folder_path)
+#print(folder_path)
 
 ##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
 
 #the mode which I search for
-mode_list=['structural_deformation',
-           'mean_normal_stress',
-           'maximal_shear_stress',
-           'volumetric_strain',
-           'distortional_strain']
+#mode_list=['structural_deformation',
+#           'mean_normal_stress',
+#           'maximal_shear_stress',
+#           'volumetric_strain',
+#           'distortional_strain']
 
-#IP.SinglePlot(folder_path,'cumulative_strain','volumetric_strain',10,1)
+#mode_list=['distortional_strain','volumetric_strain','shear_strain','y_normal_strain']
 
-#Histogram of stress or strain 
-def ValueHistogram(which_spheres,input_mode,output_mode):
-    
-    return
+#mode_list=['distortional_strain']
+#
+#IP.SinglePlot(folder_path,'periodical_strain','y_normal_strain',1)
+
+#load_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 1\output\periodical strain\x normal strain'
+
+#load_path=r'C:\Users\whj\Desktop\operation'
+#An.GenerateGIF(load_path)
+#
+#load_path=r'C:\Users\whj\Desktop\performance'
+#An.GenerateGIF(load_path)
 
 #output all images
-IP.TotalOuput(folder_path,pixel_step)
+#IP.TotalOuput(folder_path,1)
+
+#new format of file organization
+
+'''
+demand 1: 
+restart with a totally new input data
+
+total folder: input
+              output
+              
+input: case 0 
+       case 1 
+       case 2 
+       case ...
+       
+case x: stress
+        cumulative strain
+        periodical strain
+        
+output: structural deformation
+        stress
+        cumulative strain
+        periodical strain
+
+stress: xx stress
+        ......
+        
+strain: xx strain
+        ......     
+
+demand 2:
+save matrix as txt or other format
+
+demand 4:
+draw surface with stress or strain figure
+'''

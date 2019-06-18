@@ -20,6 +20,8 @@ if os.getcwd() not in sys.path:
     
 from Object import o_grid
 from Object import o_mesh
+from Object import o_square
+from Object import o_circle
 from Object import o_discrete_point
 
 from Module import Image as Img
@@ -232,7 +234,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
         for this_grid in grids:
                 
             #new 2D square 
-            new_square=Ra.square()
+            new_square=o_square.square()
             
             new_square.length=this_grid.length*factor
             new_square.center=this_grid.position+np.array([new_square.length/2,new_square.length/2])
@@ -297,7 +299,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                 for this_sphere in this_grid.spheres_inside:
                     
                     #二维圆
-                    new_circle=Ra.circle()
+                    new_circle=o_circle.circle()
                     
                     new_circle.radius=this_sphere.radius*factor
                     new_circle.center=np.array([this_sphere.position[0],this_sphere.position[1]])

@@ -14,8 +14,11 @@ import matplotlib.pyplot as plt
 
 from matplotlib import colors
 
-import sys
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+import sys,os
+
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
 
 from Module import StressPlot as Stress
 from Module import StrainPlot as Strain
@@ -94,6 +97,9 @@ viridis, viridis_r, winter, winter_r
 #将文件夹下的所有数据读取并显示构造形态,并显示再output文件夹中
 #集中显示
 def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
+
+    print(input_mode)
+    print(output_mode)
     
     this_fig=plt.figure()
     
@@ -197,7 +203,10 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
 #input_mode: 'stress' 'cumulative strain' 'periodical strain'
 #output_mode: 'xx_stress' 'xx_strain' 'structural deformation'
 def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
-     
+    
+    print('input_mode:',input_mode.replace('_',' '))
+    print('output_mode:',output_mode.replace('_',' '))
+    
     #输入文件名
     input_file_names=Pa.ModeFileNames(which_folder_path,input_mode)
 
@@ -220,20 +229,23 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
     
     #construct a map between postfix and cmap
     map_postfix_cmap=dict(zip(postfix,colormap))
-    
-    '''generate a norm for stress: global norm'''     
-    #stress norm
-    zmin,zmax=VB.GlobalValueBoundary(which_folder_path,input_mode,output_mode)
-    norm_stress=colors.Normalize(vmin=zmin,vmax=zmax)
-    
-    #strain norm
-    norm_strain=colors.Normalize(vmin=-1,vmax=1)
-    
-    #control the tick of colormap
-    norms=[norm_stress,norm_strain]
-    
-    #construct a map between postfix and norm
-    map_postfix_norm=dict(zip(postfix,norms))
+        
+    #stress or strain
+    if output_mode!='structural_deformation':
+        
+        '''generate a norm for stress: global norm'''     
+        #stress norm
+        zmin,zmax=VB.GlobalValueBoundary(which_folder_path,input_mode,output_mode)
+        norm_stress=colors.Normalize(vmin=zmin,vmax=zmax)
+        
+        #strain norm
+        norm_strain=colors.Normalize(vmin=-1,vmax=1)
+        
+        #control the tick of colormap
+        norms=[norm_stress,norm_strain]
+        
+        #construct a map between postfix and norm
+        map_postfix_norm=dict(zip(postfix,norms))
     
 #    last_time=time.time()
        
@@ -370,6 +382,8 @@ def TotalOuput(which_folder_path,pixel_step,which_mode_list=None):
         
         for this_mode in which_mode_list:
             
+#            print(this_mode)
+            
             #structural deformation
             if this_mode=='structural_deformation':
  
@@ -381,7 +395,7 @@ def TotalOuput(which_folder_path,pixel_step,which_mode_list=None):
                 SinglePlot(which_folder_path,'stress',this_mode,pixel_step)
             
             #strain
-            for this_mode in strain_mode:
+            if this_mode in strain_mode:
                 
                 SinglePlot(which_folder_path,'cumulative_strain',this_mode,pixel_step)
                 SinglePlot(which_folder_path,'periodical_strain',this_mode,pixel_step)

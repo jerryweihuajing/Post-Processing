@@ -37,18 +37,18 @@ from Module import StrainPlot as Strain
 from Module import StressPlot as Stress
 
 #organize the raw data
-folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 1'
+folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 2'
 
-#print(folder_path)
+print(folder_path)
 
 ##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
 
 #the mode which I search for
-#mode_list=['structural_deformation',
-#           'mean_normal_stress',
-#           'maximal_shear_stress',
-#           'volumetric_strain',
-#           'distortional_strain']
+mode_list=['x_normal_strain',
+           'y_normal_strain',
+           'shear_strain',
+           'volumetric_strain',
+           'distortional_strain']
 
 #mode_list=['distortional_strain','volumetric_strain','shear_strain','y_normal_strain']
 
@@ -65,7 +65,7 @@ folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 1'
 #An.GenerateGIF(load_path)
 
 #output all images
-#IP.TotalOuput(folder_path,1)
+IP.TotalOuput(folder_path,1,mode_list)
 
 #new format of file organization
 

@@ -37,9 +37,9 @@ from Module import StrainPlot as Strain
 from Module import StressPlot as Stress
 
 #organize the raw data
-folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 2'
+#folder_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 2'
 
-print(folder_path)
+#print(folder_path)
 
 ##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
 
@@ -59,8 +59,9 @@ print(folder_path)
 #load_path=r'C:\Users\whj\Desktop\operation'
 #An.GenerateGIF(load_path)
 #
-#load_path=r'C:\Users\whj\Desktop\performance'
-#An.GenerateGIF(load_path)
+load_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer=10\output\2019.6.19\case 0\cumulative strain\distortional strain'
+
+An.GenerateGIF(load_path)
 
 #output all images
 #IP.TotalOuput(folder_path,1,mode_list)

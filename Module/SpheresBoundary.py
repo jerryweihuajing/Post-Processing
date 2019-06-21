@@ -152,7 +152,7 @@ def SpheresSurfaceImg(which_spheres,length,factor=1,show=False):
     map_j_i_surface=SpheresSurfaceMap(which_spheres,length)
     
     #img to present the elavation
-    that_img_tag=np.full(np.nan,np.shape(that_mesh.img_tag))    
+    that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan) 
     
     #surface map to img tag
     for k in range(len(map_j_i_surface)):
@@ -209,7 +209,7 @@ def SpheresBottomImg(which_spheres,length,factor=1,show=False):
     map_j_i_bottom=SpheresBottomMap(which_spheres,length)
     
     #img to present the elavation
-    that_img_tag=np.full(np.nan,np.shape(that_mesh.img_tag))    
+    that_img_tag=np.full(np.shape(that_mesh.img_tag).np.nan) 
     
     #bottom map to img tag
     for k in range(len(map_j_i_bottom)):
@@ -235,25 +235,111 @@ def SpheresLeftMap(which_spheres,length,factor=1):
     that_mesh=SpheresContent(which_spheres,length)
  
     #地表的列表
-    map_j_i_bottom={}
+    map_i_j_left={}
     
     #img tag
-    for j in range(np.shape(that_mesh.img_tag)[1]):
+    for i in range(np.shape(that_mesh.img_tag)[0]):
         
-        map_j_i_bottom[j]=np.shape(that_mesh.img_tag)[0]
+        map_i_j_left[i]=np.shape(that_mesh.img_tag)[1]
         
-        for i in range(np.shape(that_mesh.img_tag)[0]-1,-1,-1):
+        for j in range(np.shape(that_mesh.img_tag)[1]):
 
             if that_mesh.img_tag[i,j]!=0:
                 
 #                print(np.shape(that_mesh.img_tag)[0]-i)
                 
-                map_j_i_bottom[j]=i
+                map_i_j_left[i]=j
                 
                 break
             
-    return map_j_i_bottom 
-       
+    return map_i_j_left 
+
+#==============================================================================     
+#img to map: convenient to plot
+#return: an img tag presenting the left boundary
+def SpheresLeftImg(which_spheres,length,factor=1,show=False):
+    
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length,factor)
+    
+    #fetch the bottom map
+    map_i_j_left=SpheresLeftMap(which_spheres,length)
+    
+    #img to present the elavation
+    that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan)    
+    
+    #bottom map to img tag
+    for k in range(len(map_i_j_left)):
+        
+        this_i=list(map_i_j_left.keys())[k]
+        this_j=list(map_i_j_left.values())[k]
+    
+        that_img_tag[this_i,this_j]=1
+    
+    #show or not
+    if show:   
+        
+        plt.imshow(that_img_tag)
+      
+    return that_img_tag
+
+#============================================================================== 
+#Calculate right boundary from a mesh object
+#return: an dictionary presenting the positions
+def SpheresRightMap(which_spheres,length,factor=1):
+
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length)
+ 
+    #地表的列表
+    map_i_j_right={}
+    
+    #img tag
+    for i in range(np.shape(that_mesh.img_tag)[0]):
+        
+        map_i_j_right[i]=np.shape(that_mesh.img_tag)[1]
+        
+        for j in range(np.shape(that_mesh.img_tag)[1]-1,-1,-1):
+
+            if that_mesh.img_tag[i,j]!=0:
+                
+#                print(np.shape(that_mesh.img_tag)[0]-i)
+                
+                map_i_j_right[i]=j
+                
+                break
+            
+    return map_i_j_right   
+ 
+#==============================================================================     
+#img to map: convenient to plot
+#return: an img tag presenting the right boundary
+def SpheresRightImg(which_spheres,length,factor=1,show=False):
+    
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length,factor)
+    
+    #fetch the bottom map
+    map_i_j_right=SpheresRightMap(which_spheres,length)
+    
+    #img to present the elavation
+    that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan)    
+    
+    #bottom map to img tag
+    for k in range(len(map_i_j_right)):
+        
+        this_i=list(map_i_j_right.keys())[k]
+        this_j=list(map_i_j_right.values())[k]
+    
+        that_img_tag[this_i,this_j]=1
+    
+    #show or not
+    if show:   
+        
+        plt.imshow(that_img_tag)
+      
+    return that_img_tag
+
 #txt_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #ax=plt.subplot()
 #this_mesh=SP.SpheresGrids(ax,spheres,1)

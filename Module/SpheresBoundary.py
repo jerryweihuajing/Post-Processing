@@ -14,6 +14,11 @@ Created on Wed May  8 09:50:34 2019
 2 Boundary Tracking: a method in Computer Vision
 """
 
+'''
+demand:
+simple spheres boundary np.where to calculate the content 
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -24,8 +29,6 @@ from Object import o_mesh
 from Object import o_circle
 
 from Module import Image as Img
-from Module import Interpolation as In
-from Module import Rasterization as Ra
 
 #============================================================================== 
 #Calculate the pixels up which the spheres take
@@ -209,7 +212,7 @@ def SpheresBottomImg(which_spheres,length,factor=1,show=False):
     map_j_i_bottom=SpheresBottomMap(which_spheres,length)
     
     #img to present the elavation
-    that_img_tag=np.full(np.shape(that_mesh.img_tag).np.nan) 
+    that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan) 
     
     #bottom map to img tag
     for k in range(len(map_j_i_bottom)):
@@ -340,6 +343,24 @@ def SpheresRightImg(which_spheres,length,factor=1,show=False):
       
     return that_img_tag
 
+#==============================================================================   
+#simple spheres boudary calculation
+def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
+   
+    #img_tag to present 4 boundary
+    img_tag_left=SpheresLeftImg(which_spheres,length,factor)
+    img_tag_right=SpheresRightImg(which_spheres,length,factor)
+    img_tag_bottom=SpheresBottomImg(which_spheres,length,factor)
+    img_tag_surface=SpheresSurfaceImg(which_spheres,length,factor)
+    
+    #tag==1 content
+    np.where(img_tag_left==1)
+    np.where(img_tag_right==1)
+    np.where(img_tag_bottom==1)
+    np.where(img_tag_surface==1)
+    
+    return
+    
 #txt_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #ax=plt.subplot()
 #this_mesh=SP.SpheresGrids(ax,spheres,1)

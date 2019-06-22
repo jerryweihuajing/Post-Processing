@@ -9,6 +9,7 @@ Created on Tue Jun 11 21:27:13 2019
 @title：Module-Plot Decoration
 """
 
+import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 
 #==============================================================================
@@ -44,3 +45,5 @@ def TicksAndSpines(ax,
         ax.spines['bottom'].set_visible(False) 
         ax.spines['left'].set_visible(False) 
         ax.spines['right'].set_visible(False)
+        
+        

@@ -67,7 +67,7 @@ from Module import StressPlot as Stress
 #IP.TotalOuput(folder_path,1,mode_list)
 
 spheres=SG.GenerateSpheresFromTXT('progress=48.37%.txt')[0]
-pixel_step=10
+pixel_step=5
 
 SB.SpheresRightImg(spheres,pixel_step,show=True)
 SB.SpheresLeftImg(spheres,pixel_step,show=True)
@@ -77,32 +77,6 @@ SB.SpheresBottomImg(spheres,pixel_step,show=True)
 #new format of file organization
 
 '''
-demand 1: 
-restart with a totally new input data
-
-total folder: input
-              output
-              
-input: case 0 
-       case 1 
-       case 2 
-       case ...
-       
-case x: stress
-        cumulative strain
-        periodical strain
-        
-output: structural deformation
-        stress
-        cumulative strain
-        periodical strain
-
-stress: xx stress
-        ......
-        
-strain: xx strain
-        ......     
-
 demand 2:
 save matrix as txt or other format
 

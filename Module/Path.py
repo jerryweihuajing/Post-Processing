@@ -37,27 +37,37 @@ def GenerateFold(path):
         
 #==============================================================================
 #获取目标路径下所有文件名         
-def file_name(file_dir):   
+def FilesNames(file_dir,post_fix=None):   
     
-    L=[]   
+    #output
+    files_names=[]   
     
     for root, dirs, files in os.walk(file_dir):  
         
-        for file in files:  
+        #based on post fix
+        if post_fix is not None:
             
-            L.append(file)
-#            
-#            if os.path.splitext(file)[1] == '.csv': 
-#                
-#                L.append(os.path.join(root,file))  
-    return L 
+            for this_file in files: 
+                
+                if os.path.splitext(this_file)[1]==post_fix: 
+                    
+                    files_names.append(os.path.join(root,this_file))  
+        
+        #normal        
+        else:
+            
+            for this_file in files:  
+            
+                files_names.append(this_file)
+            
+    return files_names 
 
 #============================================================================== 
 #根据文件夹路径生成文件名列表
 def GenerateFileNames(folder_path):
     
     #获取目标路径下所有文件名
-    file_names=file_name(folder_path)
+    file_names=FilesNames(folder_path)
     
     #建立进度与文件名的映射列表
     map_progress_file_name={}

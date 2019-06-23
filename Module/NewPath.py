@@ -96,15 +96,15 @@ def OutputFolderPath(which_case_path,input_mode,output_mode):
     total_path=which_case_path.split('\input\\')[0]
     
     #which case
-    case_str=case_path.split('\input\\')[1]
+    case_str=which_case_path.split('\input\\')[1]
     
     #case output path
-    case_output_path=total_path+'\\output'+case_str
+    case_output_path=total_path+'\\output\\'+case_str+'\\'
     
     #output for structural deformation is particle
     if output_mode=='structural_deformation':
         
-        return case_output_path+'\\structural deformation\\'
+        return case_output_path+'structural deformation\\'
     
     else:
         
@@ -116,7 +116,8 @@ def OutputFolderPath(which_case_path,input_mode,output_mode):
         
         #output path
         return case_output_path+input_mode_name+'\\'+output_mode_name+'\\' 
-     
-case_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer=10 detachment=0-4\input\case 0'
-
-path=OutputFolderPath(case_path,'cumulative_strain','volumetric_strain')
+    
+#case_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer=10 detachment=0-4\input\case 0'
+#
+#path_A=OutputFolderPath(case_path,'cumulative_strain','volumetric_strain')
+#path_B=OutputFolderPath(case_path,'stress','structural_deformation')

@@ -17,7 +17,7 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
 
-from Module import Path as Pa
+from Module import NewPath as NP
 from Module import IntegralPlot as IP
 from Module import SpheresGeneration as SG
 
@@ -54,7 +54,7 @@ def GlobalValueBoundary(which_folder_path,input_mode,output_mode):
 
     #traverse all files
     '''index 0 is invalid'''
-    for k in range(1,len(Pa.ModeFileNames(which_folder_path,input_mode))):
+    for k in range(1,len(NP.ModeFileNames(which_folder_path,input_mode))):
              
 #            print(k)
         

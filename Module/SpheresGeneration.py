@@ -15,7 +15,7 @@ sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
 from Object import o_sphere
 
-from Module import Path as Pa
+from Module import NewPath as NP
 
 #============================================================================== 
 #根据路径生成颗粒体系
@@ -202,14 +202,14 @@ def GenerateSpheresFromVTK(which_vtk):
 #number: which period
 def GenerateSpheres(which_folder_path,number):
     
-    map_mode_file_name=Pa.MapsModeFileName(which_folder_path)[number]
+    map_mode_file_name=NP.MapsModeFileName(which_folder_path)[number]
     
 #    print(map_mode_file_name)
     
     #different file path
-    stress_path=which_folder_path+'\\input\\'+'stress'+'\\'+map_mode_file_name['stress']
-    cumulative_strain_path=which_folder_path+'\\input\\'+'cumulative strain'+'\\'+map_mode_file_name['cumulative_strain']
-    periodical_strain_path=which_folder_path+'\\input\\'+'periodical strain'+'\\'+map_mode_file_name['periodical_strain']
+    stress_path=which_folder_path+'\\stress'+'\\'+map_mode_file_name['stress']
+    cumulative_strain_path=which_folder_path+'\\cumulative strain'+'\\'+map_mode_file_name['cumulative_strain']
+    periodical_strain_path=which_folder_path+'\\periodical strain'+'\\'+map_mode_file_name['periodical_strain']
 
     #different spheres
     spheres_stress=GenerateSpheresFromTXT(stress_path)[0]

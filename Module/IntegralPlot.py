@@ -9,6 +9,11 @@ Created on Tue Jun 11 21:25:04 2019
 @title：Module-Intrgral Plot
 """
 
+'''
+demand:
+save matrix as txt or other format
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -22,8 +27,10 @@ if os.getcwd() not in sys.path:
 
 from Module import StressPlot as Stress
 from Module import StrainPlot as Strain
+
 from Module import Path as Pa
 from Module import Image as Img
+from Module import NewPath as NP
 from Module import Decoration as Dec
 from Module import SpheresPlot as SP
 from Module import AxisBoundary as AB
@@ -96,7 +103,7 @@ viridis, viridis_r, winter, winter_r
 #============================================================================== 
 #将文件夹下的所有数据读取并显示构造形态,并显示再output文件夹中
 #集中显示
-def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
+def SubPlot(which_case_path,input_mode,output_mode,pixel_step,test=False):
 
     print(input_mode)
     print(output_mode)
@@ -104,13 +111,13 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
     this_fig=plt.figure()
     
     #输入文件名
-    input_file_names=Pa.ModeFileNames(which_folder_path,input_mode)
+    input_file_names=NP.ModeFileNames(which_case_path,input_mode)
 
     #通用的axis
-    global_axis_boundary=AB.GlobalAxisBoundary(which_folder_path)
+    global_axis_boundary=AB.GlobalAxisBoundary(which_case_path)
        
     #输出文件夹的名字
-    new_output_folder_path=Pa.OutputFolderPath(which_folder_path,input_mode,output_mode)
+    new_output_folder_path=NP.OutputFolderPath(which_case_path,input_mode,output_mode)
     
     #Gnenerate this Folder
     #Medival fold will be generated as well
@@ -145,11 +152,11 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
         #生成颗粒体系
         if test:
             
-            this_spheres=SG.GenerateSpheres(which_folder_path,number-1)[:100]
+            this_spheres=SG.GenerateSpheres(which_case_path,number-1)[:100]
             
         else:
             
-            this_spheres=SG.GenerateSpheres(which_folder_path,number-1)
+            this_spheres=SG.GenerateSpheres(which_case_path,number-1)
         
         #subplot
         this_ax=plt.subplot(len(input_file_names),1,number)
@@ -202,19 +209,19 @@ def SubPlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
 #test为测试按钮
 #input_mode: 'stress' 'cumulative strain' 'periodical strain'
 #output_mode: 'xx_stress' 'xx_strain' 'structural deformation'
-def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
+def SinglePlot(which_case_path,input_mode,output_mode,pixel_step,test=False):
     
     print('input_mode:',input_mode.replace('_',' '))
     print('output_mode:',output_mode.replace('_',' '))
     
     #输入文件名
-    input_file_names=Pa.ModeFileNames(which_folder_path,input_mode)
+    input_file_names=NP.ModeFileNames(which_case_path,input_mode)
 
     #通用的axis
-    global_axis_boundary=AB.GlobalAxisBoundary(which_folder_path)
+    global_axis_boundary=AB.GlobalAxisBoundary(which_case_path)
        
     #输出文件夹的名字
-    new_output_folder_path=Pa.OutputFolderPath(which_folder_path,input_mode,output_mode)
+    new_output_folder_path=Pa.OutputFolderPath(which_case_path,input_mode,output_mode)
     
     #Gnenerate this Folder
     '''Medival fold will be generated as well'''
@@ -235,7 +242,7 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
         
         '''generate a norm for stress: global norm'''     
         #stress norm
-        zmin,zmax=VB.GlobalValueBoundary(which_folder_path,input_mode,output_mode)
+        zmin,zmax=VB.GlobalValueBoundary(which_case_path,input_mode,output_mode)
         norm_stress=colors.Normalize(vmin=zmin,vmax=zmax)
         
         #strain norm
@@ -278,14 +285,17 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
         #give a name
         this_fig_name=this_percentage.strip('.').strip('progress=')+'.png'
         
+        #this txt name
+        this_txt_name=this_percentage.strip('.').strip('progress=')+'.txt'
+        
         #生成颗粒体系
         if test:
             
-            this_spheres=SG.GenerateSpheres(which_folder_path,count-1)[:100]
+            this_spheres=SG.GenerateSpheres(which_case_path,count-1)[:100]
         
         else:
             
-            this_spheres=SG.GenerateSpheres(which_folder_path,count-1)  
+            this_spheres=SG.GenerateSpheres(which_case_path,count-1)  
         
         if output_mode=='series':
         
@@ -334,7 +344,10 @@ def SinglePlot(which_folder_path,input_mode,output_mode,pixel_step,test=False):
 #            print(np.array(global_axis_boundary)/pixel_step)
             
             plt.axis(np.array(global_axis_boundary)/pixel_step)
-            
+        
+        #save as txt
+        np.savetxt(new_output_folder_path+this_txt_name,this_img,fmt="%.3f",delimiter=",")  
+        
         #save this fig
         this_fig.savefig(new_output_folder_path+this_fig_name,dpi=300,bbox_inches='tight')
         

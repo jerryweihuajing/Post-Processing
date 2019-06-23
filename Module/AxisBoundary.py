@@ -38,10 +38,10 @@ def LocalAxisBoundary(which_spheres):
         
 #==============================================================================
 #根据文件夹folder_path确定边界：适用于所有期次的参数
-def GlobalAxisBoundary(which_folder_path):
+def GlobalAxisBoundary(which_case_path):
     
     #concrete file path
-    input_file_path=which_folder_path+'\input\stress'
+    input_file_path=which_case_path+'\stress'
     
     #输入文件名
     input_file_names=Pa.GenerateFileNames(input_file_path)

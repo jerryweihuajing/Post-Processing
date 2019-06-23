@@ -37,7 +37,7 @@ from Module import StrainPlot as Strain
 from Module import StressPlot as Stress
 
 #organize the raw data
-#folder_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer=10 detachment=0-4\input\case 2'
+case_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer=10 detachment=0-4\input\case 0'
 
 #print(folder_path)
 
@@ -64,25 +64,20 @@ from Module import StressPlot as Stress
 #An.GenerateGIF(load_path)
 
 #output all images
-#IP.TotalOuput(folder_path,1,mode_list)
+IP.TotalOuput(case_path,1)
 
-spheres=SG.GenerateSpheresFromTXT('progress=48.37%.txt')[0]
-pixel_step=5
-
-SB.SpheresRightImg(spheres,pixel_step,show=True)
-SB.SpheresLeftImg(spheres,pixel_step,show=True)
-SB.SpheresSurfaceImg(spheres,pixel_step,show=True)
-SB.SpheresBottomImg(spheres,pixel_step,show=True)
+#spheres=SG.GenerateSpheresFromTXT('progress=48.37%.txt')[0]
+#pixel_step=5
+#
+#SB.SpheresRightImg(spheres,pixel_step,show=True)
+#SB.SpheresLeftImg(spheres,pixel_step,show=True)
+#SB.SpheresSurfaceImg(spheres,pixel_step,show=True)
+#SB.SpheresBottomImg(spheres,pixel_step,show=True)
 
 #new format of file organization
 
 '''
-demand 2:
-save matrix as txt or other format
-
 demand 4:
 draw surface with stress or strain figure
 
-demand 5:
-target abstraction in seismic image
 '''

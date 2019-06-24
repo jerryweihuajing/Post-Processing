@@ -29,6 +29,7 @@ from Object import o_mesh
 from Object import o_circle
 
 from Module import Image as Img
+from Module import ContentBoundary as CB
 
 #============================================================================== 
 #Calculate the pixels up which the spheres take
@@ -73,25 +74,23 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
         
         for this_pos in new_circle.points_inside:
             
-            if 0<=this_pos[0]/length<amount_mesh_points_x and 0<=this_pos[1]/length<amount_mesh_points_y:
+            this_x=int(np.floor(this_pos[0]/length))
+            this_y=int(np.floor(this_pos[1]/length))
+            
+            if 0<=this_x<amount_mesh_points_x and 0<=this_y<amount_mesh_points_y:
                     
-                if this_pos not in spheres_content:
+                if [this_x,this_y] not in spheres_content:
                     
-                    spheres_content.append(this_pos)  
+                    spheres_content.append([this_x,this_y])  
 
     #check the shape
     img_tag_mesh=np.zeros((amount_grid_x,amount_grid_y))
    
 #    print(np.shape(img_tag_mesh))
     
-    for this_pos in spheres_content:
-        
-#        print(this_pos)
-        
-        #restrict the boundary
-        this_i=int(this_pos[0]/length)
-        this_j=int(this_pos[1]/length)
-        
+    for this_i,this_j in spheres_content:
+               
+        #restrict the boundary  
         if 0<=this_i<amount_grid_x and 0<=this_j<amount_grid_y:
 
             img_tag_mesh[this_i,this_j]=1
@@ -353,14 +352,81 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
     img_tag_bottom=SpheresBottomImg(which_spheres,length,factor)
     img_tag_surface=SpheresSurfaceImg(which_spheres,length,factor)
     
-    #tag==1 content
-    np.where(img_tag_left==1)
-    np.where(img_tag_right==1)
-    np.where(img_tag_bottom==1)
-    np.where(img_tag_surface==1)
+    #result
+    boundary=[]
     
-    return
+    #4 boundaries
+    img_tags=[img_tag_left,img_tag_right,img_tag_bottom,img_tag_surface]
+
+    #traverse all tag img
+    for this_img_tag in img_tags:
+        
+        #tag==1 content
+        I=np.where(this_img_tag==1)[0]
+        J=np.where(this_img_tag==1)[1]
+        
+        for k in range(len(this_img_tag)):
+            
+            if [I[k],J[k]] not in boundary:
+                
+                boundary.append([I[k],J[k]])
     
+    if show:
+        
+        #fetch the mesh object
+        that_mesh=SpheresContent(which_spheres,length,factor)
+        
+        #img to present the elavation
+        that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan) 
+        
+        #draw boundary
+        for this_pos in boundary:
+            
+            this_i,this_j=this_pos[0],this_pos[1]
+            
+            that_img_tag[this_i,this_j]=1
+            
+            plt.imshow(that_img_tag)
+            
+    return boundary
+ 
+#==============================================================================     
+#edge tracing of spheres
+def SpheresEdge(which_spheres,pixel_step,show=False):
+    
+    #edge tracing of content
+    content=SpheresContent(which_spheres,pixel_step).content
+    img_tag=SpheresContent(which_spheres,pixel_step).img_tag
+    
+    #final edge
+    edge=CB.Find1stPixel(1,img_tag,content)
+    
+    #初始化循环中止判别标志
+    flag_stop=False
+    
+    #初始化绝对索引
+    index=-4
+    
+    #进行第一次邻居搜索
+    edge,index,flag_stop=CB.Find1stNeighbor(1,flag_stop,edge,img_tag,index) 
+    
+    while len(edge)>1 and flag_stop is False:
+        
+        edge,index,flag_stop=CB.Find1stNeighbor(1,flag_stop,edge,img_tag,index) 
+    
+    #show the edge        
+    if show: 
+        
+        for this_pos in edge:
+            
+            this_i,this_j=this_pos[0],this_pos[1]
+            
+            img_tag[this_i,this_j]=2
+
+        plt.imshow(img_tag)
+        
+    return edge
+        
 #txt_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #ax=plt.subplot()
 #this_mesh=SP.SpheresGrids(ax,spheres,1)

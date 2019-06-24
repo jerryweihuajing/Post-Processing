@@ -30,11 +30,17 @@ from Module import SpheresPlot as SP
 from Module import IntegralPlot as IP
 from Module import Interpolation as In
 from Module import ValueBoundary as VB
+from Module import ContentBoundary as CB
 from Module import SpheresBoundary as SB
 from Module import SpheresGeneration as SG
 
 from Module import StrainPlot as Strain
 from Module import StressPlot as Stress
+
+'''
+demand 4:
+draw surface with stress or strain figure
+'''
 
 #organize the raw data
 case_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer=10 detachment=0-4\input\case 0'
@@ -64,20 +70,18 @@ case_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer
 #An.GenerateGIF(load_path)
 
 #output all images
-IP.TotalOuput(case_path,1)
+#IP.TotalOuput(case_path,1)
 
-#spheres=SG.GenerateSpheresFromTXT('progress=48.37%.txt')[0]
-#pixel_step=5
-#
+which_spheres=SG.GenerateSpheresFromTXT('progress=48.37%.txt')[0]
+pixel_step=1
+
+SB.SimpleSpheresBoundary(which_spheres,pixel_step,show=True)
+
+#edge=SB.SpheresEdge(spheres,pixel_step,True)
+      
 #SB.SpheresRightImg(spheres,pixel_step,show=True)
 #SB.SpheresLeftImg(spheres,pixel_step,show=True)
 #SB.SpheresSurfaceImg(spheres,pixel_step,show=True)
 #SB.SpheresBottomImg(spheres,pixel_step,show=True)
 
 #new format of file organization
-
-'''
-demand 4:
-draw surface with stress or strain figure
-
-'''

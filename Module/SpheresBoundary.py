@@ -365,7 +365,7 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
         I=np.where(this_img_tag==1)[0]
         J=np.where(this_img_tag==1)[1]
         
-        for k in range(len(this_img_tag)):
+        for k in range(len(I)):
             
             if [I[k],J[k]] not in boundary:
                 

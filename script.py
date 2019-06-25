@@ -73,15 +73,18 @@ case_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer
 #IP.TotalOuput(case_path,1)
 
 which_spheres=SG.GenerateSpheresFromTXT('progress=48.37%.txt')[0]
-pixel_step=1
 
+pixel_step=1
+#
+#plt.figure()
+#SB.SpheresLeftImg(which_spheres,pixel_step,show=True)
+#SB.SpheresRightImg(which_spheres,pixel_step,show=True)
+#SB.SpheresBottomImg(which_spheres,pixel_step,show=True)
+#SB.SpheresSurfaceImg(which_spheres,pixel_step,show=True)
+
+plt.figure()
 SB.SimpleSpheresBoundary(which_spheres,pixel_step,show=True)
 
 #edge=SB.SpheresEdge(spheres,pixel_step,True)
       
-#SB.SpheresRightImg(spheres,pixel_step,show=True)
-#SB.SpheresLeftImg(spheres,pixel_step,show=True)
-#SB.SpheresSurfaceImg(spheres,pixel_step,show=True)
-#SB.SpheresBottomImg(spheres,pixel_step,show=True)
-
 #new format of file organization

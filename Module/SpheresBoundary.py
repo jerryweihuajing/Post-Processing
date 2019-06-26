@@ -117,18 +117,18 @@ the surface could be calculated, do do the 'left' 'right' 'top' 'bottom'
 #============================================================================== 
 #Calculate spheres surface from a mesh object
 #return: an dictionary presenting the elavation and coordinates
-def SpheresSurfaceMap(which_spheres,length,factor=1):
+def SpheresTopMap(which_spheres,length,factor=1):
 
     #fetch the mesh object
     that_mesh=SpheresContent(which_spheres,length)
  
     #地表的列表
-    map_j_i_surface={}
+    map_j_i_top={}
     
     #img tag
     for j in range(np.shape(that_mesh.img_tag)[1]):
         
-        map_j_i_surface[j]=np.shape(that_mesh.img_tag)[0]
+        map_j_i_top[j]=np.shape(that_mesh.img_tag)[0]
         
         for i in range(np.shape(that_mesh.img_tag)[0]):
 
@@ -136,31 +136,31 @@ def SpheresSurfaceMap(which_spheres,length,factor=1):
                 
 #                print(np.shape(that_mesh.img_tag)[0]-i)
                 
-                map_j_i_surface[j]=i
+                map_j_i_top[j]=i
                 
                 break
             
-    return map_j_i_surface  
+    return map_j_i_top 
  
 #==============================================================================     
 #img to map: convenient to plot
 #return: an img tag presenting the elavation
-def SpheresSurfaceImg(which_spheres,length,factor=1,show=False):
+def SpheresTopImg(which_spheres,length,factor=1,show=False):
     
     #fetch the mesh object
     that_mesh=SpheresContent(which_spheres,length,factor)
     
     #fetch the surface map
-    map_j_i_surface=SpheresSurfaceMap(which_spheres,length)
+    map_j_i_top=SpheresTopMap(which_spheres,length)
     
     #img to present the elavation
     that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan) 
     
     #surface map to img tag
-    for k in range(len(map_j_i_surface)):
+    for k in range(len(map_j_i_top)):
         
-        this_j=list(map_j_i_surface.keys())[k]
-        this_i=list(map_j_i_surface.values())[k]
+        this_j=list(map_j_i_top.keys())[k]
+        this_i=list(map_j_i_top.values())[k]
     
         that_img_tag[this_i,this_j]=1
     
@@ -342,21 +342,61 @@ def SpheresRightImg(which_spheres,length,factor=1,show=False):
       
     return that_img_tag
 
+#==============================================================================  
+#boundary map for 4 directions
+def SpheresBoundaryMap(which_spheres,length,side,factor=1,show=False):
+    
+    if side=='top':
+    
+        return SpheresTopMap(which_spheres,length,factor)
+        
+    if side=='left':
+        
+        return SpheresLeftMap(which_spheres,length,factor)
+    
+    if side=='right':
+        
+        return SpheresRightMap(which_spheres,length,factor)
+        
+    if side=='bottom':
+        
+        return SpheresBottomMap(which_spheres,length,factor)
+    
+#==============================================================================  
+#boundary image for 4 directions
+def SpheresBoundaryImg(which_spheres,length,side,factor=1,show=False):
+    
+    if side=='top':
+    
+        return SpheresTopImg(which_spheres,length,factor)
+        
+    if side=='left':
+        
+        return SpheresLeftImg(which_spheres,length,factor)
+    
+    if side=='right':
+        
+        return SpheresRightImg(which_spheres,length,factor)
+        
+    if side=='bottom':
+        
+        return SpheresBottomImg(which_spheres,length,factor)   
+    
 #==============================================================================   
 #simple spheres boudary calculation
 def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
    
     #img_tag to present 4 boundary
+    img_tag_top=SpheresTopImg(which_spheres,length,factor)
     img_tag_left=SpheresLeftImg(which_spheres,length,factor)
     img_tag_right=SpheresRightImg(which_spheres,length,factor)
     img_tag_bottom=SpheresBottomImg(which_spheres,length,factor)
-    img_tag_surface=SpheresSurfaceImg(which_spheres,length,factor)
     
     #result
     boundary=[]
     
     #4 boundaries
-    img_tags=[img_tag_left,img_tag_right,img_tag_bottom,img_tag_surface]
+    img_tags=[img_tag_top,img_tag_left,img_tag_right,img_tag_bottom]
 
     #traverse all tag img
     for this_img_tag in img_tags:
@@ -390,43 +430,6 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
             
     return boundary
  
-#==============================================================================     
-#edge tracing of spheres
-def SpheresEdge(which_spheres,pixel_step,show=False):
-    
-    #edge tracing of content
-    content=SpheresContent(which_spheres,pixel_step).content
-    img_tag=SpheresContent(which_spheres,pixel_step).img_tag
-    
-    #final edge
-    edge=CB.Find1stPixel(1,img_tag,content)
-    
-    #初始化循环中止判别标志
-    flag_stop=False
-    
-    #初始化绝对索引
-    index=-4
-    
-    #进行第一次邻居搜索
-    edge,index,flag_stop=CB.Find1stNeighbor(1,flag_stop,edge,img_tag,index) 
-    
-    while len(edge)>1 and flag_stop is False:
-        
-        edge,index,flag_stop=CB.Find1stNeighbor(1,flag_stop,edge,img_tag,index) 
-    
-    #show the edge        
-    if show: 
-        
-        for this_pos in edge:
-            
-            this_i,this_j=this_pos[0],this_pos[1]
-            
-            img_tag[this_i,this_j]=2
-
-        plt.imshow(img_tag)
-        
-    return edge
-        
 #txt_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
 #ax=plt.subplot()
 #this_mesh=SP.SpheresGrids(ax,spheres,1)

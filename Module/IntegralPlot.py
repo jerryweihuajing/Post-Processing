@@ -65,7 +65,7 @@ def DiscretePoints(which_spheres,input_mode,output_mode):
 def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='local'):
     
     #surface to reduce scale of calculation
-    surface_map=SB.SpheresSurfaceMap(which_spheres,pixel_step)
+    surface_map=SB.SpheresTopMap(which_spheres,pixel_step)
 
     #discrete points to interpolate
     discrete_points=DiscretePoints(which_spheres,input_mode,output_mode)

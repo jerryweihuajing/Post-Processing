@@ -10,11 +10,17 @@ Created on Mon Apr 29 12:17:04 2019
 """
 
 '''
-Interpolation Method:
+Interpolation algorithm:
 1 Adjacent Points Interpolation
 2 Linear Interpolation
 3 Bilinear Interpolation
 4 Kriging Interpolation
+'''
+
+'''
+demand:
+1 sphere in grid
+2 grid in sphere
 '''
 
 import copy as cp
@@ -28,7 +34,6 @@ from Module import Image as Img
 from Module import MeshPoints as Mesh
 
 #==============================================================================     
-#事后将其写进类里
 #计算两点之间的距离
 def Distance(pos_A,pos_B):
     
@@ -275,7 +280,7 @@ def LocalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=No
                     
 #                    print(this_neighbor_expire_nan)
                 
-                '''1 直接用邻居网格上的值插'''
+                '''直接用邻居网格上的值插'''
                 #calculate the weight each point
                 this_weight=InverseDistanceWeight(this_index,this_neighbor_expire_nan)
                  
@@ -287,7 +292,6 @@ def LocalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=No
                 #逐个赋值
                 z_mesh_points[i,j]=np.dot(z_this_neighbor,this_weight)
                 
-                '''2 邻居网格里的散点再做插值'''
           
     return z_mesh_points
 

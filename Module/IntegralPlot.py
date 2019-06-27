@@ -62,7 +62,7 @@ def DiscretePoints(which_spheres,input_mode,output_mode):
 #which_file stands for the file name input txt or vtk
 #scalar: the spheres which take part in calculation
 #mode: 'local' or 'global'
-def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='local'):
+def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='spheres_in_grid'):
     
     #surface to reduce scale of calculation
     surface_map=SB.SpheresTopMap(which_spheres,pixel_step)
@@ -70,13 +70,15 @@ def Analysis(which_spheres,input_mode,output_mode,pixel_step,mode='local'):
     #discrete points to interpolate
     discrete_points=DiscretePoints(which_spheres,input_mode,output_mode)
      
+    #global interpolation mass of calculation
     if mode=='global':
     
         return In.GlobalIDWInterpolation(discrete_points,pixel_step,surface_map)
+     
+    #spheres in grid: grid length is quite larger than spheres 
+    if mode=='spheres_in_grid':
         
-    if mode=='local':
-        
-        return In.LocalIDWInterpolation(discrete_points,pixel_step,surface_map)
+        return In.SpheresInGridIDW(discrete_points,pixel_step,surface_map)
         
 """
 Colormap grey is not recognized. 

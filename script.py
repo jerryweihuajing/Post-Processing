@@ -20,22 +20,25 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
 
-#from Object.o_grid import grid
+from Object.o_grid import grid
 from Object.o_mesh import mesh
+from Object.o_sphere import sphere
 
-#from Module import Path as Pa
-#from Module import ColorBar as CB
-#from Module import Animation as An
-#from Module import SpheresPlot as SP
-#from Module import IntegralPlot as IP
-#from Module import Interpolation as In
-#from Module import ValueBoundary as VB
-#from Module import ContentBoundary as CB
-#from Module import SpheresBoundary as SB
-#from Module import SpheresGeneration as SG
-#
-#from Module import StrainPlot as Strain
-#from Module import StressPlot as Stress
+from Module import Path as Pa
+from Module import NewPath as NP
+from Module import ColorBar as CB
+from Module import Animation as An
+from Module import Dictionary as Dict
+from Module import SpheresPlot as SP
+from Module import IntegralPlot as IP
+from Module import Interpolation as In
+from Module import ValueBoundary as VB
+from Module import ContentBoundary as CB
+from Module import SpheresBoundary as SB
+from Module import SpheresGeneration as SG
+
+from Module import StrainPlot as Strain
+from Module import StressPlot as Stress
 
 '''
 demand 4:
@@ -45,7 +48,49 @@ draw surface with stress or strain figure
 #data folder path
 case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=1.0\\input\\base=0.00'
 
-#new format of file organization
+#file_names=FileNamesThisCase(case_path)
+file_paths=NP.FilePathsThisCase(case_path)
+
+#Generate spheres
+
+for this_file in file_paths:
+    
+    print(len(SG.GenerateSpheresFromFile(this_file)))
+
+#displacement cumulative periodical
+ 
+#spheres_start=SG.GenerateSpheresFromFile(file_paths[0])
+#
+#spheres_now=SG.GenerateSpheresFromFile(file_paths[-1])
+
+
+#------------------------------------------------------------------------------
+"""
+Generate cumulative strain of spheres
+
+Args:
+    spheres_start: original spheres (from file_names[0])
+    spheres_now: spheres to be processed (from file_names[k])
+    
+Returns:
+    spheres list with cumulative strain
+"""
+def SpheresCumulativeStrain(spheres_start,spheres_now):
+    
+    return
+"""
+Generate periodical strain of spheres
+
+Args:
+    spheres_last: spheres in last period (from file_names[k-1])
+    spheres_now: spheres to be processed (from file_names[k])
+    
+Returns:
+    spheres list with cumulative strain
+"""
+def SpheresPeriodicalStrain(spheres_last,spheres_now):
+    
+    return
 
 #print(folder_path)
 

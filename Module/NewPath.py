@@ -11,8 +11,7 @@ Created on Fri Jun 21 23:37:02 2019
 
 '''   
 demand: 
-restart with a totally new input data
-
+restart with a totally new input data: new format of file organization
 total folder: input
               output
               
@@ -44,8 +43,9 @@ if os.getcwd() not in sys.path:
     sys.path.append(os.getcwd())
     
 from Module import Path as Pa
+from Module import Dictionary as Dict
 
-#==============================================================================
+#------------------------------------------------------------------------------
 #construct all stress or all strain
 #folder_path: total path
 #input_mode: 'stress', 'cumulative_strain', 'periodical_strain'
@@ -60,7 +60,7 @@ def ModeFileNames(which_case_path,input_mode):
     #file_names  
     return Pa.GenerateFileNames(mode_input_folder_path)
 
-#==============================================================================
+#------------------------------------------------------------------------------
 #construct the link between stress txt and strain vtk
 def MapsModeFileName(which_case_path):
     
@@ -88,7 +88,7 @@ def MapsModeFileName(which_case_path):
         
     return maps_mode_file_name
 
-#============================================================================== 
+#------------------------------------------------------------------------------
 #calculate output folder path
 def OutputFolderPath(which_case_path,input_mode,output_mode):
     
@@ -116,8 +116,62 @@ def OutputFolderPath(which_case_path,input_mode,output_mode):
         
         #output path
         return case_output_path+input_mode_name+'\\'+output_mode_name+'\\' 
+ 
+#------------------------------------------------------------------------------
+"""
+Generate file names in this case path in the order of progress
+
+Args:
+    which_case_path: load path of this case
     
-#case_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer=10 detachment=0-4\input\case 0'
-#
-#path_A=OutputFolderPath(case_path,'cumulative_strain','volumetric_strain')
-#path_B=OutputFolderPath(case_path,'stress','structural_deformation')
+Returns:
+    file names list in this case path in the order of progress
+"""
+def FileNamesThisCase(which_case_path):
+    
+    #获取目标路径下所有文件名
+    file_names=Pa.FilesNames(which_case_path)
+    
+    #建立进度与文件名的映射列表
+    map_progress_file_name={}
+    
+    #重新排序
+    for this_file_name in file_names:
+        
+    #    print(this_file_name)
+              
+        init=this_file_name.strip('.txt').strip('progress').strip('=').split('%')
+                
+    #    print(init[0],'stress')   
+        
+        #提取出进展
+        progress=float(init[0])
+        
+    #    print(progress)
+        
+        map_progress_file_name[progress]=this_file_name
+        
+    #print(map_progress_file_name)
+    
+    #对file_names进行排序 
+    new_map_progress_file_name=Dict.DictSortByIndex(map_progress_file_name,sorted(list(map_progress_file_name.keys())))
+    
+    #返回新的文件名
+    return list(new_map_progress_file_name.values())
+
+#------------------------------------------------------------------------------
+"""
+Generate file paths in this case path in the order of progress
+
+Args:
+    which_case_path: load path of this case
+    
+Returns:
+    file paths list in this case path in the order of progress
+"""
+def FilePathsThisCase(which_case_path):
+    
+    #Generate file names in this case path in the order of progress
+    file_names=FileNamesThisCase(which_case_path)
+    
+    return [which_case_path+'\\'+this_file_name for this_file_name in file_names]

@@ -13,9 +13,74 @@ import numpy as np
 import sys
 sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
-from Object import o_sphere
+from Object.o_sphere import sphere
 
 from Module import NewPath as NP
+
+"""
+Generate spheres objects from file (txt)
+
+Args:
+    which_file: particle file (txt) from YADE
+    
+Returns:
+    list which containg sphere objects
+"""
+def GenerateSpheresFromFile(which_file):
+    
+    #all lines
+    lines=open(which_file,'r').readlines()
+    
+#    print(len(lines))
+    
+    #list of sphere objects
+    spheres=[]
+    
+    #correct legnth of each line
+    correct_length=len(lines[0].strip('\n').split(','))
+    
+    for this_line in lines:
+
+        this_list=this_line.strip('\n').split(',')
+               
+        #judge if total length is OK
+        if len(this_list)!=correct_length:
+            
+            continue
+        
+        #define new sphere object
+        new_sphere=sphere()
+        
+        new_sphere.Id=float(this_list[0])
+        new_sphere.radius=float(this_list[1])
+        new_sphere.color=np.array([float(this_str) for this_str in this_list[2:5]])       
+        new_sphere.position=np.array([float(this_str) for this_str in this_list[5:8]])
+        new_sphere.stress_tensor_3D=np.array([float(this_str) for this_str in this_list[8:]])
+     
+        #3D tensor length is correct
+        if len(new_sphere.stress_tensor_3D)!=9:
+            
+            continue
+        
+        #judge if there is inf
+        if np.inf in new_sphere.stress_tensor_3D or -np.inf in new_sphere.stress_tensor_3D:
+                 
+#            print(new_sphere.stress_tensor_3D)
+     
+            continue
+        
+        #judge if there is nan
+        for this_element in new_sphere.stress_tensor_3D:
+        
+            if np.isnan(this_element):
+  
+                continue
+        
+        new_sphere.Init()
+        
+        spheres.append(new_sphere)
+
+    return spheres
 
 #============================================================================== 
 #根据路径生成颗粒体系
@@ -51,7 +116,7 @@ def GenerateSpheresFromTXT(which_txt):
             continue
         
         #定义新的颗粒
-        new_sphere=o_sphere.sphere()
+        new_sphere=sphere()
         
         new_sphere.Id=float(this_list[0])
         new_sphere.radius=float(this_list[1])
@@ -256,7 +321,7 @@ def GenerateSpheres(which_folder_path,number):
     #information fusion
     for k in range(scalar-len(id_to_delete)):
         
-        new_sphere=o_sphere.sphere()
+        new_sphere=sphere()
         
         #re-define
         new_sphere.Id=spheres_stress[k].Id

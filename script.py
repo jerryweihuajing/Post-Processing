@@ -113,16 +113,22 @@ def PhasePos(file_path):
     phase_pos=[]
     
     #all lines
-    this_lines=open(file_path,'r').readlines()
+    lines=open(file_path,'r').readlines()
+    
+    #correct legnth of each line
+    correct_length=len(lines[0].strip('\n').split(','))
     
     #traverse all lines
-    for this_line in this_lines:
+    for this_line in lines:
         
         this_list=this_line.strip('\n').split(',')
-        
-        this_pos=np.array([float(this_str) for this_str in this_list[5:8]])
-        
-        phase_pos.appens(this_pos)
+ 
+        #judge if total length is OK
+        if len(this_list)!=correct_length:
+            
+            continue
+          
+        phase_pos.append(np.array([float(this_str) for this_str in this_list[5:8]]))
         
     return phase_pos
         
@@ -161,7 +167,15 @@ def GenerateSpheresMapWithSample(case_path):
     #spheres position in different phases in a case
     all_phase_pos=AllPhasepos(case_path)
 
-
+    print(len(all_phase_pos[0]))
+    print(len(sample_pos))
+    
+    for k in range(len(all_phase_pos[0])):
+        
+        print(all_phase_pos[0][0]-sample_pos[0])
+#        
+    
+GenerateSpheresMapWithSample(case_path)
 #------------------------------------------------------------------------------
 """
 Generate cumulative displacement of spheres

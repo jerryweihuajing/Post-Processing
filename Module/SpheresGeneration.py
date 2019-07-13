@@ -28,6 +28,8 @@ Returns:
 """
 def GenerateSpheresFromFile(which_file):
     
+#    print(this_pos)
+    
     #all lines
     lines=open(which_file,'r').readlines()
     

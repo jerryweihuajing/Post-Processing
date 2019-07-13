@@ -27,7 +27,11 @@ class sphere:
                  strain_tensor_3D_periodical=None,
                  strain_tensor_2D_periodical=None,
                  strain_tensor_3D_cumulative=None,
-                 strain_tensor_2D_cumulative=None):       
+                 strain_tensor_2D_cumulative=None,
+                 displacemnet_3D_periodical=None,
+                 displacemnet_2D_periodical=None,
+                 displacemnet_3D_cumulative=None,
+                 displacemnet_2D_cumulative=None,):       
         self.Id=Id
         self.tag=tag
         self.area=area
@@ -40,6 +44,10 @@ class sphere:
         self.strain_tensor_2D_periodical=strain_tensor_2D_periodical
         self.strain_tensor_3D_cumulative=strain_tensor_3D_cumulative
         self.strain_tensor_2D_cumulative=strain_tensor_2D_cumulative
+        self.displacemnet_3D_periodical=displacemnet_3D_periodical
+        self.displacemnet_2D_periodical=displacemnet_2D_periodical
+        self.displacemnet_3D_cumulative=displacemnet_3D_cumulative
+        self.displacemnet_2D_cumulative=displacemnet_2D_cumulative
         
     #将张量转化为三维,生成应力二维张量   
     def Init(self):
@@ -62,7 +70,7 @@ class sphere:
         
         if isinstance(self.strain_tensor_3D_cumulative,np.matrix):
             
-            self.strain_tensor_3D_cumulative=[float(self.strain_tensor_3D_cumulative[i,j]) for i in range(3) for j in range(3)]      
+            self.strain_tensor_3D_cumulative=[float(self.strain_tensor_3D_cumulative[i,j]) for i in range(3) for j in range(3)]  
         
         #periodical
         if isinstance(self.strain_tensor_3D_periodical,list):
@@ -72,4 +80,10 @@ class sphere:
         if isinstance(self.strain_tensor_3D_periodical,np.matrix):
             
             self.strain_tensor_3D_periodical=[float(self.strain_tensor_3D_periodical[i,j]) for i in range(3) for j in range(3)]
+            
+        #Init displacement
+        self.displacemnet_2D_cumulative=self.displacemnet_3D_cumulative[:2]
+        self.displacemnet_2D_periodical=self.displacemnet_3D_periodical[:2]
+        
+        
         

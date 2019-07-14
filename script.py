@@ -167,12 +167,17 @@ def GenerateSpheresMapWithSample(case_path):
     #spheres position in different phases in a case
     all_phase_pos=AllPhasepos(case_path)
 
+    #all input data in this path
+    file_paths=NP.FilePathsThisCase(case_path)
+    
     print(len(all_phase_pos[0]))
     print(len(sample_pos))
     
     for k in range(len(all_phase_pos[0])):
         
         print(all_phase_pos[0][0]-sample_pos[0])
+        
+        
 #        
     
 GenerateSpheresMapWithSample(case_path)

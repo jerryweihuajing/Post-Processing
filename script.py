@@ -9,6 +9,7 @@ Created on Sun May 26 15:11:51 2019
 @title：execution script
 """
 
+import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -23,6 +24,7 @@ if os.getcwd() not in sys.path:
 from Object.o_grid import grid
 from Object.o_mesh import mesh
 from Object.o_sphere import sphere
+from Object.o_discrete_point import discrete_point
 
 from Module import Path as Pa
 from Module import NewPath as NP
@@ -57,6 +59,80 @@ file_paths=NP.FilePathsThisCase(case_path)
 
 #Generate map between phase index between spheres list 
 MAP=NSG.GenerateSpheresMapWithSample(case_path)
+
+#------------------------------------------------------------------------------
+"""
+Displacement interpolation image (mesh points)
+
+Args:
+    which_spheres: input sphere objects list
+    plane: 'XoY''YoZ''ZoX' displacement in 3 planes
+    direction: 'x' 'y' 'z' displacement in 3 different direction
+    mode: 'periodical''cumulative' dispalcement mode
+    
+Returns:
+    discrete points objects list
+"""
+def DiscreteValueDisplacement(which_spheres,plane,direction,mode):
+    
+    #result list
+    discrete_points=[]
+    
+    #遍历所有的sphere
+    for this_sphere in which_spheres:
+    
+        #new discrete point object
+        new_discrete_point=discrete_point()
+        
+        #plane
+        if plane=='XoY':
+            
+            new_discrete_point.pos_x=this_sphere.position[0]
+            new_discrete_point.pos_y=this_sphere.position[1]
+        
+        if plane=='YoZ':
+            
+            new_discrete_point.pos_x=this_sphere.position[1]
+            new_discrete_point.pos_y=this_sphere.position[2]
+            
+        if plane=='ZoX':
+            
+            new_discrete_point.pos_x=this_sphere.position[2]
+            new_discrete_point.pos_y=this_sphere.position[0]
+            
+        #dispalcement mode
+        if mode=='periodical':
+            
+            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_periodical)
+        
+        if mode=='cumulative':
+            
+            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_cumulative)
+        
+        #direction
+        if direction=='x':
+            
+            new_discrete_point.pos_z=this_displacment[0]
+            
+        if direction=='y':
+            
+            new_discrete_point.pos_z=this_displacment[1]
+        
+        if direction=='z':
+            
+            new_discrete_point.pos_z=this_displacment[2]
+            
+        discrete_points.append(new_discrete_point)
+        
+    return discrete_points
+
+spheres=MAP[5]  
+          
+a=DiscreteValueDisplacement(spheres,plane='XoY',direction='x',mode='cumulative')    
+
+surface_map=SB.SpheresTopMap(spheres,10)
+
+In.SpheresInGridIDW(a,10,surface_map,show=True)
 
 #print(folder_path)
 

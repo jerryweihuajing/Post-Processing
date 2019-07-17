@@ -292,15 +292,4 @@ def SpheresInGridIDW(which_discrete_points,grid_length,which_surface_map=None,sh
                 #逐个赋值
                 z_mesh_points[i,j]=np.dot(z_this_neighbor,this_weight)
                 
-          
     return z_mesh_points
-
-       
-#ax=plt.subplot(3,1,1)
-#discrete_points=GeneratePoints(ax,20,10,20,20,1)
-#
-#ax=plt.subplot(3,1,2)
-#mesh_points=MeshGrid(ax,discrete_points,0.5,0.5,1)
-# 
-#ax=plt.subplot(3,1,3)
-#IDWInterpolation(ax,discrete_points,mesh_points,1)

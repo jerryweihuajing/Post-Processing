@@ -66,14 +66,14 @@ Displacement interpolation image (mesh points)
 
 Args:
     which_spheres: input sphere objects list
-    plane: 'XoY''YoZ''ZoX' displacement in 3 planes
-    direction: 'x' 'y' 'z' displacement in 3 different direction
-    mode: 'periodical''cumulative' dispalcement mode
+    which_plane: 'XoY''YoZ''ZoX' displacement in 3 planes
+    which_direction: 'x' 'y' 'z' displacement in 3 different direction
+    which_mode: 'periodical''cumulative' dispalcement mode
     
 Returns:
     discrete points objects list
 """
-def DiscreteValueDisplacement(which_spheres,plane,direction,mode):
+def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_mode):
     
     #result list
     discrete_points=[]
@@ -84,57 +84,157 @@ def DiscreteValueDisplacement(which_spheres,plane,direction,mode):
         #new discrete point object
         new_discrete_point=discrete_point()
         
+#        if which_plane=='XoY':
+#            
+#            new_discrete_point.pos_x=this_sphere.position[0]
+#            new_discrete_point.pos_y=this_sphere.position[1]
+#        
+#        if which_plane=='YoZ':
+#            
+#            new_discrete_point.pos_x=this_sphere.position[1]
+#            new_discrete_point.pos_y=this_sphere.position[2]
+#            
+#        if which_plane=='ZoX':
+#            
+#            new_discrete_point.pos_x=this_sphere.position[2]
+#            new_discrete_point.pos_y=this_sphere.position[0]
+#            
+#        if which_mode=='periodical':
+#            
+#            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_periodical)
+#        
+#        if which_mode=='cumulative':
+#            
+#            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_cumulative)
+#            
+#        if which_direction=='x':
+#            
+#            new_discrete_point.pos_z=this_displacment[0]
+#            
+#        if which_direction=='y':
+#            
+#            new_discrete_point.pos_z=this_displacment[1]
+#        
+#        if which_direction=='z':
+#            
+#            new_discrete_point.pos_z=this_displacment[2]
+            
         #plane
-        if plane=='XoY':
-            
-            new_discrete_point.pos_x=this_sphere.position[0]
-            new_discrete_point.pos_y=this_sphere.position[1]
+        list_plane=['XoY','YoZ','ZoX']
+        list_position_index=[(0,1),(1,2),(2,0)]
         
-        if plane=='YoZ':
-            
-            new_discrete_point.pos_x=this_sphere.position[1]
-            new_discrete_point.pos_y=this_sphere.position[2]
-            
-        if plane=='ZoX':
-            
-            new_discrete_point.pos_x=this_sphere.position[2]
-            new_discrete_point.pos_y=this_sphere.position[0]
-            
+        #create index-value map
+        map_plane_position_index=dict(zip(list_plane,list_position_index))
+        
+        new_discrete_point.pos_x=this_sphere.position[map_plane_position_index[which_plane][0]]
+        new_discrete_point.pos_y=this_sphere.position[map_plane_position_index[which_plane][1]]
+                   
         #dispalcement mode
-        if mode=='periodical':
-            
-            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_periodical)
+        list_mode=['periodical','cumulative']
+        list_displacement=[cp.deepcopy(this_sphere.displacemnet_3D_periodical),
+                           cp.deepcopy(this_sphere.displacemnet_3D_cumulative)]
         
-        if mode=='cumulative':
-            
-            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_cumulative)
+        #create index-value map
+        map_mode_displacement=dict(zip(list_mode,list_displacement))
         
+        this_displacement=map_mode_displacement[which_mode]
+                    
         #direction
-        if direction=='x':
-            
-            new_discrete_point.pos_z=this_displacment[0]
-            
-        if direction=='y':
-            
-            new_discrete_point.pos_z=this_displacment[1]
+        list_direction=['x','y','z']
+        list_displacement_index=[0,1,2]
         
-        if direction=='z':
-            
-            new_discrete_point.pos_z=this_displacment[2]
-            
+        #create index-value map
+        map_direction_displacment_index=dict(zip(list_direction,list_displacement_index))
+        
+        new_discrete_point.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
+                
         discrete_points.append(new_discrete_point)
         
     return discrete_points
 
+#------------------------------------------------------------------------------
+"""
+Displacement interpolation image (mesh points)
+
+Args:
+    pixel_step: length of single pixel
+    which_spheres: input sphere objects list
+    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
+    which_direction: 'x' 'y' 'z' displacement in 3 different direction
+    which_mode: 'periodical' 'cumulative' dispalcement mode
+    which_interpolation: 'spheres_in_grid' 'global'
+    
+Returns:
+    Displacement matrix in one direction
+"""
+def SpheresDisplacementMatrix(pixel_step,
+                              which_spheres,
+                              which_plane,
+                              which_direction,
+                              which_mode,
+                              which_interpolation='spheres_in_grid',
+                              show=False):
+    
+    #discrete point objects
+    discrete_points=DiscreteValueDisplacement(spheres,which_plane,which_direction,which_mode)    
+
+    #top surface map
+    surface_map=SB.SpheresTopMap(which_spheres,pixel_step)
+    
+    if which_interpolation=='spheres_in_grid':
+        
+        return In.SpheresInGridIDW(discrete_points,pixel_step,surface_map,show)
+
+#------------------------------------------------------------------------------
+"""
+Spheres strain objects matrix throughout args sucha as pixel step
+
+Args:
+    pixel_step: length of single pixel
+    which_spheres: input sphere objects list
+    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
+    which_mode: 'periodical' 'cumulative' dispalcement mode
+    which_interpolation: 'spheres_in_grid' 'global'
+    
+Returns:
+    Spheres strain objects matrix
+"""   
+def SpheresStrainMatrix(pixel_step,
+                        which_spheres,
+                        which_plane,
+                        which_mode,
+                        which_interpolation='spheres_in_grid'):
+    
+    #displacemnt in x direction
+    x_displacement=SpheresDisplacementMatrix(pixel_step,
+                                             which_spheres,
+                                             which_plane,
+                                             'x',
+                                             which_mode)
+    
+    #displacemnt in y direction
+    y_displacement=SpheresDisplacementMatrix(pixel_step,
+                                             which_spheres,
+                                             which_plane,
+                                             'y',
+                                             which_mode)
+    #axis=0 x gradient
+    #axis=1 y gradient
+    gradient_xx=np.gradient(x_displacement,0)
+    gradient_xy=np.gradient(x_displacement,1)
+    gradient_yx=np.gradient(y_displacement,0)
+    gradient_yy=np.gradient(y_displacement,1)
+    
+    '''generate strain object'''
+#    print(gradient_xy-gradient_yx)    
+
+    return 
+
 spheres=MAP[5]  
           
-a=DiscreteValueDisplacement(spheres,plane='XoY',direction='x',mode='cumulative')    
 
-surface_map=SB.SpheresTopMap(spheres,10)
+SpheresStrainMatrix(10,spheres,which_plane='XoY',which_mode='cumulative')
 
-In.SpheresInGridIDW(a,10,surface_map,show=True)
-
-#print(folder_path)
 
 ##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
 

@@ -83,6 +83,8 @@ def PhasePos(file_path):
         #judge if total length is OK
         if len(this_list)!=correct_length:
             
+#            print(this_list[0])
+            
             continue
           
         phase_pos.append(np.array([float(this_str) for this_str in this_list[5:8]]))
@@ -147,16 +149,19 @@ def GenerateSpheresMapWithSample(case_path):
 #        print(len(spheres_pos_this_phase))
 #        print(len(lines_this_phase))
         
-        for kk in range(len(lines_this_phase)):
+        #correct legnth of each line
+        correct_length=len(lines_this_phase[0].strip('\n').split(','))
+            
+        for kk in range(len(spheres_pos_this_phase)):
       
-            this_list=lines_this_phase[k].strip('\n').split(',')
-                   
+            this_list=lines_this_phase[kk].strip('\n').split(',')
+        
             #define new sphere object
             new_sphere=sphere()
             
             new_sphere.Id=float(this_list[0])
             new_sphere.radius=float(this_list[1])
-            new_sphere.color=np.array([float(this_str) for this_str in this_list[2:5]])       
+            new_sphere.color=np.array([float(this_str) for this_str in this_list[2:5]])   
             new_sphere.position=np.array([float(this_str) for this_str in this_list[5:8]])
             new_sphere.stress_tensor_3D=np.array([float(this_str) for this_str in this_list[8:]])
          
@@ -193,6 +198,8 @@ def GenerateSpheresMapWithSample(case_path):
                     continue
             
             new_sphere.Init()
+            
+#            print(new_sphere.position)
             
             spheres_this_phase.append(new_sphere)
             

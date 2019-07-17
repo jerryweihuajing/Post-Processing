@@ -28,8 +28,7 @@ sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 from Object import o_mesh
 from Object import o_circle
 
-from Module import Image as Img
-from Module import ContentBoundary as CB
+from Module import Image as Img 
 
 #============================================================================== 
 #Calculate the pixels up which the spheres take
@@ -37,6 +36,8 @@ from Module import ContentBoundary as CB
 #factor: expand ratio
 #return: a mesh object presenting content and img
 def SpheresContent(which_spheres,length,factor=1,show=False):
+    
+#    print(len(which_spheres))
     
     #首先找出网格的坐标范围
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
@@ -53,6 +54,8 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     #xy方向上的网格数
     amount_grid_x=int(np.ceil(length_x/length))
     amount_grid_y=int(np.ceil(length_y/length))
+    
+#    print(amount_grid_x,amount_grid_y)
     
     #xy方向上的网格交点数
     amount_mesh_points_x=amount_grid_x+1
@@ -96,14 +99,16 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
             img_tag_mesh[this_i,this_j]=1
      
 #        print(this_i,this_j)
-               
+            
+#    print(np.shape(img_tag_mesh))     
+      
     #define new mesh
     that_mesh=o_mesh.mesh()
     
     #Rotatation is in need
     that_mesh.img_tag=Img.ImgFlip(Img.ImgRotate(img_tag_mesh),0)
     that_mesh.content=spheres_content   
-    
+
     if show:
         
         plt.imshow(img_tag_mesh)

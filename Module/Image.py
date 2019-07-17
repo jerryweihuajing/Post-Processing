@@ -56,6 +56,8 @@ def ImgRotate(which_img):
     
 #    print(which_img[0,0])
 
+#    print(np.shape(which_img))
+    
 #    print(type(which_img[0,0]))
 #    print(which_img[0,0].dtype)
     

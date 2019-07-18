@@ -6,7 +6,7 @@ Created on Sun Jun  9 17:58:55 2019
 @company:Nanjing University
 @e-mail:jerryweihuajing@126.com
 
-@title：Calculate tensor invariant
+@title：Module-Calculate 3D tensor invariant
 """
 
 import numpy as np

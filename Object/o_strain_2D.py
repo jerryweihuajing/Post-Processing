@@ -14,7 +14,7 @@ import numpy as np
 
 sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
-from Module import Tensor as Ts
+from Module import Tensor2D as Ts2D
 
 #==============================================================================
 #应力张量计算后的相关变量
@@ -48,13 +48,7 @@ class strain_2D:
         else:
             
             #scalar of all elements
-            if np.shape(which_strain_tensor)[0]==None:
-                
-                product=np.shape(which_strain_tensor)[1]
-                
-            else:
-                
-                product=np.shape(which_strain_tensor)[0]
+            product=np.shape(which_strain_tensor)[0]*np.shape(which_strain_tensor)[1]
                 
             which_strain_tensor=which_strain_tensor.reshape((int(np.sqrt(product)),int(np.sqrt(product))))
         
@@ -68,8 +62,8 @@ class strain_2D:
     #                         which_strain_tensor[0,2]**2+\
     #                         which_strain_tensor[1,2]**2)
             
-        volumetric_strain=Ts.Tensor1stInvariant(which_strain_tensor)
-        distortional_strain=Ts.Tensor2ndInvariant(which_strain_tensor)
+        volumetric_strain=Ts2D.Tensor1stInvariant(which_strain_tensor)
+        distortional_strain=Ts2D.Tensor2ndInvariant(which_strain_tensor)
              
         #赋值  
         self.strain_tensor=which_strain_tensor

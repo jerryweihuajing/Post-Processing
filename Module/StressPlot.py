@@ -54,27 +54,27 @@ def DiscreteValueStress(which_spheres,input_mode,output_mode):
         new_stress_2D.Init(this_sphere.stress_tensor_2D)
         
         #x方向上正应力
-        if output_mode=='x_normal_stress':
+        if output_mode=='x_normal':
         
             new_discrete_point.pos_z=new_stress_2D.x_normal_stress
             
         #y方向上正应力
-        if output_mode=='y_normal_stress':
+        if output_mode=='y_normal':
         
             new_discrete_point.pos_z=new_stress_2D.y_normal_stress
          
         #剪应力
-        if output_mode=='shear_stress':
+        if output_mode=='shear':
         
             new_discrete_point.pos_z=new_stress_2D.shear_stress
         
         #平均剪应力
-        if output_mode=='mean_normal_stress':
+        if output_mode=='mean_normal':
         
             new_discrete_point.pos_z=new_stress_2D.mean_normal_stress
         
         #最大剪应力
-        if output_mode=='maximal_shear_stress':
+        if output_mode=='maximal_shear':
             
             new_discrete_point.pos_z=new_stress_2D.maximal_shear_stress
             

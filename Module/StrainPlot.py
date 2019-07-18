@@ -17,7 +17,7 @@ sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 from Object import o_strain_2D
 from Object import o_discrete_point
 
-from Module import Tensor as Ts
+from Module import Tensor2D as Ts2D
 
 #============================================================================== 
 #表征strain的discrete_point对象列表
@@ -145,8 +145,8 @@ def Strain2D(which_strain_tensor):
 #                         which_strain_tensor[0,2]**2+\
 #                         which_strain_tensor[1,2]**2)
         
-    volumetric_strain=Ts.Tensor1stInvariant(which_strain_tensor)
-    distortional_strain=Ts.Tensor2ndInvariant(which_strain_tensor)
+    volumetric_strain=Ts2D.Tensor1stInvariant(which_strain_tensor)
+    distortional_strain=Ts2D.Tensor2ndInvariant(which_strain_tensor)
     
     #定义新的应变变量
     that_strain_2D=o_strain_2D.strain_2D() 

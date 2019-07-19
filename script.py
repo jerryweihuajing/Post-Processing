@@ -36,10 +36,10 @@ from Module import SpheresPlot as SP
 from Module import IntegralPlot as IP
 from Module import Interpolation as In
 from Module import ValueBoundary as VB
-from Module import ContentBoundary as CB
 from Module import SpheresBoundary as SB
 from Module import SpheresGeneration as SG
 from Module import NewSpheresGeneration as NSG
+from Module import SpheresAttributeMatrix as SAM
 
 from Module import StrainPlot as Strain
 from Module import StressPlot as Stress
@@ -47,300 +47,185 @@ from Module import StressPlot as Stress
 '''
 demand 4:
 draw surface with stress or strain figure
-
-demand 5:
-Calculate strain via displacement
 '''
 
 #data folder path
 case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=1.0\\input\\base=0.00'
 
-#file_names=FileNamesThisCase(case_path)
-file_paths=NP.FilePathsThisCase(case_path)
+#file_paths=NP.FilePathsThisCase(case_path)
 
 #Generate map between phase index between spheres list 
 MAP=NSG.GenerateSpheresMapWithSample(case_path)
-
-#------------------------------------------------------------------------------
-"""
-Displacement interpolation image (mesh points)
-
-Args:
-    which_spheres: input sphere objects list
-    which_plane: 'XoY''YoZ''ZoX' displacement in 3 planes
-    which_direction: 'x' 'y' 'z' displacement in 3 different direction
-    which_mode: 'periodical''cumulative' dispalcement mode
-    
-Returns:
-    discrete points objects list
-"""
-def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_mode):
-    
-    #result list
-    discrete_points=[]
-    
-    #遍历所有的sphere
-    for this_sphere in which_spheres:
-    
-        #new discrete point object
-        new_discrete_point=discrete_point()
-        
-#        if which_plane=='XoY':
-#            
-#            new_discrete_point.pos_x=this_sphere.position[0]
-#            new_discrete_point.pos_y=this_sphere.position[1]
-#        
-#        if which_plane=='YoZ':
-#            
-#            new_discrete_point.pos_x=this_sphere.position[1]
-#            new_discrete_point.pos_y=this_sphere.position[2]
-#            
-#        if which_plane=='ZoX':
-#            
-#            new_discrete_point.pos_x=this_sphere.position[2]
-#            new_discrete_point.pos_y=this_sphere.position[0]
-#            
-#        if which_mode=='periodical':
-#            
-#            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_periodical)
-#        
-#        if which_mode=='cumulative':
-#            
-#            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_cumulative)
-#            
-#        if which_direction=='x':
-#            
-#            new_discrete_point.pos_z=this_displacment[0]
-#            
-#        if which_direction=='y':
-#            
-#            new_discrete_point.pos_z=this_displacment[1]
-#        
-#        if which_direction=='z':
-#            
-#            new_discrete_point.pos_z=this_displacment[2]
-            
-        #plane
-        list_plane=['XoY','YoZ','ZoX']
-        list_position_index=[(0,1),(1,2),(2,0)]
-        
-        #create index-value map
-        map_plane_position_index=dict(zip(list_plane,list_position_index))
-        
-        new_discrete_point.pos_x=this_sphere.position[map_plane_position_index[which_plane][0]]
-        new_discrete_point.pos_y=this_sphere.position[map_plane_position_index[which_plane][1]]
-                   
-        #dispalcement mode
-        list_mode=['periodical','cumulative']
-        list_displacement=[cp.deepcopy(this_sphere.displacemnet_3D_periodical),
-                           cp.deepcopy(this_sphere.displacemnet_3D_cumulative)]
-        
-        #create index-value map
-        map_mode_displacement=dict(zip(list_mode,list_displacement))
-        
-        this_displacement=map_mode_displacement[which_mode]
-                    
-        #direction
-        list_direction=['x','y','z']
-        list_displacement_index=[0,1,2]
-        
-        #create index-value map
-        map_direction_displacment_index=dict(zip(list_direction,list_displacement_index))
-        
-        new_discrete_point.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
-                
-        discrete_points.append(new_discrete_point)
-        
-    return discrete_points
-
-#------------------------------------------------------------------------------
-"""
-Displacement interpolation image (mesh points)
-
-Args:
-    pixel_step: length of single pixel
-    which_spheres: input sphere objects list
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
-    which_direction: 'x' 'y' 'z' displacement in 3 different direction
-    which_mode: 'periodical' 'cumulative' dispalcement mode
-    which_interpolation: 'spheres_in_grid' 'global'
-    
-Returns:
-    Displacement matrix in one direction
-"""
-def SpheresDisplacementMatrix(pixel_step,
-                              which_spheres,
-                              which_plane,
-                              which_direction,
-                              which_mode,
-                              which_interpolation='spheres_in_grid',
-                              show=False):
-    
-    #discrete point objects
-    discrete_points=DiscreteValueDisplacement(spheres,which_plane,which_direction,which_mode)    
-
-    #top surface map
-    surface_map=SB.SpheresTopMap(which_spheres,pixel_step)
-    
-    if which_interpolation=='spheres_in_grid':
-        
-        return In.SpheresInGridIDW(discrete_points,pixel_step,surface_map,show)
-
-#------------------------------------------------------------------------------
-"""
-Spheres strain objects matrix throughout args such as pixel step
-
-Args:
-    pixel_step: length of single pixel
-    which_spheres: input sphere objects list
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
-    which_input_mode: 'periodical' 'cumulative' dispalcement mode
-    which_output_mode: 'x_normal' 'y_normal' 'shear' 'volumetric' 'distortional'
-    which_interpolation: 'spheres_in_grid' 'global'
-    
-Returns:
-    Spheres strain values matrix
-"""   
-def SpheresStrainMatrix(pixel_step,
-                        which_spheres,
-                        which_plane,
-                        which_input_mode,
-                        which_output_mode,
-                        which_interpolation='spheres_in_grid'):
-    
-    #displacemnt in x direction
-    x_displacement=SpheresDisplacementMatrix(pixel_step,
-                                             which_spheres,
-                                             which_plane,
-                                             'x',
-                                             which_input_mode)
-    
-    #displacemnt in y direction
-    y_displacement=SpheresDisplacementMatrix(pixel_step,
-                                             which_spheres,
-                                             which_plane,
-                                             'y',
-                                             which_input_mode)
-    #axis=0 x gradient
-    #axis=1 y gradient
-    gradient_xx=np.gradient(x_displacement,axis=0)
-    gradient_xy=np.gradient(x_displacement,axis=1)
-    gradient_yx=np.gradient(y_displacement,axis=0)
-    gradient_yy=np.gradient(y_displacement,axis=1)
-    
-#    print(np.shape(gradient_xx))
-#    print(np.shape(gradient_xy))
-#    print(np.shape(gradient_yx))
-#    print(np.shape(gradient_yy))
-    
-    #make sure shape is same
-    if not (np.shape(gradient_xx)==np.shape(gradient_xy)==np.shape(gradient_yx)==np.shape(gradient_yy)):
-        
-        print('ERROR:Incorrect dimension')
-        
-        return
-    
-    row,column=np.shape(gradient_xx)
-    
-    #result strain matrix
-    strain_object_matrix=np.full((row,column),strain_2D())
-    
-    '''generate strain objects'''
-    for i in range(row):
-        
-        for j in range(column):
-            
-            #defien new strain 2D object
-            new_strain_2D=strain_2D()
-            
-            #new 2D strain object and its strain tensor
-            this_strain_tensor=np.zeros((2,2))
-            
-            #give the value
-            this_strain_tensor[0,0]=gradient_xx[i,j]
-            this_strain_tensor[0,1]=(gradient_xy[i,j]+gradient_yx[i,j])/2
-            this_strain_tensor[1,0]=(gradient_xy[i,j]+gradient_yx[i,j])/2
-            this_strain_tensor[1,1]=gradient_yy[i,j]
-                                  
-            '''3D 2D Init is different'''
-            new_strain_2D.Init(this_strain_tensor)
-            
-            strain_object_matrix[i,j]=cp.deepcopy(new_strain_2D)
-            
-    '''generate strain values'''
-    strain_value_matrix=np.zeros(np.shape(strain_object_matrix))
-    
-    for i in range(row):
-        
-        for j in range(column):
-
-            this_strain_2D=cp.deepcopy(strain_object_matrix[i,j])
-          
-            if which_output_mode=='x_normal':
-  
-                strain_value_matrix[i,j]=this_strain_2D.x_normal_strain
-                
-            if which_output_mode=='y_normal':
-  
-                strain_value_matrix[i,j]=this_strain_2D.y_normal_strain
-                
-            if which_output_mode=='shear':
-                
-                strain_value_matrix[i,j]=this_strain_2D.shear_strain
-                
-            if which_output_mode=='volumetric':
-  
-                strain_value_matrix[i,j]=this_strain_2D.volumetric_strain
-            
-            if which_output_mode=='distortional':
-  
-                strain_value_matrix[i,j]=this_strain_2D.distortional_strain
-                
-    return strain_value_matrix
-    
+ 
 spheres=MAP[5]  
        
-shear_strain_matrix=SpheresStrainMatrix(10,spheres,
-                                        which_plane='XoY',
-                                        which_input_mode='periodical',
-                                        which_output_mode='shear')
+#shear_strain_matrix=SAM.SpheresStrainMatrix(10,spheres,
+#                                        which_plane='XoY',
+#                                        which_input_mode='periodical',
+#                                        which_output_mode='shear')
+#plt.figure()
+#plt.imshow(shear_strain_matrix)
+#    
+#shear_stress_matrix=SAM.SpheresStressMatrix(10,spheres,
+#                                        which_plane='XoY',
+#                                        which_input_mode='stress',
+#                                        which_output_mode='shear')
+#plt.figure()
+#plt.imshow(shear_stress_matrix)
+    
 
-plt.imshow(shear_strain_matrix)
-#------------------------------------------------------------------------------
 """
-Spheres stress objects matrix throughout args such as pixel step
+Plot different phase image in a custom style
 
-Args:
-    pixel_step: length of single pixel
-    which_spheres: input sphere objects list
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
-    which_input_mode: 'stress'
-    which_output_mode: 'x_normal' 'y_normal' 'shear' 'mean_normal' 'maximal_shear'
-    which_interpolation: 'spheres_in_grid' 'global'
+"""
+def CustomPlot(which_case_path,
+               which_input_mode,
+               which_output_mode,
+               pixel_step,
+               test=False,
+               show=False):
     
-Returns:
-    Spheres stress value matrix
-"""   
-def SpheresStressMatrix(pixel_step,
-                        which_spheres,
-                        which_plane,
-                        which_input_mode,
-                        which_output_mode,
-                        which_interpolation='spheres_in_grid'):
-
-    #discrete point objects
-    discrete_points=Stress.DiscreteValueStress(which_spheres,
-                                               which_input_mode,
-                                               which_output_mode)   
-
-    #top surface map
-    surface_map=SB.SpheresTopMap(which_spheres,pixel_step)
+    print('input_mode:',which_input_mode.replace('_',' '))
+    print('output_mode:',which_output_mode.replace('_',' '))
     
-    if which_interpolation=='spheres_in_grid':
+    #map between index and spheres
+    map_all_phase_spheres=NSG.GenerateSpheresMapWithSample(which_case_path)
+    
+    '''output path'''
+    
+    #Gnenerate this Folder
+    '''Medival fold will be generated as well'''
+    Pa.GenerateFold(new_output_folder_path)
+    
+    #计数器
+    count=1
+    
+    #construct the map between postfix and colormap
+    postfix=['.txt','.vtk']
+    colormap=['gist_rainbow','seismic'] 
+    
+    #construct a map between postfix and cmap
+    map_postfix_cmap=dict(zip(postfix,colormap))
         
-        return In.SpheresInGridIDW(discrete_points,pixel_step,surface_map)
-     
+    #stress or strain
+    if output_mode!='structural_deformation':
+        
+        '''generate a norm for stress: global norm'''     
+        #stress norm
+        zmin,zmax=VB.GlobalValueBoundary(which_case_path,input_mode,output_mode)
+        norm_stress=colors.Normalize(vmin=zmin,vmax=zmax)
+        
+        #strain norm
+        norm_strain=colors.Normalize(vmin=-1,vmax=1)
+        
+        #control the tick of colormap
+        norms=[norm_stress,norm_strain]
+        
+        #construct a map between postfix and norm
+        map_postfix_norm=dict(zip(postfix,norms))
+    
+#    last_time=time.time()
+       
+    #绘制不同期次的形态
+    for this_new_file_name in input_file_names:    
+        
+#        print(time.time()-last_time)
+                
+        print('')
+        print('======')
 
+        #delete the suffix
+        for this_postfix in postfix:
+ 
+            if this_postfix in this_new_file_name:
+            
+                this_percentage=this_new_file_name.strip(this_postfix)
+            
+                break
+       
+        print(this_percentage.strip('.'))
+        
+        #图片和填充柄
+        this_fig=plt.figure(count)
+
+#        print(count)
+        
+        this_ax=plt.subplot()
+        
+        #give a name
+        this_fig_name=this_percentage.strip('.').strip('progress=')+'.png'
+        
+        #this txt name
+        this_txt_name=this_percentage.strip('.').strip('progress=')+'.txt'
+        
+        #生成颗粒体系
+        if test:
+            
+            this_spheres=SG.GenerateSpheres(which_case_path,count-1)[:100]
+        
+        else:
+            
+            this_spheres=SG.GenerateSpheres(which_case_path,count-1)  
+        
+        if output_mode=='series':
+        
+            #构造形态及应力应变系列图
+            Stress.StressSeriesPlot(this_spheres,pixel_step)
+        
+        if output_mode=='structural_deformation':
+                       
+            #图像版形态
+            spheres_grids=SP.SpheresImage(this_spheres,pixel_step)
+             
+            #构造形态的绘制:图形
+#            SpheresPlot(this_spheres)
+            
+            #图像
+            this_img=Img.ImgFlip(spheres_grids.img_color,0)
+            plt.imshow(this_img)
+            
+#            spheres_grids.Plot()
+            
+            #坐标轴和边
+            Dec.TicksAndSpines(this_ax)
+            plt.axis(np.array(global_axis_boundary)/pixel_step)
+                     
+        else:
+            
+#            print(this_new_file_name)
+            
+            #最终矩阵
+            this_img=Img.ImgFlip(Analysis(this_spheres,input_mode,output_mode,pixel_step),0)
+                     
+            #select the colormap
+            for this_postfix in postfix:
+                
+                if this_postfix in this_new_file_name:
+
+                    plt.imshow(this_img,
+                               norm=map_postfix_norm[this_postfix],
+                               cmap=map_postfix_cmap[this_postfix]) 
+                   
+                    break
+                
+            #坐标轴和边
+            Dec.TicksAndSpines(this_ax)
+            
+#            print(np.array(global_axis_boundary)/pixel_step)
+            
+            plt.axis(np.array(global_axis_boundary)/pixel_step)
+        
+        #save as txt
+        np.savetxt(new_output_folder_path+this_txt_name,this_img,fmt="%.3f",delimiter=",")  
+        
+        #save this fig
+        this_fig.savefig(new_output_folder_path+this_fig_name,dpi=300,bbox_inches='tight')
+        
+#        last_time=time.time()
+        
+        count+=1 
+        plt.close()  
+       
 ##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
 
 #the mode which I search for

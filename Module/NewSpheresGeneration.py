@@ -142,17 +142,22 @@ def GenerateSpheresMapWithSample(case_path):
         
         #list of sphere objects
         spheres_this_phase=[]
-        
-        #position of spheres in this phase
-        spheres_pos_this_phase=all_phase_pos[k]
+            
+        #position of spheres in last phase
+        #1st phase 
+        if not k:
+            
+            spheres_pos_last_phase=all_phase_pos[k]
+            
+        #from index 1
+        if k:
+                       
+            spheres_pos_last_phase=all_phase_pos[k-1]
         
 #        print(len(spheres_pos_this_phase))
 #        print(len(lines_this_phase))
-        
-        #correct legnth of each line
-        correct_length=len(lines_this_phase[0].strip('\n').split(','))
-            
-        for kk in range(len(spheres_pos_this_phase)):
+                   
+        for kk in range(len(spheres_pos_last_phase)):
       
             this_list=lines_this_phase[kk].strip('\n').split(',')
         
@@ -167,16 +172,7 @@ def GenerateSpheresMapWithSample(case_path):
          
             #calculate displacement
             new_sphere.displacemnet_3D_cumulative=new_sphere.position-sample_pos[kk]
-            
-            #1st phase 
-            if not k:
-                
-                new_sphere.displacemnet_3D_periodical=new_sphere.displacemnet_3D_cumulative
-               
-            #from index 1
-            if k:
-                
-                new_sphere.displacemnet_3D_periodical=new_sphere.position-spheres_pos_this_phase[kk]
+            new_sphere.displacemnet_3D_periodical=new_sphere.position-spheres_pos_last_phase[kk]
             
             #3D tensor length is correct
             if len(new_sphere.stress_tensor_3D)!=9:

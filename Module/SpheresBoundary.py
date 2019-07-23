@@ -111,7 +111,7 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
 
     if show:
         
-        plt.imshow(img_tag_mesh)
+        plt.imshow(img_tag_mesh,cmap='gray')
     
     return that_mesh
 
@@ -172,7 +172,7 @@ def SpheresTopImg(which_spheres,length,factor=1,show=False):
     #show or not
     if show:   
         
-        plt.imshow(that_img_tag)
+        plt.imshow(that_img_tag,cmap='gray')
       
     return that_img_tag
  
@@ -229,7 +229,7 @@ def SpheresBottomImg(which_spheres,length,factor=1,show=False):
     #show or not
     if show:   
         
-        plt.imshow(that_img_tag)
+        plt.imshow(that_img_tag,cmap='gray')
       
     return that_img_tag
 
@@ -286,7 +286,7 @@ def SpheresLeftImg(which_spheres,length,factor=1,show=False):
     #show or not
     if show:   
         
-        plt.imshow(that_img_tag)
+        plt.imshow(that_img_tag,cmap='gray')
       
     return that_img_tag
 
@@ -343,7 +343,7 @@ def SpheresRightImg(which_spheres,length,factor=1,show=False):
     #show or not
     if show:   
         
-        plt.imshow(that_img_tag)
+        plt.imshow(that_img_tag,cmap='gray')
       
     return that_img_tag
 
@@ -431,7 +431,7 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
             
             that_img_tag[this_i,this_j]=1
             
-            plt.imshow(that_img_tag)
+            plt.imshow(that_img_tag,cmap='gray')
             
     return boundary
  

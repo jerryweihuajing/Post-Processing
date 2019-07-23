@@ -60,9 +60,9 @@ case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=1.0\\input\\base=0.00
 #file_paths=NP.FilePathsThisCase(case_path)
 
 #Generate map between phase index between spheres list 
-MAP=NSG.GenerateSpheresMapWithSample(case_path)
+#MAP=NSG.GenerateSpheresMapWithSample(case_path)
 # 
-spheres=MAP[5]  
+#spheres=MAP[5]  
        
 #shear_strain_matrix=SAM.SpheresStrainMatrix(10,spheres,
 #                                        which_plane='XoY',
@@ -79,7 +79,7 @@ spheres=MAP[5]
 #plt.imshow(shear_stress_matrix)
 
 
-#CP.SingleExport(case_path,'periodical_strain','x_normal','XoY',10,test=True)
+CP.SingleExport(case_path,'periodical_strain','x_normal','XoY',10,test=True)
    
 #mode_list=['distortional_strain','volumetric_strain','shear_strain','y_normal_strain']
 
@@ -111,10 +111,10 @@ spheres=MAP[5]
 #IP.TotalOuput(case_path,1)
 
 #which_spheres=SG.GenerateSpheresFromTXT('progress=48.37%.txt')[0]
-
-which_spheres=spheres
-
-pixel_step=10
+#
+#which_spheres=spheres
+#
+#pixel_step=10
 
 #plt.figure()
 #
@@ -123,7 +123,7 @@ pixel_step=10
 #SB.SpheresRightImg(which_spheres,pixel_step,show=True)
 #SB.SpheresBottomImg(which_spheres,pixel_step,show=True)
 
-plt.figure()
-
-SB.SimpleSpheresBoundary(which_spheres,pixel_step,show=True)
+#plt.figure()
+#
+#SB.SimpleSpheresBoundary(which_spheres,pixel_step,show=True)
 

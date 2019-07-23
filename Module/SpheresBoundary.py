@@ -391,47 +391,117 @@ def SpheresBoundaryImg(which_spheres,length,side,factor=1,show=False):
 #simple spheres boudary calculation
 def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
    
-    #img_tag to present 4 boundary
-    img_tag_top=SpheresTopImg(which_spheres,length,factor)
-    img_tag_left=SpheresLeftImg(which_spheres,length,factor)
-    img_tag_right=SpheresRightImg(which_spheres,length,factor)
-    img_tag_bottom=SpheresBottomImg(which_spheres,length,factor)
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length,factor)
     
+    #img to present the elavation
+    that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan) 
+    
+    '''top'''
+    map_j_i_top={}
+
+    for j in range(np.shape(that_mesh.img_tag)[1]):
+        
+        map_j_i_top[j]=np.shape(that_mesh.img_tag)[0]
+        
+        for i in range(np.shape(that_mesh.img_tag)[0]):
+
+            if that_mesh.img_tag[i,j]!=0:
+                          
+                map_j_i_top[j]=i
+                
+                break
+
+    for k in range(len(map_j_i_top)):
+        
+        this_j=list(map_j_i_top.keys())[k]
+        this_i=list(map_j_i_top.values())[k]
+    
+        that_img_tag[this_i,this_j]=1    
+        
+    '''bottom'''
+    map_j_i_bottom={}
+
+    for j in range(np.shape(that_mesh.img_tag)[1]):
+        
+        map_j_i_bottom[j]=np.shape(that_mesh.img_tag)[0]
+        
+        for i in range(np.shape(that_mesh.img_tag)[0]-1,-1,-1):
+
+            if that_mesh.img_tag[i,j]!=0:
+                
+                map_j_i_bottom[j]=i
+                
+                break
+       
+    for k in range(len(map_j_i_bottom)):
+        
+        this_j=list(map_j_i_bottom.keys())[k]
+        this_i=list(map_j_i_bottom.values())[k]
+    
+        that_img_tag[this_i,this_j]=1   
+        
+    '''right'''
+    map_i_j_right={}
+ 
+    for k in range(len(map_i_j_right)):
+        
+        this_i=list(map_i_j_right.keys())[k]
+        this_j=list(map_i_j_right.values())[k]
+    
+        that_img_tag[this_i,this_j]=1
+        
+    for i in range(np.shape(that_mesh.img_tag)[0]):
+        
+        map_i_j_right[i]=np.shape(that_mesh.img_tag)[1]
+        
+        for j in range(np.shape(that_mesh.img_tag)[1]-1,-1,-1):
+
+            if that_mesh.img_tag[i,j]!=0:
+                
+                map_i_j_right[i]=j
+                
+                break
+     
+    '''left'''
+    map_i_j_left={}
+    
+    for i in range(np.shape(that_mesh.img_tag)[0]):
+        
+        map_i_j_left[i]=np.shape(that_mesh.img_tag)[1]
+        
+        for j in range(np.shape(that_mesh.img_tag)[1]):
+
+            if that_mesh.img_tag[i,j]!=0:
+                              
+                map_i_j_left[i]=j
+                
+                break
+                   
+    for k in range(len(map_i_j_left)):
+        
+        this_i=list(map_i_j_left.keys())[k]
+        this_j=list(map_i_j_left.values())[k]
+    
+        that_img_tag[this_i,this_j]=1 
+         
     #result
     boundary=[]
-    
-    #4 boundaries
-    img_tags=[img_tag_top,img_tag_left,img_tag_right,img_tag_bottom]
 
-    #traverse all tag img
-    for this_img_tag in img_tags:
+    #tag==1 content
+    I=np.where(that_img_tag==1)[0]
+    J=np.where(that_img_tag==1)[1]
         
-        #tag==1 content
-        I=np.where(this_img_tag==1)[0]
-        J=np.where(this_img_tag==1)[1]
+    for k in range(len(I)):
         
-        for k in range(len(I)):
+        if [I[k],J[k]] not in boundary:
             
-            if [I[k],J[k]] not in boundary:
-                
-                boundary.append([I[k],J[k]])
+            boundary.append([I[k],J[k]])
     
     if show:
-        
-        #fetch the mesh object
-        that_mesh=SpheresContent(which_spheres,length,factor)
-        
-        #img to present the elavation
-        that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan) 
-        
+              
         #draw boundary
-        for this_pos in boundary:
-            
-            this_i,this_j=this_pos[0],this_pos[1]
-            
-            that_img_tag[this_i,this_j]=1
-            
-            plt.imshow(that_img_tag,cmap='gray')
+        plt.imshow(that_img_tag,cmap='gray')
             
     return boundary
  

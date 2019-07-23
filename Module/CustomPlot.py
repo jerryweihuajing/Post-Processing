@@ -27,6 +27,7 @@ from Module import NewPath as NP
 from Module import Decoration as Dec
 from Module import SpheresPlot as SP
 from Module import AxisBoundary as AB
+from Module import SpheresBoundary as SB
 from Module import NewSpheresGeneration as NSG
 from Module import SpheresAttributeMatrix as SAM
 
@@ -161,7 +162,10 @@ def SingleExport(which_case_path,
             
             #save as txt
             np.savetxt(output_folder+this_txt_name,this_img,fmt="%.3f",delimiter=",")   
-                 
+          
+        #draw outline
+        SB.SimpleSpheresBoundary(this_spheres,pixel_step,show=True)
+        
         #坐标轴和边
         Dec.TicksAndSpines(this_ax)
         plt.axis(np.array(global_axis_boundary)/pixel_step)

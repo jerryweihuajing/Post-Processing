@@ -37,9 +37,9 @@ Displacement interpolation image (mesh points)
 
 Args:
     which_spheres: input sphere objects list
-    which_plane: 'XoY''YoZ''ZoX' displacement in 3 planes
+    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
     which_direction: 'x' 'y' 'z' displacement in 3 different direction
-    which_input_mode: 'periodical''cumulative' dispalcement mode
+    which_input_mode: 'periodical_strain' 'cumulative_strain' dispalcement mode
     
 Returns:
     discrete points objects list
@@ -105,9 +105,9 @@ def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_in
         new_discrete_point.pos_y=this_sphere.position[map_plane_position_index[which_plane][1]]
                    
         #dispalcement mode
-        list_mode=['periodical','cumulative']
-        list_displacement=[cp.deepcopy(this_sphere.displacemnet_3D_periodical),
-                           cp.deepcopy(this_sphere.displacemnet_3D_cumulative)]
+        list_mode=['periodical_strain','cumulative_strain']
+        list_displacement=[cp.deepcopy(this_sphere.periodical_displacemnet),
+                           cp.deepcopy(this_sphere.cumulative_displacemnet)]
         
         #create index-value map
         map_mode_displacement=dict(zip(list_mode,list_displacement))
@@ -299,7 +299,7 @@ def SpheresStrainMatrix(pixel_step,
     
 #------------------------------------------------------------------------------
 """
-Spheres stress objects matrix throughout args such as pixel step
+Spheres stress values matrix throughout args such as pixel step
 
 Args:
     pixel_step: length of single pixel
@@ -327,6 +327,7 @@ def SpheresStressMatrix(pixel_step,
 
     #discrete point objects
     discrete_points=Stress.DiscreteValueStress(which_spheres,
+                                               which_plane,
                                                which_input_mode,
                                                which_output_mode)   
 
@@ -336,3 +337,44 @@ def SpheresStressMatrix(pixel_step,
     if which_interpolation=='spheres_in_grid':
         
         return In.SpheresInGridIDW(discrete_points,pixel_step,surface_map)
+    
+#------------------------------------------------------------------------------
+"""
+Spheres values objects matrix throughout args such as pixel step
+
+Args:
+    pixel_step: length of single pixel
+    which_spheres: input sphere objects list
+    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
+    which_input_mode: 'stress' 'cumulative_strain' 'periodical_strain' 
+    which_output_mode: 'x_normal' 'y_normal' 'shear' ......
+    which_interpolation: 'spheres_in_grid' 'global'
+    
+Returns:
+    Spheres value matrix
+"""   
+def SpheresValueMatrix(pixel_step,
+                       which_spheres,
+                       which_plane,
+                       which_input_mode,
+                       which_output_mode,
+                       which_interpolation='spheres_in_grid'):
+    
+    if which_input_mode=='stress':
+        
+        return SpheresStressMatrix(pixel_step,
+                                   which_spheres,
+                                   which_plane,
+                                   which_input_mode,
+                                   which_output_mode,
+                                   which_interpolation)
+        
+    if 'strain' in which_input_mode:
+        
+        return SpheresStrainMatrix(pixel_step,
+                                   which_spheres,
+                                   which_plane,
+                                   which_input_mode,
+                                   which_output_mode,
+                                   which_interpolation)
+        

@@ -20,9 +20,8 @@ input: case 0
        case 2 
        case ...
        
-case x: stress
-        cumulative strain
-        periodical strain
+case x: progress=xx%.txt
+        ......
         
 output: structural deformation
         stress
@@ -175,3 +174,36 @@ def FilePathsThisCase(which_case_path):
     file_names=FileNamesThisCase(which_case_path)
     
     return [which_case_path+'\\'+this_file_name for this_file_name in file_names]
+
+#------------------------------------------------------------------------------
+"""
+Generate output folder path depending on input mode and output mode
+
+Args:
+    which_case_path: load path of all input files
+    which_input_mode: 'structural_deformation' 'stress' 'cumulative_strain' 'periodical strain'
+    which_output_mode: 'x_normal' 'y_normal' 'shear'...
+    
+Returns:
+    specific output foler path
+"""
+def OutputFolder(which_case_path,
+                 which_input_mode,
+                 which_output_mode):
+    
+    #total data file folder
+    total_path=which_case_path.split('\input\\')[0]
+    
+    #which case
+    case_str=which_case_path.split('\input\\')[1]
+    
+    #case output path
+    case_output_path=total_path+'\\output\\'+case_str+'\\'
+    
+    #considering input mode
+    case_output_path_with_IM=case_output_path+which_input_mode.replace('_',' ')+'\\'
+    
+    #considering output mode
+    case_output_path_with_IM_and_OM=case_output_path_with_IM+which_output_mode.replace('_',' ')+'\\'
+
+    return case_output_path_with_IM_and_OM

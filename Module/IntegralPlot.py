@@ -377,7 +377,7 @@ def TotalOuput(which_folder_path,pixel_step,which_mode_list=None):
                  'distortional_strain']
     
     #default: all modes
-    if which_mode_list==None:
+    if which_mode_list==None or which_mode_list==[]:
         
         #structural deformation
         SinglePlot(which_folder_path,'stress','structural_deformation',pixel_step)

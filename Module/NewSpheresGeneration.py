@@ -168,26 +168,29 @@ def GenerateSpheresMapWithSample(case_path):
             new_sphere.radius=float(this_list[1])
             new_sphere.color=np.array([float(this_str) for this_str in this_list[2:5]])   
             new_sphere.position=np.array([float(this_str) for this_str in this_list[5:8]])
-            new_sphere.stress_tensor_3D=np.array([float(this_str) for this_str in this_list[8:]])
+            new_sphere.stress_tensor=np.array([float(this_str) for this_str in this_list[8:]])
          
             #calculate displacement
-            new_sphere.displacemnet_3D_cumulative=new_sphere.position-sample_pos[kk]
-            new_sphere.displacemnet_3D_periodical=new_sphere.position-spheres_pos_last_phase[kk]
+            new_sphere.cumulative_displacemnet=new_sphere.position-sample_pos[kk]
+            new_sphere.periodical_displacemnet=new_sphere.position-spheres_pos_last_phase[kk]
+            
+            #plane: default XoY
+            new_sphere.plane='XoY'
             
             #3D tensor length is correct
-            if len(new_sphere.stress_tensor_3D)!=9:
+            if len(new_sphere.stress_tensor)!=9:
                 
                 continue
             
             #judge if there is inf
-            if np.inf in new_sphere.stress_tensor_3D or -np.inf in new_sphere.stress_tensor_3D:
+            if np.inf in new_sphere.stress_tensor or -np.inf in new_sphere.stress_tensor:
                      
     #            print(new_sphere.stress_tensor_3D)
          
                 continue
             
             #judge if there is nan
-            for this_element in new_sphere.stress_tensor_3D:
+            for this_element in new_sphere.stress_tensor:
             
                 if np.isnan(this_element):
       

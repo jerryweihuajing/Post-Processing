@@ -35,28 +35,27 @@ def LocalAxisBoundary(which_spheres):
     local_axis_boundary=x_boundary+y_boundary
       
     return local_axis_boundary
-        
-#==============================================================================
-#根据文件夹folder_path确定边界：适用于所有期次的参数
-def GlobalAxisBoundary(which_case_path):
-    
-    #concrete file path
-    input_file_path=which_case_path+'\stress'
-    
-    #输入文件名
-    input_file_names=Pa.GenerateFileNames(input_file_path)
+ 
+#------------------------------------------------------------------------------       
+"""
+Global axis boundary in different phase
 
+Args:
+    which_Spheres_list: spheres list
+    
+Returns:
+    axis boundary list
+"""
+def GlobalAxisBoundary(spheres_list):
+    
     #所有期次的LocalAxisBoundary
     total_local_axis_boundary=[]
     
     #绘制不同期次的形态
-    for this_new_file_name in input_file_names:
-        
-        #输入路径
-        this_input_path=input_file_path+'\\'+this_new_file_name
+    for k in range(len(spheres_list)):
         
         #生成颗粒体系
-        this_spheres=SG.GenerateSpheresFromTXT(this_input_path)[0]
+        this_spheres=spheres_list[k]
         
         #将它们都收录进来
         total_local_axis_boundary.append(LocalAxisBoundary(this_spheres))

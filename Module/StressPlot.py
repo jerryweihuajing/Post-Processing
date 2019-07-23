@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
-from Object import o_stress_2D
-from Object import o_discrete_point
+from Object.o_stress_2D import stress_2D
+from Object.o_discrete_point import discrete_point
 
 from Module import SpheresPlot as SP
 from Module import Interpolation as In
@@ -24,7 +24,7 @@ from Module import SpheresBoundary as SB
 
 #============================================================================== 
 #表征应力的discrete_point对象列表
-def DiscreteValueStress(which_spheres,input_mode,output_mode):
+def DiscreteValueStress(which_spheres,plane,input_mode,output_mode):
     
     if input_mode!='stress':
         
@@ -39,19 +39,49 @@ def DiscreteValueStress(which_spheres,input_mode,output_mode):
     for this_sphere in which_spheres:
     
         #创建discrete_point对象
-        new_discrete_point=o_discrete_point.discrete_point()
+        new_discrete_point=discrete_point()
         
         #定义基本属性
         new_discrete_point.pos_x=this_sphere.position[0]
         new_discrete_point.pos_y=this_sphere.position[1]
         
         #new stress object
-        new_stress_2D=o_stress_2D.stress_2D()
+        new_stress_2D=stress_2D()
         
 #        print(this_sphere.stress_tensor_2D)
 
+        '''plane'''
+        list_plane=['XoY','YoZ','ZoX']
+        list_position_index=[(0,1),(1,2),(2,0)]
+        
+        #create index-value map
+        map_plane_position_index=dict(zip(list_plane,list_position_index))
+        
+        #true: default (0,1)
+        this_position_index=map_plane_position_index[plane]
+        
+        #XY
+        new_discrete_point.pos_x=this_sphere.position[this_position_index[0]]
+        new_discrete_point.pos_y=this_sphere.position[this_position_index[1]]
+        
+        #define new 2D stess tensor
+        this_stress_tensor=np.zeros((2,2))
+        
+        for i in range(2):
+            
+            for j in range(2):
+                
+#                print(this_position_index[i])
+#                print(this_position_index[j])
+#                
+#                print(this_sphere.stress_tensor)
+                
+                this_stress_tensor[i,j]=this_sphere.stress_tensor[this_position_index[i],this_position_index[j]]
+        
+#        print(this_stress_tensor)
+        
         #Initialize and gain attributes
-        new_stress_2D.Init(this_sphere.stress_tensor_2D)
+        new_stress_2D.Init(this_stress_tensor)
         
         #x方向上正应力
         if output_mode=='x_normal':

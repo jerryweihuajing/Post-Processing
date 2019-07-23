@@ -13,6 +13,7 @@ import numpy as np
 
 #==============================================================================
 #pos表示离散点的三维坐标
+#X,Y,Z: discrete point 3 attributes
 #==============================================================================  
 class sphere:
     def __init__(self,
@@ -20,70 +21,54 @@ class sphere:
                  tag=None,
                  area=None,
                  color=None,
+                 plane=None,
                  radius=None,
                  position=None,
-                 stress_tensor_3D=None,
-                 stress_tensor_2D=None,
-                 strain_tensor_3D_periodical=None,
-                 strain_tensor_2D_periodical=None,
-                 strain_tensor_3D_cumulative=None,
-                 strain_tensor_2D_cumulative=None,
-                 displacemnet_3D_periodical=None,
-                 displacemnet_2D_periodical=None,
-                 displacemnet_3D_cumulative=None,
-                 displacemnet_2D_cumulative=None,):       
+                 stress_tensor=None,             
+                 periodical_strain_tensor=None,
+                 cumulative_strain_tensor=None,        
+                 periodical_displacemnet=None,            
+                 cumulative_displacemnet=None):     
+       
         self.Id=Id
         self.tag=tag
         self.area=area
         self.color=color
+        self.plane=plane
         self.radius=radius
         self.position=position
-        self.stress_tensor_3D=stress_tensor_3D
-        self.stress_tensor_2D=stress_tensor_2D
-        self.strain_tensor_3D_periodical=strain_tensor_3D_periodical
-        self.strain_tensor_2D_periodical=strain_tensor_2D_periodical
-        self.strain_tensor_3D_cumulative=strain_tensor_3D_cumulative
-        self.strain_tensor_2D_cumulative=strain_tensor_2D_cumulative
-        self.displacemnet_3D_periodical=displacemnet_3D_periodical
-        self.displacemnet_2D_periodical=displacemnet_2D_periodical
-        self.displacemnet_3D_cumulative=displacemnet_3D_cumulative
-        self.displacemnet_2D_cumulative=displacemnet_2D_cumulative
+        self.stress_tensor=stress_tensor         
+        self.periodical_strain_tensor=periodical_strain_tensor
+        self.cumulative_strain_tensor=periodical_strain_tensor  
+        self.periodical_displacemnet=periodical_strain_tensor           
+        self.cumulative_displacemnet=periodical_strain_tensor
+
         
     #将张量转化为三维,生成应力二维张量   
     def Init(self):
         
-        #stress
-        self.stress_tensor_3D=self.stress_tensor_3D.reshape((3,3))
-        self.stress_tensor_2D=np.zeros((2,2))
-          
-        #直接截取
-        self.stress_tensor_2D=self.stress_tensor_3D[:2,:2]
-        
-        #面积计算
+        #Area Calculation
         self.area=np.pi*self.radius**2
         
+        #stress
+        self.stress_tensor=self.stress_tensor.reshape((3,3))
+
         #judge the type
         #cumulative
-        if isinstance(self.strain_tensor_3D_cumulative,list):
+        if isinstance(self.cumulative_strain_tensor,list):
             
-            self.strain_tensor_3D_cumulative=[float(this_str) for this_str in self.strain_tensor_3D_cumulative.split()]
+            self.self.cumulative_strain_tensor=[float(this_str) for this_str in self.cumulative_strain_tensor.split()]
         
-        if isinstance(self.strain_tensor_3D_cumulative,np.matrix):
+        if isinstance(self.cumulative_strain_tensor,np.matrix):
             
-            self.strain_tensor_3D_cumulative=[float(self.strain_tensor_3D_cumulative[i,j]) for i in range(3) for j in range(3)]  
+            self.cumulative_strain_tensor=[float(self.cumulative_strain_tensor[i,j]) for i in range(3) for j in range(3)]  
         
         #periodical
-        if isinstance(self.strain_tensor_3D_periodical,list):
+        if isinstance(self.periodical_strain_tensor,list):
             
-            self.strain_tensor_3D_periodical=[float(this_str) for this_str in self.strain_tensor_3D_periodical.split()]
+            self.periodical_strain_tensor=[float(this_str) for this_str in self.periodical_strain_tensor.split()]
         
-        if isinstance(self.strain_tensor_3D_periodical,np.matrix):
+        if isinstance(self.periodical_strain_tensor,np.matrix):
             
-            self.strain_tensor_3D_periodical=[float(self.strain_tensor_3D_periodical[i,j]) for i in range(3) for j in range(3)]
-            
-        #Init displacement
-        self.displacemnet_2D_cumulative=self.displacemnet_3D_cumulative[:2]
-        self.displacemnet_2D_periodical=self.displacemnet_3D_periodical[:2]
-        
-        
-        
+            self.periodical_strain_tensor=[float(self.periodical_strain_tensor[i,j]) for i in range(3) for j in range(3)]
+             

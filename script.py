@@ -78,7 +78,7 @@ case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=1.0\\input\\base=0.00
 #plt.figure()
 #plt.imshow(shear_stress_matrix)
 
-CP.SingleExport(case_path,'periodical_strain','distortional','XoY',10)
+CP.SingleExport(case_path,'periodical_strain','distortional','XoY',1)
 
 #export all figure
 #CP.TotalExport(case_path,'XoY',1)

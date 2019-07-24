@@ -133,7 +133,7 @@ def SpheresTopMap(which_spheres,length,factor=1):
     #img tag
     for j in range(np.shape(that_mesh.img_tag)[1]):
         
-        map_j_i_top[j]=np.shape(that_mesh.img_tag)[0]
+#        map_j_i_top[j]=np.shape(that_mesh.img_tag)[0]
         
         for i in range(np.shape(that_mesh.img_tag)[0]):
 

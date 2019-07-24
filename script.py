@@ -60,12 +60,17 @@ draw surface with stress or strain figure
 #A experiment
 experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input'
 
+mode_list=['structural_deformation',
+           'mean_normal_stress',
+           'maximal_shear_stress',
+           'volumetric_strain',
+           'distortional_strain']
 #traverse
 for this_case_name in os.listdir(experiment_path):
     
     this_case_path=experiment_path+'\\'+this_case_name
     
-    CP.TotalExport(this_case_path,'XoY',10)
+    CP.TotalExport(this_case_path,'XoY',1,mode_list[1:])
     
 #file_paths=NP.FilePathsThisCase(case_path)
 

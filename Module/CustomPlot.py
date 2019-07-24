@@ -191,7 +191,7 @@ def SingleExport(which_case_path,
     gif_name=which_output_mode.replace('_',' ')+' '+which_input_mode.replace('_',' ')+'.gif'
     
     #save GIF
-    imageio.mimsave(which_case_path+'\\'+gif_name,images,duration=0.5)
+    imageio.mimsave(which_case_path.repalce('input','output')+'\\'+gif_name,images,duration=0.5)
     
 #------------------------------------------------------------------------------   
 """
@@ -212,6 +212,21 @@ def TotalExport(which_case_path,
                 pixel_step,
                 which_mode_list=None,
                 test=False):
+    
+    #argument information
+    argument_str=''
+    
+    for this_str in which_case_path.split('\\Data\\')[1].split('\\input\\'):
+        
+        argument_str+='\\'
+        argument_str+=this_str
+        
+    print('')
+    print('case:',argument_str.strip('\\'))
+    
+    print('')
+    print('...')
+    print('......')
     
     #posible condition of stress
     stress_mode=['x_normal',

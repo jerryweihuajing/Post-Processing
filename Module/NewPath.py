@@ -204,6 +204,6 @@ def OutputFolder(which_case_path,
     case_output_path_with_IM=case_output_path+which_input_mode.replace('_',' ')+'\\'
     
     #considering output mode
-    case_output_path_with_IM_and_OM=case_output_path_with_IM+which_output_mode.replace('_',' ')
+    case_output_path_with_IM_and_OM=case_output_path_with_IM+which_output_mode.replace('_',' ')+'\\'
 
     return case_output_path_with_IM_and_OM

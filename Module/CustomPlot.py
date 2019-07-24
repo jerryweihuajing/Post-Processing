@@ -77,8 +77,13 @@ def SingleExport(which_case_path,
     '''Medival fold will be generated as well'''
     output_folder=NP.OutputFolder(which_case_path,which_input_mode,which_output_mode)
     
-    #Gnenerate this Folder
-    Pa.GenerateFold(output_folder)
+    #images and values
+    images_folder=output_folder+'images\\'
+    values_folder=output_folder+'values\\'
+    
+    #Gnenerate these Folder
+    Pa.GenerateFold(images_folder)
+    Pa.GenerateFold(values_folder)
     
     #construct the map between postfix and colormap
     if which_input_mode=='stress':
@@ -146,7 +151,7 @@ def SingleExport(which_case_path,
             plt.imshow(this_img)
         
             #save as txt
-            np.savetxt(output_folder+this_txt_name,this_img_tag,fmt="%.3f",delimiter=",") 
+            np.savetxt(values_folder+this_txt_name,this_img_tag,fmt="%.3f",delimiter=",") 
             
         else:
        
@@ -161,7 +166,7 @@ def SingleExport(which_case_path,
             plt.imshow(Img.ImgFlip(this_img,0),norm=norm,cmap=colormap) 
             
             #save as txt
-            np.savetxt(output_folder+this_txt_name,this_img,fmt="%.3f",delimiter=",")   
+            np.savetxt(values_folder+this_txt_name,this_img,fmt="%.3f",delimiter=",")   
             
         #draw outline
         SB.SimpleSpheresBoundary(this_spheres,pixel_step,show=True)
@@ -171,10 +176,10 @@ def SingleExport(which_case_path,
         plt.axis(np.array(global_axis_boundary)/pixel_step)
         
         #save this fig
-        this_fig.savefig(output_folder+this_fig_name,dpi=300,bbox_inches='tight')
+        this_fig.savefig(images_folder+this_fig_name,dpi=300,bbox_inches='tight')
         
         #collect fig to create GIF
-        images.append(imageio.imread(output_folder+this_fig_name))
+        images.append(imageio.imread(images_folder+this_fig_name))
         
         count+=1 
         
@@ -183,10 +188,10 @@ def SingleExport(which_case_path,
             plt.close()  
        
     #GIF name
-    gif_name=which_input_mode.replace('_',' ')+' '+which_output_mode.replace('_',' ')+'.gif'
+    gif_name=which_output_mode.replace('_',' ')+' '+which_input_mode.replace('_',' ')+'.gif'
     
     #save GIF
-    imageio.mimsave(output_folder+'\\'+gif_name,images,duration=0.5)
+    imageio.mimsave(which_case_path+'\\'+gif_name,images,duration=0.5)
     
 #------------------------------------------------------------------------------   
 """

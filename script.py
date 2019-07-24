@@ -55,8 +55,18 @@ draw surface with stress or strain figure
 '''
 
 #data folder path
-case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=1.0\\input\\base=0.00'
+#case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input\\base=0.00'
 
+#A experiment
+experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input'
+
+#traverse
+for this_case_name in os.listdir(experiment_path):
+    
+    this_case_path=experiment_path+'\\'+this_case_name
+    
+    CP.TotalExport(this_case_path,'XoY',1)
+    
 #file_paths=NP.FilePathsThisCase(case_path)
 
 #Generate map between phase index between spheres list 
@@ -78,7 +88,7 @@ case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=1.0\\input\\base=0.00
 #plt.figure()
 #plt.imshow(shear_stress_matrix)
 
-CP.SingleExport(case_path,'periodical_strain','distortional','XoY',1)
+#CP.SingleExport(case_path,'periodical_strain','distortional','XoY',1)
 
-#export all figure
+##export all figure
 #CP.TotalExport(case_path,'XoY',1)

@@ -397,12 +397,11 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
     #img to present the elavation
     that_img_tag=np.full(np.shape(that_mesh.img_tag),np.nan) 
     
-    '''top'''
     map_j_i_top={}
 
     for j in range(np.shape(that_mesh.img_tag)[1]):
         
-        map_j_i_top[j]=np.shape(that_mesh.img_tag)[0]
+#        map_j_i_top[j]=0
         
         for i in range(np.shape(that_mesh.img_tag)[0]):
 
@@ -411,80 +410,24 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
                 map_j_i_top[j]=i
                 
                 break
-
+    
     for k in range(len(map_j_i_top)):
         
         this_j=list(map_j_i_top.keys())[k]
         this_i=list(map_j_i_top.values())[k]
-    
+            
+        '''top'''
         that_img_tag[this_i,this_j]=1    
-        
-    '''bottom'''
-    map_j_i_bottom={}
-
-    for j in range(np.shape(that_mesh.img_tag)[1]):
-        
-        map_j_i_bottom[j]=np.shape(that_mesh.img_tag)[0]
-        
-        for i in range(np.shape(that_mesh.img_tag)[0]-1,-1,-1):
-
-            if that_mesh.img_tag[i,j]!=0:
-                
-                map_j_i_bottom[j]=i
-                
-                break
-       
-    for k in range(len(map_j_i_bottom)):
-        
-        this_j=list(map_j_i_bottom.keys())[k]
-        this_i=list(map_j_i_bottom.values())[k]
     
-        that_img_tag[this_i,this_j]=1   
+    '''bottom'''
+    that_img_tag[np.shape(that_mesh.img_tag)[0]-1,:]=1   
         
     '''right'''
-    map_i_j_right={}
- 
-    for k in range(len(map_i_j_right)):
+    that_img_tag[map_j_i_top[0]:,0]=1
         
-        this_i=list(map_i_j_right.keys())[k]
-        this_j=list(map_i_j_right.values())[k]
-    
-        that_img_tag[this_i,this_j]=1
-        
-    for i in range(np.shape(that_mesh.img_tag)[0]):
-        
-        map_i_j_right[i]=np.shape(that_mesh.img_tag)[1]
-        
-        for j in range(np.shape(that_mesh.img_tag)[1]-1,-1,-1):
-
-            if that_mesh.img_tag[i,j]!=0:
-                
-                map_i_j_right[i]=j
-                
-                break
-     
     '''left'''
-    map_i_j_left={}
-    
-    for i in range(np.shape(that_mesh.img_tag)[0]):
-        
-        map_i_j_left[i]=np.shape(that_mesh.img_tag)[1]
-        
-        for j in range(np.shape(that_mesh.img_tag)[1]):
+    that_img_tag[map_j_i_top[len(map_j_i_top)-1]:,len(map_j_i_top)-1]=1
 
-            if that_mesh.img_tag[i,j]!=0:
-                              
-                map_i_j_left[i]=j
-                
-                break
-                   
-    for k in range(len(map_i_j_left)):
-        
-        this_i=list(map_i_j_left.keys())[k]
-        this_j=list(map_i_j_left.values())[k]
-    
-        that_img_tag[this_i,this_j]=1 
-         
     #result
     boundary=[]
 
@@ -500,8 +443,10 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
     
     if show:
               
+#        print(np.shape(that_img_tag))
+        
         #draw boundary
-        plt.imshow(that_img_tag,cmap='gray')
+        plt.imshow(Img.ImgFlip(that_img_tag,0),cmap='gray')
             
     return boundary
  

@@ -162,7 +162,7 @@ def SingleExport(which_case_path,
             
             #save as txt
             np.savetxt(output_folder+this_txt_name,this_img,fmt="%.3f",delimiter=",")   
-          
+            
         #draw outline
         SB.SimpleSpheresBoundary(this_spheres,pixel_step,show=True)
         

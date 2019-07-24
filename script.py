@@ -61,7 +61,7 @@ case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=1.0\\input\\base=0.00
 
 #Generate map between phase index between spheres list 
 #MAP=NSG.GenerateSpheresMapWithSample(case_path)
-# 
+## 
 #spheres=MAP[5]  
        
 #shear_strain_matrix=SAM.SpheresStrainMatrix(10,spheres,
@@ -78,52 +78,7 @@ case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=1.0\\input\\base=0.00
 #plt.figure()
 #plt.imshow(shear_stress_matrix)
 
+CP.SingleExport(case_path,'periodical_strain','distortional','XoY',10)
 
-CP.SingleExport(case_path,'periodical_strain','x_normal','XoY',10,test=True)
-   
-#mode_list=['distortional_strain','volumetric_strain','shear_strain','y_normal_strain']
-
-#CP.TotalExport(case_path,'XoY',10,which_mode_list=None,test=True)
-
-##folders_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0'
-
-#the mode which I search for
-#mode_list=['shear_strain',
-#           'volumetric_strain',
-#           'distortional_strain']
-
-
-
-#mode_list=['distortional_strain']
-#
-#IP.SinglePlot(folder_path,'periodical_strain','y_normal_strain',1)
-
-#load_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 1\output\periodical strain\x normal strain'
-
-#load_path=r'C:\Users\whj\Desktop\operation'
-##An.GenerateGIF(load_path)
-##
-#load_path=r'C:\魏华敬\Spyder\YADE\Stress Strain\Data\L=1000 v=1.0 r=1.0 layer=10 detachment=0-4\output\2019.6.19\case 4\periodical strain\y normal strain'
-#
-#An.GenerateGIF(load_path)
-
-#output all images
-#IP.TotalOuput(case_path,1)
-
-#which_spheres=SG.GenerateSpheresFromTXT('progress=48.37%.txt')[0]
-#
-#which_spheres=spheres
-#
-#pixel_step=10
-
-#plt.figure()
-#
-#SB.SpheresTopImg(which_spheres,pixel_step,show=True)
-#SB.SpheresLeftImg(which_spheres,pixel_step,show=True)
-#SB.SpheresRightImg(which_spheres,pixel_step,show=True)
-#SB.SpheresBottomImg(which_spheres,pixel_step,show=True)
-
-#plt.figure()
-#
-#SB.SimpleSpheresBoundary(which_spheres,pixel_step,show=True)
-
+#export all figure
+#CP.TotalExport(case_path,'XoY',1)

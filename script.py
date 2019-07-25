@@ -70,7 +70,7 @@ for this_case_name in os.listdir(experiment_path):
     
     this_case_path=experiment_path+'\\'+this_case_name
     
-    CP.TotalExport(this_case_path,'XoY',1,mode_list[1:])
+    CP.TotalExport(this_case_path,'XoY',1,mode_list[2:])
     
 #file_paths=NP.FilePathsThisCase(case_path)
 

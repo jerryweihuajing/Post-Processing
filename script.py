@@ -57,6 +57,9 @@ draw surface with stress or strain figure
 #data folder path
 #case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input\\base=0.00'
 
+#An.GenerateGIF(r'C:\魏华敬\Spyder\YADE\StressAndStrain\Data\base detachment\fric=0.0 v=0.2\output\base=0.00\stress\maximal shear\images')
+               
+               
 #A experiment
 experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input'
 
@@ -70,7 +73,7 @@ for this_case_name in os.listdir(experiment_path)[0:1]:
     
     this_case_path=experiment_path+'\\'+this_case_name
     
-    CP.TotalExport(this_case_path,'XoY',1,mode_list[2:])
+    CP.TotalExport(this_case_path,'XoY',1,mode_list[3:])
     
 #file_paths=NP.FilePathsThisCase(case_path)
 

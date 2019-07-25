@@ -191,7 +191,7 @@ def SingleExport(which_case_path,
     gif_name=which_output_mode.replace('_',' ')+' '+which_input_mode.replace('_',' ')+'.gif'
     
     #save GIF
-    imageio.mimsave(which_case_path.repalce('input','output')+'\\'+gif_name,images,duration=0.5)
+    imageio.mimsave(which_case_path.replace('input','output')+'\\'+gif_name,images,duration=0.5)
     
 #------------------------------------------------------------------------------   
 """

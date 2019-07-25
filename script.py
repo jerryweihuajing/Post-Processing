@@ -66,7 +66,7 @@ mode_list=['structural_deformation',
            'volumetric_strain',
            'distortional_strain']
 #traverse
-for this_case_name in os.listdir(experiment_path):
+for this_case_name in os.listdir(experiment_path)[0:1]:
     
     this_case_path=experiment_path+'\\'+this_case_name
     

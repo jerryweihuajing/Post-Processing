@@ -29,7 +29,7 @@ from Module import Dictionary as Dict
 def GenerateGIF(which_folder_path,save_path=None,period=0.5):
   
     #names if all files form the load path
-    file_names=Pa.file_name(which_folder_path)
+    file_names=Pa.FileNames(which_folder_path)
     
     #map between progress and file name
     map_progress_file_name={}

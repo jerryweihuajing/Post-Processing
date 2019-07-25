@@ -129,7 +129,7 @@ Returns:
 def FileNamesThisCase(which_case_path):
     
     #获取目标路径下所有文件名
-    file_names=Pa.FilesNames(which_case_path)
+    file_names=Pa.FileNames(which_case_path)
     
     #建立进度与文件名的映射列表
     map_progress_file_name={}

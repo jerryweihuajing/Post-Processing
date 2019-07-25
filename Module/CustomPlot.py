@@ -70,7 +70,7 @@ def SingleExport(which_case_path,
     if which_input_mode=='structural_deformation':
         
         which_output_mode=''
-     
+
     print('input mode:',which_input_mode.replace('_',' '))
     print('output mode:',which_output_mode.replace('_',' '))
     
@@ -263,8 +263,6 @@ def TotalExport(which_case_path,
         
         for this_mode in which_mode_list:
             
-#            print(this_mode)
-            
             #structural deformation
             if this_mode=='structural_deformation':
  
@@ -272,15 +270,19 @@ def TotalExport(which_case_path,
                 
             #stress
             if 'stress' in this_mode:
-            
-                this_stress_mode=this_mode.strip('_stress')
+                
+#                print(this_mode)
+                
+                this_stress_mode=this_mode.strip('stress').strip('_')
+                
+#                print(this_stress_mode)
                 
                 SingleExport(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
             
             #strain
             if 'strain' in this_mode:
                 
-                this_strain_mode=this_mode.strip('_strain')
+                this_strain_mode=this_mode.strip('strain').strip('_')
                 
                 SingleExport(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test)
                 SingleExport(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test)

@@ -37,7 +37,7 @@ def GenerateFold(path):
         
 #==============================================================================
 #获取目标路径下所有文件名         
-def FilesNames(file_dir,post_fix=None):   
+def FileNames(file_dir,post_fix=None):   
     
     #output
     files_names=[]   
@@ -67,7 +67,7 @@ def FilesNames(file_dir,post_fix=None):
 def GenerateFileNames(folder_path):
     
     #获取目标路径下所有文件名
-    file_names=FilesNames(folder_path)
+    file_names=FileNames(folder_path)
     
     #建立进度与文件名的映射列表
     map_progress_file_name={}

@@ -69,11 +69,11 @@ mode_list=['structural_deformation',
            'volumetric_strain',
            'distortional_strain']
 #traverse
-for this_case_name in os.listdir(experiment_path)[0:1]:
+for this_case_name in os.listdir(experiment_path)[1:]:
     
     this_case_path=experiment_path+'\\'+this_case_name
     
-    CP.TotalExport(this_case_path,'XoY',1,mode_list[3:])
+    CP.TotalExport(this_case_path,'XoY',1,mode_list)
     
 #file_paths=NP.FilePathsThisCase(case_path)
 

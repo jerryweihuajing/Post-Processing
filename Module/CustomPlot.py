@@ -11,6 +11,11 @@ Created on Mon Jul 15 00:25:15 2019
 @title：Module-Plot in Custom manner
 """
 
+'''
+demand:
+draw surface with stress or strain figure
+'''
+
 import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -48,13 +53,13 @@ Args:
 Returns:
     PNG, TXT, GIF in output folder
 """
-def SingleExport(which_case_path,
-                 which_input_mode,
-                 which_output_mode,
-                 which_plane,
-                 pixel_step,
-                 test=False,
-                 show=False):
+def ModePlot(which_case_path,
+             which_input_mode,
+             which_output_mode,
+             which_plane,
+             pixel_step,
+             test=False,
+             show=False):
 
     #map between index and spheres
     map_all_phase_spheres=NSG.GenerateSpheresMapWithSample(which_case_path)
@@ -208,11 +213,11 @@ Args:
 Returns:
     mass of PNG, TXT, GIF in output folder
 """    
-def TotalExport(which_case_path,
-                which_plane,
-                pixel_step,
-                which_mode_list=None,
-                test=False):
+def CasePlot(which_case_path,
+             which_plane,
+             pixel_step,
+             which_mode_list=None,
+             test=False):
     
     #argument information
     argument_str=''
@@ -254,18 +259,18 @@ def TotalExport(which_case_path,
     if which_mode_list==None:
         
         #structural deformation
-        SingleExport(which_case_path,'structural_deformation','',which_plane,pixel_step,test)
+        ModePlot(which_case_path,'structural_deformation','',which_plane,pixel_step,test)
                 
         #stress
         for this_stress_mode in stress_mode:
             
-            SingleExport(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
+            ModePlot(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
             
         #strain
         for this_strain_mode in strain_mode:
             
-            SingleExport(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test)
-            SingleExport(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test)
+            ModePlot(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test)
+            ModePlot(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test)
     
     else:
         
@@ -280,7 +285,7 @@ def TotalExport(which_case_path,
             #structural deformation
             if this_mode=='structural_deformation':
  
-                SingleExport(which_case_path,'structural_deformation','',which_plane,pixel_step,test)
+                ModePlot(which_case_path,'structural_deformation','',which_plane,pixel_step,test)
                 
             #stress
             if 'stress' in this_mode:
@@ -291,13 +296,39 @@ def TotalExport(which_case_path,
                 
 #                print(this_stress_mode)
                 
-                SingleExport(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
+                ModePlot(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
             
             #strain
             if 'strain' in this_mode:
                 
                 this_strain_mode=this_mode.strip('strain').strip('_')
                 
-                SingleExport(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test)
-                SingleExport(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test)
+                ModePlot(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test)
+                ModePlot(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test)
+
+#------------------------------------------------------------------------------   
+"""
+Total export depending on mode list of an experiment which contain a branch of cases
+
+Args:
+    which_case_path: load path of all input files
+    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes 
+    pixel_step: length of single pixel
+    mode_list: output mode which user need
+    test: if there is a test with a small amount of spheres
+
+Returns:
+    mass of PNG, TXT, GIF in output folder
+""" 
+def ExperimentPlot(which_experiment_path,
+                   which_plane,
+                   pixel_step,
+                   which_mode_list=None,
+                   test=False):
+    
+    #traverse
+    for this_case_name in os.listdir(which_experiment_path):
         
+        this_case_path=which_experiment_path+'\\'+this_case_name
+        
+        CasePlot(this_case_path,which_plane,pixel_step,which_mode_list,test)        

@@ -11,6 +11,7 @@ Created on Mon Jul 15 00:25:15 2019
 @title：Module-Plot in Custom manner
 """
 
+import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -227,7 +228,7 @@ def TotalExport(which_case_path,
     print('')
     print('...')
     print('......')
-    
+     
     #posible condition of stress
     stress_mode=['x_normal',
                  'y_normal',
@@ -235,13 +236,20 @@ def TotalExport(which_case_path,
                  'mean_normal',
                  'maximal_shear']
     
-    #posible condition of stain
+    #posible condition of strain
     strain_mode=['x_normal',
                  'y_normal',
                  'shear',
                  'volumetric',
-                 'distortional']
-    
+                 'distortional']  
+        
+    #standard mode of output
+    standard_mode=['structural_deformation',
+                   'mean_normal_stress',
+                   'maximal_shear_stress',
+                   'volumetric_strain',
+                   'distortional_strain']
+            
     #default: all modes
     if which_mode_list==None:
         
@@ -258,9 +266,15 @@ def TotalExport(which_case_path,
             
             SingleExport(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test)
             SingleExport(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test)
-        
+    
     else:
         
+        #standard for resaerch    
+        if which_mode_list=='standard':
+                   
+            which_mode_list=cp.deepcopy(standard_mode)
+       
+        #custom and standard mode
         for this_mode in which_mode_list:
             
             #structural deformation

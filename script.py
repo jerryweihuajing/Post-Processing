@@ -50,14 +50,256 @@ from Module import StrainPlot as Strain
 from Module import StressPlot as Stress
 
 '''
-demand: fracture on stress and deformation figure
+demand 1:
+    fracture on stress and deformation figure
 
+demand 2:
+    all images from a case path
+    
+demand 3:
+    improve morphorlogy of outline
 '''
 
-#A experiment
-experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.5\\input'
+file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\periodical strain\\distortional\\values\\27.87%.txt'
 
-CP.ExperimentPlot(experiment_path,'XoY',1,'standard')  
+#------------------------------------------------------------------------------
+"""
+Generate image matrix from txt file
+
+Args:
+    txt_path: file path which contains values matrix
+    
+Returns:
+    image matrix oject
+"""
+def ImportMatrixFromTXT(txt_path):
+    
+    #read lines
+    lines=open(txt_path).readlines()
+    
+    value_lines=[]
+    
+    for this_line in lines:
+        
+        value_lines.append(this_line.strip('\n').split(','))  
+        
+    #check if length every single line is equal
+    for this_value_line in value_lines:
+        
+        if len(this_value_line)!=len(value_lines[0]):
+            
+            print('ERROR: Incorrect length!')
+            
+            break
+        
+    value_matrix=np.zeros((len(value_lines),len(value_lines[0])))
+    
+    for i in range(np.shape(value_matrix)[0]):
+        
+        for j in range(np.shape(value_matrix)[1]):
+            
+            value_matrix[i,j]=float(value_lines[i][j])
+            
+    return value_matrix
+        
+
+#------------------------------------------------------------------------------
+"""
+Calculate maximum of a matrix
+
+Args:
+    which_matrix: matrix to be calculated
+    
+Returns:
+    Maximum of a matrix
+"""
+def MatrixMaximum(which_matrix):
+    
+    #figure in this matrix
+    content=[]
+    
+    for i in range(np.shape(which_matrix)[0]):
+        
+        for j in range(np.shape(which_matrix)[1]):
+            
+            if not np.isnan(which_matrix[i,j]):
+                
+                content.append(which_matrix[i,j])   
+            
+    return np.max(content)
+     
+#------------------------------------------------------------------------------
+"""
+Calculate minimum of a matrix
+
+Args:
+    which_matrix: matrix to be calculated
+    
+Returns:
+    Minimum of a matrix
+"""
+def MatrixMinimum(which_matrix):
+    
+    #figure in this matrix
+    content=[]
+    
+    for i in range(np.shape(which_matrix)[0]):
+        
+        for j in range(np.shape(which_matrix)[1]):
+            
+            if not np.isnan(which_matrix[i,j]):
+                
+                content.append(which_matrix[i,j])
+            
+    return np.min(content)
+
+#post fix to delete
+post_fix=file_path.split('\\')[-1]
+
+#folder path of this file path
+folder_path=file_path.strip(post_fix)
+
+#------------------------------------------------------------------------------
+"""
+Calculate global shape from a folder path
+
+Args:
+    folder_path: the folder which contain the txt files
+    
+Returns:
+    Global matrix shape
+"""
+def GlobalShapeFromCase(folder_path):
+    
+    #generate txt names
+    txt_names=os.listdir(folder_path)
+    
+    #shapes in this folder
+    shapes=[]
+      
+    #traverse txt names
+    for this_txt_name in txt_names:
+        
+        this_matrix=ImportMatrixFromTXT(folder_path+this_txt_name)
+    
+        shapes.append(np.shape(this_matrix))
+        
+    #matrix shape
+    shape_0=np.max([this_shape[0] for this_shape in shapes])
+    shape_1=np.max([this_shape[1] for this_shape in shapes])
+    
+    #global shape in this case
+    global_shape=(shape_0,shape_1)
+    
+    return global_shape
+
+#------------------------------------------------------------------------------
+"""
+Calculate value norm from a folder path
+
+Args:
+    folder_path: the folder which contain the txt files
+    
+Returns:
+    Global value norm
+"""
+def GlobalNormFromCase(folder_path):
+    
+    #generate txt names
+    txt_names=os.listdir(folder_path)
+  
+    #global maximum and minimum of matrix
+    values_max=[]
+    values_min=[]
+    
+    #traverse txt names
+    for this_txt_name in txt_names:
+        
+        this_matrix=ImportMatrixFromTXT(folder_path+this_txt_name)
+    
+        values_max.append(MatrixMaximum(this_matrix))
+        values_min.append(MatrixMinimum(this_matrix))
+      
+    #values maximum and minimum norm
+    global_norm=colors.Normalize(vmin=np.min(values_min),vmax=np.max(values_max))
+    
+    return global_norm
+
+#------------------------------------------------------------------------------
+"""
+Display image matrix from txt file
+
+Args:
+    txt_path: file path which contains values matrix
+    
+Returns:
+    None
+"""
+def DisplayImageFromTXT(txt_path):
+    
+    #image matrix
+    matrix=ImportMatrixFromTXT(txt_path)
+    
+    #strain
+    if 'strain' in txt_path:
+        
+        colormap='seismic'
+        global_norm=colors.Normalize(vmin=-1,vmax=1)
+   
+    #stress
+    if 'stress' in txt_path:
+        
+        colormap='gist_rainbow'
+        global_norm=GlobalNormFromCase(txt_path)
+      
+    plt.imshow(matrix,cmap=colormap,norm=global_norm)
+
+DisplayImageFromTXT(file_path)
+
+#------------------------------------------------------------------------------
+"""
+Calculate and display outline from txt file
+
+Args:
+    txt_path: file path which contains values matrix
+    
+Returns:
+    Outline matrix
+"""
+def DisplayOutlineFromTXT(txt_path):
+        
+    #image matrix
+    which_matrix=ImportMatrixFromTXT(file_path)
+    
+    #matrix to draw outline image
+    outline_matrix=np.full(np.shape(which_matrix),1)
+    
+    #top
+    for j in range(np.shape(which_matrix)[1]):
+        
+        for i in range(np.shape(which_matrix)[0]):    
+            
+            if not np.isnan(which_matrix[i,j]):
+                 
+                outline_matrix[i,j]=0
+                
+                break
+
+    #bottom
+    outline_matrix[-1,:]=0
+        
+    #left
+    
+    #right
+    
+    plt.imshow(outline_matrix,cmap='gray')   
+
+    return 
+
+#A experiment
+#experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.5\\input'
+#
+#CP.ExperimentPlot(experiment_path,'XoY',1,'standard')  
 
 #data folder path
 #case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input\\base=0.00'

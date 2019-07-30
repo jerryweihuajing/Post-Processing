@@ -305,7 +305,6 @@ def DisplayOutlineFromTXT(txt_path):
 #case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input\\base=0.00'
 
 #An.GenerateGIF(r'C:\魏华敬\Spyder\YADE\StressAndStrain\Data\base detachment\fric=0.0 v=0.2\output\base=0.00\stress\maximal shear\images')
-         
 
 #file_paths=NP.FilePathsThisCase(case_path)
 

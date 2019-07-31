@@ -196,7 +196,13 @@ Args:
 Returns:
     Global value norm
 """
-def GlobalNormFromCase(folder_path):
+def GlobalNormFromCase(file_path):
+    
+    ##post fix to delete
+    post_fix=file_path.split('\\')[-1]
+    
+    #folder path of this file path
+    folder_path=file_path.strip(post_fix)
     
     #generate txt names
     txt_names=os.listdir(folder_path)
@@ -364,22 +370,125 @@ def MatrixValues(which_matrix):
                 
     return values
 
-file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\cumulative strain\\distortional\\values\\27.87%.txt'
+#------------------------------------------------------------------------------
+"""
+Generate a map between tag and rgb
 
-#post fix to delete
-post_fix=file_path.split('\\')[-1]
+Args:
+    case_path: load path of all input files
+    
+Returns:
+    map between tag and rgb
+"""
+def MapTagRGB(case_path):
+    
+    #all spheres
+    map_all_phase_spheres=NSG.GenerateSpheresMapWithSample(case_path)
+    
+    #sample spheres to build color map
+    sample_spheres=list(map_all_phase_spheres.values())[-1]
+    
+    #total color list
+    color_list=[]
+        
+    #build a map
+    map_tag_color={}
+    map_tag_color[0]=[1.0,1.0,1.0]
+    
+    #traverse all spheres
+    for this_sphere in sample_spheres:
+        
+        if list(this_sphere.color) not in color_list:
+            
+            color_list.append(list(this_sphere.color))
+    
+            map_tag_color[len(color_list)]=list(this_sphere.color)
+            
+    return map_tag_color
 
-#folder path of this file path
-folder_path=file_path.strip(post_fix)
+#------------------------------------------------------------------------------
+"""
+Transform a tag image to RGB format
 
-matrix=ImportMatrixFromTXT(file_path)  
+Args:
+    img_tag: matrix to be processed
+    map_tag_rgb: map between tag and rgb
+    
+Returns:
+    RGB Image
+"""
+def ImageTag2RGB(img_tag,map_tag_rgb):
+    
+    #shape of rgb image
+    img_rgb_shape=(np.shape(img_tag)[0],np.shape(img_tag)[1],3)
+    
+    #define new matrix
+    img_rgb=np.full(img_rgb_shape,1.0)
+    
+    #给img_rgb矩阵赋值
+    for i in range(np.shape(img_rgb)[0]):
+        
+        for j in range(np.shape(img_rgb)[1]):
+            
+            img_rgb[i,j]=np.array(map_tag_rgb[img_tag[i,j]])
 
-DisplayImageFromTXT(file_path)
+    return Img.ImgFlip(img_rgb,0)
 
-DisplayOutlineFromTXT(file_path)
+
 
 """regard cumulative distortional strain as fracture"""
 
+##plot fracture
+#fracture_file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\cumulative strain\\distortional\\values\\27.87%.txt'
+#
+##fracture matrix
+#fracture_matrix=ImportMatrixFromTXT(fracture_file_path)
+#
+##plot background
+#background_file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\stress\\mean normal\\values\\27.87%.txt'
+#
+##plot main body
+#DisplayImageFromTXT(background_file_path)
+#DisplayOutlineFromTXT(background_file_path)
+#
+##filter fracture matrix and plot farcture
+#MatrixFilter(fracture_matrix,0.1,1,show=True)
+
+
+case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89'
+
+#standard mode of output
+child_folder_names=['structural deformation',
+                    'stress\\mean normal',
+                    'stress\\maximal shear',
+                    'periodical strain\\volumetric',
+                    'periodical strain\\distortional']
+
+#traverse child folder names
+for this_folder_name in child_folder_names:
+
+    #child folder path
+    this_folder_path=case_path+'\\'+this_folder_name+'\\'+'values'
+    
+#    print(os.listdir(this_folder_path))
+
+'''output as a folder'''
+
+case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input\\base=10.89'
+
+#map between tag and rgb in this case
+map_tag_rgb=MapTagRGB(case_path)
+       
+#def f(case_path):
+
+#import structural deformation matrix
+structural_deformation_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\structural deformation\\values\\15.58%.txt'
+structural_deformation_img_tag=ImportMatrixFromTXT(structural_deformation_path)
+    
+#transform to RGB format
+structural_deformation_img_rgb=ImageTag2RGB(structural_deformation_img_tag,map_tag_rgb)
+
+plt.imshow(structural_deformation_img_rgb)
 
 #His.ValueHistogram(MatrixValues(matrix),0.01,show=True)
 #plt.xlim([0,0.5])

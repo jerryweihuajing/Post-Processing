@@ -33,6 +33,7 @@ from Module import Image as Img
 from Module import NewPath as NP
 from Module import ColorBar as CB
 from Module import Animation as An
+from Module import Histogram as His
 from Module import CustomPlot as CP
 from Module import Decoration as Dec
 from Module import Dictionary as Dict
@@ -338,7 +339,32 @@ def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
             
     return new_matrix
     
-file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\periodical strain\\distortional\\values\\27.87%.txt'
+#------------------------------------------------------------------------------
+"""
+Matrix values list except nan
+
+Args:
+    which_matrix: matrix to be calculated
+    
+Returns:
+    value list
+"""
+def MatrixValues(which_matrix):
+    
+    #value list
+    values=[]
+    
+    for i in range(np.shape(which_matrix)[0]):
+        
+        for j in range(np.shape(which_matrix)[1]):
+            
+            if not np.isnan(which_matrix[i,j]):
+                
+                values.append(which_matrix[i,j])
+                
+    return values
+
+file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\cumulative strain\\distortional\\values\\27.87%.txt'
 
 #post fix to delete
 post_fix=file_path.split('\\')[-1]
@@ -348,15 +374,15 @@ folder_path=file_path.strip(post_fix)
 
 matrix=ImportMatrixFromTXT(file_path)  
 
-#DisplayImageFromTXT(file_path)
-#
-#DisplayOutlineFromTXT(file_path)
+DisplayImageFromTXT(file_path)
 
-MatrixFilter(matrix,0.4,0.9,True)
+DisplayOutlineFromTXT(file_path)
 
-'''minimum value + -'''
+"""regard cumulative distortional strain as fracture"""
 
-'''threshold decided by histogram'''
+
+#His.ValueHistogram(MatrixValues(matrix),0.01,show=True)
+#plt.xlim([0,0.5])
 
 #A experiment
 #experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.5\\input'

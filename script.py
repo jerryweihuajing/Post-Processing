@@ -60,7 +60,6 @@ demand 3:
     improve morphorlogy of outline
 '''
 
-file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\periodical strain\\distortional\\values\\27.87%.txt'
 
 #------------------------------------------------------------------------------
 """
@@ -102,7 +101,6 @@ def ImportMatrixFromTXT(txt_path):
             
     return value_matrix
         
-
 #------------------------------------------------------------------------------
 """
 Calculate maximum of a matrix
@@ -152,12 +150,6 @@ def MatrixMinimum(which_matrix):
                 content.append(which_matrix[i,j])
             
     return np.min(content)
-
-#post fix to delete
-post_fix=file_path.split('\\')[-1]
-
-#folder path of this file path
-folder_path=file_path.strip(post_fix)
 
 #------------------------------------------------------------------------------
 """
@@ -251,14 +243,12 @@ def DisplayImageFromTXT(txt_path):
         
         colormap='gist_rainbow'
         global_norm=GlobalNormFromCase(txt_path)
-      
-    plt.imshow(matrix,cmap=colormap,norm=global_norm)
 
-DisplayImageFromTXT(file_path)
+    plt.imshow(matrix,cmap=colormap,norm=global_norm)
 
 #------------------------------------------------------------------------------
 """
-Calculate and display outline from txt file
+Calculate outline from txt file
 
 Args:
     txt_path: file path which contains values matrix
@@ -266,35 +256,107 @@ Args:
 Returns:
     Outline matrix
 """
-def DisplayOutlineFromTXT(txt_path):
+def ImportOutlineFromTXT(txt_path):
         
     #image matrix
-    which_matrix=ImportMatrixFromTXT(file_path)
+    which_matrix=ImportMatrixFromTXT(txt_path)
     
     #matrix to draw outline image
-    outline_matrix=np.full(np.shape(which_matrix),1)
+    outline_matrix=np.full(np.shape(which_matrix),np.nan)
     
-    #top
+    #top and bottom
     for j in range(np.shape(which_matrix)[1]):
         
         for i in range(np.shape(which_matrix)[0]):    
             
             if not np.isnan(which_matrix[i,j]):
                  
-                outline_matrix[i,j]=0
+                outline_matrix[i,j]=1
+                outline_matrix[-1,j]=1
                 
                 break
 
-    #bottom
-    outline_matrix[-1,:]=0
+    #left and right
+    for j in [0,-1]:
         
-    #left
-    
-    #right
-    
-    plt.imshow(outline_matrix,cmap='gray')   
+        for i in range(np.shape(which_matrix)[0]): 
+            
+            if not np.isnan(which_matrix[i,j]):
+                
+                outline_matrix[i:,j]=1          
+               
+    return outline_matrix
 
-    return 
+#------------------------------------------------------------------------------
+"""
+Display outline from txt file
+
+Args:
+    txt_path: file path which contains values matrix
+    
+Returns:
+    None
+"""
+def DisplayOutlineFromTXT(txt_path):
+    
+    #outline matrix
+    outline_matrix=ImportOutlineFromTXT(txt_path)
+    
+    plt.imshow(outline_matrix,cmap='gray') 
+
+#------------------------------------------------------------------------------
+"""
+Filter the matrix value between low value and high value
+
+Args:
+    which_matrix: matrix to be calculated
+    lower_value: lower threshold
+    upper_value: upper threshold
+    show: Display or not
+    
+Returns:
+    New matrix with the position whose value between low value and high value present 1
+"""
+def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
+    
+    #result matrix
+    new_matrix=np.full(np.shape(which_matrix),np.nan)
+    
+    for i in range(np.shape(which_matrix)[0]):
+        
+        for j in range(np.shape(which_matrix)[1]):
+            
+            if not np.isnan(which_matrix[i,j]):
+                
+                if lower_value<=which_matrix[i,j]<=upper_value:
+                    
+                    new_matrix[i,j]=1
+    
+    if show:
+        
+        plt.imshow(new_matrix,cmap='gray')
+            
+    return new_matrix
+    
+file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\periodical strain\\distortional\\values\\27.87%.txt'
+
+#post fix to delete
+post_fix=file_path.split('\\')[-1]
+
+#folder path of this file path
+folder_path=file_path.strip(post_fix)
+
+matrix=ImportMatrixFromTXT(file_path)  
+
+#DisplayImageFromTXT(file_path)
+#
+#DisplayOutlineFromTXT(file_path)
+
+MatrixFilter(matrix,0.4,0.9,True)
+
+'''minimum value + -'''
+
+'''threshold decided by histogram'''
 
 #A experiment
 #experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.5\\input'

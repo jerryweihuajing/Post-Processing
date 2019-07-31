@@ -9,6 +9,65 @@ Created on Tue Jun 11 21:20:04 2019
 @title：Module-Calculation about colormap
 """
 
+import copy as cp
+import numpy as np
+
+import sys,os
+
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
+ 
+#------------------------------------------------------------------------------
+"""
+Calculate maximum of a matrix
+
+Args:
+    which_matrix: matrix to be calculated
+    
+Returns:
+    Maximum of a matrix
+"""
+def MatrixMaximum(which_matrix):
+    
+    #figure in this matrix
+    content=[]
+    
+    for i in range(np.shape(which_matrix)[0]):
+        
+        for j in range(np.shape(which_matrix)[1]):
+            
+            if not np.isnan(which_matrix[i,j]):
+                
+                content.append(which_matrix[i,j])   
+            
+    return np.max(content)
+     
+#------------------------------------------------------------------------------
+"""
+Calculate minimum of a matrix
+
+Args:
+    which_matrix: matrix to be calculated
+    
+Returns:
+    Minimum of a matrix
+"""
+def MatrixMinimum(which_matrix):
+    
+    #figure in this matrix
+    content=[]
+    
+    for i in range(np.shape(which_matrix)[0]):
+        
+        for j in range(np.shape(which_matrix)[1]):
+            
+            if not np.isnan(which_matrix[i,j]):
+                
+                content.append(which_matrix[i,j])
+            
+    return np.min(content)
+
 #============================================================================== 
 #filter the value of img
 def Filter(which_img,ratio):
@@ -19,14 +78,6 @@ def Filter(which_img,ratio):
     maximum_new_img=MatrixMaximum(which_img)
     minimum_new_img=MatrixMinimum(which_img)
 #    average_new_img=np.mean(total_values)
-    
-    #print(maximum_new_img)
-    #print(average_new_img)
-    
-    #check scalar in the array
-    #print(len(new_img[np.where(np.abs(new_img)>maximum_new_img*0.1)]))
-    #print(np.sum(new_img!=new_img))
-    #print(np.sum(new_img==new_img)) 
     
     new_img[np.where(abs(new_img)>(maximum_new_img+minimum_new_img))]=np.nan
 

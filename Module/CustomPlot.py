@@ -289,13 +289,9 @@ def CasePlot(which_case_path,
                 
             #stress
             if 'stress' in this_mode:
-                
-#                print(this_mode)
-                
+                            
                 this_stress_mode=this_mode.strip('stress').strip('_')
-                
-#                print(this_stress_mode)
-                
+               
                 ModePlot(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
             
             #strain

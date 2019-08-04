@@ -12,6 +12,7 @@ Created on Sun May 26 15:11:51 2019
 import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
 from matplotlib import colors
 
@@ -50,6 +51,12 @@ from Module import SpheresAttributeMatrix as SAM
 from Module import StrainPlot as Strain
 from Module import StressPlot as Stress
 
+#title font
+title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
+
+#legend font
+annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
+
 '''
 demand 1:
     fracture on stress and deformation figure
@@ -59,6 +66,18 @@ demand 2:
     
 demand 3:
     improve morphorlogy of outline
+    
+demand 4:
+    transform file path into case path
+    
+demand 5:
+    progress of structural deformation,strain,stress 
+    
+demand 6:
+    integral plot of structural deformation,strain,stress 5 or 7 figures
+    
+demand 7:
+    develop with_fracture BUTTON and cumulative or periodical mode BUTTON
 '''
 
 
@@ -99,7 +118,7 @@ def ImportMatrixFromTXT(txt_path):
         for j in range(np.shape(value_matrix)[1]):
             
             value_matrix[i,j]=float(value_lines[i][j])
-            
+              
     return value_matrix
         
 #------------------------------------------------------------------------------
@@ -162,7 +181,13 @@ Args:
 Returns:
     Global matrix shape
 """
-def GlobalShapeFromCase(folder_path):
+def GlobalShapeFromCase(file_path):
+    
+    #post fix to delete
+    post_fix=file_path.split('\\')[-1]
+    
+    #folder path of this file path
+    folder_path=file_path.strip(post_fix)
     
     #generate txt names
     txt_names=os.listdir(folder_path)
@@ -198,7 +223,7 @@ Returns:
 """
 def GlobalNormFromCase(file_path):
     
-    ##post fix to delete
+    #post fix to delete
     post_fix=file_path.split('\\')[-1]
     
     #folder path of this file path
@@ -252,7 +277,12 @@ def DisplayImageFromTXT(txt_path):
         global_norm=GlobalNormFromCase(txt_path)
 
     plt.imshow(matrix,cmap=colormap,norm=global_norm)
-
+    
+    #structural deformation
+    if 'structural_deformation' in txt_path:
+        
+        plt.imshow(matrix)
+        
 #------------------------------------------------------------------------------
 """
 Calculate outline from txt file
@@ -326,6 +356,14 @@ Returns:
 """
 def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
     
+    #if valid
+    if MatrixMinimum(which_matrix)>lower_value or MatrixMaximum(which_matrix)<upper_value:
+    
+        print('=>')
+        print('WARNING: without fracture')
+        
+        return
+        
     #result matrix
     new_matrix=np.full(np.shape(which_matrix),np.nan)
     
@@ -337,11 +375,11 @@ def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
                 
                 if lower_value<=which_matrix[i,j]<=upper_value:
                     
-                    new_matrix[i,j]=1
+                    new_matrix[i,j]=which_matrix[i,j]
     
     if show:
         
-        plt.imshow(new_matrix,cmap='gray')
+        plt.imshow(Img.ImgFlip(new_matrix,0),cmap='gray')
             
     return new_matrix
     
@@ -375,18 +413,26 @@ def MatrixValues(which_matrix):
 Generate a map between tag and rgb
 
 Args:
-    case_path: load path of all input files
+    file_path: file path of input file
     
 Returns:
     map between tag and rgb
 """
-def MapTagRGB(case_path):
+def MapTagRGB(file_path):
     
-    #all spheres
-    map_all_phase_spheres=NSG.GenerateSpheresMapWithSample(case_path)
+    #xx.xx%.txt
+    post_fix=file_path.split('\\')[-1]
+
+    #re-name
+    spheres_path=file_path.replace('output','input')\
+                            .replace('\\structural deformation\\values','')\
+                            .replace(post_fix,'progress='+post_fix)
+                   
+    #all lines
+    lines=open(spheres_path,'r').readlines()
     
-    #sample spheres to build color map
-    sample_spheres=list(map_all_phase_spheres.values())[-1]
+    #exceeding is not allowed
+    correct_length=len(lines[0].strip('\n').split(','))
     
     #total color list
     color_list=[]
@@ -395,14 +441,44 @@ def MapTagRGB(case_path):
     map_tag_color={}
     map_tag_color[0]=[1.0,1.0,1.0]
     
-    #traverse all spheres
-    for this_sphere in sample_spheres:
-        
-        if list(this_sphere.color) not in color_list:
-            
-            color_list.append(list(this_sphere.color))
+    for this_line in lines:
+      
+        this_list=this_line.strip('\n').split(',')
     
-            map_tag_color[len(color_list)]=list(this_sphere.color)
+        #extract this rgb value
+        this_color=[float(this_str) for this_str in this_list[2:5]]
+        
+        #invalid information line
+        if len(this_list)!=correct_length:
+            
+            continue
+        
+        #for the same
+        this_stress_tensor=np.array([float(this_str) for this_str in this_list[8:]])
+        
+        #3D tensor length is correct
+        if len(this_stress_tensor)!=9:
+            
+            continue
+        
+        #judge if there is inf
+        if np.inf in this_stress_tensor or -np.inf in this_stress_tensor:
+                    
+            continue
+        
+        #judge if there is nan
+        for this_element in this_stress_tensor:
+        
+            if np.isnan(this_element):
+      
+                continue
+            
+        #append
+        if this_color not in color_list:
+            
+            color_list.append(this_color)
+    
+            map_tag_color[len(color_list)]=this_color
             
     return map_tag_color
 
@@ -432,11 +508,11 @@ def ImageTag2RGB(img_tag,map_tag_rgb):
             
             img_rgb[i,j]=np.array(map_tag_rgb[img_tag[i,j]])
 
-    return Img.ImgFlip(img_rgb,0)
+    return img_rgb
 
 
 
-"""regard cumulative distortional strain as fracture"""
+
 
 ##plot fracture
 #fracture_file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\cumulative strain\\distortional\\values\\27.87%.txt'
@@ -447,6 +523,8 @@ def ImageTag2RGB(img_tag,map_tag_rgb):
 ##plot background
 #background_file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\stress\\mean normal\\values\\27.87%.txt'
 #
+    
+"""regard cumulative distortional strain as fracture"""
 ##plot main body
 #DisplayImageFromTXT(background_file_path)
 #DisplayOutlineFromTXT(background_file_path)
@@ -454,41 +532,196 @@ def ImageTag2RGB(img_tag,map_tag_rgb):
 ##filter fracture matrix and plot farcture
 #MatrixFilter(fracture_matrix,0.1,1,show=True)
 
-
-case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89'
-
-#standard mode of output
-child_folder_names=['structural deformation',
-                    'stress\\mean normal',
-                    'stress\\maximal shear',
-                    'periodical strain\\volumetric',
-                    'periodical strain\\distortional']
-
-#traverse child folder names
-for this_folder_name in child_folder_names:
-
-    #child folder path
-    this_folder_path=case_path+'\\'+this_folder_name+'\\'+'values'
+#
+#case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89'
+#
+##standard mode of output
+#child_folder_names=['structural deformation',
+#                    'stress\\mean normal',
+#                    'stress\\maximal shear',
+#                    'periodical strain\\volumetric',
+#                    'periodical strain\\distortional']
+#
+##traverse child folder names
+#for this_folder_name in child_folder_names:
+#
+#    #child folder path
+#    this_folder_path=case_path+'\\'+this_folder_name+'\\'+'values'
     
 #    print(os.listdir(this_folder_path))
 
 '''output as a folder'''
 
 case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\input\\base=10.89'
-
-#map between tag and rgb in this case
-map_tag_rgb=MapTagRGB(case_path)
        
-#def f(case_path):
+##def f(case_path):
+#
+##import structural deformation matrix
+#structural_deformation_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\structural deformation\\values\\27.87%.txt'
+#structural_deformation_img_tag=ImportMatrixFromTXT(structural_deformation_path)
+#
+##map between tag and rgb in this case
+#map_tag_rgb=MapTagRGB(structural_deformation_path)    
+#
+##transform to RGB format
+#structural_deformation_img_rgb=ImageTag2RGB(structural_deformation_img_tag,map_tag_rgb)
+#
+#plt.imshow(structural_deformation_img_rgb)
+#
+##calculate global norm
+#global_shape=GlobalShapeFromCase(structural_deformation_path)
+#
+#plt.axis([0,global_shape[1],0,global_shape[0]])
 
-#import structural deformation matrix
-structural_deformation_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\structural deformation\\values\\15.58%.txt'
-structural_deformation_img_tag=ImportMatrixFromTXT(structural_deformation_path)
+"""
+Calculate progress percentage from file path
+
+Args:
+    file_path: load path of research case
     
-#transform to RGB format
-structural_deformation_img_rgb=ImageTag2RGB(structural_deformation_img_tag,map_tag_rgb)
+Returns:
+    percentage of progress
+"""
+def ProgressPercentageFromPath(file_path):
+    
+    #where is the %
+    percentage_index=file_path.index('%')
+    
+    #start char
+    start_char=file_path[percentage_index-5]
+    
+    if start_char=='\\':
+        
+        return file_path[percentage_index-4:percentage_index+1]
+    
+    else:
+        
+        return file_path[percentage_index-5:percentage_index+1]
 
-plt.imshow(structural_deformation_img_rgb)
+#------------------------------------------------------------------------------
+"""
+Plot single structural deformation in different progress with fracture
+
+Args:
+    file_path: load path of txt file
+    subplot_ax: sub ax in progress plot
+    with_fracture: (bool) plot fracture or not 
+    
+Returns:
+    None
+"""
+def SingleStructuralDeformationInProgress(file_path,subplot_ax,with_fracture=True):
+    
+    print('')
+    print('...')
+    print('......')
+    print('progress='+ProgressPercentageFromPath(file_path))
+    
+    #map between tag and rgb in this case
+    rgb_map=MapTagRGB(file_path)
+    
+    #percentage of progress
+    progress_percentage=ProgressPercentageFromPath(file_path)
+    
+    #Generate tag image and rgb image
+    structural_deformation_img_tag=ImportMatrixFromTXT(file_path)
+    
+    #transform to RGB format
+    structural_deformation_img_rgb=ImageTag2RGB(structural_deformation_img_tag,rgb_map)
+    
+    #shape of this img
+    this_shape=np.shape(structural_deformation_img_rgb)[:2]
+    
+    plt.imshow(structural_deformation_img_rgb)
+    
+    """regard cumulative distortional strain as fracture"""
+    if with_fracture:
+            
+        #plot fracture
+        fracture_file_path=file_path.replace('structural deformation','cumulative strain\\distortional')
+        
+        #fracture matrix
+        fracture_matrix=ImportMatrixFromTXT(fracture_file_path)
+    
+        #filter fracture matrix and plot farcture
+        MatrixFilter(fracture_matrix,0.2,1,show=True)
+    
+    #decoration  
+    Dec.TicksAndSpines(subplot_ax)
+
+    #sub annotation
+    subplot_ax.annotate(progress_percentage,
+                         xy=(0,0),
+                         xytext=(1.01*this_shape[1],0.25*this_shape[0]),
+                         fontproperties=annotation_font)
+
+    
+#------------------------------------------------------------------------------
+"""
+Plot structural deformation progress
+
+Args:
+    case_path: load path of input files in a case
+    with_fracture: (bool) plot fracture or not 
+    
+Returns:
+    figure series
+"""
+def ProgressStructuralDeformation(case_path,with_fracture=True):
+    
+    #strutrual deformation path
+    folder_path=case_path+'\\structural deformation\\values\\'
+    
+    #file names in pogress order
+    file_names=NP.FileNamesThisCase(folder_path)
+
+    #new picture and ax
+    figure=plt.subplots(figsize=(12,9))[0]
+    
+    #subplot index
+    index=0
+    
+    for file_name in file_names:
+        
+        ProgressPercentageFromPath(file_name)
+        #txt file path
+        structural_deformation_path=folder_path+file_name
+        
+        #iter
+        index+=1
+        
+        this_ax=plt.subplot(len(file_names),1,index)
+ 
+        #calculate global norm
+        global_shape=GlobalShapeFromCase(structural_deformation_path)
+
+        #decoration     
+        SingleStructuralDeformationInProgress(structural_deformation_path,this_ax,with_fracture)
+        
+        this_ax.axis([0,global_shape[1],0,global_shape[0]])
+     
+    #figure name
+    fig_name='sturctural deformation'
+    
+    #re-name
+    if with_fracture:
+        
+        fig_name+=' with fracture'
+        
+    #save this fig
+    figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name,dpi=300,bbox_inches='tight')
+      
+ 
+case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89'
+
+ProgressStructuralDeformation(case_path)
+
+'stress and strain progress'
+
+#file_path=r'D:\Spyder\YADE\StressAndStrain\Data\base detachment\fric=0.0 v=0.5\output\base=10.89\structural deformation\values\0.00%.txt'
+#ax=plt.subplot()
+#SingleStructuralDeformationInProgress(file_path,ax)
+
 
 #His.ValueHistogram(MatrixValues(matrix),0.01,show=True)
 #plt.xlim([0,0.5])

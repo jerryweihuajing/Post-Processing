@@ -81,6 +81,9 @@ demand 7:
     
 demand 8:
     Matrix Filter with v-norm proportion
+    
+demand 9:
+    axis and ticks
 '''
 
 
@@ -654,7 +657,8 @@ def SingleStructuralDeformationInProgress(file_path,subplot_ax,with_fracture=Tru
     
         #filter fracture matrix and plot farcture
         MatrixFilter(fracture_matrix,0.23,1,show=True)
-    
+
+    '''revision'''
     #decoration  
     Dec.TicksAndSpines(subplot_ax)
 

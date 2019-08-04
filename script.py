@@ -78,6 +78,9 @@ demand 6:
     
 demand 7:
     develop with_fracture BUTTON and cumulative or periodical mode BUTTON
+    
+demand 8:
+    Matrix Filter with v-norm proportion
 '''
 
 
@@ -259,7 +262,7 @@ Args:
 Returns:
     None
 """
-def DisplayImageFromTXT(txt_path):
+def DisplayImageFromTXT(txt_path,global_norm=None):
     
     #image matrix
     matrix=ImportMatrixFromTXT(txt_path)
@@ -268,13 +271,19 @@ def DisplayImageFromTXT(txt_path):
     if 'strain' in txt_path:
         
         colormap='seismic'
-        global_norm=colors.Normalize(vmin=-1,vmax=1)
+        
+        if global_norm==None:
+            
+            global_norm=colors.Normalize(vmin=-1,vmax=1)
    
     #stress
     if 'stress' in txt_path:
         
         colormap='gist_rainbow'
-        global_norm=GlobalNormFromCase(txt_path)
+        
+        if global_norm==None:
+            
+            global_norm=GlobalNormFromCase(txt_path)
 
     plt.imshow(matrix,cmap=colormap,norm=global_norm)
     
@@ -644,7 +653,7 @@ def SingleStructuralDeformationInProgress(file_path,subplot_ax,with_fracture=Tru
         fracture_matrix=ImportMatrixFromTXT(fracture_file_path)
     
         #filter fracture matrix and plot farcture
-        MatrixFilter(fracture_matrix,0.2,1,show=True)
+        MatrixFilter(fracture_matrix,0.23,1,show=True)
     
     #decoration  
     Dec.TicksAndSpines(subplot_ax)
@@ -712,7 +721,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
     figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name,dpi=300,bbox_inches='tight')
       
  
-case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89'
+case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=5.45'
 
 ProgressStructuralDeformation(case_path)
 

@@ -326,9 +326,12 @@ def ExperimentPlot(which_experiment_path,
                    which_mode_list=None,
                    test=False):
     
+    #plus input
+    input_folder=which_experiment_path+'\\input'
+    
     #traverse
-    for this_case_name in os.listdir(which_experiment_path):
+    for this_case_name in os.listdir(input_folder):
         
-        this_case_path=which_experiment_path+'\\'+this_case_name
+        this_case_path=input_folder+'\\'+this_case_name
         
         CasePlot(this_case_path,which_plane,pixel_step,which_mode_list,test)        

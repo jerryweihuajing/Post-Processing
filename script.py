@@ -55,7 +55,7 @@ demand: fracture on stress and deformation figure
 '''
 
 #A experiment
-experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=0.2'
+experiment_path=os.getcwd()+'\\Data\\base detachment\\fric=0.3 v=0.5'
 
 CP.ExperimentPlot(experiment_path,'XoY',1,'standard')  
 

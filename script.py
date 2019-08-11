@@ -54,7 +54,7 @@ from Module import StressPlot as Stress
 #title font
 title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
 
-#legend font
+#annotation font
 annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
 
 '''

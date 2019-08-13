@@ -10,12 +10,7 @@ Created on Tue Jun 11 21:01:27 2019
 """
 
 import numpy as np
-import sys,os
 
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-    
 from o_sphere import sphere
 
 import NewPath as NP

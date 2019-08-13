@@ -11,12 +11,6 @@ Created on Tue Jun 11 21:07:33 2019
 
 import numpy as np
 import matplotlib.pyplot as plt
-
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
     
 from o_stress_2D import stress_2D
 from o_discrete_point import discrete_point

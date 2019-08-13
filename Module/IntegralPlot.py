@@ -19,12 +19,6 @@ import matplotlib.pyplot as plt
 
 from matplotlib import colors
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
 import StressPlot as Stress
 import StrainPlot as Strain
 

@@ -11,12 +11,6 @@ Created on Sun Jun 16 14:41:32 2019
 
 import numpy as np
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
 import NewPath as NP
 import IntegralPlot as IP
 import SpheresGeneration as SG

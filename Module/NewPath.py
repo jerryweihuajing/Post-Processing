@@ -34,12 +34,6 @@ stress: xx stress
 strain: xx strain
         ......  
 '''
-
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
     
 import Path as Pa
 import Dictionary as Dict

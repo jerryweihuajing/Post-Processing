@@ -12,12 +12,6 @@ Created on Tue Jul 23 10:46:56 2019
 import numpy as np
 from matplotlib import colors
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
 import StressPlot as Stress
 
 #------------------------------------------------------------------------------ 

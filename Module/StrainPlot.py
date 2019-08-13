@@ -10,12 +10,6 @@ Created on Tue Jun 11 21:08:13 2019
 """
 
 import numpy as np
-
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
     
 import o_strain_2D
 import o_discrete_point

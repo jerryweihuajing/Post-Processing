@@ -9,11 +9,7 @@ Created on Tue Jun 11 20:57:01 2019
 @title：Module-Sort folders and files
 """
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
+import os
 
 import Dictionary as Dict
 

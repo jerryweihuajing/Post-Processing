@@ -16,15 +16,10 @@ demand:
 draw surface with stress or strain figure
 '''
 
+import imageio
 import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
-
-import sys,os,imageio
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
 
 import Norm as No
 import Path as Pa

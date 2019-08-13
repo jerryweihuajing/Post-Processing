@@ -9,13 +9,7 @@ Created on Mon May 27 14:01:01 2019
 @title：Module-Calculation about colorbar
 """
 
-import numpy as np
-import sys,os
 
-from matplotlib import colors
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
 
 import Path as Pa
 import IntegralPlot as IP

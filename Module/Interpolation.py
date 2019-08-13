@@ -27,12 +27,6 @@ import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
 import Image as Img
 import MeshPoints as Mesh
 

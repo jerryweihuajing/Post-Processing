@@ -17,12 +17,6 @@ Calculate strain via displacement
 import copy as cp
 import numpy as np
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
 from o_strain_2D import strain_2D
 from o_discrete_point import discrete_point
 

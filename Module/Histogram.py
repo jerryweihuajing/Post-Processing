@@ -14,12 +14,6 @@ demand:
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-    
 import StrainPlot as Strain
 
 #==============================================================================    

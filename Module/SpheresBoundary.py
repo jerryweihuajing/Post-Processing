@@ -22,13 +22,6 @@ simple spheres boundary np.where to calculate the content
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
-
 import o_mesh
 import o_circle
 

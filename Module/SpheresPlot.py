@@ -11,12 +11,6 @@ Created on Sat May  4 15:25:52 2019
 import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
-
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
     
 import o_grid
 import o_mesh

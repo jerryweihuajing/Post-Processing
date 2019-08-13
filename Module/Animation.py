@@ -15,12 +15,8 @@ input: a batch of images
 output: a gif whose frequency could be control be developer
 '''
 
-import imageio,sys,os
+import imageio
 
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-    
 import Path as Pa
 import Dictionary as Dict
 

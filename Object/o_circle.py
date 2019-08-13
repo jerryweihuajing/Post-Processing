@@ -13,13 +13,10 @@ import numpy as np
 
 import sys,os
 
-import sys,os
-
 if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
-    sys.path.append(os.getcwd()+'\\Module')
-    sys.path.append(os.getcwd()+'\\Object')
+
     
 import Rasterization as Ra
 

@@ -18,7 +18,7 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
 
-from Module import StressPlot as Stress
+import StressPlot as Stress
 
 #------------------------------------------------------------------------------ 
 """

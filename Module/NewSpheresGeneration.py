@@ -17,9 +17,9 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
 
-from Object.o_sphere import sphere
+from o_sphere import sphere
 
-from Module import NewPath as NP
+import NewPath as NP
 
 #------------------------------------------------------------------------------
 """

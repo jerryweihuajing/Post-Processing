@@ -17,9 +17,9 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
 
-from Module import NewPath as NP
-from Module import IntegralPlot as IP
-from Module import SpheresGeneration as SG
+import NewPath as NP
+import IntegralPlot as IP
+import SpheresGeneration as SG
 
 #==============================================================================
 #stress norm: single norm

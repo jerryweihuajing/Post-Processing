@@ -21,35 +21,37 @@ import sys,os
 if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
+    sys.path.append(os.getcwd()+'\\Module')
+    sys.path.append(os.getcwd()+'\\Object')
 
-from Object.o_grid import grid
-from Object.o_mesh import mesh
-from Object.o_sphere import sphere
-from Object.o_strain_2D import strain_2D
-from Object.o_discrete_point import discrete_point
+from o_grid import grid
+from o_mesh import mesh
+from o_sphere import sphere
+from o_strain_2D import strain_2D
+from o_discrete_point import discrete_point
 
-from Module import Norm as No
-from Module import Path as Pa
-from Module import Image as Img
-from Module import NewPath as NP
-from Module import ColorBar as CB
-from Module import Animation as An
-from Module import Histogram as His
-from Module import CustomPlot as CP
-from Module import Decoration as Dec
-from Module import Dictionary as Dict
-from Module import SpheresPlot as SP
-from Module import IntegralPlot as IP
-from Module import AxisBoundary as AB
-from Module import Interpolation as In
-from Module import ValueBoundary as VB
-from Module import SpheresBoundary as SB
-from Module import SpheresGeneration as SG
-from Module import NewSpheresGeneration as NSG
-from Module import SpheresAttributeMatrix as SAM
+import Norm as No
+import Path as Pa
+import Image as Img
+import NewPath as NP
+import ColorBar as CB
+import Animation as An
+import Histogram as His
+import CustomPlot as CP
+import Decoration as Dec
+import Dictionary as Dict
+import SpheresPlot as SP
+import IntegralPlot as IP
+import AxisBoundary as AB
+import Interpolation as In
+import ValueBoundary as VB
+import SpheresBoundary as SB
+import SpheresGeneration as SG
+import NewSpheresGeneration as NSG
+import SpheresAttributeMatrix as SAM
 
-from Module import StrainPlot as Strain
-from Module import StressPlot as Stress
+import StrainPlot as Strain
+import StressPlot as Stress
 
 #title font
 title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
@@ -697,6 +699,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
     for file_name in file_names:
         
         ProgressPercentageFromPath(file_name)
+        
         #txt file path
         structural_deformation_path=folder_path+file_name
         
@@ -725,7 +728,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
     figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name,dpi=300,bbox_inches='tight')
       
  
-case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=5.45'
+case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89'
 
 ProgressStructuralDeformation(case_path)
 

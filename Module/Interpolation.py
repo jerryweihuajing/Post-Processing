@@ -28,10 +28,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import sys,os
-sys.path.append(os.getcwd())
 
-from Module import Image as Img
-from Module import MeshPoints as Mesh
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
+
+import Image as Img
+import MeshPoints as Mesh
 
 #==============================================================================     
 #计算两点之间的距离

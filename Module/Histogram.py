@@ -20,7 +20,7 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
     
-from Module import StrainPlot as Strain
+import StrainPlot as Strain
 
 #==============================================================================    
 #which values histogram

@@ -9,12 +9,18 @@ Created on Tue Jun  4 14:55:07 2019
 @title：Object-strain_2D
 """
 
-import sys
+
 import numpy as np
 
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+import sys,os
 
-from Module import Tensor2D as Ts2D
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
+    sys.path.append(os.getcwd()+'\\Module')
+    sys.path.append(os.getcwd()+'\\Object')
+
+import Tensor2D as Ts2D
 
 #==============================================================================
 #应力张量计算后的相关变量

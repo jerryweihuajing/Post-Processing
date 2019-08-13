@@ -23,13 +23,12 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
 
-from Object.o_strain_2D import strain_2D
-from Object.o_discrete_point import discrete_point
+from o_strain_2D import strain_2D
+from o_discrete_point import discrete_point
 
-from Module import Interpolation as In
-from Module import SpheresBoundary as SB
-
-from Module import StressPlot as Stress
+import Interpolation as In
+import SpheresBoundary as SB
+import StressPlot as Stress
 
 #------------------------------------------------------------------------------
 """

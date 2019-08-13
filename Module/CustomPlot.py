@@ -26,16 +26,16 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
 
-from Module import Norm as No
-from Module import Path as Pa
-from Module import Image as Img
-from Module import NewPath as NP
-from Module import Decoration as Dec
-from Module import SpheresPlot as SP
-from Module import AxisBoundary as AB
-from Module import SpheresBoundary as SB
-from Module import NewSpheresGeneration as NSG
-from Module import SpheresAttributeMatrix as SAM
+import Norm as No
+import Path as Pa
+import Image as Img
+import NewPath as NP
+import Decoration as Dec
+import SpheresPlot as SP
+import AxisBoundary as AB
+import SpheresBoundary as SB
+import NewSpheresGeneration as NSG
+import SpheresAttributeMatrix as SAM
 
 #------------------------------------------------------------------------------
 """

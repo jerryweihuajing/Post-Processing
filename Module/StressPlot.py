@@ -12,15 +12,18 @@ Created on Tue Jun 11 21:07:33 2019
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+import sys,os
 
-from Object.o_stress_2D import stress_2D
-from Object.o_discrete_point import discrete_point
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
+    
+from o_stress_2D import stress_2D
+from o_discrete_point import discrete_point
 
-from Module import SpheresPlot as SP
-from Module import Interpolation as In
-from Module import SpheresBoundary as SB
+import SpheresPlot as SP
+import Interpolation as In
+import SpheresBoundary as SB
 
 #============================================================================== 
 #表征应力的discrete_point对象列表

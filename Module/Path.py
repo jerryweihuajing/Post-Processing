@@ -9,11 +9,13 @@ Created on Tue Jun 11 20:57:01 2019
 @title：Module-Sort folders and files
 """
 
-import os
-import sys
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+import sys,os
 
-from Module import Dictionary as Dict
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
+
+import Dictionary as Dict
 
 #============================================================================== 
 #在某路径下判断并创建文件夹

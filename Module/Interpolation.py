@@ -2,9 +2,9 @@
 """
 Created on Mon Apr 29 12:17:04 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Spatial Interpolation
 """

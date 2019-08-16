@@ -2,9 +2,9 @@
 """
 Created on Fri Jul 19 16:02:01 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Calculate spheres attributes matrix
 """

@@ -135,7 +135,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
     file_names=NP.FileNamesThisCase(folder_path)
 
     #new picture and ax
-    figure=plt.subplots(figsize=(12,9))[0]
+    figure=plt.subplots(figsize=(13,9.6))[0]
     
     #subplot index
     index=0

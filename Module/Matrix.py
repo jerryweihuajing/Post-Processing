@@ -62,15 +62,21 @@ Display image matrix from txt file
 
 Args:
     txt_path: file path which contains values matrix
+    flip: (bool) whether the image flips
+    global_norm: external output to reduce calculation
     
 Returns:
     None
 """
-def DisplayImageFromTXT(txt_path,global_norm=None):
+def DisplayImageFromTXT(txt_path,flip=False,global_norm=None):
     
     #image matrix
     matrix=ImportMatrixFromTXT(txt_path)
     
+    if flip:
+        
+        matrix=Img.ImgFlip(matrix,0)
+        
     #strain
     if 'strain' in txt_path:
         
@@ -143,15 +149,20 @@ Display outline from txt file
 
 Args:
     txt_path: file path which contains values matrix
+    flip: (bool) whether the image flips
     
 Returns:
     None
 """
-def DisplayOutlineFromTXT(txt_path):
+def DisplayOutlineFromTXT(txt_path,flip=False):
     
     #outline matrix
     outline_matrix=ImportOutlineFromTXT(txt_path)
     
+    if flip:
+        
+        outline_matrix=Img.ImgFlip(outline_matrix,0)
+        
     plt.imshow(outline_matrix,cmap='gray') 
       
 #------------------------------------------------------------------------------

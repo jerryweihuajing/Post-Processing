@@ -24,12 +24,6 @@ import Global as Glo
 import NewPath as NP
 import Decoration as Dec
 
-#title font
-title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
-
-#annotation font
-annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
-
 #------------------------------------------------------------------------------
 """
 Calculate progress percentage from file path
@@ -64,11 +58,18 @@ Args:
     file_path: load path of txt file
     subplot_ax: sub ax in progress plot
     with_fracture: (bool) plot fracture or not 
-    
+    with_annotation: plot progress proportion
+
 Returns:
     None
 """
-def SingleStructuralDeformationInProgress(file_path,subplot_ax,with_fracture=True):
+def SingleStructuralDeformationInProgress(file_path,
+                                          subplot_ax,
+                                          with_fracture=True,
+                                          with_annotation=True):
+    
+    #annotation font
+    annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
     
     print('')
     print('...')
@@ -89,7 +90,7 @@ def SingleStructuralDeformationInProgress(file_path,subplot_ax,with_fracture=Tru
     structural_deformation_img_rgb=Img.ImageTag2RGB(structural_deformation_img_tag,rgb_map)
     
     #shape of this img
-    this_shape=np.shape(structural_deformation_img_rgb)[:2]
+    this_shape=np.shape(structural_deformation_img_tag)
     
     plt.imshow(structural_deformation_img_rgb)
     
@@ -108,13 +109,16 @@ def SingleStructuralDeformationInProgress(file_path,subplot_ax,with_fracture=Tru
     '''revision'''
     #decoration  
     Dec.TicksAndSpines(subplot_ax,1,1)
-
-    #sub annotation
-    subplot_ax.annotate(progress_percentage,
-                         xy=(0,0),
-                         xytext=(1.01*this_shape[1],0.25*this_shape[0]),
-                         fontproperties=annotation_font)
     
+    #sub annotation
+    if with_annotation:
+        
+        subplot_ax.annotate(progress_percentage,
+                             xy=(0,0),
+                             xytext=(1.01*this_shape[1],0.25*this_shape[0]),
+                             fontproperties=annotation_font)
+
+        
 #------------------------------------------------------------------------------
 """
 Plot structural deformation progress
@@ -124,7 +128,7 @@ Args:
     with_fracture: (bool) plot fracture or not 
     
 Returns:
-    figure series
+    None
 """
 def ProgressStructuralDeformation(case_path,with_fracture=True):
     
@@ -167,4 +171,4 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
         fig_name+=' with fracture'
         
     #save this fig
-    figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name,dpi=300,bbox_inches='tight')
+    figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name+'.png',dpi=300,bbox_inches='tight')

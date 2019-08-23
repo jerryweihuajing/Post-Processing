@@ -91,18 +91,31 @@ demand 10:
 demand 11:
     proproate size and position (loose)
 '''
+#
+#file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=5.45\\structural deformation\\values\\19.68%.txt'
+#
+#IAP.SingleIntegralAnalysisInProgress(file_path,'standard',0)
 
-file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=5.45\\structural deformation\\values\\19.68%.txt'
-
-IAP.SingleIntegralAnalysisInProgress(file_path,'standard',0)
 
 case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=5.45'
+#
+#'stress and strain progress'
+#
+#PP.ProgressStructuralDeformation(case_path)
+#PP.ProgressStressOrStrain(case_path,'cumulative strain\\volumetric')
+     
+def ProgressIntegralAnalysis(case_path):
+    
+    folder_path=case_path+'\\structural deformation\\values'
 
-'stress and strain progress'
-
-PP.ProgressStructuralDeformation(case_path)
-PP.ProgressStressOrStrain(case_path,'cumulative strain\\volumetric')
-            
+    for this_file_name in os.listdir(folder_path):
+        
+        #join file path
+        this_file_path=folder_path+'\\'+this_file_name
+        
+        IAP.SingleIntegralAnalysisInProgress(this_file_path,'standard',0)
+        
+ProgressIntegralAnalysis(case_path)     
 ##plot fracture
 #fracture_file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\cumulative strain\\distortional\\values\\27.87%.txt'
 #

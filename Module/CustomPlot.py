@@ -45,6 +45,7 @@ Args:
     index_list: custom index of images
     test: if there is a test with a small amount of spheres
     show: if there is a window display
+    
 Returns:
     PNG, TXT, GIF in output folder
 """

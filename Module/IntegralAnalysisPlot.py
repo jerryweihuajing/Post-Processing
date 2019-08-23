@@ -58,11 +58,13 @@ Plot integral analysis of a progress
 Args:
     file_path: load path of txt file
     mode: 'standard'
+    with_fracture: (bool) plot fracture or not 
+    show: if there is a window display
 
 Returns:
     None
 """
-def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=True):
+def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=True,show=False):
     
     print('')
     print('integral analysis')
@@ -170,3 +172,6 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
     #save this fig
     figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name+'.png',dpi=300,bbox_inches='tight')
     
+    if not show:
+        
+        plt.close()

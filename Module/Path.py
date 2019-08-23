@@ -15,7 +15,7 @@ import Dictionary as Dict
 
 #============================================================================== 
 #在某路径下判断并创建文件夹
-def GenerateFold(path):
+def GenerateFolder(path):
 
     #去除首位空格
     path=path.strip()

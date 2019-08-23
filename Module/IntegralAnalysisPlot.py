@@ -20,6 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
+import Path as Pa
 import Matrix as Mat
 import Global as Glo
 import ProgressPlot as PP
@@ -57,12 +58,12 @@ Plot integral analysis of a progress
 
 Args:
     file_path: load path of txt file
-    mode: 'standard'
+    mode: 'standard' 'all'
     with_fracture: (bool) plot fracture or not 
     show: if there is a window display
 
 Returns:
-    None
+    Figure path
 """
 def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=True,show=False):
     
@@ -162,16 +163,26 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
         this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
      
     #figure name
-    fig_name=progress_percentage+' integral analysis'
+    fig_name=progress_percentage
 
     #re-name
     if with_fracture:
         
         fig_name+=' with fracture'
         
-    #save this fig
-    figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name+'.png',dpi=300,bbox_inches='tight')
+    output_folder=file_path.split('structural deformation')[0]+'integral analysis\\'
     
+    #generate folder
+    Pa.GenerateFolder(output_folder)
+    
+    #figure path
+    fig_path=output_folder+fig_name+' ('+mode+').png'
+    
+    #save this fig
+    figure.savefig(fig_path,dpi=300,bbox_inches='tight')
+
     if not show:
         
         plt.close()
+        
+    return fig_path

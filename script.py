@@ -9,6 +9,7 @@ Created on Sun May 26 15:11:51 2019
 @title：execution script
 """
 
+import imageio
 import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -90,6 +91,12 @@ demand 10:
 
 demand 11:
     proproate size and position (loose)
+    
+demand 12:
+    change GIF location
+    
+demand 13:
+    fracture single folder
 '''
 #
 #file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=5.45\\structural deformation\\values\\19.68%.txt'
@@ -104,18 +111,52 @@ case_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=5.4
 #PP.ProgressStructuralDeformation(case_path)
 #PP.ProgressStressOrStrain(case_path,'cumulative strain\\volumetric')
      
-def ProgressIntegralAnalysis(case_path):
+#------------------------------------------------------------------------------
+"""
+Plot progress integral analysis
+
+Args:
+    case_path: load path of case
+    mode: 'standard' 'all'
+    with_fracture: (bool) plot fracture or not 
+    show: if there is a window display
+
+Returns:
+    None
+"""
+def ProgressIntegralAnalysis(case_path,mode='standard',with_fracture=True,show=False):
     
     folder_path=case_path+'\\structural deformation\\values'
 
-    for this_file_name in os.listdir(folder_path):
+    #figures to generate GIF
+    figures=[]
+    
+    for this_file_name in NP.FileNamesThisCase(folder_path):
         
         #join file path
         this_file_path=folder_path+'\\'+this_file_name
         
-        IAP.SingleIntegralAnalysisInProgress(this_file_path,'standard',0)
+        #path of integral analysis figure
+        this_fig_path=IAP.SingleIntegralAnalysisInProgress(this_file_path,mode,with_fracture,show)
         
-ProgressIntegralAnalysis(case_path)     
+        #collect fig to create GIF
+        figures.append(imageio.imread(this_fig_path))
+        
+        #GIF name
+        gif_name='progress integral analysis'
+        
+        #re-name
+        if with_fracture:
+            
+            gif_name+=' with fracture'
+
+        #save GIF
+        imageio.mimsave(case_path+'\\integral analysis\\'+gif_name+' ('+mode+').gif',figures,duration=0.5)
+        
+ProgressIntegralAnalysis(case_path,with_fracture=True)          
+ProgressIntegralAnalysis(case_path,with_fracture=False)  
+
+   
 ##plot fracture
 #fracture_file_path=os.getcwd()+'\\Data\\base detachment\\fric=0.0 v=0.2\\output\\base=10.89\\cumulative strain\\distortional\\values\\27.87%.txt'
 #

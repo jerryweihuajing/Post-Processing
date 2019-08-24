@@ -258,10 +258,9 @@ def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
     #if valid
     if MatrixMinimum(which_matrix)>lower_value or MatrixMaximum(which_matrix)<upper_value:
     
-        print('=>')
-        print('WARNING: without fracture')
+        print('ERROR: Incorrect value range!')
         
-        return
+        return False
         
     #result matrix
     new_matrix=np.full(np.shape(which_matrix),np.nan)

@@ -12,14 +12,17 @@ Created on Fri Aug 16 23:45:48 2019
 '''
 demand:
 1 show axis and ticks
+2 develop with_fracture mode BUTTON
+3 transform file path into case path
 '''
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-import Matrix as Mat
+import Path as Pa
 import Image as Img
+import Matrix as Mat
 import Global as Glo
 import NewPath as NP
 import Decoration as Dec
@@ -73,10 +76,7 @@ def SingleStructuralDeformationInProgress(file_path,
     annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
     
     print('')
-    print('=>')
-    print('Structural Deformation')
-    print('...')
-    print('......')
+    print('--Structural Deformation')
     
     #map between tag and rgb in this case
     rgb_map=Img.MapTagRGB(file_path)
@@ -84,7 +84,7 @@ def SingleStructuralDeformationInProgress(file_path,
     #percentage of progress
     progress_percentage=ProgressPercentageFromTXT(file_path)
     
-    print('progress='+progress_percentage)
+    print('=>progress='+progress_percentage)
     
     #Generate tag image and rgb image
     structural_deformation_img_tag=Mat.ImportMatrixFromTXT(file_path)
@@ -107,8 +107,10 @@ def SingleStructuralDeformationInProgress(file_path,
     if with_fracture:
 
         #filter fracture matrix and plot farcture
-        Mat.MatrixFilter(fracture_matrix,0.23,1,show=True)
-
+        if type(Mat.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+            
+            print('==>WARNING: without fracture')
+        
     '''revision'''
     #decoration  
     Dec.TicksAndSpines(subplot_ax,1,1)
@@ -141,7 +143,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
     file_names=NP.FileNamesThisCase(folder_path)
 
     #new picture and ax
-    figure=plt.subplots(figsize=(13,9.6))[0]
+    figure=plt.subplots(figsize=(13,11))[0]
     
     #subplot index
     index=0
@@ -167,22 +169,20 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
     #figure name
     fig_name='Sturctural Deformation'
     
-    #title font
-    title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
-    
-    #title
-    plt.annotate(fig_name,
-                 xy=(0,0),
-                 xytext=(0,10.16*global_shape[0]),
-                 fontproperties=title_font)
-    
     #re-name
     if with_fracture:
         
         fig_name+=' with fracture'
-        
+       
+    #animation folder path
+    progress_folder=case_path+'\\progress\\'
+    
+    Pa.GenerateFolder(progress_folder)
+    
     #save this fig
-    figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name+'.png',dpi=300,bbox_inches='tight')
+    figure.savefig(progress_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
+    
+    plt.close()
     
 #------------------------------------------------------------------------------
 """
@@ -208,15 +208,12 @@ def SingleStressOrStrainInProgress(structural_deformation_path,
     annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
         
     print('')
-    print('=>')
-    print(IAP.PostFix2Title(post_fix).strip())
-    print('...')
-    print('......')
+    print('--'+IAP.PostFix2Title(post_fix).strip())
     
     #percentage of progress
     progress_percentage=ProgressPercentageFromTXT(structural_deformation_path)
     
-    print('progress='+progress_percentage)
+    print('=>progress='+progress_percentage)
     
     #stress and strain itself
     file_path=structural_deformation_path.replace('structural deformation',post_fix)
@@ -240,8 +237,10 @@ def SingleStressOrStrainInProgress(structural_deformation_path,
     if with_fracture:
 
         #filter fracture matrix and plot farcture
-        Mat.MatrixFilter(fracture_matrix,0.23,1,show=True)
-
+        if type(Mat.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+            
+            print('==>WARNING: without fracture')
+            
     '''revision'''
     #decoration  
     Dec.TicksAndSpines(subplot_ax,1,1)
@@ -274,7 +273,7 @@ def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
     file_names=NP.FileNamesThisCase(folder_path)
 
     #new picture and ax
-    figure=plt.subplots(figsize=(13,9.6))[0]
+    figure=plt.subplots(figsize=(13,11))[0]
     
     #subplot index
     index=0
@@ -300,20 +299,48 @@ def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
     #figure name
     fig_name=IAP.PostFix2Title(post_fix)
     
-    #title font
-    title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
-    
-    #title
-    plt.annotate(fig_name,
-                 xy=(0,0),
-                 xytext=(0,10.16*global_shape[0]),
-                 fontproperties=title_font)
-    
     #re-name
     if with_fracture:
         
         fig_name+=' with fracture'
         
-    #save this fig
-    figure.savefig(r'C:\Users\魏华敬\Desktop'+'\\'+fig_name+'.png',dpi=300,bbox_inches='tight')
+    #animation folder path
+    progress_folder=case_path+'\\progress\\'
     
+    Pa.GenerateFolder(progress_folder)
+    
+    #save this fig
+    figure.savefig(progress_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
+    
+    plt.close()
+    
+#------------------------------------------------------------------------------
+"""
+Plot all progress
+
+Args:
+    case_path: load path of input files in a case
+    with_fracture: (bool) plot fracture or not 
+    
+Returns:
+    mass of PNGs in output folder
+"""
+def ProgressAll(case_path,with_fracture=True):
+
+    print('')
+    print('--Progress Plot')
+    
+    #strucural deformation
+    ProgressStructuralDeformation(case_path,with_fracture)
+    
+    list_post_fix=['stress\\mean normal',
+                   'stress\\maximal shear',
+                   'periodical strain\\volumetric',
+                   'periodical strain\\distortional',
+                   'cumulative strain\\volumetric',
+                   'cumulative strain\\distortional']
+
+    #stress and strain progress
+    for this_post_fix in list_post_fix:        
+    
+        ProgressStressOrStrain(case_path,this_post_fix)

@@ -16,6 +16,7 @@ demand:
 draw surface with stress or strain figure
 '''
 
+import os
 import imageio
 import copy as cp
 import numpy as np
@@ -45,7 +46,6 @@ Args:
     index_list: custom index of images
     test: if there is a test with a small amount of spheres
     show: if there is a window display
-    
 Returns:
     PNG, TXT, GIF in output folder
 """
@@ -303,14 +303,14 @@ def CasePlot(which_case_path,
 Total export depending on mode list of an experiment which contain a branch of cases
 
 Args:
-    which_case_path: load path of all input files
+    which_experiment_path: load path of all input files cases
     which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes 
     pixel_step: length of single pixel
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
 
 Returns:
-    mass of PNG, TXT, GIF in output folder
+    mass of PNGs, TXTs, GIFs in output folder
 """ 
 def ExperimentPlot(which_experiment_path,
                    which_plane,

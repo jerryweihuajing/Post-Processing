@@ -13,6 +13,10 @@ Created on Mon Aug 19 10:09:48 2019
 demand:
 1 progress of structural deformation, strain, stress 
 2 integral plot of structural deformation,strain,stress 5 or 7 figures
+3 proproate size and position (loose)
+4 change GIF location
+5 all images from a case path
+6 fracture on stress and deformation figure
 '''
 
 import copy as cp
@@ -24,6 +28,7 @@ import Path as Pa
 import Matrix as Mat
 import Global as Glo
 import ProgressPlot as PP
+import AnimationPlot as AP
 
 #------------------------------------------------------------------------------
 """
@@ -60,12 +65,11 @@ Args:
     file_path: load path of txt file
     mode: 'standard' 'all'
     with_fracture: (bool) plot fracture or not 
-    show: if there is a window display
 
 Returns:
     Figure path
 """
-def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=True,show=False):
+def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=True):
     
     print('')
     print('integral analysis')
@@ -100,7 +104,7 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
                        'periodical strain\\distortional']
     
         #new picture and ax
-        figure=plt.subplots(figsize=(10,6))[0]
+        figure=plt.subplots(figsize=(10,6.6))[0]
     
     if mode=='all':
         
@@ -113,7 +117,7 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
                        'cumulative strain\\distortional']
     
         #new picture and ax
-        figure=plt.subplots(figsize=(10,8.4))[0]
+        figure=plt.subplots(figsize=(10,9.6))[0]
         
     #calculate global norm
     global_shape=Glo.GlobalShapeFromCase(structural_deformation_path)
@@ -180,9 +184,30 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
     
     #save this fig
     figure.savefig(fig_path,dpi=300,bbox_inches='tight')
-
-    if not show:
         
-        plt.close()
-        
+    plt.close()
+    
     return fig_path
+
+#------------------------------------------------------------------------------
+"""
+Plot all integral analysis
+
+Args:
+    case_path: load path of input files in a case
+    with_fracture: (bool) plot fracture or not 
+    
+Returns:
+    mass of PNGs, GIFs in output folder
+"""    
+def IntegralAnalysisAll(case_path,with_fracture=True):
+    
+    print('')
+    print('--Integral Analysis Plot')
+    
+    #integral analysis
+    list_mode=['standard','all']
+    
+    for this_mode in list_mode:
+        
+        AP.AnimationIntegralAnalysis(case_path,this_mode,with_fracture)

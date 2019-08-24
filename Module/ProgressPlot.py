@@ -76,7 +76,7 @@ def SingleStructuralDeformationInProgress(file_path,
     annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
     
     print('')
-    print('--Structural Deformation')
+    print('-- Structural Deformation')
     
     #map between tag and rgb in this case
     rgb_map=Img.MapTagRGB(file_path)
@@ -84,7 +84,7 @@ def SingleStructuralDeformationInProgress(file_path,
     #percentage of progress
     progress_percentage=ProgressPercentageFromTXT(file_path)
     
-    print('=>progress='+progress_percentage)
+    print('-> progress='+progress_percentage)
     
     #Generate tag image and rgb image
     structural_deformation_img_tag=Mat.ImportMatrixFromTXT(file_path)
@@ -109,7 +109,7 @@ def SingleStructuralDeformationInProgress(file_path,
         #filter fracture matrix and plot farcture
         if type(Mat.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
             
-            print('==>WARNING: without fracture')
+            print('=> WARNING: without fracture')
         
     '''revision'''
     #decoration  
@@ -208,12 +208,12 @@ def SingleStressOrStrainInProgress(structural_deformation_path,
     annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
         
     print('')
-    print('--'+IAP.PostFix2Title(post_fix).strip())
+    print('-- '+IAP.PostFix2Title(post_fix).strip())
     
     #percentage of progress
     progress_percentage=ProgressPercentageFromTXT(structural_deformation_path)
     
-    print('=>progress='+progress_percentage)
+    print('-> progress='+progress_percentage)
     
     #stress and strain itself
     file_path=structural_deformation_path.replace('structural deformation',post_fix)
@@ -328,7 +328,7 @@ Returns:
 def ProgressAll(case_path,with_fracture=True):
 
     print('')
-    print('--Progress Plot')
+    print('-- Progress Plot')
     
     #strucural deformation
     ProgressStructuralDeformation(case_path,with_fracture)

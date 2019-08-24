@@ -24,6 +24,9 @@ demand 10:
     
 demand 11:
     add some annotation via print function
+    
+demand 12:
+    arrow symbol
 '''
 
 from __init__ import *

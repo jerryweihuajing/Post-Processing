@@ -32,6 +32,9 @@ Returns:
 """
 def AnimationIntegralAnalysis(case_path,mode='standard',with_fracture=True):
     
+    print('')
+    print('-- Animation Integral Analysis')
+    
     folder_path=case_path+'\\structural deformation\\values'
 
     #figures to generate GIF
@@ -77,6 +80,10 @@ Returns:
     None
 """   
 def AnimationIndividual(case_path,post_fix='structural deformation',with_fracture=True):
+    
+    print('')
+    print('-- Animation Individual')
+    print('-> '+IAP.PostFix2Title(post_fix).strip())
     
     #strutrual deformation path
     folder_path=case_path+'\\structural deformation\\values\\'

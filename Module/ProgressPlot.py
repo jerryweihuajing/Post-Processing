@@ -71,10 +71,6 @@ def SingleStructuralDeformationInProgress(file_path,
                                           subplot_ax,
                                           with_fracture=True,
                                           with_annotation=True):
-    
-    #annotation font
-    annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
-    
     print('')
     print('-- Structural Deformation')
     
@@ -118,6 +114,9 @@ def SingleStructuralDeformationInProgress(file_path,
     #sub annotation
     if with_annotation:
         
+        #annotation font
+        annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
+        
         subplot_ax.annotate(progress_percentage,
                              xy=(0,0),
                              xytext=(1.01*this_shape[1],0.23*this_shape[0]),
@@ -135,6 +134,9 @@ Returns:
     None
 """
 def ProgressStructuralDeformation(case_path,with_fracture=True):
+    
+    print('')
+    print('-- Progress Structural Deformation')
     
     #strutrual deformation path
     folder_path=case_path+'\\structural deformation\\values\\'
@@ -203,10 +205,6 @@ def SingleStressOrStrainInProgress(structural_deformation_path,
                                    subplot_ax,
                                    with_fracture=True,
                                    with_annotation=True):
-    
-    #annotation font
-    annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
-        
     print('')
     print('-- '+IAP.PostFix2Title(post_fix).strip())
     
@@ -248,6 +246,9 @@ def SingleStressOrStrainInProgress(structural_deformation_path,
     #sub annotation
     if with_annotation:
         
+        #annotation font
+        annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
+    
         subplot_ax.annotate(progress_percentage,
                              xy=(0,0),
                              xytext=(1.01*this_shape[1],0.23*this_shape[0]),
@@ -265,6 +266,10 @@ Returns:
     None
 """
 def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
+    
+    print('')
+    print('-- ProgressStressOrStrain')
+    print('-> '+IAP.PostFix2Title(post_fix).strip())
     
     #strutrual deformation path
     folder_path=case_path+'\\structural deformation\\values\\'

@@ -72,7 +72,7 @@ Returns:
 def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=True):
     
     print('')
-    print('integral analysis')
+    print('Single Integral Analysis In Progress')
 
     #title font
     title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=13)

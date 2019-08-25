@@ -9,6 +9,12 @@ Created on Sun Aug 25 01:27:55 2019
 @title：Module-Plot of an experiment
 """
 
+'''
+demand:
+1 add some annotation via print function
+2 arrow symbol
+'''
+
 import os
 
 import ProgressPlot as PP
@@ -26,6 +32,9 @@ Returns:
     mass of PNGs, TXTs, GIFs in output folder
 """ 
 def ExperimentPlotAll(experiment_path):
+    
+    print('')
+    print('-- Experiment Plot All')
     
     #cases folder
     folder_path=experiment_path+'\\output'

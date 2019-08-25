@@ -21,12 +21,6 @@ demand 9:
      
 demand 10:
     smooth stress and strain
-    
-demand 11:
-    add some annotation via print function
-    
-demand 12:
-    arrow symbol
 '''
 
 from __init__ import *

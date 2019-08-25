@@ -11,22 +11,16 @@ Created on Sat May  4 15:25:52 2019
 import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
-
-import sys,os
-
-if os.getcwd() not in sys.path:
     
-    sys.path.append(os.getcwd())
-    
-from Object import o_grid
-from Object import o_mesh
-from Object import o_square
-from Object import o_circle
-from Object import o_discrete_point
+import o_grid
+import o_mesh
+import o_square
+import o_circle
+import o_discrete_point
 
-from Module import Image as Img
-from Module import Dictionary as Dict
-from Module import Rasterization as Ra
+import Image as Img
+import Dictionary as Dict
+import Rasterization as Ra
  
 #==============================================================================
 #绘制所有的sphere对象

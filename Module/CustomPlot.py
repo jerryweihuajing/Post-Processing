@@ -16,26 +16,22 @@ demand:
 draw surface with stress or strain figure
 '''
 
+import os
+import imageio
 import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys,os,imageio
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
-from Module import Norm as No
-from Module import Path as Pa
-from Module import Image as Img
-from Module import NewPath as NP
-from Module import Decoration as Dec
-from Module import SpheresPlot as SP
-from Module import AxisBoundary as AB
-from Module import SpheresBoundary as SB
-from Module import NewSpheresGeneration as NSG
-from Module import SpheresAttributeMatrix as SAM
+import Norm as No
+import Path as Pa
+import Image as Img
+import NewPath as NP
+import Decoration as Dec
+import SpheresPlot as SP
+import AxisBoundary as AB
+import SpheresBoundary as SB
+import NewSpheresGeneration as NSG
+import SpheresAttributeMatrix as SAM
 
 #------------------------------------------------------------------------------
 """
@@ -289,13 +285,9 @@ def CasePlot(which_case_path,
                 
             #stress
             if 'stress' in this_mode:
-                
-#                print(this_mode)
-                
+                            
                 this_stress_mode=this_mode.strip('stress').strip('_')
-                
-#                print(this_stress_mode)
-                
+               
                 ModePlot(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
             
             #strain
@@ -311,14 +303,14 @@ def CasePlot(which_case_path,
 Total export depending on mode list of an experiment which contain a branch of cases
 
 Args:
-    which_case_path: load path of all input files
+    which_experiment_path: load path of all input files cases
     which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes 
     pixel_step: length of single pixel
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
 
 Returns:
-    mass of PNG, TXT, GIF in output folder
+    mass of PNGs, TXTs, GIFs in output folder
 """ 
 def ExperimentPlot(which_experiment_path,
                    which_plane,
@@ -326,12 +318,9 @@ def ExperimentPlot(which_experiment_path,
                    which_mode_list=None,
                    test=False):
     
-    #plus input
-    input_folder=which_experiment_path+'\\input'
-    
     #traverse
-    for this_case_name in os.listdir(input_folder):
+    for this_case_name in os.listdir(which_experiment_path):
         
-        this_case_path=input_folder+'\\'+this_case_name
+        this_case_path=which_experiment_path+'\\'+this_case_name
         
         CasePlot(this_case_path,which_plane,pixel_step,which_mode_list,test)        

@@ -14,16 +14,7 @@ demand:
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-    
-from Module import SpheresGeneration as SG
-
-from Module import StrainPlot as Strain
-from Module import StressPlot as Stress
+import StrainPlot as Strain
 
 #==============================================================================    
 #which values histogram

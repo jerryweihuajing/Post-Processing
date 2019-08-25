@@ -11,15 +11,9 @@ Created on Mon Jul 15 00:25:15 2019
 
 import numpy as np
 
-import sys,os
+from o_sphere import sphere
 
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
-from Object.o_sphere import sphere
-
-from Module import NewPath as NP
+import NewPath as NP
 
 #------------------------------------------------------------------------------
 """
@@ -56,18 +50,18 @@ def SamplePos(case_path):
 
 #------------------------------------------------------------------------------
 """
-Generate spheres position in a phase
+Generate spheres position in a progress
 
 Args:
     file_path: load path of file
     
 Returns:
-    spheres position list in a phase
+    spheres position list in a progress
 """
-def PhasePos(file_path):
+def ProgressPos(file_path):
     
-    #position of spheres in a phase
-    phase_pos=[]
+    #position of spheres in a progress
+    progress_pos=[]
     
     #all lines
     lines=open(file_path,'r').readlines()
@@ -87,26 +81,26 @@ def PhasePos(file_path):
             
             continue
           
-        phase_pos.append(np.array([float(this_str) for this_str in this_list[5:8]]))
+        progress_pos.append(np.array([float(this_str) for this_str in this_list[5:8]]))
         
-    return phase_pos
+    return progress_pos
         
 #------------------------------------------------------------------------------    
 """
-Generate spheres position in different phases in a case
+Generate spheres position in different progress in a case
 
 Args:
     case_path: load path of all input files
     
 Returns:
-    list which contain spheres position list of differnet phase
+    list which contain spheres position list of differnet progress
 """
-def AllPhasePos(case_path):
+def AllProgressPos(case_path):
     
     #input txt file names
     file_names=NP.FilePathsThisCase(case_path)
     
-    return [PhasePos(this_file_name) for this_file_name in file_names]
+    return [ProgressPos(this_file_name) for this_file_name in file_names]
       
 #------------------------------------------------------------------------------
 """
@@ -123,43 +117,43 @@ def GenerateSpheresMapWithSample(case_path):
     #Generate sample spheres position
     sample_pos=SamplePos(case_path)
         
-    #spheres position in different phases in a case
-    all_phase_pos=AllPhasePos(case_path)
+    #spheres position in different progresss in a case
+    all_progress_pos=AllProgressPos(case_path)
 
     #all input data in this path
     file_paths=NP.FilePathsThisCase(case_path)
     
-    #spheres map in all phase
-    map_all_phase_spheres={}
+    #spheres map in all progress
+    map_all_progress_spheres={}
     
     #traverse all file names
     for k in range(len(file_paths)):
     
-        file_path_this_phase=file_paths[k]
+        file_path_this_progress=file_paths[k]
         
         #all lines
-        lines_this_phase=open(file_path_this_phase,'r').readlines()
+        lines_this_progress=open(file_path_this_progress,'r').readlines()
         
         #list of sphere objects
-        spheres_this_phase=[]
+        spheres_this_progress=[]
             
-        #position of spheres in last phase
-        #1st phase 
+        #position of spheres in last progress
+        #1st progress
         if not k:
             
-            spheres_pos_last_phase=all_phase_pos[k]
+            spheres_pos_last_progress=all_progress_pos[k]
             
         #from index 1
         if k:
                        
-            spheres_pos_last_phase=all_phase_pos[k-1]
+            spheres_pos_last_progress=all_progress_pos[k-1]
         
-#        print(len(spheres_pos_this_phase))
-#        print(len(lines_this_phase))
+#        print(len(spheres_pos_this_progress))
+#        print(len(lines_this_progress))
                    
-        for kk in range(len(spheres_pos_last_phase)):
+        for kk in range(len(spheres_pos_last_progress)):
       
-            this_list=lines_this_phase[kk].strip('\n').split(',')
+            this_list=lines_this_progress[kk].strip('\n').split(',')
         
             #define new sphere object
             new_sphere=sphere()
@@ -172,7 +166,7 @@ def GenerateSpheresMapWithSample(case_path):
          
             #calculate displacement
             new_sphere.cumulative_displacemnet=new_sphere.position-sample_pos[kk]
-            new_sphere.periodical_displacemnet=new_sphere.position-spheres_pos_last_phase[kk]
+            new_sphere.periodical_displacemnet=new_sphere.position-spheres_pos_last_progress[kk]
             
             #plane: default XoY
             new_sphere.plane='XoY'
@@ -200,11 +194,11 @@ def GenerateSpheresMapWithSample(case_path):
             
 #            print(new_sphere.position)
             
-            spheres_this_phase.append(new_sphere)
+            spheres_this_progress.append(new_sphere)
             
-#        print(len(spheres_this_phase))
+#        print(len(spheres_this_progress))
         
         #collect it
-        map_all_phase_spheres[k]=spheres_this_phase
+        map_all_progress_spheres[k]=spheres_this_progress
         
-    return map_all_phase_spheres
+    return map_all_progress_spheres

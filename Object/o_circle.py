@@ -16,8 +16,9 @@ import sys,os
 if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
+
     
-from Module import Rasterization as Ra
+import Rasterization as Ra
 
 #==============================================================================
 #圆形

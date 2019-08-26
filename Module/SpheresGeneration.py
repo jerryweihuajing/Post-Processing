@@ -10,12 +10,10 @@ Created on Tue Jun 11 21:01:27 2019
 """
 
 import numpy as np
-import sys
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
-from Object.o_sphere import sphere
+from o_sphere import sphere
 
-from Module import NewPath as NP
+import NewPath as NP
 
 """
 Generate spheres objects from file (txt)

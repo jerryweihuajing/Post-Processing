@@ -12,15 +12,9 @@ Created on Mon Jun 24 10:22:18 2019
 import copy as cp
 import numpy as np
 
-import sys,os
+import o_pixel
 
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
-from Object import o_pixel
-
-from Module import Dictionary as Dict
+import Dictionary as Dict
 
 #from Object.o_pixel import pixel
 #from Object.o_layer import layer

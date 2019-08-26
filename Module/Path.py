@@ -10,14 +10,12 @@ Created on Tue Jun 11 20:57:01 2019
 """
 
 import os
-import sys
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
 
-from Module import Dictionary as Dict
+import Dictionary as Dict
 
 #============================================================================== 
 #在某路径下判断并创建文件夹
-def GenerateFold(path):
+def GenerateFolder(path):
 
     #去除首位空格
     path=path.strip()

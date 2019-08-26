@@ -2,9 +2,9 @@
 """
 Created on Tue Jun 11 21:25:04 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Intrgral Plot
 """
@@ -19,25 +19,19 @@ import matplotlib.pyplot as plt
 
 from matplotlib import colors
 
-import sys,os
+import StressPlot as Stress
+import StrainPlot as Strain
 
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
-from Module import StressPlot as Stress
-from Module import StrainPlot as Strain
-
-from Module import Path as Pa
-from Module import Image as Img
-from Module import NewPath as NP
-from Module import Decoration as Dec
-from Module import SpheresPlot as SP
-from Module import AxisBoundary as AB
-from Module import Interpolation as In
-from Module import ValueBoundary as VB
-from Module import SpheresBoundary as SB
-from Module import SpheresGeneration as SG
+import Path as Pa
+import Image as Img
+import NewPath as NP
+import Decoration as Dec
+import SpheresPlot as SP
+import AxisBoundary as AB
+import Interpolation as In
+import ValueBoundary as VB
+import SpheresBoundary as SB
+import SpheresGeneration as SG
 
 #==============================================================================
 #Transform Spheres into discrete points

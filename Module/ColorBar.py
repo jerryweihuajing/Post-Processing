@@ -9,18 +9,11 @@ Created on Mon May 27 14:01:01 2019
 @title：Module-Calculation about colorbar
 """
 
-import numpy as np
-import sys,os
 
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
 
-from matplotlib import colors
-
-from Module import Path as Pa
-from Module import IntegralPlot as IP
-from Module import SpheresGeneration as SG
+import Path as Pa
+import IntegralPlot as IP
+import SpheresGeneration as SG
 
 #organize the raw data
 #total path

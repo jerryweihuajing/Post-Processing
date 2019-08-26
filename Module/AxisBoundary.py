@@ -9,15 +9,6 @@ Created on Tue Jun 11 21:23:09 2019
 @title：Module-Axis Boundary
 """
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
-from Module import Path as Pa
-from Module import SpheresGeneration as SG
-
 #==============================================================================
 #根据spheres确定边界：单独一期的参数
 def LocalAxisBoundary(which_spheres):

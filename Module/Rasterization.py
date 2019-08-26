@@ -8,12 +8,6 @@ Created on Tue May 14 13:03:43 2019
 
 @title：Module-Rasterization of several geometric figures
 """
-
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
     
 import copy as cp
 import numpy as np

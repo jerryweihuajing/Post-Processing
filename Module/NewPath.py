@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Fri Jun 21 23:37:02 2019
 
@@ -34,15 +33,9 @@ stress: xx stress
 strain: xx strain
         ......  
 '''
-
-import sys,os
-
-if os.getcwd() not in sys.path:
     
-    sys.path.append(os.getcwd())
-    
-from Module import Path as Pa
-from Module import Dictionary as Dict
+import Path as Pa
+import Dictionary as Dict
 
 #------------------------------------------------------------------------------
 #construct all stress or all strain

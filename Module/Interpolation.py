@@ -2,9 +2,9 @@
 """
 Created on Mon Apr 29 12:17:04 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Spatial Interpolation
 """
@@ -27,11 +27,8 @@ import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys,os
-sys.path.append(os.getcwd())
-
-from Module import Image as Img
-from Module import MeshPoints as Mesh
+import Image as Img
+import MeshPoints as Mesh
 
 #==============================================================================     
 #计算两点之间的距离

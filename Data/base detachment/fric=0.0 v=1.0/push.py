@@ -25,7 +25,7 @@ rden = 2500
 #setting detachment materials ----- 
 dyoung = 2e7
 dpoisson = 0
-dfrictAng = math.atan(0) #default 0
+dfrictAng = math.atan(0.0) #default 0
 dreps = 0.001
 dden = 2100
 
@@ -72,17 +72,6 @@ box = geom.facetBox(( box_length/2, box_height/2,0),
                     ( box_length/2, box_height/2,box_depth/2),
                     wallMask = 5,
                     material = frict)
-
-#base detachment 
-base_detachment=False
-
-if base_detachment:
-
-    for this_wall in box:
-	    
-	if this_wall.state.pos[1]==0:
-	   
-	    this_wall.material=O.materials[detachment]
 
 #push plane
 wall = utils.wall(box_length, axis = 0, material = frict)
@@ -187,7 +176,7 @@ for i in spheres:
 		#salt detachment
 		if salt_detachment:
 
-			if maxh/2-height_salt/2<=O.bodies[i].state.pos[1]<=maxh/2-height_salt/2:
+			if maxh/2-height_salt/2<=O.bodies[i].state.pos[1]<=maxh/2+height_salt/2:
 		
 				O.bodies[i].shape.color = rgb_detachment
 				O.bodies[i].material = O.materials[detachment]

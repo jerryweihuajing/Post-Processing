@@ -17,9 +17,9 @@ if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
     
-from Object import o_line
+import o_line
 
-from Module import Rasterization as Ra
+import Rasterization as Ra
 
 #==============================================================================
 #Rectangle

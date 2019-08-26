@@ -12,12 +12,9 @@ Created on Wed Jun 12 22:35:33 2019
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys,os
-sys.path.append(os.getcwd())
-
-from Object import o_grid
-from Object import o_mesh
-from Object import o_discrete_point
+import o_grid
+import o_mesh
+import o_discrete_point
 
 #==============================================================================
 #显示二维散点

@@ -22,13 +22,10 @@ simple spheres boundary np.where to calculate the content
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys
-sys.path.append(r'C:\Users\whj\Desktop\Spyder\YADE\Stress Strain')
+import o_mesh
+import o_circle
 
-from Object import o_mesh
-from Object import o_circle
-
-from Module import Image as Img 
+import Image as Img 
 
 #============================================================================== 
 #Calculate the pixels up which the spheres take

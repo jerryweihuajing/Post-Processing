@@ -29,4 +29,5 @@ from __init__ import *
 experiment_path=os.getcwd()+'\\Data\\100-1000\\salt detachment\\fric=0.0 v=1.0'
 
 CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
+
 #EP.ExperimentPlotAll(experiment_path)

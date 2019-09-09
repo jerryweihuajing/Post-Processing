@@ -84,8 +84,8 @@ def ModePlot(which_case_path,
     values_folder=output_folder+'values\\'
     
     #Gnenerate these Folder
-    Pa.GenerateFold(images_folder)
-    Pa.GenerateFold(values_folder)
+    Pa.GenerateFolder(images_folder)
+    Pa.GenerateFolder(values_folder)
     
     #construct the map between postfix and colormap
     if which_input_mode=='stress':
@@ -319,8 +319,8 @@ def ExperimentPlot(which_experiment_path,
                    test=False):
     
     #traverse
-    for this_case_name in os.listdir(which_experiment_path):
+    for this_case_name in os.listdir(which_experiment_path+'\\input'):
         
-        this_case_path=which_experiment_path+'\\'+this_case_name
+        this_case_path=which_experiment_path+'\\input\\'+this_case_name
         
         CasePlot(this_case_path,which_plane,pixel_step,which_mode_list,test)        

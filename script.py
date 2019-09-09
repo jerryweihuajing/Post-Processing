@@ -26,8 +26,12 @@ demand 10:
 from __init__ import *
 
 #A experiment
+<<<<<<< HEAD
 experiment_path=os.getcwd()+'\\Data\\100-1000\\salt detachment\\fric=0.3 v=0.2'
+=======
+experiment_path=os.getcwd()+'\\Data\\100-1000\\base detachment\\fric=0.0 v=0.2'
+>>>>>>> dev_PC
 
-CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
+#CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
 
-#EP.ExperimentPlotAll(experiment_path)
+EP.ExperimentPlotAll(experiment_path)

@@ -2,9 +2,9 @@
 """
 Created on Sun May 26 15:11:51 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：execution script
 """
@@ -26,7 +26,7 @@ demand 10:
 from __init__ import *
 
 #A experiment
-experiment_path=os.getcwd()+'\\Data\\100-1000\\salt detachment\\fric=0.3 v=0.2'
+experiment_path=os.getcwd()+'\\Data\\100-1000\\salt detachment\\fric=0.0 v=1.0'
 
 #CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
 

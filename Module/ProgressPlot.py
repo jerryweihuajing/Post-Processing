@@ -348,4 +348,4 @@ def ProgressAll(case_path,with_fracture=True):
     #stress and strain progress
     for this_post_fix in list_post_fix:        
     
-        ProgressStressOrStrain(case_path,this_post_fix)
+        ProgressStressOrStrain(case_path,this_post_fix,with_fracture)

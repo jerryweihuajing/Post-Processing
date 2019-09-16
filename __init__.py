@@ -52,6 +52,7 @@ import AnimationPlot as AP
 import ExperimentPlot as EP
 import SpheresBoundary as SB
 import SpheresGeneration as SG
+import ImageSuperposition as IS
 import NewSpheresGeneration as NSG
 import IntegralAnalysisPlot as IAP
 import SpheresAttributeMatrix as SAM

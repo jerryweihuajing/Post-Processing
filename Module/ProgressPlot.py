@@ -110,6 +110,7 @@ def SingleStructuralDeformationInProgress(file_path,
     '''revision'''
     #decoration  
     Dec.TicksAndSpines(subplot_ax,1,1)
+    Dec.TicksConfiguration(subplot_ax)
     
     #sub annotation
     if with_annotation:
@@ -145,7 +146,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
     file_names=NP.FileNamesThisCase(folder_path)
 
     #new picture and ax
-    figure=plt.subplots(figsize=(13,11))[0]
+    figure,ax=plt.subplots(figsize=(13,13))
     
     #subplot index
     index=0
@@ -167,7 +168,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
         SingleStructuralDeformationInProgress(structural_deformation_path,this_ax,with_fracture)
         
         this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
-     
+ 
     #figure name
     fig_name='Sturctural Deformation'
     
@@ -242,6 +243,7 @@ def SingleStressOrStrainInProgress(structural_deformation_path,
     '''revision'''
     #decoration  
     Dec.TicksAndSpines(subplot_ax,1,1)
+    Dec.TicksConfiguration(subplot_ax)
     
     #sub annotation
     if with_annotation:
@@ -278,7 +280,7 @@ def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
     file_names=NP.FileNamesThisCase(folder_path)
 
     #new picture and ax
-    figure=plt.subplots(figsize=(13,11))[0]
+    figure=plt.subplots(figsize=(13,13))[0]
     
     #subplot index
     index=0

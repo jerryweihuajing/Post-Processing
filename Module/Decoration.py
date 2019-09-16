@@ -11,6 +11,7 @@ Created on Tue Jun 11 21:27:13 2019
 
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
+from matplotlib.pyplot import MultipleLocator
 
 #==============================================================================
 #用新字体表示中文图名
@@ -46,4 +47,27 @@ def TicksAndSpines(ax,
         ax.spines['left'].set_visible(False) 
         ax.spines['right'].set_visible(False)
         
+#------------------------------------------------------------------------------
+"""
+Configure ticks on ax
+
+Args:
+    which_ax: axes to be plotted
+    
+Returns:
+    None
+"""        
+def TicksConfiguration(which_ax):
+    
+    #major locator
+    which_ax.xaxis.set_major_locator(MultipleLocator(100))
+    which_ax.yaxis.set_major_locator(MultipleLocator(50))
+    
+    #minor locator
+    which_ax.xaxis.set_minor_locator(MultipleLocator(20))
+    which_ax.yaxis.set_minor_locator(MultipleLocator(10))
+    
+    plt.tick_params(labelsize=10)
+    labels = which_ax.get_xticklabels() + which_ax.get_yticklabels()
+    [label.set_fontname('Times New Roman') for label in labels]
         

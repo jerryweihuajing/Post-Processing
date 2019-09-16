@@ -16,9 +16,6 @@ demand 3:
 demand 4:
     combine 2 images on transparency
     
-demand 9:
-     unit and font
-     
 demand 10:
     smooth stress and strain
 '''
@@ -26,8 +23,19 @@ demand 10:
 from __init__ import *
 
 #A experiment
-experiment_path=os.getcwd()+'\\Data\\100-1000\\salt detachment\\fric=0.0 v=1.0'
+experiment_path=os.getcwd()+'\\Data\\100-1000\\base detachment\\fric=0.0 v=1.0'
 
 #CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
 
 EP.ExperimentPlotAll(experiment_path)
+
+
+'''for testing'''
+#case_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\Data\100-1000\base detachment\fric=0.3 v=1.0\output\base=5.45'
+#
+#PP.ProgressStructuralDeformation(case_path,with_fracture=True)
+#
+#file_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\Data\100-1000\base detachment\fric=0.3 v=1.0\output\base=5.45\structural deformation\values\27.87%.txt'
+#
+#IAP.SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=True)
+#IAP.SingleIntegralAnalysisInProgress(file_path,mode='all',with_fracture=True)

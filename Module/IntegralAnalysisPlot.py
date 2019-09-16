@@ -104,7 +104,7 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
                        'periodical strain\\distortional']
     
         #new picture and ax
-        figure=plt.subplots(figsize=(10,6.6))[0]
+        figure=plt.subplots(figsize=(13,10))[0]
     
     if mode=='all':
         
@@ -117,7 +117,7 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
                        'cumulative strain\\distortional']
     
         #new picture and ax
-        figure=plt.subplots(figsize=(10,9.6))[0]
+        figure=plt.subplots(figsize=(13,14))[0]
         
     #calculate global norm
     global_shape=Glo.GlobalShapeFromCase(structural_deformation_path)

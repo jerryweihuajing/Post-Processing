@@ -54,8 +54,43 @@ Args:
 Returns:
     modified PNG image
 """ 
-def SuperposeImages(image_background,image_attachment):
+def OpacitySuperposeImages(image_background,image_attachment):
     
     plt.subplots()
     plt.imshow(image_background)
     plt.imshow(ModifyOpacity(image_attachment,0.5))
+
+#------------------------------------------------------------------------------
+"""
+superpose 2 images by adding rgb values
+
+Args:
+    image_background: image matrix of background
+    image_attachment: image matrix of attachment
+        
+Returns:
+    modified PNG image
+"""
+def RGBSuperposeImages(image_background,image_attachment):
+    
+    #make sure shapes of 2 images are the same
+    if np.shape(image_background)!=np.shape(image_attachment):
+        
+        print('--ERROR: Incorrect shape')
+        
+        return
+    
+    #ratio of which image background RGB is in charge
+    ratio=0.6
+    
+    #new image which was produced
+    superposed_image=np.zeros(np.shape(image_background))
+    
+    for i in range(np.shape(superposed_image)[0]):
+        
+        for j in range(np.shape(superposed_image)[1]):
+            
+            superposed_image[i,j]=ratio*image_background[i,j]+(1-ratio)*image_attachment[i,j]
+            
+    plt.figure()
+    plt.imshow(superposed_image)

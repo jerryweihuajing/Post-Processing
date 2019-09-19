@@ -26,6 +26,7 @@ import Matrix as Mat
 import Global as Glo
 import NewPath as NP
 import Decoration as Dec
+import ImageSmoothing as ISm
 import IntegralAnalysisPlot as IAP
 
 #------------------------------------------------------------------------------
@@ -220,14 +221,14 @@ def SingleStressOrStrainInProgress(structural_deformation_path,
     #plot fracture
     fracture_file_path=structural_deformation_path.replace('structural deformation','cumulative strain\\distortional')
     
-    #fracture matrix
-    fracture_matrix=Mat.ImportMatrixFromTXT(fracture_file_path)
-    
+    #fracture matrix and smooth
+    fracture_matrix=ISm.ImageSmooth(Mat.ImportMatrixFromTXT(fracture_file_path))
+
     #shape of this img
     this_shape=np.shape(fracture_matrix)
     
     #show image    
-    Mat.DisplayImageFromTXT(file_path,1)
+    Mat.DisplayImageFromTXT(file_path,1,1)
     
     #show outline
     Mat.DisplayOutlineFromTXT(file_path,1)

@@ -15,6 +15,7 @@ from matplotlib import colors
 
 import Image as Img
 import Global as Glo
+import ImageSmoothing as ISm
 
 #------------------------------------------------------------------------------
 """
@@ -62,13 +63,14 @@ Display image matrix from txt file
 
 Args:
     txt_path: file path which contains values matrix
+    smooth: (bool) whether image is smooth
     flip: (bool) whether the image flips
     global_norm: external output to reduce calculation
     
 Returns:
     None
 """
-def DisplayImageFromTXT(txt_path,flip=False,global_norm=None):
+def DisplayImageFromTXT(txt_path,smooth=True,flip=False,global_norm=None):
     
     #image matrix
     matrix=ImportMatrixFromTXT(txt_path)
@@ -76,6 +78,10 @@ def DisplayImageFromTXT(txt_path,flip=False,global_norm=None):
     if flip:
         
         matrix=Img.ImgFlip(matrix,0)
+        
+    if smooth:
+        
+        matrix=ISm.ImageSmooth(matrix)
         
     #strain
     if 'strain' in txt_path:

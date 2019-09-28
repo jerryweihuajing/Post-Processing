@@ -93,7 +93,7 @@ def SingleStructuralDeformationInProgress(file_path,
     fracture_file_path=file_path.replace('structural deformation','cumulative strain\\distortional')
     
     #fracture matrix
-    fracture_matrix=Mat.ImportMatrixFromTXT(fracture_file_path)
+    fracture_matrix=ISm.ImageSmooth(Mat.ImportMatrixFromTXT(fracture_file_path))
     
     #shape of this img
     this_shape=np.shape(fracture_matrix)

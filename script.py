@@ -15,7 +15,7 @@ demand 3:
      
 demand 10:
     smooth stress and strain
-    
+     
 demand 11:
     gaussian convolution by matrix 
     
@@ -26,7 +26,7 @@ demand 12:
 from __init__ import *
 
 #A experiment
-experiment_path=os.getcwd()+'\\Data\\100-1000\\base detachment\\fric=0.0 v=1.0'
+experiment_path=os.getcwd()+'\\Data\\100-1000\\base detachment\\fric=0.0 v=0.2'
 
 #CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
 

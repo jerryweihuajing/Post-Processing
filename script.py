@@ -15,6 +15,9 @@ demand 3:
     
 demand 4:
     add colorbar
+    
+demand 5:
+    comparision as an experiment
 '''
 
 from __init__ import *

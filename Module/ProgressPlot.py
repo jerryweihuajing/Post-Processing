@@ -14,6 +14,9 @@ demand:
 1 show axis and ticks
 2 develop with_fracture mode BUTTON
 3 transform file path into case path
+4 smooth stress and strain
+5 gaussian convolution by matrix 
+6 convolution considering nan
 '''
 
 import numpy as np

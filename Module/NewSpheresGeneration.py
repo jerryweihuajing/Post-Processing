@@ -26,9 +26,9 @@ Returns:
     sample spheres position lists
 """
 def SamplePos(case_path):
-    
+
     #path of sample
-    sample_path=case_path.split('input')[0]+'sample.txt'
+    sample_path='\\'.join(case_path.split('\\')[:-4])+'\\sample.txt'
     
     #all lines of sample
     sample_lines=open(sample_path,'r').readlines()[1:]

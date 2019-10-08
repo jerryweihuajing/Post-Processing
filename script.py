@@ -23,7 +23,7 @@ demand 5:
 from __init__ import *
 
 #A experiment
-experiment_path=os.getcwd()+'\\Data\\100-1000\\base detachment\\fric=0.0 v=0.2'
+experiment_path=os.getcwd()+'\\Data\\100-500\\base detachment\\fric=0.0 v=0.2'
 
 #CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
 

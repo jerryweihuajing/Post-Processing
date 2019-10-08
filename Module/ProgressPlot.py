@@ -282,10 +282,21 @@ def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
     
     #file names in pogress order
     file_names=NP.FileNamesThisCase(folder_path)
-
-    #new picture and ax
-    figure=plt.subplots(figsize=(13,13))[0]
     
+    #custom scale
+    scale='100-500'
+    
+    #new picture and ax
+    #100-1000
+    if scale=='100-1000':
+        
+        figure=plt.subplots(figsize=(13,13))[0]
+        
+    #100-500
+    if scale=='100-1000':
+    
+        figure=plt.subplots(figsize=(7,13))[0]
+            
     #subplot index
     index=0
     

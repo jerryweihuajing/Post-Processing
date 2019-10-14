@@ -10,9 +10,7 @@ Created on Sun May 26 15:11:51 2019
 """
 
 ''' 
-demand 3:
-    improve morphorlogy of outline
-    
+
 demand 4:
     add colorbar
     
@@ -23,8 +21,8 @@ demand 5:
 from __init__ import *
 
 #A experiment
-experiment_path=os.getcwd()+'\\Data\\100-500\\base detachment\\fric=0.0 v=0.2'
+experiment_path=os.getcwd()+'\\Data\\100-500\\base detachment\\fric=0.1 v=0.2'
 
-#CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
+CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
 
 EP.ExperimentPlotAll(experiment_path)

@@ -113,7 +113,7 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
             figure=plt.subplots(figsize=(13,10))[0]
             
         #100-500
-        if scale=='100-1000':
+        if scale=='100-500':
         
             figure=plt.subplots(figsize=(7,10))[0]
     
@@ -134,7 +134,7 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
             figure=plt.subplots(figsize=(13,14))[0]
         
         #100-500
-        if scale=='100-1000':
+        if scale=='100-500':
             
             figure=plt.subplots(figsize=(7,14))[0]
         

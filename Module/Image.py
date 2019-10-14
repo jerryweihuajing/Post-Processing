@@ -155,7 +155,7 @@ def ImageTag2RGB(img_tag,map_tag_rgb):
     #define new matrix
     img_rgb=np.full(img_rgb_shape,1.0)
     
-    #给img_rgb矩阵赋值
+    #give value to img_rgb
     for i in range(np.shape(img_rgb)[0]):
         
         for j in range(np.shape(img_rgb)[1]):

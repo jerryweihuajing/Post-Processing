@@ -17,6 +17,11 @@ import Image as Img
 import Global as Glo
 import ImageSmoothing as ISm
 
+'''
+demand: 
+1 improve morphorlogy of outline
+'''
+
 #------------------------------------------------------------------------------
 """
 Generate image matrix from txt file
@@ -107,7 +112,95 @@ def DisplayImageFromTXT(txt_path,smooth=True,flip=False,global_norm=None):
     if 'structural_deformation' in txt_path:
         
         plt.imshow(matrix)
+ 
+#------------------------------------------------------------------------------
+"""
+Calculate 8-neighborhood based on index in an image
+
+Args:
+    index: image pixel index
+
+Returns:
+    8-neighborhood coordinates list
+"""
+def NeighborInImage(index):
+    
+    i,j=index
+    
+    return [[i+x,j+y] for x in[-1,0,1] for y in [-1,0,1]]
+
+#------------------------------------------------------------------------------
+"""
+Improve morphorlogy of outline
+
+Args:
+    outline: 0,1 matrix of outline
+
+Returns:
+    content to add to outline image
+"""
+def OutlineImprovement(outline):
+    
+    #store surface information
+    map_surface={}
+    
+    for j in range(np.shape(outline)[1]):
         
+        for i in range(np.shape(outline)[0]):
+            
+            if outline[i,j]==1:
+                
+                map_surface[j]=i
+                
+                break
+    
+    #to plot the surface
+    img_surface=np.zeros(np.shape(outline))
+    
+    #coordinates of surface
+    content_surface=[]
+    
+    for this_j in list(map_surface.keys()):
+        
+        img_surface[map_surface[this_j],this_j]=1
+        content_surface.append([map_surface[this_j],this_j])
+        
+    #plt.imshow(img_surface,cmap='gray')
+    
+    #improve surface
+    content_to_add=[]
+        
+    for k in range(len(content_surface)-1):
+        
+        if content_surface[k] not in NeighborInImage(content_surface[k+1]):
+    
+            #relative position
+            if content_surface[k][0]>content_surface[k+1][0]:
+                
+                offset=content_surface[k+1][0]+1-content_surface[k][0]
+                
+            if content_surface[k][0]<content_surface[k+1][0]:
+                
+                offset=content_surface[k+1][0]-1-content_surface[k][0]
+               
+            #collect new coordinates
+            for this_offset in list(np.linspace(offset,0,abs(offset)+1)):
+                
+                if this_offset==0:
+                    
+                    continue
+    
+                content_to_add.append([content_surface[k][0]+int(this_offset),content_surface[k][1]])
+    
+    #plot surface
+    for this_i,this_j in content_surface+content_to_add:
+        
+        img_surface[this_i,this_j]=1
+        
+#    plt.imshow(img_surface,cmap='gray')
+    
+    return content_to_add
+       
 #------------------------------------------------------------------------------
 """
 Calculate outline from txt file
@@ -146,7 +239,12 @@ def ImportOutlineFromTXT(txt_path):
             if not np.isnan(which_matrix[i,j]):
                 
                 outline_matrix[i:,j]=1          
-               
+    
+    #improve outline
+    for this_i,this_j in OutlineImprovement(outline_matrix):
+        
+        outline_matrix[this_i,this_j]=1 
+        
     return outline_matrix
 
 #------------------------------------------------------------------------------

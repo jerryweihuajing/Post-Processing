@@ -150,7 +150,15 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
     file_names=NP.FileNamesThisCase(folder_path)
 
     #new picture and ax
-    figure,ax=plt.subplots(figsize=(13,13))
+    #100-1000
+    if '100-1000' in case_path:
+        
+        figure=plt.subplots(figsize=(13,13))[0]
+        
+    #100-500
+    if '100-500' in case_path:
+    
+        figure=plt.subplots(figsize=(7,13))[0]
     
     #subplot index
     index=0
@@ -274,7 +282,7 @@ Returns:
 def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
     
     print('')
-    print('-- ProgressStressOrStrain')
+    print('-- Progress Stress Or Strain')
     print('-> '+IAP.PostFix2Title(post_fix).strip())
     
     #strutrual deformation path
@@ -283,17 +291,14 @@ def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
     #file names in pogress order
     file_names=NP.FileNamesThisCase(folder_path)
     
-    #custom scale
-    scale='100-500'
-    
     #new picture and ax
     #100-1000
-    if scale=='100-1000':
+    if '100-1000' in case_path:
         
         figure=plt.subplots(figsize=(13,13))[0]
         
     #100-500
-    if scale=='100-500':
+    if '100-500' in case_path:
     
         figure=plt.subplots(figsize=(7,13))[0]
             

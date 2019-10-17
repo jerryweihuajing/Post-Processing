@@ -31,3 +31,22 @@ def DictSortByIndex(which_dict,which_keys):
         that_dict[this_key]=which_dict[this_key]
         
     return that_dict
+
+#------------------------------------------------------------------------------
+"""
+The dictionary searches for key by value
+
+Args:
+    which_dict: dict to be arranged
+    which_value: value to search
+    
+Returns:
+    key for which is searched
+""" 
+def DictKeyOfValue(which_dict,value):
+    
+    keys=list(which_dict.keys())
+    values=list(which_dict.values())
+    
+    #The value to query is value
+    return keys[values.index(value)]

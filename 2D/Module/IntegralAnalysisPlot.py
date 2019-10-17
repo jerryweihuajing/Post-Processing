@@ -95,9 +95,6 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
     #shape of this img
     this_shape=np.shape(fracture_matrix)
     
-    #custom scale
-    scale='100-500'
-    
     if mode=='standard':
     
         list_post_fix=['structural deformation',
@@ -108,12 +105,12 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
     
         #new picture and ax
         #100-1000
-        if scale=='100-1000':
+        if '100-1000' in file_path:
             
             figure=plt.subplots(figsize=(13,10))[0]
             
         #100-500
-        if scale=='100-500':
+        if '100-500' in file_path:
         
             figure=plt.subplots(figsize=(7,10))[0]
     
@@ -129,12 +126,12 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
     
         #new picture and ax
         #100-1000
-        if scale=='100-1000':
+        if '100-1000' in file_path:
             
             figure=plt.subplots(figsize=(13,14))[0]
         
         #100-500
-        if scale=='100-500':
+        if '100-500' in file_path:
             
             figure=plt.subplots(figsize=(7,14))[0]
         

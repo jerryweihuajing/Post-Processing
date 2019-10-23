@@ -98,14 +98,14 @@ def MapTagRGB(file_path):
     for this_line in lines:
       
         this_list=this_line.strip('\n').split(',')
-    
-        #extract this rgb value
-        this_color=[float(this_str) for this_str in this_list[2:5]]
         
         #invalid information line
         if len(this_list)!=correct_length:
             
             continue
+
+        #extract this rgb value
+        this_color=[float(this_str) for this_str in this_list[2:5]]
         
         #for the same
         this_stress_tensor=np.array([float(this_str) for this_str in this_list[8:]])

@@ -55,7 +55,7 @@ def StressNorm(which_spheres_list,which_plane,which_output_mode):
         #collect
         list_z_values_min.append(z_values_min)
         list_z_values_max.append(z_values_max)
-        
+          
     #pos_z maximum and minimum
     z_values_min=np.min(list_z_values_min)
     z_values_max=np.max(list_z_values_max)

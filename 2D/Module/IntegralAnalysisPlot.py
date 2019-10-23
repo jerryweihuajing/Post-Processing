@@ -120,8 +120,8 @@ def SingleIntegralAnalysisInProgress(file_path,mode='standard',with_fracture=Tru
                        'stress\\mean normal',
                        'stress\\maximal shear',
                        'periodical strain\\volumetric',
-                       'periodical strain\\distortional',
                        'cumulative strain\\volumetric',
+                       'periodical strain\\distortional',
                        'cumulative strain\\distortional']
     
         #new picture and ax

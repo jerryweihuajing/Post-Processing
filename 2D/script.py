@@ -20,8 +20,22 @@ demand 5:
 from __init__ import *
 
 #A experiment
-experiment_path=os.getcwd()+'\\Data\\100-500\\salt detachment\\fric=0.0 v=0.2'
+#experiment_path=os.getcwd()+'\\Data\\100-500\\base detachment\\fric=0.0 v=1.0'
 
 #CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
 
-EP.ExperimentPlotAll(experiment_path)
+#EP.ExperimentPlotAll(experiment_path)
+
+#experiment_folder=os.getcwd()+'\\Data\\100-500\\base detachment'
+#
+#for this_experiment in os.listdir(experiment_folder):
+#    
+#    #concat data path
+#    this_experiment_path=experiment_folder+'\\'+this_experiment
+#    
+#    print(this_experiment_path)
+#    
+#    CP.ExperimentPlot(this_experiment_path,'XoY',1,'standard')
+#
+#    EP.ExperimentPlotAll(this_experiment_path)
+    

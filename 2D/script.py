@@ -39,3 +39,30 @@ from __init__ import *
 #
 #    EP.ExperimentPlotAll(this_experiment_path)
     
+
+#a=[[0.50,0.50,0.50],[1.00,0.00,0.00],[0.00,1.00,0.00],[1.00,1.00,0.00],[0.85,0.85,0.85],[0.00,1.00,1.00],]
+#
+#b=[]
+#
+#for this in a:
+#    
+#    that=[]
+#    
+#    for item in this:
+#        
+#        bit=int(item*256)
+#        
+#        if bit>0:
+#            
+#            that.append(bit-1)
+#            
+#        else:
+#            
+#            that.append(bit)
+#        
+#    b.append(that)
+#    
+#    
+#c=[k for k in range(len(b))]
+#
+#map_color=dict(zip(c,b))

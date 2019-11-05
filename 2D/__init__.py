@@ -60,3 +60,5 @@ import SpheresAttributeMatrix as SAM
 
 import StrainPlot as Strain
 import StressPlot as Stress
+
+import HPC_ExperimentPlot as HPC_EP

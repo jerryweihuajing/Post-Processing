@@ -24,7 +24,7 @@ from __init__ import *
 
 #CP.ExperimentPlot(experiment_path,'XoY',1,'standard')
 
-#EP.ExperimentPlotAll(experiment_path)
+#HPC_EP.ExperimentPlotAll(experiment_path)
 
 #experiment_folder=os.getcwd()+'\\Data\\100-500\\base detachment'
 #
@@ -40,29 +40,6 @@ from __init__ import *
 #    EP.ExperimentPlotAll(this_experiment_path)
     
 
-#a=[[0.50,0.50,0.50],[1.00,0.00,0.00],[0.00,1.00,0.00],[1.00,1.00,0.00],[0.85,0.85,0.85],[0.00,1.00,1.00],]
-#
-#b=[]
-#
-#for this in a:
-#    
-#    that=[]
-#    
-#    for item in this:
-#        
-#        bit=int(item*256)
-#        
-#        if bit>0:
-#            
-#            that.append(bit-1)
-#            
-#        else:
-#            
-#            that.append(bit)
-#        
-#    b.append(that)
-#    
-#    
-#c=[k for k in range(len(b))]
-#
-#map_color=dict(zip(c,b))
+a_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-1000\base detachment\fric=0.0 v=0.2\output\base=0.00\structural deformation\values\0.00%.txt'
+
+global_shape=Glo.GlobalShapeFromCase(a_path)

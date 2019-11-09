@@ -37,16 +37,27 @@ def PostFix2Title(which_post_fix):
     #S+C to C+S
     temp_str.reverse()
 
+    #output str
     title_str=''
     
-    for this_part in temp_str:
+    #strain mode
+    if 'strain' in temp_str[-1]:
         
-        for this_str in this_part.split(' '):
+        title_str_list=[temp_str[-1].split(' ')[0],
+                        temp_str[0],
+                        temp_str[-1].split(' ')[1]]
+        
+    #stress and deformation    
+    else:
+        
+        title_str_list=temp_str[0].split(' ')+[temp_str[-1]]
 
-            title_str+=' '+this_str[0].upper()+this_str[1:]
-         
+    for this_str in title_str_list:
+        
+        title_str+=' '+this_str[0].upper()+this_str[1:]
+       
     return title_str
-
+    
 #------------------------------------------------------------------------------
 """
 Plot integral analysis of a progress

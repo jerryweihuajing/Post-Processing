@@ -43,3 +43,5 @@ from __init__ import *
 a_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-1000\base detachment\fric=0.0 v=0.2\output\base=0.00\structural deformation\values\0.00%.txt'
 
 global_shape=Glo.GlobalShapeFromCase(a_path)
+
+

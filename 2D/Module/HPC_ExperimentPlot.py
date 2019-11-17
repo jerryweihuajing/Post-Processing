@@ -320,6 +320,8 @@ def SingleStructuralDeformationInProgress(which_progress,
                             xytext=(1.01*this_shape[1],0.23*this_shape[0]),
                             fontproperties=annotation_font)
 
+list_post_fix=[]
+
 #------------------------------------------------------------------------------
 """
 Plot single stress of strain in different progress with fracture
@@ -340,11 +342,8 @@ def SingleStressOrStrainInProgress(which_progress,
                                    with_fracture=True,
                                    with_annotation=True):
     print('')
-    '''correct it directly'''
-    print('-- '+HPC_IAP.PostFix2Title(post_fix).strip())
-    
-    list_post_fix=[]
-    
+    print('-- '+post_fix)
+
     #percentage of progress
     progress_percentage=which_progress.percentage
     

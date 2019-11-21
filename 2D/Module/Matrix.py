@@ -225,7 +225,10 @@ def ImportOutlineFromTXT(txt_path):
         for i in range(np.shape(which_matrix)[0]):    
             
             if not np.isnan(which_matrix[i,j]):
-                 
+  
+                if i:
+                    i-=1
+                    
                 outline_matrix[i,j]=1
                 outline_matrix[-1,j]=1
                 

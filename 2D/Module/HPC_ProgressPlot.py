@@ -281,13 +281,13 @@ def ProgressAll(case_path,with_fracture=True):
     #strucural deformation
     ProgressStructuralDeformation(case_path,with_fracture)
     
-    list_post_fix=['stress\\mean normal',
-                   'stress\\maximal shear',
-                   'periodical strain\\volumetric',
-                   'periodical strain\\distortional',
-                   'cumulative strain\\volumetric',
-                   'cumulative strain\\distortional']
-
+    list_post_fix=['Mean Normal Stress',
+                   'Maximal Shear Stress',
+                   'Periodical Volumetric Strain',
+                   'Periodical Distortional Strain',
+                   'Cumulative Volumrtric Strain',
+                   'Cumulative Distortional Strain']
+    
     #stress and strain progress
     for this_post_fix in list_post_fix:        
     

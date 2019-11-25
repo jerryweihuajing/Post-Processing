@@ -258,7 +258,6 @@ def ExperimentConstruction(experiment_path):
         
     return that_experiment
 
-
 #------------------------------------------------------------------------------
 """
 Plot single structural deformation in different progress with fracture
@@ -274,7 +273,7 @@ Returns:
 """
 def SingleStructuralDeformationInProgress(which_progress,
                                           subplot_ax,
-                                          with_fracture=True,
+                                          with_fracture=False,
                                           with_annotation=True):
     print('')
     print('-- Structural Deformation')
@@ -473,7 +472,9 @@ experiment_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-500\base d
 
 #a_case=CaseConstruction(case_path)
 
-structural_deformation_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-500\base detachment\fric=0.0 v=0.2\output\base=0.00\structural deformation\values\27.87%.txt'
+
+
+structural_deformation_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-500\base detachment\fric=0.0 v=0.2\output\base=10.87\structural deformation\values\27.87%.txt'
 
 a_progress=ProgressConstruction(structural_deformation_path)
 
@@ -487,18 +488,154 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import Decoration as Dec
 
-
-ax=plt.subplot()   
+#ax=plt.subplot()   
 #SingleStressOrStrainInProgress(a_progress,'Periodical Distortional Strain',ax)
-SingleStressOrStrainInProgress(a_progress,'Periodical Volumetric Strain',ax)
+#SingleStressOrStrainInProgress(a_progress,'Periodical Volumetric Strain',ax)
 
 #SingleStressOrStrainInProgress(a_progress,'Maximal Shear Stress',ax)
 #SingleStressOrStrainInProgress(a_progress,'Mean Normal Stress',ax)
 
-
 #global shape of progress or integral analysis
-global_shape=(100,500)
+#global_shape=(100,500)
+#
+#ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
 
-ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
+#------------------------------------------------------------------------------
+"""
+Plot integral analysis of a progress
+
+Args:
+    output_folder: folder to contain result
+    which_progress: progress object
+    mode: 'standard' 'all'
+    with_farcture: (bool) plot fracture and interface or not 
+
+Returns:
+    Figure path
+"""
+def SingleIntegralAnalysisInProgress(which_progress,
+                                     mode='standard',
+                                     with_fracture=True):
+    
+    print('')
+    print('Single Integral Analysis In Progress')
+
+    #title font
+    title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=13)
+    
+    #annotation font
+    annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=13)
+    
+    list_stress_or_strain=['Structural Deformation',
+                           'Mean Normal Stress',
+                           'Maximal Shear Stress',
+                           'Periodical Volumetric Strain',
+                           'Periodical Distortional Strain']
+    
+    figure=plt.subplots(figsize=(7,10))[0]
+    
+#    if mode=='standard':
+#    
+#        list_stress_or_strain=['Mean Normal Stress',
+#                               'Maximal Shear Stress',
+#                               'Periodical Volumetric Strain',
+#                               'Periodical Distortional Strain']
+#        
+#        #new picture and ax
+#        #100-1000
+#        if '100-1000' in file_path:
+#            
+#            figure=plt.subplots(figsize=(13,10))[0]
+#            
+#        #100-500
+#        if '100-500' in file_path:
+#        
+#            figure=plt.subplots(figsize=(7,10))[0]
+#    
+#    if mode=='all':
+#        
+#        list_stress_or_strain=['Mean Normal Stress',
+#                               'Maximal Shear Stress',
+#                               'Periodical Volumetric Strain',
+#                               'Periodical Distortional Strain',
+#                               'Cumulative Volumrtric Strain',
+#                               'Cumulative Distortional Strain']
+#    
+#        #new picture and ax
+#        #100-1000
+#        if '100-1000' in file_path:
+#            
+#            figure=plt.subplots(figsize=(13,14))[0]
+#        
+#        #100-500
+#        if '100-500' in file_path:
+#            
+#            figure=plt.subplots(figsize=(7,14))[0]
+    
+    #global shape of progress or integral analysis
+    global_shape=(100,500)   
+     
+    #shape of this img
+    this_shape=np.shape(which_progress.fracture)
+    
+    #subplot index
+    index=0
+    
+    for this_post_fix in list_stress_or_strain:
+        
+        #iter
+        index+=1
+        
+        this_ax=plt.subplot(len(list_stress_or_strain),1,index)
+        
+        if index==1:
+            
+            #structural deformation
+            SingleStructuralDeformationInProgress(which_progress,this_ax,0,0)
+
+        if index>1:
+            
+            #stress and strain
+            SingleStressOrStrainInProgress(which_progress,this_post_fix,this_ax,0,0)    
+            
+        this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
+        
+        #sub annotation
+        this_ax.annotate(which_progress.percentage,
+                         xy=(0,0),
+                         xytext=(1.01*this_shape[1],0.23*this_shape[0]),
+                         fontproperties=annotation_font)
+    
+        #sub title
+        this_ax.annotate(this_post_fix,
+                         xy=(0,0),
+                         xytext=(0,1.023*global_shape[0]),
+                         fontproperties=title_font)
+        
+        this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
+     
+#    #figure name
+#    fig_name=which_progress.percentage
+#
+#    #re-name
+#    if with_fracture:
+#        
+#        fig_name+=' with fracture'
+#        
+#    output_folder=file_path.split('structural deformation')[0]+'integral analysis\\'
+#    
+#    #generate folder
+#    Pa.GenerateFolder(output_folder)
+#    
+#    #figure path
+#    fig_path=output_folder+fig_name+' ('+mode+').png'
+#    
+#    #save this fig
+#    figure.savefig(fig_path,dpi=300,bbox_inches='tight')
+        
+#    plt.close()
+    
+#    return fig_path
 
 
+SingleIntegralAnalysisInProgress(a_progress)

@@ -24,83 +24,114 @@ import HPC_IntegralAnalysisPlot as HPC_IAP
 
 #------------------------------------------------------------------------------
 """
-Calculate progress percentage from file path
+Plot single structural deformation in different progress with fracture
 
 Args:
-    file_path: load path of research case
-    
-Returns:
-    percentage of progress
-"""
-def ProgressPercentageFromTXT(file_path):
-    
-    #where is the %
-    percentage_index=file_path.index('%')
-    
-    #start char
-    start_char=file_path[percentage_index-5]
-    
-    if start_char=='\\':
-        
-        return file_path[percentage_index-4:percentage_index+1]
-    
-    else:
-        
-        return file_path[percentage_index-5:percentage_index+1]
+    which_progress: progress object
+    subplot_ax: sub ax in progress plot
+    with_fracture: (bool) plot fracture or not 
+    with_annotation: plot progress proportion
 
+Returns:
+    None
+"""
+def SingleStructuralDeformationInProgress(which_progress,
+                                          subplot_ax,
+                                          with_fracture=False,
+                                          with_annotation=True):
+    print('')
+    print('-- Structural Deformation')
+
+    #percentage of progress
+    progress_percentage=which_progress.percentage
+    
+    print('-> progress='+progress_percentage)
+
+    #transform to RGB format
+    structural_deformation_img_rgb=which_progress.structural_deformation
+
+    #fracture matrix
+    fracture_matrix=which_progress.fracture
+    
+    #shape of this img
+    this_shape=np.shape(fracture_matrix)
+    
+    #plot main body
+    plt.imshow(structural_deformation_img_rgb)
+
+    """regard cumulative distortional strain as fracture"""
+    if with_fracture:
+
+        #filter fracture matrix and plot farcture
+        if type(Mat.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+            
+            print('=> WARNING: without fracture')
+                           
+    '''revision'''
+    #decoration  
+    Dec.TicksAndSpines(subplot_ax,1,1)
+    Dec.TicksConfiguration(subplot_ax)
+    
+    #sub annotation
+    if with_annotation:
+        
+        #annotation font
+        annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
+        
+        subplot_ax.annotate(progress_percentage,
+                            xy=(0,0),
+                            xytext=(1.01*this_shape[1],0.23*this_shape[0]),
+                            fontproperties=annotation_font)
+
+       
 #------------------------------------------------------------------------------
 """
 Plot structural deformation progress
 
 Args:
-    case_path: load path of input files in a case
+    output_folder: folder to contain result
+    which_case: case object to be proccessed
     with_fracture: (bool) plot fracture or not 
     
 Returns:
     None
 """
-def ProgressStructuralDeformation(case_path,with_fracture=True):
+def ProgressStructuralDeformation(output_folder,
+                                  which_case,
+                                  with_fracture=False):
     
     print('')
     print('-- Progress Structural Deformation')
     
-    #strutrual deformation path
-    folder_path=case_path+'\\structural deformation\\values\\'
+    #global shape of progress or integral analysis
+    global_shape=which_case.list_progress[-1].shape 
     
-    #file names in pogress order
-    file_names=NP.FileNamesThisCase(folder_path)
-
     #new picture and ax
     #100-1000
-    if '100-1000' in case_path:
+    if global_shape==(100,1000):
         
         figure=plt.subplots(figsize=(13,13))[0]
         
     #100-500
-    if '100-500' in case_path:
+    if global_shape==(100,500):
     
         figure=plt.subplots(figsize=(7,13))[0]
-    
+
     #subplot index
     index=0
     
-    for file_name in file_names:
-        
-        #txt file path
-        structural_deformation_path=folder_path+file_name
-        
+    for this_progress in which_case.list_progress:
+              
         #iter
         index+=1
         
-        this_ax=plt.subplot(len(file_names),1,index)
+        this_ax=plt.subplot(len(which_case.list_progress),1,index)
  
-        #calculate global norm
-        global_shape=Glo.GlobalShapeFromCase(structural_deformation_path)
-
-        #decoration     
-        SingleStructuralDeformationInProgress(structural_deformation_path,this_ax,with_fracture)
+        SingleStructuralDeformationInProgress(this_progress,
+                                              this_ax,
+                                              with_fracture)
         
-        this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
+        this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
  
     #figure name
     fig_name='Sturctural Deformation'
@@ -111,7 +142,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
         fig_name+=' with fracture'
        
     #animation folder path
-    progress_folder=case_path+'\\progress\\'
+    progress_folder=output_folder+'\\progress\\'
     
     Pa.GenerateFolder(progress_folder)
     
@@ -125,7 +156,7 @@ def ProgressStructuralDeformation(case_path,with_fracture=True):
 Plot single stress of strain in different progress with fracture
 
 Args:
-    file_path: load path of txt file
+    which_progress: progress object
     post_fix: post fix of txt file
     subplot_ax: sub ax in progress plot
     with_fracture: (bool) plot fracture or not 
@@ -134,36 +165,49 @@ Args:
 Returns:
     None
 """
-def SingleStressOrStrainInProgress(structural_deformation_path,
+def SingleStressOrStrainInProgress(which_progress,
                                    post_fix,
                                    subplot_ax,
-                                   with_fracture=True,
+                                   with_fracture=False,
                                    with_annotation=True):
     print('')
-    print('-- '+IAP.PostFix2Title(post_fix).strip())
-    
+    print('-- '+post_fix)
+
     #percentage of progress
-    progress_percentage=ProgressPercentageFromTXT(structural_deformation_path)
+    progress_percentage=which_progress.percentage
     
     print('-> progress='+progress_percentage)
     
-    #stress and strain itself
-    file_path=structural_deformation_path.replace('structural deformation',post_fix)
-    
-    #plot fracture
-    fracture_file_path=structural_deformation_path.replace('structural deformation','cumulative strain\\distortional')
-    
-    #fracture matrix and smooth
-    fracture_matrix=ISm.ImageSmooth(Mat.ImportMatrixFromTXT(fracture_file_path))
+    #stress or strain value matrix to be plotted
+    value_matrix=ISm.ImageSmooth((which_progress.stress_or_strain[post_fix]))
 
+    #outline matrix
+    outline_matrix=which_progress.outline
+
+    #fracture matrix
+    fracture_matrix=which_progress.fracture
+    
     #shape of this img
     this_shape=np.shape(fracture_matrix)
     
-    #show image    
-    Mat.DisplayImageFromTXT(file_path,1,1)
+    #plot main body
+    if which_progress.case==None:
+        
+        print('--> Local Norm')
+        
+        plt.imshow(Img.ImgFlip(value_matrix,0),
+                   cmap=GlobalColormap(post_fix))
+        
+    else:
+        
+        print('--> Global Norm')
+        
+        plt.imshow(Img.ImgFlip(value_matrix,0),
+                   cmap=GlobalColormap(post_fix),
+                   norm=GlobalNorm(which_progress.case,post_fix))
     
-    #show outline
-    Mat.DisplayOutlineFromTXT(file_path,1)
+    #plot outline
+    plt.imshow(outline_matrix,cmap='gray')
     
     """regard cumulative distortional strain as fracture"""
     if with_fracture:
@@ -185,75 +229,72 @@ def SingleStressOrStrainInProgress(structural_deformation_path,
         annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
     
         subplot_ax.annotate(progress_percentage,
-                             xy=(0,0),
-                             xytext=(1.01*this_shape[1],0.23*this_shape[0]),
-                             fontproperties=annotation_font)
+                            xy=(0,0),
+                            xytext=(1.01*this_shape[1],0.23*this_shape[0]),
+                            fontproperties=annotation_font)
         
 #------------------------------------------------------------------------------
 """
 Plot stress or strain progress
 
 Args:
-    case_path: load path of input files in a case
+    output_folder: folder to contain result
+    which_case: case object to be proccessed
+    post_fix: post fix of txt file
     with_fracture: (bool) plot fracture or not 
     
 Returns:
     None
 """
-def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
+def ProgressStressOrStrain(output_folder,
+                           which_case,
+                           post_fix,
+                           with_fracture=False):
     
     print('')
-    print('-- Progress Stress Or Strain')
-    print('-> '+IAP.PostFix2Title(post_fix).strip())
+    print('-- Progress Structural Deformation')
     
-    #strutrual deformation path
-    folder_path=case_path+'\\structural deformation\\values\\'
-    
-    #file names in pogress order
-    file_names=NP.FileNamesThisCase(folder_path)
+    #global shape of progress or integral analysis
+    global_shape=which_case.list_progress[-1].shape 
     
     #new picture and ax
     #100-1000
-    if '100-1000' in case_path:
+    if global_shape==(100,1000):
         
         figure=plt.subplots(figsize=(13,13))[0]
         
     #100-500
-    if '100-500' in case_path:
+    if global_shape==(100,500):
     
         figure=plt.subplots(figsize=(7,13))[0]
-            
+
     #subplot index
     index=0
-    
-    for file_name in file_names:
-        
-        #txt file path
-        structural_deformation_path=folder_path+file_name
-        
+
+    for this_progress in which_case.list_progress:
+              
         #iter
         index+=1
         
-        this_ax=plt.subplot(len(file_names),1,index)
- 
-        #calculate global norm
-        global_shape=Glo.GlobalShapeFromCase(structural_deformation_path)
-
-        #decoration     
-        SingleStressOrStrainInProgress(structural_deformation_path,post_fix,this_ax,with_fracture)
+        this_ax=plt.subplot(len(which_case.list_progress),1,index)
         
-        this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
+        SingleStressOrStrainInProgress(this_progress,
+                                       post_fix,
+                                       this_ax,
+                                       with_fracture)
         
+        this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
+  
     #figure name
-    fig_name=IAP.PostFix2Title(post_fix)
+    fig_name=post_fix
     
     #re-name
     if with_fracture:
         
         fig_name+=' with fracture'
-        
+       
     #animation folder path
-    progress_folder=case_path+'\\progress\\'
+    progress_folder=output_folder+'\\progress\\'
     
     Pa.GenerateFolder(progress_folder)
     
@@ -267,28 +308,31 @@ def ProgressStressOrStrain(case_path,post_fix,with_fracture=True):
 Plot all progress
 
 Args:
-    case_path: load path of input files in a case
+    output_folder: folder to contain result
+    which_case: case object to be proccessed
     with_fracture: (bool) plot fracture or not 
     
 Returns:
-    mass of PNGs in output folder
+    None
 """
-def ProgressAll(case_path,with_fracture=True):
+def ProgressAll(output_folder,
+                which_case,
+                with_fracture=False):
 
     print('')
     print('-- Progress Plot')
     
     #strucural deformation
-    ProgressStructuralDeformation(case_path,with_fracture)
+    ProgressStructuralDeformation(output_folder,which_case,with_fracture)
     
     list_post_fix=['Mean Normal Stress',
                    'Maximal Shear Stress',
                    'Periodical Volumetric Strain',
                    'Periodical Distortional Strain',
-                   'Cumulative Volumrtric Strain',
+                   'Cumulative Volumetric Strain',
                    'Cumulative Distortional Strain']
     
     #stress and strain progress
     for this_post_fix in list_post_fix:        
-    
-        ProgressStressOrStrain(case_path,this_post_fix,with_fracture)
+        
+        ProgressStressOrStrain(output_folder,which_case,this_post_fix)

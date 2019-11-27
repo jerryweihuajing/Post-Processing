@@ -34,7 +34,7 @@ Returns:
 def SingleIntegralAnalysisInProgress(output_folder,
                                      which_progress,
                                      mode='standard',
-                                     with_fracture=True):
+                                     with_fracture=False):
     
     print('')
     print('Single Integral Analysis In Progress')
@@ -104,12 +104,12 @@ def SingleIntegralAnalysisInProgress(output_folder,
         if this_post_fix=='Structural Deformation':
             
             #structural deformation
-            HPC_IP.IndividualStructuralDeformationInProgress(which_progress,this_ax,0,1)
+            HPC_IP.IndividualStructuralDeformationInProgress(which_progress,this_ax)
 
         else:
                   
             #stress and strain
-            HPC_IP.IndividualStressOrStrainInProgress(which_progress,this_post_fix,this_ax,0,1)    
+            HPC_IP.IndividualStressOrStrainInProgress(which_progress,this_post_fix,this_ax)    
             
         this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
         

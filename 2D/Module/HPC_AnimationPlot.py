@@ -44,7 +44,7 @@ def AnimationIntegralAnalysis(output_folder,
     for this_progress in which_case.list_progress:
         
         #path of integral analysis figure
-        this_fig_path=HPC_IAP.SingleIntegralAnalysisInProgress(output_folder,this_progress)
+        this_fig_path=HPC_IAP.SingleIntegralAnalysisInProgress(output_folder,this_progress,mode,with_fracture)
 
         #collect fig to create GIF
         figures.append(imageio.imread(this_fig_path))

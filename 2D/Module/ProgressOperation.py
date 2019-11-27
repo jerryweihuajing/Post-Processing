@@ -2,12 +2,23 @@
 """
 Created on Tue Nov 26 22:37:12 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Progress Operation
 """
+
+from o_progress import progress
+
+import Image as Img
+import Matrix as Mat
+import ImageSmoothing as ISm
+
+import HPC_ProgressPlot as HPC_PP
+import HPC_AnimationPlot as HPC_AP
+import HPC_IndividualPlot as HPC_IP
+import HPC_IntegralAnalysisPlot as HPC_IAP
 
 #------------------------------------------------------------------------------
 """
@@ -78,38 +89,38 @@ def ProgressPercentageFromTXT(file_path):
 Construct a progress object
 
 Args:
-   structural_deformation_path: path to construct
+   progress_path: path to construct
    
 Returns:
     progress object
 """ 
-def ProgressConstruction(structural_deformation_path):
+def ProgressConstruction(progress_path):
     
     #construct a progress object
     that_progress=progress()
     
-    if '100-500' in structural_deformation_path:
+    if '100-500' in progress_path:
         
         that_progress.shape=(100,500)
         
-    if '100-1000' in structural_deformation_path:
+    if '100-1000' in progress_path:
         
         that_progress.shape=(100,1000)    
     
     #map between tag and rgb in this case
-    rgb_map=Img.MapTagRGB(structural_deformation_path)
+    rgb_map=Img.MapTagRGB(progress_path)
     
     #Generate tag image and rgb image
-    structural_deformation_img_tag=Mat.ImportMatrixFromTXT(structural_deformation_path)
+    structural_deformation_img_tag=Mat.ImportMatrixFromTXT(progress_path)
     
     #transform to RGB format
     structural_deformation_img_rgb=Img.ImageTag2RGB(structural_deformation_img_tag,rgb_map)
 
     #percentage of progress
-    progress_percentage=ProgressPercentageFromTXT(structural_deformation_path)
+    progress_percentage=ProgressPercentageFromTXT(progress_path)
     
     #plot fracture
-    fracture_file_path=structural_deformation_path.replace('structural deformation','cumulative strain\\distortional')
+    fracture_file_path=progress_path.replace('structural deformation','cumulative strain\\distortional')
     
     #fracture matrix
     fracture_matrix=ISm.ImageSmooth(Mat.ImportMatrixFromTXT(fracture_file_path))
@@ -127,9 +138,9 @@ def ProgressConstruction(structural_deformation_path):
     for this_post_fix in list_post_fix:
         
         #stress and strain itself
-        file_path=structural_deformation_path.replace('structural deformation',this_post_fix)
+        file_path=progress_path.replace('structural deformation',this_post_fix)
         
-        matrix_list.append(Mat.ImportMatrixFromTXT(file_path))
+        matrix_list.append(ISm.ImageSmooth(Mat.ImportMatrixFromTXT(file_path)))
         
     that_progress.mean_normal_stress,\
     that_progress.maximal_shear_stress,\
@@ -157,3 +168,26 @@ def ProgressConstruction(structural_deformation_path):
     that_progress.stress_or_strain=dict(zip(list_stress_or_strain,matrix_list))
     
     return that_progress
+
+#------------------------------------------------------------------------------   
+"""
+Construct a progress object and post processing
+
+Args:
+   progress_path: path to construct
+   output_folder: folder to contain result
+   with_farcture: (bool) plot fracture and interface or not 
+   
+Returns:
+    None
+""" 
+def ProgressPostProcessing(progress_path,output_folder,with_fracture=False):
+    
+    #construct a progress
+    that_progress=ProgressConstruction(progress_path)
+    
+    #output folder of this progress
+    progress_folder=output_folder+'\\'+that_progress.percentage
+    
+    #imaging and output
+    HPC_IP.AllIndividualsInProgress(progress_folder,that_progress,with_fracture)

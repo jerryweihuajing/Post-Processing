@@ -9,16 +9,14 @@ Created on Tue Nov  5 23:52:05 2019
 @title：Module-High Performance Calculation of Integral Analysis in a progress
 """
 
-import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
 import Path as Pa
-import Matrix as Mat
-import Global as Glo
-import HPC_ProgressPlot as HPC_PP
+
 import HPC_AnimationPlot as HPC_AP
+import HPC_IndividualPlot as HPC_IP
 
 #------------------------------------------------------------------------------
 """
@@ -52,11 +50,11 @@ def SingleIntegralAnalysisInProgress(output_folder,
     
     if mode=='standard':
     
-        list_stress_or_strain=['Structural Deformation',
-                               'Mean Normal Stress',
-                               'Maximal Shear Stress',
-                               'Periodical Volumetric Strain',
-                               'Periodical Distortional Strain']
+        list_post_fix=['Structural Deformation',
+                       'Mean Normal Stress',
+                       'Maximal Shear Stress',
+                       'Periodical Volumetric Strain',
+                       'Periodical Distortional Strain']
         
         #new picture and ax
         #100-1000
@@ -71,12 +69,13 @@ def SingleIntegralAnalysisInProgress(output_folder,
     
     if mode=='all':
         
-        list_stress_or_strain=['Mean Normal Stress',
-                               'Maximal Shear Stress',
-                               'Periodical Volumetric Strain',
-                               'Periodical Distortional Strain',
-                               'Cumulative Volumetric Strain',
-                               'Cumulative Distortional Strain']
+        list_post_fix=['Structural Deformation',
+                       'Mean Normal Stress',
+                       'Maximal Shear Stress',
+                       'Periodical Volumetric Strain',
+                       'Periodical Distortional Strain',
+                       'Cumulative Volumetric Strain',
+                       'Cumulative Distortional Strain']
     
         #new picture and ax
         #100-1000
@@ -95,22 +94,22 @@ def SingleIntegralAnalysisInProgress(output_folder,
     #subplot index
     index=0
     
-    for this_post_fix in list_stress_or_strain:
+    for this_post_fix in list_post_fix:
         
         #iter
         index+=1
         
-        this_ax=plt.subplot(len(list_stress_or_strain),1,index)
+        this_ax=plt.subplot(len(list_post_fix),1,index)
         
-        if index==1:
+        if this_post_fix=='Structural Deformation':
             
             #structural deformation
-            SingleStructuralDeformationInProgress(which_progress,this_ax,0,0)
+            HPC_IP.IndividualStructuralDeformationInProgress(which_progress,this_ax,0,1)
 
-        if index>1:
-            
+        else:
+                  
             #stress and strain
-            SingleStressOrStrainInProgress(which_progress,this_post_fix,this_ax,0,0)    
+            HPC_IP.IndividualStressOrStrainInProgress(which_progress,this_post_fix,this_ax,0,1)    
             
         this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
         
@@ -175,4 +174,4 @@ def IntegralAnalysisAll(output_folder,
     
     for this_mode in list_mode:
         
-        AnimationIntegralAnalysis(output_folder,which_case,this_mode,with_fracture)
+        HPC_AP.AnimationIntegralAnalysis(output_folder,which_case,this_mode,with_fracture)

@@ -38,10 +38,18 @@ from __init__ import *
 #    CP.ExperimentPlot(this_experiment_path,'XoY',1,'standard')
 #
 #    EP.ExperimentPlotAll(this_experiment_path)
-    
 
-a_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-1000\base detachment\fric=0.0 v=0.2\output\base=0.00\structural deformation\values\0.00%.txt'
+case_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-500\base detachment\fric=0.0 v=0.2\output\base=10.87'
 
-global_shape=Glo.GlobalShapeFromCase(a_path)
+#A experiment
+#experiment_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-500\base detachment\fric=0.0 v=0.2'
 
+#a_case=CO.CaseConstruction(case_path)
 
+#structural_deformation_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-500\base detachment\fric=0.0 v=0.2\output\base=10.87\structural deformation\values\27.87%.txt'
+
+#a_progress=PO.ProgressConstruction(structural_deformation_path)
+
+output_folder=r'C:\Users\whj\Desktop\fig'
+
+CO.CasePostProcessing(case_path,output_folder)

@@ -30,6 +30,9 @@ from o_sphere import sphere
 from o_strain_2D import strain_2D
 from o_discrete_point import discrete_point
 
+import CaseOperation as CO
+import ProgressOperation as PO
+
 import Norm as No
 import Path as Pa
 import Image as Img
@@ -61,4 +64,8 @@ import SpheresAttributeMatrix as SAM
 import StrainPlot as Strain
 import StressPlot as Stress
 
+import HPC_ProgressPlot as HPC_PP
+import HPC_AnimationPlot as HPC_AP
 import HPC_ExperimentPlot as HPC_EP
+import HPC_IndividualPlot as HPC_IP
+import HPC_IntegralAnalysisPlot as HPC_IAP

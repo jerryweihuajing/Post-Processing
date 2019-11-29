@@ -81,3 +81,4 @@ plt.subplot(211),plt.imshow(img_rgb)
 plt.subplot(212),plt.imshow(laplacian)
 
 
+

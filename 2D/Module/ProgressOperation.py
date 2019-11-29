@@ -15,10 +15,7 @@ import Image as Img
 import Matrix as Mat
 import ImageSmoothing as ISm
 
-import HPC_ProgressPlot as HPC_PP
-import HPC_AnimationPlot as HPC_AP
 import HPC_IndividualPlot as HPC_IP
-import HPC_IntegralAnalysisPlot as HPC_IAP
 
 #------------------------------------------------------------------------------
 """
@@ -152,9 +149,11 @@ def ProgressConstruction(progress_path):
     #import outline matrix
     outline_matrix=Img.ImgFlip(Mat.ImportOutlineFromTXT(file_path),0)
     
+    that_progress.rgb_map=rgb_map
     that_progress.outline=outline_matrix
     that_progress.fracture=fracture_matrix
     that_progress.percentage=progress_percentage
+    that_progress.img_tag=structural_deformation_img_tag
     that_progress.structural_deformation=structural_deformation_img_rgb
 
     #construct a map between post fix name and matrix

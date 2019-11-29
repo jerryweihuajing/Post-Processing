@@ -17,6 +17,8 @@ class progress:
     def __init__(self,
                  case=None,
                  shape=None,
+                 rgb_map=None,
+                 img_tag=None,
                  outline=None,
                  fracture=None,
                  percentage=None,
@@ -31,6 +33,8 @@ class progress:
         
         self.case=case
         self.shape=shape
+        self.rgb_map=rgb_map
+        self.img_tag=img_tag
         self.outline=outline
         self.fracture=fracture
         self.percentage=percentage

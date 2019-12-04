@@ -48,7 +48,7 @@ case_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-500\salt detachm
 
 structural_deformation_path=r'C:\魏华敬\GitHub\YADE\PostProcessing\2D\Data\100-500\base detachment\fric=0.0 v=0.2\output\base=10.87\structural deformation\values\27.87%.txt'
 
-a_progress=PO.ProgressConstruction(structural_deformation_path)
+a_progress=PO.ProgressConstruction(structural_deformation_path) 
 
 #output_folder=r'C:\Users\whj\Desktop\fig'
 
@@ -113,14 +113,30 @@ manual_gradient_y=SimpleGradient(img_tag,1)
 
 manual_gradient=manual_gradient_x+manual_gradient_y
 
-surface=np.full(np.shape(manual_gradient),np.nan)
+strata_surface=np.full(np.shape(manual_gradient),np.nan)
 
-surface[np.where(manual_gradient!=0)]=1
+strata_surface[np.where(manual_gradient!=0)]=1
+
+#detachment surface which is intersection of surface and detachment 
+detachment_surface=np.full(np.shape(manual_gradient),np.nan)
+
+for i in range(np.shape(detachment_surface)[0]):
+    
+    for j in range(np.shape(detachment_surface)[1]):
+        
+        if strata_surface[i,j]==1 and img_tag[i,j]==1:
+            
+            detachment_surface[i,j]=1
+
 
 plt.figure()
 plt.imshow(img_rgb)
-plt.imshow(surface,cmap='gray')
+plt.imshow(detachment_surface,cmap='gray')
 
 #RGB channel
 
 #surface outline show some similarity
+
+#find element whose tag
+
+'''content to add algorithm'''

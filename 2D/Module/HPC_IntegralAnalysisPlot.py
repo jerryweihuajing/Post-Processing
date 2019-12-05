@@ -50,11 +50,11 @@ def SingleIntegralAnalysisInProgress(output_folder,
     
     if mode=='standard':
     
-        list_post_fix=['Structural Deformation',
-                       'Mean Normal Stress',
+        list_post_fix=['Mean Normal Stress',
                        'Maximal Shear Stress',
-                       'Periodical Volumetric Strain',
-                       'Periodical Distortional Strain']
+                       'Volumetric Strain (Periodical)',
+                       'Distortional Strain (Periodical)']
+
         
         #new picture and ax
         #100-1000
@@ -69,13 +69,12 @@ def SingleIntegralAnalysisInProgress(output_folder,
     
     if mode=='all':
         
-        list_post_fix=['Structural Deformation',
-                       'Mean Normal Stress',
+        list_post_fix=['Mean Normal Stress',
                        'Maximal Shear Stress',
-                       'Periodical Volumetric Strain',
-                       'Periodical Distortional Strain',
-                       'Cumulative Volumetric Strain',
-                       'Cumulative Distortional Strain']
+                      'Volumetric Strain (Periodical)',
+                      'Distortional Strain (Periodical)',
+                      'Volumetric Strain (Cumulative)',
+                      'Distortional Strain (Cumulative)']
     
         #new picture and ax
         #100-1000

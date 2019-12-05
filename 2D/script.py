@@ -128,15 +128,102 @@ for i in range(np.shape(detachment_surface)[0]):
             
             detachment_surface[i,j]=1
 
-
-plt.figure()
-plt.imshow(img_rgb)
-plt.imshow(detachment_surface,cmap='gray')
-
 #RGB channel
 
 #surface outline show some similarity
 
 #find element whose tag
 
+
 '''content to add algorithm'''
+'''horizontal and vertical'''
+
+plt.figure()
+plt.imshow(img_rgb)
+plt.imshow(detachment_surface,cmap='gray')
+    
+#------------------------------------------------------------------------------
+"""
+Calculate 8-neighborhood based on index in an image
+
+Args:
+    index: image pixel index
+
+Returns:
+    8-neighborhood coordinates list
+"""
+def NeighborInImage(index):
+    
+    i,j=index
+    
+    return [[i+x,j+y] for x in[-1,0,1] for y in [-1,0,1]]
+
+#------------------------------------------------------------------------------
+"""
+Improve morphorlogy of surface
+
+Args:
+    outline: 0,1 matrix of surface
+
+Returns:
+    new surface matrix
+"""
+def SurfaceHorizontalImprovement(which_surface):
+    
+    #store surface information
+    map_surface={}
+    
+    for j in range(np.shape(which_surface)[1]):
+        
+        for i in range(np.shape(which_surface)[0]):
+            
+            if which_surface[i,j]==1:
+                
+                map_surface[j]=i
+                
+                break
+    
+    #to plot the surface
+    new_surface=np.zeros(np.shape(which_surface))
+    
+    #coordinates of surface
+    content_surface=[]
+    
+    for this_j in list(map_surface.keys()):
+        
+        new_surface[map_surface[this_j],this_j]=1
+        content_surface.append([map_surface[this_j],this_j])
+        
+    #plt.imshow(img_surface,cmap='gray')
+    
+    #improve surface
+    content_to_add=[]
+        
+    for k in range(len(content_surface)-1):
+        
+        if content_surface[k] not in NeighborInImage(content_surface[k+1]):
+    
+            #relative position
+            if content_surface[k][0]>content_surface[k+1][0]:
+                
+                offset=content_surface[k+1][0]+1-content_surface[k][0]
+                
+            if content_surface[k][0]<content_surface[k+1][0]:
+                
+                offset=content_surface[k+1][0]-1-content_surface[k][0]
+               
+            #collect new coordinates
+            for this_offset in list(np.linspace(offset,0,abs(offset)+1)):
+                
+                if this_offset==0:
+                    
+                    continue
+    
+                content_to_add.append([content_surface[k][0]+int(this_offset),content_surface[k][1]])
+    
+    #plot surface
+    for this_i,this_j in content_surface+content_to_add:
+        
+        new_surface[this_i,this_j]=1
+        
+    return new_surface

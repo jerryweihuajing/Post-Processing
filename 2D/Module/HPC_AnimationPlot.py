@@ -183,14 +183,14 @@ def AnimationAll(output_folder,
     AnimationIndividual(output_folder,which_case)
     
     #all individuals
-    list_stress_or_strain=['Mean Normal Stress',
-                           'Maximal Shear Stress',
-                           'Periodical Volumetric Strain',
-                           'Periodical Distortional Strain',
-                           'Cumulative Volumetric Strain',
-                           'Cumulative Distortional Strain']
+    list_post_fix=['Mean Normal Stress',
+                   'Maximal Shear Stress',
+                   'Volumetric Strain (Periodical)',
+                   'Distortional Strain (Periodical)',
+                   'Volumetric Strain (Cumulative)',
+                   'Distortional Strain (Cumulative)']
         
     #stress and strain
-    for this_post_fix in list_stress_or_strain:
+    for this_post_fix in list_post_fix:
         
         AnimationIndividual(output_folder,which_case,this_post_fix)

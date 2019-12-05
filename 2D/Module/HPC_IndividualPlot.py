@@ -279,13 +279,12 @@ def AllIndividualsInProgress(output_folder,
                              which_progress,
                              with_fracture=False):  
     
-    list_post_fix=['Structural Deformation',
-                   'Mean Normal Stress',
+    list_post_fix=['Mean Normal Stress',
                    'Maximal Shear Stress',
-                   'Periodical Volumetric Strain',
-                   'Periodical Distortional Strain',
-                   'Cumulative Volumetric Strain',
-                   'Cumulative Distortional Strain']
+                   'Volumetric Strain (Periodical)',
+                   'Distortional Strain (Periodical)',
+                   'Volumetric Strain (Cumulative)',
+                   'Distortional Strain (Cumulative)']
     
     #plot all postfix mode
     for this_post_fix in list_post_fix:

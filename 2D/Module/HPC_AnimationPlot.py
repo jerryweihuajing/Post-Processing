@@ -185,10 +185,10 @@ def AnimationAll(output_folder,
     #all individuals
     list_post_fix=['Mean Normal Stress',
                    'Maximal Shear Stress',
-                   'Volumetric Strain (Periodical)',
-                   'Distortional Strain (Periodical)',
-                   'Volumetric Strain (Cumulative)',
-                   'Distortional Strain (Cumulative)']
+                   'Volumetric Strain-Periodical',
+                   'Distortional Strain-Periodical',
+                   'Volumetric Strain-Cumulative',
+                   'Distortional Strain-Cumulative']
         
     #stress and strain
     for this_post_fix in list_post_fix:

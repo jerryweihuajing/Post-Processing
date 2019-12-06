@@ -171,10 +171,10 @@ def ProgressAll(output_folder,
     
     list_post_fix=['Mean Normal Stress',
                    'Maximal Shear Stress',
-                   'Volumetric Strain (Periodical)',
-                   'Distortional Strain (Periodical)',
-                   'Volumetric Strain (Cumulative)',
-                   'Distortional Strain (Cumulative)']
+                   'Volumetric Strain-Periodical',
+                   'Distortional Strain-Periodical',
+                   'Volumetric Strain-Cumulative',
+                   'Distortional Strain-Cumulative']
     
     #stress and strain progress
     for this_post_fix in list_post_fix:        

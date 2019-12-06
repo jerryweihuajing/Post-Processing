@@ -146,25 +146,30 @@ def ProgressConstruction(progress_path):
     that_progress.cumulative_volumrtric_strain,\
     that_progress.cumulative_distortional_strain=matrix_list
 
+    stress_path=file_path.replace('structural deformation','stress\\mean normal')
+    strain_path=file_path.replace('structural deformation','periodical strain\\volumetric')
+    
     #import outline matrix
-    outline_matrix=Img.ImgFlip(Mat.ImportOutlineFromTXT(file_path),0)
+    outline_stress=Img.ImgFlip(Mat.ImportOutlineFromTXT(stress_path),0)
+    outline_strain=Img.ImgFlip(Mat.ImportOutlineFromTXT(strain_path),0)
     
     that_progress.rgb_map=rgb_map
-    that_progress.outline=outline_matrix
     that_progress.fracture=fracture_matrix
+    that_progress.outline_stress=outline_stress
+    that_progress.outline_strain=outline_strain
     that_progress.percentage=progress_percentage
     that_progress.img_tag=structural_deformation_img_tag
     that_progress.structural_deformation=structural_deformation_img_rgb
 
     #construct a map between post fix name and matrix
-    list_stress_or_strain=['Mean Normal Stress',
-                           'Maximal Shear Stress',
-                           'Periodical Volumetric Strain',
-                           'Periodical Distortional Strain',
-                           'Cumulative Volumetric Strain',
-                           'Cumulative Distortional Strain']
+    list_post_fix=['Mean Normal Stress',
+                   'Maximal Shear Stress',
+                   'Volumetric Strain-Periodical',
+                   'Distortional Strain-Periodical',
+                   'Volumetric Strain-Cumulative',
+                   'Distortional Strain-Cumulative']
     
-    that_progress.stress_or_strain=dict(zip(list_stress_or_strain,matrix_list))
+    that_progress.stress_or_strain=dict(zip(list_post_fix,matrix_list))
     
     return that_progress
 

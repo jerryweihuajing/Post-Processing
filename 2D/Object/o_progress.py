@@ -19,9 +19,10 @@ class progress:
                  shape=None,
                  rgb_map=None,
                  img_tag=None,
-                 outline=None,
                  fracture=None,
                  percentage=None,
+                 outline_stress=None,
+                 outline_strain=None,
                  structural_deformation=None,
                  mean_normal_stress=None,
                  maximal_shear_stress=None,
@@ -35,9 +36,10 @@ class progress:
         self.shape=shape
         self.rgb_map=rgb_map
         self.img_tag=img_tag
-        self.outline=outline
         self.fracture=fracture
         self.percentage=percentage
+        self.outline_stress=outline_stress
+        self.outline_strain=outline_strain
         self.structural_deformation=structural_deformation
         self.mean_normal_stress=mean_normal_stress
         self.maximal_shear_stress=maximal_shear_stress

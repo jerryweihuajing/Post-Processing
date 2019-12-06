@@ -134,7 +134,8 @@ def IndividualStressOrStrainInProgress(which_progress,
     value_matrix=which_progress.stress_or_strain[post_fix]
 
     #outline matrix
-    outline_matrix=which_progress.outline
+    outline_stress=which_progress.outline_stress
+    outline_strain=which_progress.outline_strain
 
     #fracture matrix
     fracture_matrix=which_progress.fracture
@@ -159,8 +160,14 @@ def IndividualStressOrStrainInProgress(which_progress,
                    norm=HPC_Glo.GlobalNorm(which_progress.case,post_fix))
     
     #plot outline
-    plt.imshow(outline_matrix,cmap='gray')
+    if 'Stress' in post_fix:
+        
+        plt.imshow(outline_stress,cmap='gray')
     
+    if 'Strain' in post_fix:
+        
+        plt.imshow(outline_strain,cmap='gray')
+        
     """regard cumulative distortional strain as fracture"""
     if with_fracture:
 
@@ -281,10 +288,10 @@ def AllIndividualsInProgress(output_folder,
     
     list_post_fix=['Mean Normal Stress',
                    'Maximal Shear Stress',
-                   'Volumetric Strain (Periodical)',
-                   'Distortional Strain (Periodical)',
-                   'Volumetric Strain (Cumulative)',
-                   'Distortional Strain (Cumulative)']
+                   'Volumetric Strain-Periodical',
+                   'Distortional Strain-Periodical',
+                   'Volumetric Strain-Cumulative',
+                   'Distortional Strain-Cumulative']
     
     #plot all postfix mode
     for this_post_fix in list_post_fix:

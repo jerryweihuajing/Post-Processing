@@ -113,8 +113,10 @@ def SimpleGradient(which_matrix,axis=0):
 
 '''content to add algorithm'''
 
-'''1 erosion and expand'''
-'''2 tracing using gradient'''
+'''
+1 erosion and expand-cv2: no good
+2 tracing based on gradient
+'''
 
 def AllStrataSurface(which_progress,show=False):
     
@@ -161,7 +163,89 @@ def DetachmentSurfaceBasedOnTag(which_progress,which_tag,show=False):
         
     return detachment_surface
 
+'''cv2 erosion: no good'''
+def CV2ErosionBasedOnTag(img_tag,which_tag,show=False):
+    
+    this_strata=np.full(np.shape(img_tag),np.nan)
+    this_strata[np.where(img_tag==which_tag)]=1
+        
+    #construct kernel parameter to make erosion operation
+    erosion_kernel=np.ones((5, 5),np.uint8)
+    erosion=cv2.erode(this_strata,erosion_kernel,iterations=1)
+    
+    #nan 2 float
+    this_strata=np.nan_to_num(this_strata)
+    erosion=np.nan_to_num(erosion)
+    
+    #subduction operation
+    this_strata_surface=this_strata-erosion
+    
+    #fill 0 with np.nan
+    this_strata_surface[np.where(this_strata_surface==0)]=np.nan
+    
+    if show:
+            
+        plt.figure()
+        
+        plt.subplot(311),plt.imshow(this_strata,cmap='gray')
+        plt.subplot(312),plt.imshow(erosion,cmap='gray')
+        plt.subplot(313),plt.imshow(this_strata_surface,cmap='gray')
+    
+'''cv2 dilation: no good'''
+def CV2DilationBasedOnTag(img_tag,which_tag,show=False):
+    
+    this_strata=np.full(np.shape(img_tag),np.nan)
+    this_strata[np.where(img_tag==which_tag)]=1
+
+    #construct kernel parameter to make erosion operation
+    dilation_kernel=np.ones((5, 5),np.uint8)
+    dilation=cv2.erode(this_strata,dilation_kernel,iterations=1)
+
+    #nan 2 float
+    this_strata=np.nan_to_num(this_strata)
+    dilation=np.nan_to_num(dilation)
+    
+    #subduction operation
+    this_strata_surface=dilation-this_strata
+    
+    #fill 0 with np.nan
+    this_strata_surface[np.where(this_strata_surface==0)]=np.nan
+    
+    if show:
+        
+        plt.figure()
+        
+        plt.subplot(311),plt.imshow(this_strata,cmap='gray')
+        plt.subplot(312),plt.imshow(dilation,cmap='gray')
+        plt.subplot(313),plt.imshow(this_strata_surface,cmap='gray')
+
+'''cv2 finding contours: no good'''
+def CV2FindContours(img_tag,which_tag,show=False):
+    
+    this_strata=np.full(np.shape(img_tag),0,np.uint8)
+    this_strata[np.where(img_tag==which_tag)]=255    
+     
+    #find contour
+    image, contours, hierarchy = cv2.findContours(this_strata, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    
+    print("contours size: ", len(contours))
+    
+    #draw contours
+    cv2.drawContours(this_strata, contours, -1, (0, 0, 255), 3)
+    
+    if show:
+        
+        cv2.imshow("img", this_strata)
+        cv2.waitKey(0)
+
+which_tag=1 
+  
 plt.figure()
 plt.imshow(img_rgb)
 #AllStrataSurface(a_progress,1)
 DetachmentSurfaceBasedOnTag(a_progress,9,1)
+
+import cv2 
+
+'''Edge tracing based on gradients'''
+

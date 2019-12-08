@@ -238,14 +238,238 @@ def CV2FindContours(img_tag,which_tag,show=False):
         cv2.imshow("img", this_strata)
         cv2.waitKey(0)
 
-which_tag=1 
+#==============================================================================  
+#定义像素点类:横纵坐标和值
+#neighbor表示邻域里的8个像素点点
+#==============================================================================  
+class pixel:
+    def __int__(self,
+                xpos=None,
+                ypos=None,
+                value=None,
+                neighbor=None):
+        
+        self.xpos=xpos
+        self.ypos=ypos
+        self.value=value
+        self.neighbor=neighbor
+    
+    #找到合适的点之后生成他的邻域
+    def GenerateNeighbor(self,img_tag):
   
-plt.figure()
-plt.imshow(img_rgb)
-#AllStrataSurface(a_progress,1)
-DetachmentSurfaceBasedOnTag(a_progress,9,1)
+        self.neighbor=[]    
+        
+        #逆时针遍历邻域内的点
+        neighbordict={0:(0,-1),
+                      1:(1,-1),
+                      2:(1,0),
+                      3:(1,1),
+                      4:(0,1),
+                      5:(-1,1),
+                      6:(-1,0),
+                      7:(-1,-1)}
+        
+        #[i,j-1],[i+1,j-1],[i+1,j],[i+1,j+1],[i,j+1],[i-1,j+1],[i-1,j],[i-1,j-1]
+        for item in list(neighbordict.values()):
+
+            #遍历新的坐标
+            new_y=self.ypos+item[0]
+            new_x=self.xpos+item[1]
+            
+            if 0<=new_y<np.shape(img_tag)[0] and 0<=new_x<np.shape(img_tag)[1]:
+                
+                self.neighbor.append(img_tag[new_y,new_x])      
+                
+            else:
+                
+                self.neighbor.append(None)
+
+"""
+以下情况需要特殊处理：
+1 S[k-1]邻域内的第一个点已在边缘集合当中，则访问下一个点 OK
+2 S[k]邻域内只有一个边缘点，即上一个点S[k-1],则访问S[k-1]邻域内下一个点 OK  
+3 S[K]从上一个目标点是S[k-1]逆时针进行遍历 OK
+""" 
+
+#============================================================================== 
+#寻找自己的第一个符合要求的邻居像素,要追踪的像素值为tag
+#第一个满足tag的pixel对象
+def Find1stNeighbor(tag,flag_stop,edge,img_tag,index):
+    
+    #[i,j-1],[i+1,j-1],[i+1,j],[i+1,j+1],[i,j+1],[i-1,j+1],[i-1,j],[i-1,j-1]
+    #邻域的索引和横纵坐标的索引（绝对索引）
+    neighbordict={0:(0,-1),
+                  1:(1,-1),
+                  2:(1,0),
+                  3:(1,1),
+                  4:(0,1),
+                  5:(-1,1),
+                  6:(-1,0),
+                  7:(-1,-1)}
+    
+    #以最后一个edge点为指针进行检索
+    first_pixel=pixel()
+    first_pixel.ypos=edge[-1][0]
+    first_pixel.xpos=edge[-1][1]
+    first_pixel.neighbor=[]
+    
+    #3 S[K]从上一个目标点是S[k-1]逆时针进行遍历
+    #重新规划索引new_index后一个索引和前一个索引呈对角关系
+    #若索引大于4，归化
+
+    if index<4:
+        
+        new_index=index+4
+        
+    else:
+        
+        new_index=index-4
+        
+    new_neighbordict=Dict.DictSortFromStart(neighbordict,new_index)
+    
+    #生成邻居列表,起始迭代邻居的索引
+    first_pixel.GenerateNeighbor(img_tag)
+    
+    #邻域内邻居数量
+    count=0
+
+    for i in range(len(new_neighbordict)):
+        
+        #获取目标点的索引,转化为绝对索引
+        index=list(new_neighbordict.keys())[i]
+        
+        #符合tag的点计数
+        if first_pixel.neighbor[index]==tag:
+            
+            count+=1
+            
+            #建立新的pixel对象
+            temp_pixel=pixel()
+            temp_pixel.ypos=first_pixel.ypos+new_neighbordict[index][0]
+            temp_pixel.xpos=first_pixel.xpos+new_neighbordict[index][1]
+            pos=[temp_pixel.ypos,temp_pixel.xpos]
+   
+            #判断目标点和起点是否相同,不能是第一个点
+            if i>0 and pos==edge[0]:
+               
+                flag_stop=True
+                edge.append(pos)
+                
+                break
+            
+            #1 S[k-1]邻域内的第一个点已在边缘集合当中，则访问下一个点    
+            if pos not in edge:
+                
+                edge.append(pos)
+                
+                break  
+            
+            #*2 S[k]邻域内只有一个边缘点，即上一个点S[k-1],则访问S[k-1]邻域内下一个点
+            if len(edge)>1 and pos==edge[-2] and count==1 and i==7:
+               
+                edge.append(pos)
+                
+                break
+                   
+    return edge,index,flag_stop
+
+#==============================================================================  
+#在img_tag中根据edge[0]追踪边界,要追踪的像素标签值为tag
+def EdgeTracing(tag,edge,img_tag):
+    
+    #初始化循环中止判别标志
+    flag_stop=False
+    
+    #初始化绝对索引
+    index=-4
+    
+    #进行第一次邻居搜索
+    edge,index,flag_stop=Find1stNeighbor(tag,flag_stop,edge,img_tag,index) 
+    
+    while len(edge)>1 and flag_stop is False:
+        
+        edge,index,flag_stop=Find1stNeighbor(tag,flag_stop,edge,img_tag,index) 
+    
+    return edge
 
 import cv2 
+import Dictionary as Dict
+
+which_tag=1 
+  
+#plt.figure()
+#plt.imshow(img_rgb)
+#AllStrataSurface(a_progress,1)
+detachment_surface=DetachmentSurfaceBasedOnTag(a_progress,6)
 
 '''Edge tracing based on gradients'''
 
+import copy as cp
+
+def OutlineNextRound(outline_matrix,outline_content,edge_content,show=False):
+    
+    outline_rest_matrix=cp.deepcopy(outline_matrix)
+    outline_rest_content=[]
+    
+    for this_pos in outline_content:
+        
+        if this_pos not in edge_content:
+            
+            outline_rest_content.append(this_pos)
+            
+        else:
+            
+            outline_rest_matrix[this_pos[0],this_pos[1]]=np.nan
+            
+    print(len(outline_rest_content))
+    
+    if show:
+
+        plt.imshow(outline_rest_matrix,cmap='gray')
+
+    return outline_rest_matrix
+
+def EdgeThisRound(outline_original,show=False):
+    
+    x_outline=np.where(outline_original==1)[0]
+    y_outline=np.where(outline_original==1)[1]
+    
+    outline_content=[[x_outline[k],y_outline[k]] for k in range(len(x_outline))]
+    
+    start_point=[x_outline[0],y_outline[0]]
+    
+    print(len(outline_content))
+    
+    #先求梯度是为了缩小检索范围，避免全局搜索
+    edge_content=EdgeTracing(6,[start_point],img_tag)
+    
+    edge_matrix=np.full(np.shape(img_tag),np.nan)
+    
+    for this_pos in edge_content:
+        
+        edge_matrix[this_pos[0],this_pos[1]]=1
+        
+    if show:
+        
+        plt.figure()
+        
+        #original outline
+        plt.subplot(311)
+        plt.imshow(img_rgb)
+        plt.imshow(outline_original,cmap='gray')  
+        
+        #edge
+        plt.subplot(312)
+        plt.imshow(img_rgb)
+        plt.imshow(edge_matrix,cmap='gray')  
+        
+        #outline rest
+        plt.subplot(313)
+        plt.imshow(img_rgb)
+         
+    return OutlineNextRound(detachment_surface,outline_content,edge_content,show=show)  
+
+outline_rest_matrix=EdgeThisRound(detachment_surface,show=1)
+
+'''could not find the next neighbor whose tag is the same'''
+outline_rest_matrix=EdgeThisRound(outline_rest_matrix,show=1)

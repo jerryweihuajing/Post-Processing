@@ -355,6 +355,8 @@ def Find1stNeighbor(tag,flag_stop,edge,img_tag,index):
                 flag_stop=True
                 edge.append(pos)
                 
+#                print('case 0')
+                
                 break
             
             #1 S[k-1]邻域内的第一个点已在边缘集合当中，则访问下一个点    
@@ -362,20 +364,27 @@ def Find1stNeighbor(tag,flag_stop,edge,img_tag,index):
                 
                 edge.append(pos)
                 
+#                print('case 1')
+                
                 break  
             
             #*2 S[k]邻域内只有一个边缘点，即上一个点S[k-1],则访问S[k-1]邻域内下一个点
             if len(edge)>1 and pos==edge[-2] and count==1 and i==7:
-               
+                
+                flag_stop=True
                 edge.append(pos)
                 
+#                print('case 2')
+                
                 break
-                   
+            
     return edge,index,flag_stop
 
 #==============================================================================  
 #在img_tag中根据edge[0]追踪边界,要追踪的像素标签值为tag
 def EdgeTracing(tag,edge,img_tag):
+    
+    print('-- Edge Tracing')
     
     #初始化循环中止判别标志
     flag_stop=False
@@ -421,7 +430,7 @@ def OutlineNextRound(outline_matrix,outline_content,edge_content,show=False):
             
             outline_rest_matrix[this_pos[0],this_pos[1]]=np.nan
             
-    print(len(outline_rest_content))
+    print('-> Amount of Rest Outline Points:',len(outline_rest_content))
     
     if show:
 
@@ -431,6 +440,9 @@ def OutlineNextRound(outline_matrix,outline_content,edge_content,show=False):
 
 def EdgeThisRound(outline_original,show=False):
     
+    print('')
+    print('-- Edge This Round')
+    
     x_outline=np.where(outline_original==1)[0]
     y_outline=np.where(outline_original==1)[1]
     
@@ -438,10 +450,13 @@ def EdgeThisRound(outline_original,show=False):
     
     start_point=[x_outline[0],y_outline[0]]
     
-    print(len(outline_content))
+    print('-> Start Point:',start_point)
+    print('-> Amount of Original Outline Points:',len(outline_content))
     
     #先求梯度是为了缩小检索范围，避免全局搜索
     edge_content=EdgeTracing(6,[start_point],img_tag)
+    
+    print('-> Amounts of Edge Content:',len(edge_content))
     
     edge_matrix=np.full(np.shape(img_tag),np.nan)
     
@@ -473,3 +488,7 @@ outline_rest_matrix=EdgeThisRound(detachment_surface,show=1)
 
 '''could not find the next neighbor whose tag is the same'''
 outline_rest_matrix=EdgeThisRound(outline_rest_matrix,show=1)
+outline_rest_matrix=EdgeThisRound(outline_rest_matrix,show=1)
+outline_rest_matrix=EdgeThisRound(outline_rest_matrix,show=1)
+outline_rest_matrix=EdgeThisRound(outline_rest_matrix,show=1)
+

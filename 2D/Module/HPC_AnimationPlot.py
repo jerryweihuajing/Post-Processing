@@ -177,7 +177,7 @@ def AnimationAll(output_folder,
                  with_fracture=False):
     
     print('')
-    print('--Animation Analysis Plot')
+    print('-- Animation Analysis Plot')
     
     #structural deformation
     AnimationIndividual(output_folder,which_case)

@@ -37,7 +37,7 @@ def SingleIntegralAnalysisInProgress(output_folder,
                                      with_fracture=False):
     
     print('')
-    print('Single Integral Analysis In Progress')
+    print('-- Single Integral Analysis In Progress')
 
     #title font
     title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=13)
@@ -168,7 +168,7 @@ def IntegralAnalysisAll(output_folder,
                         with_fracture=False):
     
     print('')
-    print('--Integral Analysis Plot')
+    print('-- Integral Analysis Plot')
     
     #integral analysis
     list_mode=['standard','all']

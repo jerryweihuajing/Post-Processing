@@ -21,14 +21,23 @@ def DictKeyOfValue(dictionary,value):
     
     return key
 
-#============================================================================== 
-#让字典索引以某列表的顺序排列
+#------------------------------------------------------------------------------
+"""
+To arrange the dictionary index in the order of a list
+
+Args:
+    which_dict: dictionary object to be arranged
+    which_keys: keys list of new dictionary
+    
+Returns:
+    new dictionary object
+"""
 def DictSortByIndex(which_dict,which_keys):
     
-    #结果
+    #The results of operation
     that_dict={}
     
-    #遍历新列表，并填充字典
+    #Traverse the new list and populate the dictionary
     for this_key in which_keys:
         
         that_dict[this_key]=which_dict[this_key]

@@ -26,7 +26,9 @@ sys.path=list(set(sys.path))
 
 from o_grid import grid
 from o_mesh import mesh
+from o_case import case
 from o_sphere import sphere
+from o_progress import progress
 from o_strain_2D import strain_2D
 from o_discrete_point import discrete_point
 

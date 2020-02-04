@@ -2,9 +2,10 @@
 """
 Created on Tue Nov 26 22:35:04 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
+
 
 @title：Object-case
 """

@@ -234,12 +234,12 @@ def SpheresInGridIDW(which_discrete_points,grid_length,which_surface_map=None,sh
         
 #    print(which_surface_map)
 #    print(len(which_surface_map))
-#    print(np.shape(z_mesh_points))
-#       
+#    print(np.shape(z_mesh_points)[1])
+       
     #先判断which_surface和mesh_points是否匹配
     if len(which_surface_map)!=np.shape(z_mesh_points)[1]:
         
-        print('ERROR:Incorrect dimension')
+        print('ERROR: Incorrect dimension')
         
         return
     

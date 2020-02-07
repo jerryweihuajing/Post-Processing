@@ -15,6 +15,9 @@ Created on Tue Nov 26 22:34:04 2019
 class progress:
     
     def __init__(self,
+                 map_tag_id=None,
+                 map_id_spheres=None,
+                 list_spheres=None,
                  case=None,
                  shape=None,
                  rgb_map=None,
@@ -32,6 +35,9 @@ class progress:
                  cumulative_distortional_strain=None,
                  stress_or_strain=None):
         
+        self.map_tag_id=map_tag_id
+        self.map_id_spheres=map_id_spheres
+        self.list_spheres=list_spheres
         self.case=case
         self.shape=shape
         self.rgb_map=rgb_map

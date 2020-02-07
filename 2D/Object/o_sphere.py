@@ -27,8 +27,8 @@ class sphere:
                  stress_tensor=None,             
                  periodical_strain_tensor=None,
                  cumulative_strain_tensor=None,        
-                 periodical_displacemnet=None,            
-                 cumulative_displacemnet=None):     
+                 periodical_displacement=None,            
+                 cumulative_displacement=None):     
        
         self.Id=Id
         self.tag=tag
@@ -40,12 +40,13 @@ class sphere:
         self.stress_tensor=stress_tensor         
         self.periodical_strain_tensor=periodical_strain_tensor
         self.cumulative_strain_tensor=periodical_strain_tensor  
-        self.periodical_displacemnet=periodical_strain_tensor           
-        self.cumulative_displacemnet=periodical_strain_tensor
-
+        self.periodical_displacement=periodical_displacement      
+        self.cumulative_displacement=cumulative_displacement
         
     #将张量转化为三维,生成应力二维张量   
     def Init(self):
+        
+        print('-- sphere.Init')
         
         #Area Calculation
         self.area=np.pi*self.radius**2

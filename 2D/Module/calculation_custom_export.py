@@ -4,9 +4,9 @@ Created on Tue Jul 23 14:13:18 2019
 
 Created on Mon Jul 15 00:25:15 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Plot in Custom manner
 """
@@ -23,14 +23,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import Norm as No
-import Path as Pa
+import operation_case as O_C
+import operation_path_v1 as O_P_1
 import Image as Img
-import NewPath as NP
+import operation_path_v2 as O_P_2
 import Decoration as Dec
-import SpheresPlot as SP
+import calculation_spheres_matrix as C_S_M
 import AxisBoundary as AB
 import SpheresBoundary as SB
-import NewSpheresGeneration as NSG
 import SpheresAttributeMatrix as SAM
 
 #------------------------------------------------------------------------------
@@ -45,47 +45,50 @@ Args:
     pixel_step: length of single pixel
     index_list: custom index of images
     test: if there is a test with a small amount of spheres
-    show: if there is a window display
+    data_only: whether it saves data only
+    
 Returns:
-    PNG, TXT, GIF in output folder
+    None
 """
-def ModePlot(which_case_path,
-             which_input_mode,
-             which_output_mode,
-             which_plane,
-             pixel_step,
-             test=False,
-             show=False):
-
-    #map between index and spheres
-    map_all_phase_spheres=NSG.GenerateSpheresMapWithSample(which_case_path)
+def ModeCalculation(which_case_path,
+                    which_input_mode,
+                    which_output_mode,
+                    which_plane='XoY',
+                    pixel_step=1,
+                    test=False,
+                    data_only=True):
+    
+    print('')
+    print('-- Mode Calculation')
+    print('-> input mode:',which_input_mode.replace('_',' '))
+    print('-> output mode:',which_output_mode.replace('_',' '))
+    
+    #construct case object
+    that_case=O_C.CaseGeneration(which_case_path)
     
     #list of spheres
-    spheres_list=list(map_all_phase_spheres.values())
+    spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
     
     #通用的axis
     global_axis_boundary=AB.GlobalAxisBoundary(spheres_list)
     
     #file name list in this case
-    file_names=NP.FileNamesThisCase(which_case_path)
+    file_names=O_P_2.FileNamesThisCase(which_case_path)
     
     if which_input_mode=='structural_deformation':
         
         which_output_mode=''
-
-    print('input mode:',which_input_mode.replace('_',' '))
-    print('output mode:',which_output_mode.replace('_',' '))
     
     '''Medival fold will be generated as well'''
-    output_folder=NP.OutputFolder(which_case_path,which_input_mode,which_output_mode)
+    output_folder=O_P_2.OutputFolder(which_case_path,which_input_mode,which_output_mode)
     
     #images and values
     images_folder=output_folder+'images\\'
     values_folder=output_folder+'values\\'
     
     #Gnenerate these Folder
-    Pa.GenerateFolder(images_folder)
-    Pa.GenerateFolder(values_folder)
+    O_P_1.GenerateFolder(images_folder)
+    O_P_1.GenerateFolder(values_folder)
     
     #construct the map between postfix and colormap
     if which_input_mode=='stress':
@@ -111,7 +114,7 @@ def ModePlot(which_case_path,
     images=[]
     
     #绘制不同期次的形态
-    for k in range(len(map_all_phase_spheres)):    
+    for k in range(len(that_case.list_progress)):    
                    
         print('')
         print('======')
@@ -121,13 +124,8 @@ def ModePlot(which_case_path,
         this_progress=this_file_name.strip('.txt')
         this_percentage=this_progress.strip('progress=')
         
-        print(this_progress)
-        
-        #图片和填充柄
-        this_fig=plt.figure(count)
-        
-        this_ax=plt.subplot()
-        
+        print('-->',this_progress)
+
         #give a name
         this_fig_name=this_percentage+'.png'
         
@@ -135,23 +133,32 @@ def ModePlot(which_case_path,
         this_txt_name=this_percentage+'.txt'
         
         #spheres system
-        this_spheres=map_all_phase_spheres[k] 
+        this_spheres=spheres_list[k] 
           
         if test:
             
-            this_spheres=map_all_phase_spheres[k][:100]    
-        
+            pixel_step=20 
+            
+        if not data_only:
+            
+            #图片和填充柄
+            this_fig=plt.figure(count)
+            
+            this_ax=plt.subplot()
+            
         if which_input_mode=='structural_deformation':
                        
             #Spheres image
-            spheres_grids=SP.SpheresImage(this_spheres,pixel_step)
+            spheres_grids=C_S_M.SpheresImage(this_spheres,pixel_step)
             
             #图像
             this_img=Img.ImgFlip(spheres_grids.img_color,0)
             this_img_tag=Img.ImgFlip(spheres_grids.img_tag,0)
-            
-            plt.imshow(this_img)
-        
+
+            if not data_only:
+                
+                plt.imshow(this_img)
+                
             #save as txt
             np.savetxt(values_folder+this_txt_name,this_img_tag,fmt="%.3f",delimiter=",") 
             
@@ -164,36 +171,40 @@ def ModePlot(which_case_path,
                                             which_input_mode,
                                             which_output_mode,
                                             which_interpolation='spheres_in_grid')
-             
-            plt.imshow(Img.ImgFlip(this_img,0),norm=norm,cmap=colormap) 
             
+            if not data_only:
+                
+                plt.imshow(Img.ImgFlip(this_img,0),norm=norm,cmap=colormap) 
+
             #save as txt
             np.savetxt(values_folder+this_txt_name,this_img,fmt="%.3f",delimiter=",")   
+         
+        if not data_only:
             
-        #draw outline
-        SB.SimpleSpheresBoundary(this_spheres,pixel_step,show=True)
-        
-        #坐标轴和边
-        Dec.TicksAndSpines(this_ax)
-        plt.axis(np.array(global_axis_boundary)/pixel_step)
-        
-        #save this fig
-        this_fig.savefig(images_folder+this_fig_name,dpi=300,bbox_inches='tight')
-        
-        #collect fig to create GIF
-        images.append(imageio.imread(images_folder+this_fig_name))
-        
-        count+=1 
-        
-        if not show:
+            #draw outline
+            SB.SimpleSpheresBoundary(this_spheres,pixel_step,show=True)
             
+            #坐标轴和边
+            Dec.TicksAndSpines(this_ax)
+            plt.axis(np.array(global_axis_boundary)/pixel_step)
+            
+            #save this fig
+            this_fig.savefig(images_folder+this_fig_name,dpi=300,bbox_inches='tight')
+            
+            #collect fig to create GIF
+            images.append(imageio.imread(images_folder+this_fig_name))
+        
             plt.close()  
-       
-    #GIF name
-    gif_name=which_output_mode.replace('_',' ')+' '+which_input_mode.replace('_',' ')+'.gif'
-    
-    #save GIF
-    imageio.mimsave(which_case_path.replace('input','output')+'\\'+gif_name,images,duration=0.5)
+            
+        count+=1
+        
+    if not data_only:
+        
+        #GIF name
+        gif_name=which_output_mode.replace('_',' ')+' '+which_input_mode.replace('_',' ')+'.gif'
+        
+        #save GIF
+        imageio.mimsave(which_case_path.replace('input','output')+'\\'+gif_name,images,duration=0.5)
     
 #------------------------------------------------------------------------------   
 """
@@ -205,15 +216,17 @@ Args:
     pixel_step: length of single pixel
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
-
+    data_only: whether it saves data only
+    
 Returns:
-    mass of PNG, TXT, GIF in output folder
+    None
 """    
-def CasePlot(which_case_path,
-             which_plane,
-             pixel_step,
-             which_mode_list=None,
-             test=False):
+def CaseCalculation(which_case_path,
+                    which_plane='XoY',
+                    pixel_step=1,
+                    which_mode_list=None,
+                    test=False,
+                    data_only=True):
     
     #argument information
     argument_str=''
@@ -224,7 +237,8 @@ def CasePlot(which_case_path,
         argument_str+=this_str
         
     print('')
-    print('case:',argument_str.strip('\\'))
+    print('-- Case Calculation')
+    print('-> case:',argument_str.strip('\\'))
     
     print('')
     print('...')
@@ -255,18 +269,18 @@ def CasePlot(which_case_path,
     if which_mode_list==None:
         
         #structural deformation
-        ModePlot(which_case_path,'structural_deformation','',which_plane,pixel_step,test)
+        ModeCalculation(which_case_path,'structural_deformation','',which_plane,pixel_step,test,data_only)
                 
         #stress
         for this_stress_mode in stress_mode:
             
-            ModePlot(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
+            ModeCalculation(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test,data_only)
             
         #strain
         for this_strain_mode in strain_mode:
             
-            ModePlot(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test)
-            ModePlot(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test)
+            ModeCalculation(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test,data_only)
+            ModeCalculation(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test,data_only)
     
     else:
         
@@ -281,22 +295,22 @@ def CasePlot(which_case_path,
             #structural deformation
             if this_mode=='structural_deformation':
  
-                ModePlot(which_case_path,'structural_deformation','',which_plane,pixel_step,test)
+                ModeCalculation(which_case_path,'structural_deformation','',which_plane,pixel_step,test,data_only)
                 
             #stress
             if 'stress' in this_mode:
                             
                 this_stress_mode=this_mode.strip('stress').strip('_')
                
-                ModePlot(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test)
+                ModeCalculation(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test,data_only)
             
             #strain
             if 'strain' in this_mode:
                 
                 this_strain_mode=this_mode.strip('strain').strip('_')
                 
-                ModePlot(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test)
-                ModePlot(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test)
+                ModeCalculation(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test,data_only)
+                ModeCalculation(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test,data_only)
 
 #------------------------------------------------------------------------------   
 """
@@ -308,19 +322,21 @@ Args:
     pixel_step: length of single pixel
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
-
+    data_only: whether it saves data only
+    
 Returns:
-    mass of PNGs, TXTs, GIFs in output folder
+    None
 """ 
-def ExperimentPlot(which_experiment_path,
-                   which_plane,
-                   pixel_step,
-                   which_mode_list=None,
-                   test=False):
+def ExperimentCalculation(which_experiment_path,
+                          which_plane,
+                          pixel_step,
+                          which_mode_list=None,
+                          test=False,
+                          data_only=True):
     
     #traverse
     for this_case_name in os.listdir(which_experiment_path+'\\input'):
         
         this_case_path=which_experiment_path+'\\input\\'+this_case_name
         
-        CasePlot(this_case_path,which_plane,pixel_step,which_mode_list,test)        
+        CaseCalculation(this_case_path,which_plane,pixel_step,which_mode_list,test,data_only)        

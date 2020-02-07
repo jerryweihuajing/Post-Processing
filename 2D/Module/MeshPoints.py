@@ -150,23 +150,34 @@ def MeshGrid(which_discrete_points,step,show=False):
 
 #==============================================================================  
 #disrete points grid is better
-def DiscretePointsGrids(which_discrete_points,length,show=False):
+def DiscretePointsGrids(which_discrete_points,grid_length,show=False):
 
+    print('')
+    print('-- Discrete Points Grids')
+    print('-> grid length:',grid_length)
+    
     #首先找出网格的坐标范围
     x_discrete_points=[this_discrete_point.pos_x for this_discrete_point in which_discrete_points]
     y_discrete_points=[this_discrete_point.pos_y for this_discrete_point in which_discrete_points]
     
+    #最大最小值对应的半径
+    radius_of_min=which_discrete_points[x_discrete_points.index(min(x_discrete_points))].radius
+    radius_of_max=which_discrete_points[y_discrete_points.index(max(y_discrete_points))].radius
+    
     #xy边界
-    boundary_x=[min(x_discrete_points),max(x_discrete_points)]
-    boundary_y=[min(y_discrete_points),max(y_discrete_points)]
+    boundary_x=[min(x_discrete_points)-radius_of_min,max(x_discrete_points)+radius_of_min]
+    boundary_y=[min(y_discrete_points)-radius_of_max,max(y_discrete_points)+radius_of_max]
     
     #xy边长
     length_x=boundary_x[1]-boundary_x[0]
     length_y=boundary_y[1]-boundary_y[0]
-        
+    
+#    print(boundary_x,boundary_y)
+#    print(length_x,length_y) 
+    
     #xy方向上的网格数
-    amount_grid_x=int(np.ceil(length_x/length))
-    amount_grid_y=int(np.ceil(length_y/length))
+    amount_grid_x=int(np.ceil(length_x/grid_length))
+    amount_grid_y=int(np.ceil(length_y/grid_length))
     
     #xy方向上的网格交点数
     amount_mesh_points_x=amount_grid_x+1
@@ -178,18 +189,18 @@ def DiscretePointsGrids(which_discrete_points,length,show=False):
         #x向
         for k_x in range(amount_mesh_points_x):
             
-            plt.vlines(boundary_x[0]+k_x*length,
+            plt.vlines(boundary_x[0]+k_x*grid_length,
                        boundary_y[0],
-                       boundary_y[0]+amount_grid_y*length,
+                       boundary_y[0]+amount_grid_y*grid_length,
                        color='k',
                        linestyles="--")
             
         #y向
         for k_y in range(amount_mesh_points_y):
             
-            plt.hlines(boundary_y[0]+k_y*length,
+            plt.hlines(boundary_y[0]+k_y*grid_length,
                        boundary_x[0],
-                       boundary_x[0]+amount_grid_x*length,
+                       boundary_x[0]+amount_grid_x*grid_length,
                        color='k',
                        linestyles="--")
              
@@ -204,7 +215,7 @@ def DiscretePointsGrids(which_discrete_points,length,show=False):
             this_grid=o_grid.grid() 
             
             #assignment
-            this_grid.length=length
+            this_grid.length=grid_length
             this_grid.index_x=k_x
             this_grid.index_y=k_y
             this_grid.index=[this_grid.index_x,this_grid.index_y]
@@ -225,5 +236,7 @@ def DiscretePointsGrids(which_discrete_points,length,show=False):
     #赋值
     that_mesh.grids=grids
     that_mesh.img_tag=img_tag_mesh
-      
+    
+#    print(np.shape(img_tag_mesh))
+    
     return that_mesh

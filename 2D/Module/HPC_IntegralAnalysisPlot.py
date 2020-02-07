@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-import Path as Pa
+import operation_path_v1 as O_P_1
 
 import HPC_AnimationPlot as HPC_AP
 import HPC_IndividualPlot as HPC_IP
@@ -139,7 +139,7 @@ def SingleIntegralAnalysisInProgress(output_folder,
     integral_analysis_folder=output_folder+'\\integral analysis\\'
     
     #generate folder
-    Pa.GenerateFolder(integral_analysis_folder)
+    O_P_1.GenerateFolder(integral_analysis_folder)
     
     #figure path
     fig_path=integral_analysis_folder+fig_name+' ('+mode+').png'

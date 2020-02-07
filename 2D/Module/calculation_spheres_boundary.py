@@ -34,30 +34,34 @@ import Image as Img
 #return: a mesh object presenting content and img
 def SpheresContent(which_spheres,length,factor=1,show=False):
     
-#    print(len(which_spheres))
+    print('')
+    print('-- Spheres Content')
     
     #首先找出网格的坐标范围
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
     y_spheres=[this_sphere.position[1] for this_sphere in which_spheres]
     
+     #最大最小值对应的半径
+    radius_of_min=which_spheres[x_spheres.index(min(x_spheres))].radius
+    radius_of_max=which_spheres[y_spheres.index(max(y_spheres))].radius
+    
     #xy边界
-    boundary_x=[min(x_spheres),max(x_spheres)]
-    boundary_y=[min(y_spheres),max(y_spheres)]
+    boundary_x=[min(x_spheres)-radius_of_min,max(x_spheres)+radius_of_min]
+    boundary_y=[min(y_spheres)-radius_of_max,max(y_spheres)+radius_of_max]
     
     #xy边长
     length_x=boundary_x[1]-boundary_x[0]
     length_y=boundary_y[1]-boundary_y[0]
         
+#    print(boundary_x,boundary_y)
+#    print(length_x,length_y)
+    
     #xy方向上的网格数
     amount_grid_x=int(np.ceil(length_x/length))
     amount_grid_y=int(np.ceil(length_y/length))
     
 #    print(amount_grid_x,amount_grid_y)
-    
-    #xy方向上的网格交点数
-    amount_mesh_points_x=amount_grid_x+1
-    amount_mesh_points_y=amount_grid_y+1
-    
+
     #total pixels
     spheres_content=[]
                  
@@ -74,10 +78,10 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
         
         for this_pos in new_circle.points_inside:
             
-            this_x=int(np.floor(this_pos[0]/length))
-            this_y=int(np.floor(this_pos[1]/length))
-            
-            if 0<=this_x<amount_mesh_points_x and 0<=this_y<amount_mesh_points_y:
+            this_x=int(np.floor((this_pos[0]-boundary_x[0])/length))
+            this_y=int(np.floor((this_pos[1]-boundary_y[0])/length))
+
+            if 0<=this_x<amount_grid_x and 0<=this_y<amount_grid_y:
                     
                 if [this_x,this_y] not in spheres_content:
                     
@@ -87,6 +91,7 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     img_tag_mesh=np.zeros((amount_grid_x,amount_grid_y))
    
 #    print(np.shape(img_tag_mesh))
+#    print(len(spheres_content))
     
     for this_i,this_j in spheres_content:
                
@@ -121,6 +126,9 @@ the surface could be calculated, do do the 'left' 'right' 'top' 'bottom'
 #return: an dictionary presenting the elavation and coordinates
 def SpheresTopMap(which_spheres,length,factor=1):
 
+    print('')
+    print('-- Spheres Top Map')
+    
     #fetch the mesh object
     that_mesh=SpheresContent(which_spheres,length)
  
@@ -130,7 +138,7 @@ def SpheresTopMap(which_spheres,length,factor=1):
     #img tag
     for j in range(np.shape(that_mesh.img_tag)[1]):
         
-#        map_j_i_top[j]=np.shape(that_mesh.img_tag)[0]
+        map_j_i_top[j]=0
         
         for i in range(np.shape(that_mesh.img_tag)[0]):
 
@@ -244,7 +252,7 @@ def SpheresLeftMap(which_spheres,length,factor=1):
     #img tag
     for i in range(np.shape(that_mesh.img_tag)[0]):
         
-        map_i_j_left[i]=np.shape(that_mesh.img_tag)[1]
+        map_i_j_left[i]=0
         
         for j in range(np.shape(that_mesh.img_tag)[1]):
 

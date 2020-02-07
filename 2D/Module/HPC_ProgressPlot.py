@@ -11,7 +11,7 @@ Created on Tue Nov  5 23:49:51 2019
 
 import matplotlib.pyplot as plt
 
-import Path as Pa
+import operation_path_v1 as O_P_1
 
 import HPC_IndividualPlot as HPC_IP
 
@@ -73,7 +73,7 @@ def ProgressStructuralDeformation(output_folder,
     #animation folder path
     progress_folder=output_folder+'\\progress\\'
     
-    Pa.GenerateFolder(progress_folder)
+    O_P_1.GenerateFolder(progress_folder)
     
     #save this fig
     figure.savefig(progress_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
@@ -140,13 +140,39 @@ def ProgressStressOrStrain(output_folder,
     #animation folder path
     progress_folder=output_folder+'\\progress\\'
     
-    Pa.GenerateFolder(progress_folder)
+    O_P_1.GenerateFolder(progress_folder)
     
     #save this fig
     figure.savefig(progress_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
     
     plt.close()
     
+#------------------------------------------------------------------------------
+"""
+Plot stress or strain progress
+
+Args:
+    output_folder: folder to contain result
+    which_case: case object to be proccessed
+    post_fix: post fix of txt file
+    with_fracture: (bool) plot fracture or not 
+    
+Returns:
+    None
+"""
+def Progress(output_folder,
+             which_case,
+             post_fix,
+             with_fracture=False):
+    
+    if post_fix=='Structural Deformation':
+        
+        ProgressStructuralDeformation(output_folder,which_case,with_fracture) 
+        
+    else:
+           
+        ProgressStressOrStrain(output_folder,which_case,post_fix,with_fracture)
+        
 #------------------------------------------------------------------------------
 """
 Plot all progress
@@ -166,10 +192,8 @@ def ProgressAll(output_folder,
     print('')
     print('-- Progress Plot')
     
-    #strucural deformation
-    ProgressStructuralDeformation(output_folder,which_case,with_fracture)
-    
-    list_post_fix=['Mean Normal Stress',
+    list_post_fix=['Structural Deformation',
+                   'Mean Normal Stress',
                    'Maximal Shear Stress',
                    'Volumetric Strain-Periodical',
                    'Distortional Strain-Periodical',
@@ -179,4 +203,4 @@ def ProgressAll(output_folder,
     #stress and strain progress
     for this_post_fix in list_post_fix:        
         
-        ProgressStressOrStrain(output_folder,which_case,this_post_fix)
+        Progress(output_folder,which_case,this_post_fix)

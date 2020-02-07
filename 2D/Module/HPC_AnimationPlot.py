@@ -12,7 +12,7 @@ Created on Tue Nov  5 23:53:13 2019
 import imageio
 import matplotlib.pyplot as plt
 
-import Path as Pa
+import operation_path_v1 as O_P_1
 
 import HPC_IndividualPlot as HPC_IP
 import HPC_IntegralAnalysisPlot as HPC_IAP
@@ -60,7 +60,7 @@ def AnimationIntegralAnalysis(output_folder,
     #animation folder path
     animation_folder=output_folder+'\\animation\\'
     
-    Pa.GenerateFolder(animation_folder)
+    O_P_1.GenerateFolder(animation_folder)
         
     #save GIF
     imageio.mimsave(animation_folder+gif_name+' ('+mode+').gif',figures,duration=0.5)
@@ -178,12 +178,10 @@ def AnimationAll(output_folder,
     
     print('')
     print('-- Animation Analysis Plot')
-    
-    #structural deformation
-    AnimationIndividual(output_folder,which_case)
-    
+
     #all individuals
-    list_post_fix=['Mean Normal Stress',
+    list_post_fix=['Structural Deformation',
+                   'Mean Normal Stress',
                    'Maximal Shear Stress',
                    'Volumetric Strain-Periodical',
                    'Distortional Strain-Periodical',
@@ -193,4 +191,4 @@ def AnimationAll(output_folder,
     #stress and strain
     for this_post_fix in list_post_fix:
         
-        AnimationIndividual(output_folder,which_case,this_post_fix)
+        AnimationIndividual(output_folder,which_case,this_post_fix,with_fracture)

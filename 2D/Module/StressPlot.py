@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from o_stress_2D import stress_2D
 from o_discrete_point import discrete_point
 
-import SpheresPlot as SP
+import calculation_spheres_matrix as C_S_M
 import Interpolation as In
 import SpheresBoundary as SB
 
@@ -60,6 +60,9 @@ def DiscreteValueStress(which_spheres,plane,input_mode,output_mode):
         #XY
         new_discrete_point.pos_x=this_sphere.position[this_position_index[0]]
         new_discrete_point.pos_y=this_sphere.position[this_position_index[1]]
+        
+        #radius
+        new_discrete_point.radius=this_sphere.radius
         
         #define new 2D stess tensor
         this_stress_tensor=np.zeros((2,2))
@@ -128,7 +131,7 @@ def StressSeriesPlot(which_spheres,pixel_step):
 #    SpheresPlot(which_spheres)
     
     #图像
-    spheres_grids=SP.SpheresGrids(ax,which_spheres,pixel_step)
+    spheres_grids=C_S_M.SpheresGrids(ax,which_spheres,pixel_step)
     spheres_grids.Plot()
     
 #    print(np.shape(spheres_grids.img_tag))

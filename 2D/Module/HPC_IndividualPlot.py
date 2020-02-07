@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-import Path as Pa
+import operation_path_v1 as O_P_1
 import Image as Img
 import Matrix as Mat
 import Decoration as Dec
@@ -260,7 +260,7 @@ def IndividualInProgress(output_folder,
         fig_name+=' with fracture'
         
     #generate folder
-    Pa.GenerateFolder(output_folder)
+    O_P_1.GenerateFolder(output_folder)
     
     #path of this figure
     this_fig_path=output_folder+'\\'+fig_name+'.png'
@@ -286,7 +286,8 @@ def AllIndividualsInProgress(output_folder,
                              which_progress,
                              with_fracture=False):  
     
-    list_post_fix=['Mean Normal Stress',
+    list_post_fix=['Structural Deformation',
+                   'Mean Normal Stress',
                    'Maximal Shear Stress',
                    'Volumetric Strain-Periodical',
                    'Distortional Strain-Periodical',

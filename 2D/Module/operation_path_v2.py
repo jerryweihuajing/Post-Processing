@@ -34,7 +34,7 @@ strain: xx strain
         ......  
 '''
     
-import Path as Pa
+import operation_path_v1 as O_P_1
 import Dictionary as Dict
 
 #------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ def ModeFileNames(which_case_path,input_mode):
     mode_input_folder_path=which_case_path+'\\'+input_mode_name
     
     #file_names  
-    return Pa.GenerateFileNames(mode_input_folder_path)
+    return O_P_1.GenerateFileNames(mode_input_folder_path)
 
 #------------------------------------------------------------------------------
 #construct the link between stress txt and strain vtk
@@ -122,7 +122,7 @@ Returns:
 def FileNamesThisCase(which_case_path):
     
     #获取目标路径下所有文件名
-    file_names=Pa.FileNames(which_case_path)
+    file_names=O_P_1.FileNames(which_case_path)
     
     #建立进度与文件名的映射列表
     map_progress_file_name={}

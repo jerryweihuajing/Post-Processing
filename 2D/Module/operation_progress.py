@@ -17,6 +17,8 @@ import ImageSmoothing as ISm
 
 import HPC_IndividualPlot as HPC_IP
 
+from data_yade_color import yade_rgb_map
+
 #------------------------------------------------------------------------------
 """
 Translate file name post fix to title string
@@ -105,7 +107,7 @@ def ProgressConstruction(progress_path):
         that_progress.shape=(100,1000)    
     
     #map between tag and rgb in this case
-    rgb_map=Img.MapTagRGB(progress_path)
+    rgb_map=yade_rgb_map
     
     #Generate tag image and rgb image
     structural_deformation_img_tag=Mat.ImportMatrixFromTXT(progress_path)

@@ -12,10 +12,10 @@ Created on Tue Nov  5 23:53:13 2019
 import imageio
 import matplotlib.pyplot as plt
 
-import BETA_operation_path as B_O_P
+import operation_path as O_P
 
-import HPC_IndividualPlot as HPC_IP
-import HPC_IntegralAnalysisPlot as HPC_IAP
+import visualization_individual as V_I
+import visualization_integral_analysis as V_I_A
 
 #------------------------------------------------------------------------------
 """
@@ -44,7 +44,7 @@ def AnimationIntegralAnalysis(output_folder,
     for this_progress in which_case.list_progress:
         
         #path of integral analysis figure
-        this_fig_path=HPC_IAP.SingleIntegralAnalysisInProgress(output_folder,this_progress,mode,with_fracture)
+        this_fig_path=V_I_A.SingleIntegralAnalysis(output_folder,this_progress,mode,with_fracture)
 
         #collect fig to create GIF
         figures.append(imageio.imread(this_fig_path))
@@ -60,7 +60,7 @@ def AnimationIntegralAnalysis(output_folder,
     #animation folder path
     animation_folder=output_folder+'\\animation\\'
     
-    O_P_1.GenerateFolder(animation_folder)
+    O_P.GenerateFolder(animation_folder)
         
     #save GIF
     imageio.mimsave(animation_folder+gif_name+' ('+mode+').gif',figures,duration=0.5)
@@ -97,7 +97,7 @@ def AnimationIndividual(output_folder,
     post_fix_folder=output_folder+'\\'+post_fix+'\\'
     
     #Generate folder of output figures
-    Pa.GenerateFolder(post_fix_folder)
+    O_P.GenerateFolder(post_fix_folder)
     
     for this_progress in which_case.list_progress:
         
@@ -111,16 +111,21 @@ def AnimationIndividual(output_folder,
         
             this_figure=plt.subplots(figsize=(7,13))[0]
 
+        #100-200
+        if global_shape==(100,350):
+        
+            this_figure=plt.subplots(figsize=(5,13))[0]
+            
         #new picture and ax
         this_ax=plt.subplot()
 
         if post_fix=='Structural Deformation':
             
-            HPC_IP.IndividualStructuralDeformationInProgress(this_progress,this_ax,with_fracture,1,1)  
+            V_I.IndividualStructuralDeformation(this_progress,this_ax,with_fracture,1,1)  
             
         else:
                
-            HPC_IP.IndividualStressOrStrainInProgress(this_progress,post_fix,this_ax,with_fracture,1,1)
+            V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,with_fracture,1,1)
     
         this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
         
@@ -155,7 +160,7 @@ def AnimationIndividual(output_folder,
     animation_folder=output_folder+'\\animation\\'
     
     #Generate folder of output figures
-    Pa.GenerateFolder(animation_folder)    
+    O_P.GenerateFolder(animation_folder)    
     
     #save GIF
     imageio.mimsave(animation_folder+gif_name+'.gif',figures,duration=0.5)

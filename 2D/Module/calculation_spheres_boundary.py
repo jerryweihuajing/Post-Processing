@@ -108,7 +108,7 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     that_mesh=o_mesh.mesh()
     
     #Rotatation is in need
-    that_mesh.img_tag=Img.ImgFlip(Img.ImgRotate(img_tag_mesh),0)
+    that_mesh.img_tag=C_I.ImgFlip(C_I.ImgRotate(img_tag_mesh),0)
     that_mesh.content=spheres_content   
 
     if show:
@@ -451,7 +451,7 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
 #        print(np.shape(that_img_tag))
         
         #draw boundary
-        plt.imshow(Img.ImgFlip(that_img_tag,0),cmap='gray')
+        plt.imshow(C_I.ImgFlip(that_img_tag,0),cmap='gray')
             
     return boundary
  

@@ -30,11 +30,20 @@ import matplotlib.pyplot as plt
 import calculation_image as C_I
 import calculation_scatters_mesh as C_S_M
 
-#==============================================================================     
-#计算两点之间的距离
+#------------------------------------------------------------------------------   
+"""
+Calculate the distance between two points
+
+Args:
+   pos_A: coordinate of point A
+   pos_B: coordinate of point B
+   
+Returns:
+    the distance between two points
+""" 
 def Distance(pos_A,pos_B):
     
-    #判断pos_A,pos_B的数据类型，无论如何都转化为np.array
+    #determine that the data types of pos_A,pos_B, they are converted to np.array anyway
     if type(pos_A) is not np.array:
        
         pos_A=np.array(pos_A)
@@ -43,11 +52,19 @@ def Distance(pos_A,pos_B):
        
         pos_B=np.array(pos_B)
   
-    return np.sqrt(np.sum((pos_A-pos_B)**2))    
+    return np.sqrt(np.sum((pos_A-pos_B)**2))   
+ 
+#------------------------------------------------------------------------------   
+"""
+Genertate the neighbor points index
 
-#============================================================================== 
-#genertate the neighbor points
-#pad: size:(size*2+1)X(size*2+1)
+Args:
+   which_index: index (i, j)
+   pad: half length of neighbor area
+   
+Returns:
+    the neighbor points index
+""" 
 def Neighbor(which_index,pad):
     
     #index plus tuple offset is neighbor index
@@ -55,8 +72,17 @@ def Neighbor(which_index,pad):
             for i in np.linspace(-pad,pad,2*pad+1) 
             for j in np.linspace(-pad,pad,2*pad+1)]
 
-#============================================================================== 
-#delete nan in index list in an img
+#------------------------------------------------------------------------------   
+"""
+Delete nan in index list in an img
+
+Args:
+   which_img: image to be operated
+   index_list: list of index
+   
+Returns:
+    index list without nan
+""" 
 def NanExpire(which_img,index_list):
     
     exist_index_list=[]
@@ -75,13 +101,21 @@ def NanExpire(which_img,index_list):
 #    print(exist_index_list)
     
     return [index_list[this_index] for this_index in exist_index_list]
-            
-#@pysnooper.snoop()
-#==============================================================================     
-#反距离加权：权重
+   
+#------------------------------------------------------------------------------   
+"""
+Calculate weight of inverse distance weighting
+
+Args:
+   which_pos: point to be operated
+   which_other_points: points to calculate
+   
+Returns:
+    weight of inverse distance weighting
+"""          
 def InverseDistanceWeight(which_pos,which_other_points):
     
-    #构造which_other_points的坐标
+    #construct the coordinates of which other points
     if isinstance(which_other_points[0],list) or isinstance(which_other_points[0],tuple):
         
         which_other_pos=cp.deepcopy(which_other_points)
@@ -90,13 +124,13 @@ def InverseDistanceWeight(which_pos,which_other_points):
 
         which_other_pos=[[this_point.pos_x,this_point.pos_y] for this_point in which_other_points]
     
-    #反距离加权的分母
+    #inverse distance weighted denominator
     denominator=np.sum([1/Distance(which_pos,this_pos) for this_pos in which_other_pos])
     
-    #权重列表
+    #weight list
     weight=[]
     
-    #点集中所有点到which_pos的加权
+    #the weight of all the points in the set of points to which pos
     for this_pos in which_other_pos:
         
         weight.append(1/Distance(which_pos,this_pos)/denominator)
@@ -109,7 +143,10 @@ def InverseDistanceWeight(which_pos,which_other_points):
 #将离散点discrete_points插至mesh_points网格点上
 #which_surface_map用于限制点的范围，减少计算量
 #all the discrete points will take part in the interpolation
-def GlobalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=None,show=False):
+def GlobalIDWInterpolation(which_discrete_points,
+                           grid_length,
+                           which_surface_map=None,
+                           show=False):
     
     #construct mesh points
     mesh_points=C_S_M.MeshGrid(which_discrete_points,grid_length,show=False)
@@ -168,7 +205,7 @@ def GlobalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=N
         
         plt.imshow(z_mesh_points)  
 
-    return Img.ImgFlip(Img.ImgRotate(z_mesh_points),0)
+    return C_I.ImgFlip(C_I.ImgRotate(z_mesh_points),0)
  
 #==============================================================================  
 #Interpolation in each grid
@@ -216,7 +253,7 @@ def SpheresInGridIDW(which_discrete_points,grid_length,which_surface_map=None,sh
             img_tag[this_grid.index_x,this_grid.index_y]=np.dot(z_discrete_points,this_weight)
    
     #comfortable
-    z_mesh_points=Img.ImgFlip(Img.ImgRotate(img_tag),0)
+    z_mesh_points=C_I.ImgFlip(C_I.ImgRotate(img_tag),0)
     
     #preview
     if show:

@@ -11,11 +11,13 @@ Created on Tue Nov  5 23:49:51 2019
 
 import matplotlib.pyplot as plt
 
-import HPC_IndividualPlot as HPC_IP
+import operation_path as O_P
+
+import visualization_individual as V_I
 
 #------------------------------------------------------------------------------
 """
-Plot structural deformation progress
+Plot structural deformation series
 
 Args:
     output_folder: folder to contain result
@@ -25,7 +27,7 @@ Args:
 Returns:
     None
 """
-def ProgressStructuralDeformation(output_folder,
+def SeriesStructuralDeformation(output_folder,
                                   which_case,
                                   with_fracture=False):
     
@@ -46,6 +48,11 @@ def ProgressStructuralDeformation(output_folder,
     
         figure=plt.subplots(figsize=(7,13))[0]
 
+    #100-500
+    if global_shape==(100,350):
+    
+        figure=plt.subplots(figsize=(5,13))[0]
+        
     #subplot index
     index=0
     
@@ -56,7 +63,7 @@ def ProgressStructuralDeformation(output_folder,
         
         this_ax=plt.subplot(len(which_case.list_progress),1,index)
  
-        HPC_IP.IndividualStructuralDeformationInProgress(this_progress,this_ax,with_fracture)
+        V_I.IndividualStructuralDeformation(this_progress,this_ax,with_fracture)
         
         this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
  
@@ -69,18 +76,18 @@ def ProgressStructuralDeformation(output_folder,
         fig_name+=' with fracture'
        
     #animation folder path
-    progress_folder=output_folder+'\\progress\\'
+    series_folder=output_folder+'\\series\\'
     
-    O_P_1.GenerateFolder(progress_folder)
+    O_P.GenerateFolder(series_folder)
     
     #save this fig
-    figure.savefig(progress_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
+    figure.savefig(series_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
     
     plt.close()
         
 #------------------------------------------------------------------------------
 """
-Plot stress or strain progress
+Plot stress or strain series
 
 Args:
     output_folder: folder to contain result
@@ -91,7 +98,7 @@ Args:
 Returns:
     None
 """
-def ProgressStressOrStrain(output_folder,
+def SeriesStressOrStrain(output_folder,
                            which_case,
                            post_fix,
                            with_fracture=False):
@@ -113,6 +120,11 @@ def ProgressStressOrStrain(output_folder,
     
         figure=plt.subplots(figsize=(7,13))[0]
 
+    #100-500
+    if global_shape==(100,350):
+    
+        figure=plt.subplots(figsize=(5,13))[0]
+        
     #subplot index
     index=0
 
@@ -123,7 +135,7 @@ def ProgressStressOrStrain(output_folder,
         
         this_ax=plt.subplot(len(which_case.list_progress),1,index)
         
-        HPC_IP.IndividualStressOrStrainInProgress(this_progress,post_fix,this_ax,with_fracture)
+        V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,with_fracture)
         
         this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
   
@@ -136,18 +148,18 @@ def ProgressStressOrStrain(output_folder,
         fig_name+=' with fracture'
        
     #animation folder path
-    progress_folder=output_folder+'\\progress\\'
+    series_folder=output_folder+'\\series\\'
     
-    O_P_1.GenerateFolder(progress_folder)
+    O_P.GenerateFolder(series_folder)
     
     #save this fig
-    figure.savefig(progress_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
+    figure.savefig(series_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
     
     plt.close()
     
 #------------------------------------------------------------------------------
 """
-Plot stress or strain progress
+Plot stress or strain series
 
 Args:
     output_folder: folder to contain result
@@ -158,22 +170,22 @@ Args:
 Returns:
     None
 """
-def Progress(output_folder,
-             which_case,
-             post_fix,
-             with_fracture=False):
+def Series(output_folder,
+           which_case,
+           post_fix,
+           with_fracture=False):
     
     if post_fix=='Structural Deformation':
         
-        ProgressStructuralDeformation(output_folder,which_case,with_fracture) 
+        SeriesStructuralDeformation(output_folder,which_case,with_fracture) 
         
     else:
            
-        ProgressStressOrStrain(output_folder,which_case,post_fix,with_fracture)
+        SeriesStressOrStrain(output_folder,which_case,post_fix,with_fracture)
         
 #------------------------------------------------------------------------------
 """
-Plot all progress
+Plot all series
 
 Args:
     output_folder: folder to contain result
@@ -183,9 +195,9 @@ Args:
 Returns:
     None
 """
-def ProgressAll(output_folder,
-                which_case,
-                with_fracture=False):
+def SeriesAll(output_folder,
+              which_case,
+              with_fracture=False):
 
     print('')
     print('-- Progress Plot')
@@ -201,4 +213,4 @@ def ProgressAll(output_folder,
     #stress and strain progress
     for this_post_fix in list_post_fix:        
         
-        Progress(output_folder,which_case,this_post_fix)
+        Series(output_folder,which_case,this_post_fix)

@@ -15,7 +15,7 @@ import calculation_image as C_I
 import calculation_matrix as C_M
 import calculation_image_smoothing as C_I_S
 
-import HPC_IndividualPlot as HPC_IP
+import visualization_individual as V_I
 
 from data_yade_color import yade_rgb_map
 
@@ -95,6 +95,9 @@ Returns:
 """ 
 def ProgressConstruction(progress_path):
     
+    print('')
+    print('-- Progress Construction')
+    
     #construct a progress object
     that_progress=progress()
     
@@ -104,7 +107,11 @@ def ProgressConstruction(progress_path):
         
     if '100-1000' in progress_path:
         
-        that_progress.shape=(100,1000)    
+        that_progress.shape=(100,1000)   
+        
+    if '100-200' in progress_path:
+        
+        that_progress.shape=(100,350) 
     
     #map between tag and rgb in this case
     rgb_map=yade_rgb_map
@@ -196,4 +203,4 @@ def ProgressPostProcessing(progress_path,output_folder,with_fracture=False):
     progress_folder=output_folder+'\\'+that_progress.percentage
     
     #imaging and output
-    HPC_IP.AllIndividualsInProgress(progress_folder,that_progress,with_fracture)
+    V_I.AllIndividuals(progress_folder,that_progress,with_fracture)

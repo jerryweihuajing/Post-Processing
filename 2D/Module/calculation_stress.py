@@ -2,9 +2,9 @@
 """
 Created on Tue Jun 11 21:07:33 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Plot the Stress
 """
@@ -12,8 +12,10 @@ Created on Tue Jun 11 21:07:33 2019
 import numpy as np
 import matplotlib.pyplot as plt
     
-from o_stress_2D import stress_2D
 from o_scatter import scatter
+from o_stress_2D import stress_2D
+
+import operation_decoration as O_D
 
 import calculation_image as C_Im
 import calculation_interpolation as C_In
@@ -140,7 +142,7 @@ def StressSeriesPlot(which_spheres,pixel_step):
     
     #标题与细节
 #    ChineseTitle('构造形态')
-    C_I.TicksAndSpines(ax)
+    O_D.TicksAndSpines(ax)
     
     #各种应力
     discrete_points_σ_x=ScattersStress(which_spheres,'x_normal_stress') 

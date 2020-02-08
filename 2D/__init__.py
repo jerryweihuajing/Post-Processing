@@ -16,6 +16,6 @@ sys.path.append(os.getcwd()+'\\Module')
 sys.path.append(os.getcwd()+'\\Object')
 sys.path=list(set(sys.path)) 
 
-import operation_case as O_C
+import visualization_case as V_C
 
 import calculation_custom_export as C_C_E

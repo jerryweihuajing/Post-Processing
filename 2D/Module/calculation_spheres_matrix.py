@@ -16,6 +16,7 @@ Calculate strain via displacement
 
 import copy as cp
 import numpy as np
+
 import matplotlib.pyplot as plt
     
 from o_grid import grid
@@ -25,12 +26,13 @@ from o_circle import circle
 from o_scatter import scatter
 from o_strain_2D import strain_2D
 
-import calculation_image as C_Im
 import operation_dictionary as O_D
+
+import calculation_image as C_Im
+import calculation_stress as C_S
 import calculation_rasterization as C_R
 import calculation_interpolation as C_In
 import calculation_spheres_boundary as C_S_B
-import StressPlot as Stress 
 
 from data_yade_color import yade_rgb_list
 
@@ -665,7 +667,7 @@ def SpheresStressMatrix(pixel_step,
         return 
 
     #discrete point objects
-    discrete_points=Stress.DiscreteValueStress(which_spheres,
+    discrete_points=C_S.ScattersStress(which_spheres,
                                                which_plane,
                                                which_input_mode,
                                                which_output_mode)   

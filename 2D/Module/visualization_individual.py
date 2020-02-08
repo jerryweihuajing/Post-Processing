@@ -14,12 +14,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-import BETA_operation_path as B_O_P
+import operation_path as O_P
+import operation_decoration as O_D
+
 import calculation_image as C_I
 import calculation_matrix as C_M
-import Decoration as Dec
-
-import HPC_Global as HPC_Glo
+import calculation_global_parameter as C_G_P
 
 #------------------------------------------------------------------------------
 """
@@ -35,11 +35,11 @@ Args:
 Returns:
     None
 """
-def IndividualStructuralDeformationInProgress(which_progress,
-                                              subplot_ax,
-                                              with_fracture=False,
-                                              with_annotation=True,
-                                              with_title=False):
+def IndividualStructuralDeformation(which_progress,
+                                    subplot_ax,
+                                    with_fracture=False,
+                                    with_annotation=True,
+                                    with_title=False):
     print('')
     print('-- Structural Deformation')
 
@@ -73,8 +73,8 @@ def IndividualStructuralDeformationInProgress(which_progress,
                            
     '''revision'''
     #decoration  
-    Dec.TicksAndSpines(subplot_ax,1,1)
-    Dec.TicksConfiguration(subplot_ax)
+    O_D.TicksAndSpines(subplot_ax,1,1)
+    O_D.TicksConfiguration(subplot_ax)
     
     #sub annotation
     if with_annotation:
@@ -113,12 +113,12 @@ Args:
 Returns:
     None
 """
-def IndividualStressOrStrainInProgress(which_progress,
-                                       post_fix,
-                                       subplot_ax,
-                                       with_fracture=False,
-                                       with_annotation=True,
-                                       with_title=False):
+def IndividualStressOrStrain(which_progress,
+                             post_fix,
+                             subplot_ax,
+                             with_fracture=False,
+                             with_annotation=True,
+                             with_title=False):
     print('')
     print('-- '+post_fix)
 
@@ -149,15 +149,15 @@ def IndividualStressOrStrainInProgress(which_progress,
         print('--> Local Norm')
         
         plt.imshow(C_I.ImgFlip(value_matrix,0),
-                   cmap=HPC_Glo.GlobalColormap(post_fix))
+                   cmap=C_G_P.GlobalColormap(post_fix))
         
     else:
         
         print('--> Global Norm')
         
         plt.imshow(C_I.ImgFlip(value_matrix,0),
-                   cmap=HPC_Glo.GlobalColormap(post_fix),
-                   norm=HPC_Glo.GlobalNorm(which_progress.case,post_fix))
+                   cmap=C_G_P.GlobalColormap(post_fix),
+                   norm=C_G_P.GlobalNorm(which_progress.case,post_fix))
     
     #plot outline
     if 'Stress' in post_fix:
@@ -178,8 +178,8 @@ def IndividualStressOrStrainInProgress(which_progress,
             
     '''revision'''
     #decoration  
-    Dec.TicksAndSpines(subplot_ax,1,1)
-    Dec.TicksConfiguration(subplot_ax)
+    O_D.TicksAndSpines(subplot_ax,1,1)
+    O_D.TicksConfiguration(subplot_ax)
     
     #sub annotation
     if with_annotation:
@@ -216,10 +216,10 @@ Args:
 Returns:
     None
 """        
-def IndividualInProgress(output_folder,
-                         which_progress,
-                         post_fix='Structural Deformation',
-                         with_fracture=False):
+def Individual(output_folder,
+               which_progress,
+               post_fix='Structural Deformation',
+               with_fracture=False):
      
     print('')
     print('-- Single Individual In Progress')
@@ -238,16 +238,21 @@ def IndividualInProgress(output_folder,
     
         figure=plt.subplots(figsize=(7,13))[0]
 
+    #100-500
+    if global_shape==(100,350):
+    
+        figure=plt.subplots(figsize=(5,13))[0]
+        
     #new picture and ax
     this_ax=plt.subplot()
 
     if post_fix=='Structural Deformation':
         
-        IndividualStructuralDeformationInProgress(which_progress,this_ax,with_fracture,1,1)  
+        IndividualStructuralDeformation(which_progress,this_ax,with_fracture,1,1)  
         
     else:
            
-        IndividualStressOrStrainInProgress(which_progress,post_fix,this_ax,with_fracture,1,1)
+        IndividualStressOrStrain(which_progress,post_fix,this_ax,with_fracture,1,1)
 
     this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
     
@@ -260,7 +265,7 @@ def IndividualInProgress(output_folder,
         fig_name+=' with fracture'
         
     #generate folder
-    B_O_P.GenerateFolder(output_folder)
+    O_P.GenerateFolder(output_folder)
     
     #path of this figure
     this_fig_path=output_folder+'\\'+fig_name+'.png'
@@ -282,9 +287,9 @@ Args:
 Returns:
     None
 """     
-def AllIndividualsInProgress(output_folder,
-                             which_progress,
-                             with_fracture=False):  
+def AllIndividuals(output_folder,
+                   which_progress,
+                   with_fracture=False):  
     
     list_post_fix=['Structural Deformation',
                    'Mean Normal Stress',
@@ -297,4 +302,4 @@ def AllIndividualsInProgress(output_folder,
     #plot all postfix mode
     for this_post_fix in list_post_fix:
         
-        IndividualInProgress(output_folder,which_progress,this_post_fix,with_fracture)
+        Individual(output_folder,which_progress,this_post_fix,with_fracture)

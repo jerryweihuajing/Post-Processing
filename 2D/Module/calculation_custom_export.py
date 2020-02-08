@@ -22,14 +22,13 @@ import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
-import Norm as No
-import operation_case as O_C
 import operation_path as O_P
+import operation_decoration as O_D
+
+import calculation_case as C_C
+import calculation_norm as C_N
 import calculation_image as C_I
-
-import AxisBoundary as AB
-import Decoration as Dec
-
+import calculation_axis_boundary as C_A_B
 import calculation_spheres_matrix as C_S_M
 import calculation_spheres_boundary as C_S_B
 
@@ -64,13 +63,13 @@ def ModeCalculation(which_case_path,
     print('-> output mode:',which_output_mode.replace('_',' '))
     
     #construct case object
-    that_case=O_C.CaseGeneration(which_case_path)
+    that_case=C_C.CaseGeneration(which_case_path)
     
     #list of spheres
     spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
     
     #global axis
-    global_axis_boundary=AB.GlobalAxisBoundary(spheres_list)
+    global_axis_boundary=C_A_B.GlobalAxisBoundary(spheres_list)
     
     #file name list in this case
     file_names=O_P.FileNamesThisCase(which_case_path)
@@ -97,7 +96,7 @@ def ModeCalculation(which_case_path,
         colormap='gist_rainbow'
         
         #stress norm
-        norm=No.StressNorm(spheres_list,which_plane,which_output_mode)
+        norm=C_N.StressNorm(spheres_list,which_plane,which_output_mode)
         
     if 'strain' in which_input_mode:
         
@@ -105,7 +104,7 @@ def ModeCalculation(which_case_path,
         colormap='seismic'
         
         #strain norm
-        norm=No.StrainNorm()
+        norm=C_N.StrainNorm()
      
     #计数器
     count=1
@@ -185,7 +184,7 @@ def ModeCalculation(which_case_path,
             C_S_B.SimpleSpheresBoundary(this_spheres,pixel_step,show=True)
             
             #坐标轴和边
-            Dec.TicksAndSpines(this_ax)
+            O_D.TicksAndSpines(this_ax)
             plt.axis(np.array(global_axis_boundary)/pixel_step)
             
             #save this fig

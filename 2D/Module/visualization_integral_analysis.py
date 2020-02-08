@@ -13,10 +13,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-import BETA_operation_path as B_O_P
+import operation_path as O_P
 
-import HPC_AnimationPlot as HPC_AP
-import HPC_IndividualPlot as HPC_IP
+import visualization_animation as V_A
+import visualization_individual as V_I
 
 #------------------------------------------------------------------------------
 """
@@ -31,10 +31,10 @@ Args:
 Returns:
     Figure path
 """
-def SingleIntegralAnalysisInProgress(output_folder,
-                                     which_progress,
-                                     mode='standard',
-                                     with_fracture=False):
+def SingleIntegralAnalysis(output_folder,
+                           which_progress,
+                           mode='standard',
+                           with_fracture=False):
     
     print('')
     print('-- Single Integral Analysis In Progress')
@@ -68,6 +68,11 @@ def SingleIntegralAnalysisInProgress(output_folder,
         
             figure=plt.subplots(figsize=(7,10))[0]
     
+        #100-200
+        if global_shape==(100,350):
+        
+            figure=plt.subplots(figsize=(5,10))[0]
+            
     if mode=='all':
         
         list_post_fix=['Structural Deformation',
@@ -88,6 +93,11 @@ def SingleIntegralAnalysisInProgress(output_folder,
         if global_shape==(100,500):
             
             figure=plt.subplots(figsize=(7,14))[0]
+            
+        #100-200
+        if global_shape==(100,350):
+            
+            figure=plt.subplots(figsize=(5,14))[0]
      
     #shape of this img
     this_shape=np.shape(which_progress.fracture)
@@ -105,12 +115,12 @@ def SingleIntegralAnalysisInProgress(output_folder,
         if this_post_fix=='Structural Deformation':
             
             #structural deformation
-            HPC_IP.IndividualStructuralDeformationInProgress(which_progress,this_ax)
+            V_I.IndividualStructuralDeformation(which_progress,this_ax)
 
         else:
                   
             #stress and strain
-            HPC_IP.IndividualStressOrStrainInProgress(which_progress,this_post_fix,this_ax)    
+            V_I.IndividualStressOrStrain(which_progress,this_post_fix,this_ax)    
             
         this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
         
@@ -139,7 +149,7 @@ def SingleIntegralAnalysisInProgress(output_folder,
     integral_analysis_folder=output_folder+'\\integral analysis\\'
     
     #generate folder
-    O_P_1.GenerateFolder(integral_analysis_folder)
+    O_P.GenerateFolder(integral_analysis_folder)
     
     #figure path
     fig_path=integral_analysis_folder+fig_name+' ('+mode+').png'
@@ -175,4 +185,7 @@ def IntegralAnalysisAll(output_folder,
     
     for this_mode in list_mode:
         
-        HPC_AP.AnimationIntegralAnalysis(output_folder,which_case,this_mode,with_fracture)
+        V_A.AnimationIntegralAnalysis(output_folder,
+                                      which_case,
+                                      this_mode,
+                                      with_fracture)

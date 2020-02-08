@@ -2,9 +2,9 @@
 """
 Created on Sun Jun  9 17:58:55 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Calculate 3D tensor invariant
 """

@@ -12,14 +12,7 @@ Created on Tue Jun  4 14:55:07 2019
 
 import numpy as np
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
-
-import Tensor2D as Ts2D
+import calculation_tensor2D as C_T2D
 
 #==============================================================================
 #应力张量计算后的相关变量
@@ -67,8 +60,8 @@ class strain_2D:
     #                         which_strain_tensor[0,2]**2+\
     #                         which_strain_tensor[1,2]**2)
             
-        volumetric_strain=Ts2D.Tensor1stInvariant(which_strain_tensor)
-        distortional_strain=Ts2D.Tensor2ndInvariant(which_strain_tensor)
+        volumetric_strain=C_T2D.Tensor1stInvariant(which_strain_tensor)
+        distortional_strain=C_T2D.Tensor2ndInvariant(which_strain_tensor)
              
         #赋值  
         self.strain_tensor=which_strain_tensor

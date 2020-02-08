@@ -2,11 +2,11 @@
 """
 Created on Thu Mar 28 10:56:52 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
-@title：YADE导入计算结果并绘制几何形态
+@title：YADE imports the calculation results and draws the geometry
 """
 
 import numpy as np

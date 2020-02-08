@@ -2,17 +2,18 @@
 """
 Created on Tue Jul 23 10:46:56 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Norm
 """
 
 import numpy as np
+
 from matplotlib import colors
 
-import StressPlot as Stress
+import calculation_stress as C_S
 
 #------------------------------------------------------------------------------ 
 """
@@ -42,11 +43,11 @@ def StressNorm(which_spheres_list,which_plane,which_output_mode):
         #spheres this phase
         this_spheres=which_spheres_list[k]
         
-        #discrete points
-        discrete_points=Stress.DiscreteValueStress(this_spheres,which_plane,'stress',which_output_mode)
+        #scatters
+        scatters=C_S.ScattersStress(this_spheres,which_plane,'stress',which_output_mode)
         
         #z_values
-        z_values=[this_discrete_point.pos_z for this_discrete_point in discrete_points]  
+        z_values=[this_discrete_point.pos_z for this_discrete_point in scatters]  
         
         #maximum and minimum
         z_values_min=np.min(z_values)

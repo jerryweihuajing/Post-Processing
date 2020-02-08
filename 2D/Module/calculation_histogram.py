@@ -2,7 +2,11 @@
 """
 Created on Mon Jun 17 14:51:32 2019
 
-@author: Module-Value Histogram
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
+
+@title：Module-Calculation of Histogram
 """
 
 '''

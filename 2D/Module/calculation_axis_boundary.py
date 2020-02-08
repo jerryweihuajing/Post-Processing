@@ -2,9 +2,9 @@
 """
 Created on Tue Jun 11 21:23:09 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Axis Boundary
 """

@@ -10,9 +10,9 @@ Created on Tue Jun 11 21:08:13 2019
 """
 
 import numpy as np
-    
-import o_strain_2D
-import o_discrete_point
+
+from o_scatter import scatter    
+from o_strain_2D import strain_2D
 
 import Tensor2D as Ts2D
 
@@ -20,7 +20,7 @@ import Tensor2D as Ts2D
 #表征strain的discrete_point对象列表
 #input_mode:'cumulative' 'periodical'
 #output_mode: 'x' 'y' 'shear' 'volumetric' 'distortional'
-def DiscreteValueStrain(which_spheres,input_mode,output_mode):
+def ScattersStrain(which_spheres,input_mode,output_mode):
       
     #for output
     discrete_points_strain=[]
@@ -30,7 +30,7 @@ def DiscreteValueStrain(which_spheres,input_mode,output_mode):
     #traverse
     for this_sphere in which_spheres:
         
-        this_discrete_point=o_discrete_point.discrete_point()
+        this_discrete_point=scatter()
         
         count+=1
 #        print(count)
@@ -60,7 +60,7 @@ def DiscreteValueStrain(which_spheres,input_mode,output_mode):
             this_strain_tensor=this_sphere.strain_tensor_3D_periodical
              
         #create new strain obkect
-        new_strain_2D=o_strain_2D.strain_2D()
+        new_strain_2D=strain_2D()
         
         #Initialize and gain attributes
         new_strain_2D.Init(this_strain_tensor)
@@ -146,7 +146,7 @@ def Strain2D(which_strain_tensor):
     distortional_strain=Ts2D.Tensor2ndInvariant(which_strain_tensor)
     
     #定义新的应变变量
-    that_strain_2D=o_strain_2D.strain_2D() 
+    that_strain_2D=strain_2D() 
     
     #赋值  
     that_strain_2D.strain_tensor=which_strain_tensor

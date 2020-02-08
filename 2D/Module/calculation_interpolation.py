@@ -27,8 +27,8 @@ import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
-import Image as Img
-import MeshPoints as Mesh
+import calculation_image as C_I
+import calculation_scatters_mesh as C_S_M
 
 #==============================================================================     
 #计算两点之间的距离
@@ -112,7 +112,7 @@ def InverseDistanceWeight(which_pos,which_other_points):
 def GlobalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=None,show=False):
     
     #construct mesh points
-    mesh_points=Mesh.MeshGrid(which_discrete_points,grid_length,show=False)
+    mesh_points=C_S_M.MeshGrid(which_discrete_points,grid_length,show=False)
     
     #默认的which_surface是不存在的
     if which_surface_map==None:
@@ -177,7 +177,7 @@ def GlobalIDWInterpolation(which_discrete_points,grid_length,which_surface_map=N
 def SpheresInGridIDW(which_discrete_points,grid_length,which_surface_map=None,show=False):
             
     #generate grid object
-    that_mesh=Mesh.DiscretePointsGrids(which_discrete_points,grid_length)
+    that_mesh=C_S_M.ScattersMesh(which_discrete_points,grid_length)
 
     #re-define
     img_tag=that_mesh.img_tag

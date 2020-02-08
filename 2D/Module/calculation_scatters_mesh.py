@@ -2,19 +2,19 @@
 """
 Created on Wed Jun 12 22:35:33 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
-@title：Discrete points to mesh points
+@title：Module-Scatters to Mesh 
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-import o_grid
-import o_mesh
-import o_discrete_point
+from o_grid import grid
+from o_mesh import mesh
+from o_scatter import scatter
 
 #==============================================================================
 #显示二维散点
@@ -27,7 +27,7 @@ def ScatterPlot(ax,which_discrete_points):
 #            
 #            plt.scatter(this_point.pos_x,this_point.pos_y,color='c')
         
-    if isinstance(which_discrete_points[0],o_discrete_point.discrete_point):
+    if isinstance(which_discrete_points[0],scatter):
         
         for this_point in which_discrete_points:
             
@@ -53,7 +53,7 @@ def GeneratePoints(ax,width,length,m_width,n_length,show=False):
         for n in range(n_length):
             
             #建立新的点
-            this_point=o_discrete_point.discrete_point()
+            this_point=scatter()
             
             #院有网格上的点坐标
             original_m=m*width/m_width
@@ -150,23 +150,23 @@ def MeshGrid(which_discrete_points,step,show=False):
 
 #==============================================================================  
 #disrete points grid is better
-def DiscretePointsGrids(which_discrete_points,grid_length,show=False):
+def ScattersMesh(which_scatters,grid_length,show=False):
 
     print('')
     print('-- Discrete Points Grids')
     print('-> grid length:',grid_length)
     
     #首先找出网格的坐标范围
-    x_discrete_points=[this_discrete_point.pos_x for this_discrete_point in which_discrete_points]
-    y_discrete_points=[this_discrete_point.pos_y for this_discrete_point in which_discrete_points]
+    x_scatters=[this_scatter.pos_x for this_scatter in which_scatters]
+    y_scatters=[this_scatter.pos_y for this_scatter in which_scatters]
     
     #最大最小值对应的半径
-    radius_of_min=which_discrete_points[x_discrete_points.index(min(x_discrete_points))].radius
-    radius_of_max=which_discrete_points[y_discrete_points.index(max(y_discrete_points))].radius
+    radius_of_min=which_scatters[x_scatters.index(min(x_scatters))].radius
+    radius_of_max=which_scatters[y_scatters.index(max(y_scatters))].radius
     
     #xy边界
-    boundary_x=[min(x_discrete_points)-radius_of_min,max(x_discrete_points)+radius_of_min]
-    boundary_y=[min(y_discrete_points)-radius_of_max,max(y_discrete_points)+radius_of_max]
+    boundary_x=[min(x_scatters)-radius_of_min,max(x_scatters)+radius_of_min]
+    boundary_y=[min(y_scatters)-radius_of_max,max(y_scatters)+radius_of_max]
     
     #xy边长
     length_x=boundary_x[1]-boundary_x[0]
@@ -212,7 +212,7 @@ def DiscretePointsGrids(which_discrete_points,grid_length,show=False):
         for k_y in range(amount_grid_y):
             
             #new grid
-            this_grid=o_grid.grid() 
+            this_grid=grid() 
             
             #assignment
             this_grid.length=grid_length
@@ -231,7 +231,7 @@ def DiscretePointsGrids(which_discrete_points,grid_length,show=False):
     img_tag_mesh=np.full((amount_grid_x,amount_grid_y),np.nan) 
     
     #要输出的mesh对象
-    that_mesh=o_mesh.mesh()
+    that_mesh=mesh()
     
     #赋值
     that_mesh.grids=grids

@@ -6,7 +6,7 @@ Created on Tue Jun 11 19:55:26 2019
 @company:Nanjing University
 @e-mail:jerryweihuajing@126.com
 
-@title：Object-discrete_point
+@title：Object-scatter
 
 for xyz format
 """
@@ -14,7 +14,7 @@ for xyz format
 #==============================================================================
 #pos表示离散点的三维坐标
 #==============================================================================  
-class discrete_point:
+class scatter:
     
     def __init__(self,
                  pos_x=None,

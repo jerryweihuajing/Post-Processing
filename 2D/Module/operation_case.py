@@ -15,8 +15,8 @@ from o_case import case
 from o_sphere import sphere
 from o_progress import progress
 
-import operation_path_v2 as O_P_2
-import operation_progress as O_P
+import operation_path as O_Pa
+import operation_progress as O_Pro
 
 import HPC_ProgressPlot as HPC_PP
 import HPC_AnimationPlot as HPC_AP
@@ -43,7 +43,7 @@ def CaseGeneration(case_path):
     that_case.list_progress=[]
     
     #input txt file names
-    file_names=O_P_2.FilePathsThisCase(case_path)
+    file_names=O_Pa.FilePathsThisCase(case_path)
     
     #traverse all file to consruct progress
     for this_file_name in file_names:
@@ -229,14 +229,14 @@ def CaseConstruction(case_path):
     folder_path=case_path+'\\structural deformation\\values\\'
     
     #file names in pogress order
-    file_names=O_P_2.FileNamesThisCase(folder_path)
+    file_names=O_Pa.FileNamesThisCase(folder_path)
     
     for file_name in file_names:
         
         #txt file path
         structural_deformation_path=folder_path+file_name
    
-        that_case.list_progress.append(O_P.ProgressConstruction(structural_deformation_path))
+        that_case.list_progress.append(O_Pro.ProgressConstruction(structural_deformation_path))
     
     #give them house
     for this_progress in that_case.list_progress:

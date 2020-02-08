@@ -2,9 +2,9 @@
 """
 Created on Mon Jul 15 00:25:15 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Generate spheres with displacement(New Version)
 """

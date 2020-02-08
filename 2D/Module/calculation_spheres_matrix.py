@@ -20,15 +20,15 @@ import matplotlib.pyplot as plt
     
 from o_grid import grid
 from o_mesh import mesh
-import o_square import square
-import o_circle import circle
+from o_square import square
+from o_circle import circle
+from o_scatter import scatter
 from o_strain_2D import strain_2D
-from o_discrete_point import discrete_point
 
-import Image as Img
-import Dictionary as Dict
-import Rasterization as Ra
-import Interpolation as In
+import calculation_image as C_Im
+import operation_dictionary as O_D
+import calculation_rasterization as C_R
+import calculation_interpolation as C_In
 import calculation_spheres_boundary as C_S_B
 import StressPlot as Stress 
 
@@ -57,7 +57,7 @@ def DiscreteValue_rgb(which_spheres):
     for this_sphere in which_spheres:
     
         #创建discrete_point对象
-        new_discrete_point=discrete_point()
+        new_discrete_point=scatter()
         
         #定义基本属性
         new_discrete_point.pos_x=this_sphere.position[0]
@@ -137,7 +137,7 @@ def SpheresGrids(which_spheres,length,show=False):
         for k_y in range(amount_grid_y):
             
             #new grid
-            this_grid=o_grid.grid() 
+            this_grid=grid() 
             
             #assignment
             this_grid.length=length
@@ -202,7 +202,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
     #        print(this_grid.map_tag_color)
             
             #数量最多的像素
-            this_grid.tag=Dict.DictKeyOfValue(this_grid.map_tag_color,max(list(this_grid.map_tag_color.values())))
+            this_grid.tag=O_D.DictKeyOfValue(this_grid.map_tag_color,max(list(this_grid.map_tag_color.values())))
             
     #        print(this_grid.tag)
                   
@@ -224,7 +224,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
         for this_grid in grids:
                 
             #new 2D square 
-            new_square=o_square.square()
+            new_square=square()
             
             new_square.length=this_grid.length*factor
             new_square.center=this_grid.position+np.array([new_square.length/2,new_square.length/2])
@@ -289,7 +289,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                 for this_sphere in this_grid.spheres_inside:
                     
                     #二维圆
-                    new_circle=o_circle.circle()
+                    new_circle=circle()
                     
                     new_circle.radius=this_sphere.radius*factor
                     new_circle.center=np.array([this_sphere.position[0],this_sphere.position[1]])
@@ -301,7 +301,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                 #    print(len(new_circle.points_inside))
                 
                     #同样一个像素点不同的circle表示的面积是不一样的
-                    area_this_sphere_in_this_grid=new_circle.area*len(Ra.ContentSquareCrossCircle(new_square,new_circle))/len(new_circle.points_inside)
+                    area_this_sphere_in_this_grid=new_circle.area*len(C_R.ContentSquareCrossCircle(new_square,new_circle))/len(new_circle.points_inside)
                     
                     #面积累加
                     area_inside_this_grid+=area_this_sphere_in_this_grid
@@ -325,7 +325,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                         
         #        print(DictKeyOfValue(map_tag_area,max(list(map_tag_area.values()))))
                 
-                this_grid.tag=Dict.DictKeyOfValue(map_tag_area,max(list(map_tag_area.values())))
+                this_grid.tag=O_D.DictKeyOfValue(map_tag_area,max(list(map_tag_area.values())))
                 
                 #与之对应的color
                 this_grid.color=yade_rgb_list[this_grid.tag] 
@@ -346,12 +346,12 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
         img_color_mesh[this_grid.index_x,this_grid.index_y]=this_grid.color
         
     #要输出的mesh对象
-    that_mesh=o_mesh.mesh()
+    that_mesh=mesh()
     
     #赋值
     that_mesh.grids=grids
-    that_mesh.img_tag=Img.ImgFlip(Img.ImgRotate(cp.deepcopy(img_tag_mesh)),0)
-    that_mesh.img_color=Img.ImgFlip(Img.ImgRotate(cp.deepcopy(img_color_mesh)),0)
+    that_mesh.img_tag=C_Im.ImgFlip(C_Im.ImgRotate(cp.deepcopy(img_tag_mesh)),0)
+    that_mesh.img_color=C_Im.ImgFlip(C_Im.ImgRotate(cp.deepcopy(img_color_mesh)),0)
     
     return that_mesh
 
@@ -383,7 +383,7 @@ def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_in
     for this_sphere in which_spheres:
     
         #new discrete point object
-        new_discrete_point=discrete_point()
+        new_discrete_point=scatter()
         
 #        print(this_sphere.position)
 #        print(this_sphere.displacemnet_3D_periodical)
@@ -509,7 +509,7 @@ def SpheresDisplacementMatrix(pixel_step,
     
     if which_interpolation=='spheres_in_grid':
         
-        return In.SpheresInGridIDW(discrete_points,pixel_step,surface_map,show)
+        return C_In.SpheresInGridIDW(discrete_points,pixel_step,surface_map,show)
 
 #------------------------------------------------------------------------------
 """
@@ -675,7 +675,7 @@ def SpheresStressMatrix(pixel_step,
     
     if which_interpolation=='spheres_in_grid':
         
-        return In.SpheresInGridIDW(discrete_points,pixel_step,surface_map)
+        return C_In.SpheresInGridIDW(discrete_points,pixel_step,surface_map)
     
 #------------------------------------------------------------------------------
 """

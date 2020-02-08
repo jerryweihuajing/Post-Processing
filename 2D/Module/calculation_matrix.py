@@ -13,9 +13,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
-import Image as Img
-import Global as Glo
-import ImageSmoothing as ISm
+import calculation_image as C_I
+import calculation_image_smoothing as C_I_S
+import calculation_global_parameter as C_P_P
 
 '''
 demand: 
@@ -82,11 +82,11 @@ def DisplayImageFromTXT(txt_path,smooth=True,flip=False,global_norm=None):
     
     if flip:
         
-        matrix=Img.ImgFlip(matrix,0)
+        matrix=C_I.ImgFlip(matrix,0)
         
     if smooth:
         
-        matrix=ISm.ImageSmooth(matrix)
+        matrix=C_I_S.ImageSmooth(matrix)
         
     #strain
     if 'strain' in txt_path:
@@ -104,7 +104,7 @@ def DisplayImageFromTXT(txt_path,smooth=True,flip=False,global_norm=None):
         
         if global_norm==None:
             
-            global_norm=Glo.GlobalNormFromCase(txt_path)
+            global_norm=C_P_P.GlobalNormFromCase(txt_path)
 
     plt.imshow(matrix,cmap=colormap,norm=global_norm)
     
@@ -269,7 +269,7 @@ def DisplayOutlineFromTXT(txt_path,flip=False):
     
     if flip:
         
-        outline_matrix=Img.ImgFlip(outline_matrix,0)
+        outline_matrix=C_I.ImgFlip(outline_matrix,0)
         
     plt.imshow(outline_matrix,cmap='gray') 
       
@@ -385,6 +385,6 @@ def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
     
     if show:
         
-        plt.imshow(Img.ImgFlip(new_matrix,0),cmap='gray')
+        plt.imshow(C_I.ImgFlip(new_matrix,0),cmap='gray')
             
     return new_matrix

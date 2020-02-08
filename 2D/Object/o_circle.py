@@ -18,7 +18,7 @@ if os.getcwd() not in sys.path:
     sys.path.append(os.getcwd())
 
     
-import Rasterization as Ra
+import calculation_rasterization as C_R
 
 #==============================================================================
 #圆形
@@ -77,14 +77,14 @@ class circle:
         '''边界求内容：该方法要求points_above是个连通域，若非连通可用膨胀腐蚀解决''' 
         if method==2:
             
-            Ra.Boundary2Content(self)
+            C_R.Boundary2Content(self)
             
     #画出位置
     def Plot(self,which_canvas):
         
-        Ra.GraphicPlot(self,which_canvas)
+        C_R.GraphicPlot(self,which_canvas)
         
     #填充图形
     def Fill(self,which_canvas):
         
-        Ra.GraphicFill(self,which_canvas)
+        C_R.GraphicFill(self,which_canvas)

@@ -11,28 +11,8 @@ Created on Tue Jun 11 20:57:01 2019
 
 import os
 
-import Dictionary as Dict
-
-#============================================================================== 
-#在某路径下判断并创建文件夹
-def GenerateFolder(path):
-
-    #去除首位空格
-    path=path.strip()
-    
-    #去除尾部\符号
-    path=path.rstrip("\\")
+import operation_dictionary as O_D
  
-    #判断路径是否存在(True/False)
-    Exist=os.path.exists(path)
- 
-    #判断结果
-    if not Exist:
-        
-        #如果不存在则创建目录
-        #创建目录操作函数
-        os.makedirs(path)   
-        
 #==============================================================================
 #获取目标路径下所有文件名         
 def FileNames(file_dir,post_fix=None):   
@@ -96,7 +76,7 @@ def GenerateFileNames(folder_path):
     #print(map_progress_file_name)
     
     #对file_names进行排序 
-    new_map_progress_file_name=Dict.DictSortByIndex(map_progress_file_name,sorted(list(map_progress_file_name.keys())))
+    new_map_progress_file_name=O_D.DictSortByIndex(map_progress_file_name,sorted(list(map_progress_file_name.keys())))
     
     #返回新的文件名
     return list(new_map_progress_file_name.values())

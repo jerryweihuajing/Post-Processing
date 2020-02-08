@@ -13,7 +13,7 @@ import os
 import numpy as np
 from matplotlib import colors
 
-import Matrix as Mat
+import calculation_matrix as C_M
 
 #------------------------------------------------------------------------------
 """
@@ -42,7 +42,7 @@ def GlobalShapeFromCase(file_path):
     #traverse txt names
     for this_txt_name in txt_names:
         
-        this_matrix=Mat.ImportMatrixFromTXT(folder_path+this_txt_name)
+        this_matrix=C_M.ImportMatrixFromTXT(folder_path+this_txt_name)
     
         shapes.append(np.shape(this_matrix))
         
@@ -83,10 +83,10 @@ def GlobalNormFromCase(file_path):
     #traverse txt names
     for this_txt_name in txt_names:
         
-        this_matrix=Mat.ImportMatrixFromTXT(folder_path+this_txt_name)
+        this_matrix=C_M.ImportMatrixFromTXT(folder_path+this_txt_name)
     
-        values_max.append(Mat.MatrixMaximum(this_matrix))
-        values_min.append(Mat.MatrixMinimum(this_matrix))
+        values_max.append(C_M.MatrixMaximum(this_matrix))
+        values_min.append(C_M.MatrixMinimum(this_matrix))
       
     #values maximum and minimum norm
     global_norm=colors.Normalize(vmin=np.min(values_min),vmax=np.max(values_max))

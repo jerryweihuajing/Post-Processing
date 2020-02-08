@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jun 11 21:01:27 2019
+Created on Sat Feb  8 01:24:49 2020
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Module-Generate spheres
 """
@@ -14,6 +14,7 @@ import numpy as np
 from o_sphere import sphere
 
 import NewPath as NP
+
 
 """
 Generate spheres objects from file (txt)

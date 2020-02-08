@@ -13,7 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-import operation_path_v1 as O_P_1
+import BETA_operation_path as B_O_P
 
 import HPC_AnimationPlot as HPC_AP
 import HPC_IndividualPlot as HPC_IP

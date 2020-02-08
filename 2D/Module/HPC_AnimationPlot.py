@@ -12,7 +12,7 @@ Created on Tue Nov  5 23:53:13 2019
 import imageio
 import matplotlib.pyplot as plt
 
-import operation_path_v1 as O_P_1
+import BETA_operation_path as B_O_P
 
 import HPC_IndividualPlot as HPC_IP
 import HPC_IntegralAnalysisPlot as HPC_IAP

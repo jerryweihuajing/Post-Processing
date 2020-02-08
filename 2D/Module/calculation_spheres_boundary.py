@@ -2,9 +2,9 @@
 """
 Created on Wed May  8 09:50:34 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Calculate boundaries from spheres system
 """
@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 import o_mesh
 import o_circle
 
-import Image as Img 
+import calculation_image as C_I
 
 #============================================================================== 
 #Calculate the pixels up which the spheres take

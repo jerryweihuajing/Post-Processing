@@ -34,9 +34,31 @@ strain: xx strain
         ......  
 '''
     
-import operation_path_v1 as O_P_1
-import Dictionary as Dict
+import os
 
+import BETA_operation_path as B_O_P
+import operation_dictionary as O_D
+
+#============================================================================== 
+#在某路径下判断并创建文件夹
+def GenerateFolder(path):
+
+    #去除首位空格
+    path=path.strip()
+    
+    #去除尾部\符号
+    path=path.rstrip("\\")
+ 
+    #判断路径是否存在(True/False)
+    Exist=os.path.exists(path)
+ 
+    #判断结果
+    if not Exist:
+        
+        #如果不存在则创建目录
+        #创建目录操作函数
+        os.makedirs(path)  
+        
 #------------------------------------------------------------------------------
 #construct all stress or all strain
 #folder_path: total path
@@ -50,7 +72,7 @@ def ModeFileNames(which_case_path,input_mode):
     mode_input_folder_path=which_case_path+'\\'+input_mode_name
     
     #file_names  
-    return O_P_1.GenerateFileNames(mode_input_folder_path)
+    return B_O_P.GenerateFileNames(mode_input_folder_path)
 
 #------------------------------------------------------------------------------
 #construct the link between stress txt and strain vtk
@@ -122,7 +144,7 @@ Returns:
 def FileNamesThisCase(which_case_path):
     
     #获取目标路径下所有文件名
-    file_names=O_P_1.FileNames(which_case_path)
+    file_names=B_O_P.FileNames(which_case_path)
     
     #建立进度与文件名的映射列表
     map_progress_file_name={}
@@ -146,7 +168,7 @@ def FileNamesThisCase(which_case_path):
     #print(map_progress_file_name)
     
     #对file_names进行排序 
-    new_map_progress_file_name=Dict.DictSortByIndex(map_progress_file_name,sorted(list(map_progress_file_name.keys())))
+    new_map_progress_file_name=O_D.DictSortByIndex(map_progress_file_name,sorted(list(map_progress_file_name.keys())))
     
     #返回新的文件名
     return list(new_map_progress_file_name.values())

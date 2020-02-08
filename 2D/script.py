@@ -19,11 +19,11 @@ demand 5:
 
 from __init__ import *
 
-case_path=r'C:\Users\魏华敬\Desktop\YADE\Data\extension 100-200\input\double'
-output_folder=r'C:\Users\魏华敬\Desktop\extension'
+case_path=r'C:\Users\魏华敬\Desktop\YADE\Data\extension 100-200\input\double diff-1'
+#output_folder=r'C:\Users\魏华敬\Desktop\extension'
 
 #step 1
-C_C_E.CaseCalculation(case_path,which_mode_list='standard',test=1)
+C_C_E.CaseCalculation(case_path,which_mode_list='standard')
 
 #step 2
-O_C.CaseVisualization(case_path,output_folder)
+#O_C.CaseVisualization(case_path,output_folder)

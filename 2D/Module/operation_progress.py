@@ -11,9 +11,9 @@ Created on Tue Nov 26 22:37:12 2019
 
 from o_progress import progress
 
-import Image as Img
-import Matrix as Mat
-import ImageSmoothing as ISm
+import calculation_image as C_I
+import calculation_matrix as C_M
+import calculation_image_smoothing as C_I_S
 
 import HPC_IndividualPlot as HPC_IP
 
@@ -110,10 +110,10 @@ def ProgressConstruction(progress_path):
     rgb_map=yade_rgb_map
     
     #Generate tag image and rgb image
-    structural_deformation_img_tag=Mat.ImportMatrixFromTXT(progress_path)
+    structural_deformation_img_tag=C_M.ImportMatrixFromTXT(progress_path)
     
     #transform to RGB format
-    structural_deformation_img_rgb=Img.ImageTag2RGB(structural_deformation_img_tag,rgb_map)
+    structural_deformation_img_rgb=C_I.ImageTag2RGB(structural_deformation_img_tag,rgb_map)
 
     #percentage of progress
     progress_percentage=ProgressPercentageFromTXT(progress_path)
@@ -122,7 +122,7 @@ def ProgressConstruction(progress_path):
     fracture_file_path=progress_path.replace('structural deformation','cumulative strain\\distortional')
     
     #fracture matrix
-    fracture_matrix=ISm.ImageSmooth(Mat.ImportMatrixFromTXT(fracture_file_path))
+    fracture_matrix=C_I_S.ImageSmooth(C_M.ImportMatrixFromTXT(fracture_file_path))
     
     list_post_fix=['stress\\mean normal',
                    'stress\\maximal shear',
@@ -139,7 +139,7 @@ def ProgressConstruction(progress_path):
         #stress and strain itself
         file_path=progress_path.replace('structural deformation',this_post_fix)
         
-        matrix_list.append(ISm.ImageSmooth(Mat.ImportMatrixFromTXT(file_path)))
+        matrix_list.append(C_I_S.ImageSmooth(C_M.ImportMatrixFromTXT(file_path)))
         
     that_progress.mean_normal_stress,\
     that_progress.maximal_shear_stress,\
@@ -152,8 +152,8 @@ def ProgressConstruction(progress_path):
     strain_path=file_path.replace('structural deformation','periodical strain\\volumetric')
     
     #import outline matrix
-    outline_stress=Img.ImgFlip(Mat.ImportOutlineFromTXT(stress_path),0)
-    outline_strain=Img.ImgFlip(Mat.ImportOutlineFromTXT(strain_path),0)
+    outline_stress=C_I.ImgFlip(C_M.ImportOutlineFromTXT(stress_path),0)
+    outline_strain=C_I.ImgFlip(C_M.ImportOutlineFromTXT(strain_path),0)
     
     that_progress.rgb_map=rgb_map
     that_progress.fracture=fracture_matrix

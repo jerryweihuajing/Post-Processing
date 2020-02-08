@@ -13,15 +13,16 @@ import numpy as np
 import matplotlib.pyplot as plt
     
 from o_stress_2D import stress_2D
-from o_discrete_point import discrete_point
+from o_scatter import scatter
 
+import calculation_image as C_Im
+import calculation_interpolation as C_In
 import calculation_spheres_matrix as C_S_M
-import Interpolation as In
-import SpheresBoundary as SB
+import calculation_spheres_boundary as C_S_B
 
 #============================================================================== 
-#表征应力的discrete_point对象列表
-def DiscreteValueStress(which_spheres,plane,input_mode,output_mode):
+#表征应力的scatter对象列表
+def ScattersStress(which_spheres,plane,input_mode,output_mode):
     
     if input_mode!='stress':
         
@@ -30,17 +31,17 @@ def DiscreteValueStress(which_spheres,plane,input_mode,output_mode):
         return
     
     #结果列表
-    discrete_points=[]
+    scatters=[]
     
     #遍历所有的sphere
     for this_sphere in which_spheres:
     
         #创建discrete_point对象
-        new_discrete_point=discrete_point()
+        new_scatter=scatter()
         
         #定义基本属性
-        new_discrete_point.pos_x=this_sphere.position[0]
-        new_discrete_point.pos_y=this_sphere.position[1]
+        new_scatter.pos_x=this_sphere.position[0]
+        new_scatter.pos_y=this_sphere.position[1]
         
         #new stress object
         new_stress_2D=stress_2D()
@@ -58,11 +59,11 @@ def DiscreteValueStress(which_spheres,plane,input_mode,output_mode):
         this_position_index=map_plane_position_index[plane]
         
         #XY
-        new_discrete_point.pos_x=this_sphere.position[this_position_index[0]]
-        new_discrete_point.pos_y=this_sphere.position[this_position_index[1]]
+        new_scatter.pos_x=this_sphere.position[this_position_index[0]]
+        new_scatter.pos_y=this_sphere.position[this_position_index[1]]
         
         #radius
-        new_discrete_point.radius=this_sphere.radius
+        new_scatter.radius=this_sphere.radius
         
         #define new 2D stess tensor
         this_stress_tensor=np.zeros((2,2))
@@ -86,38 +87,36 @@ def DiscreteValueStress(which_spheres,plane,input_mode,output_mode):
         #x方向上正应力
         if output_mode=='x_normal':
         
-            new_discrete_point.pos_z=new_stress_2D.x_normal_stress
+            new_scatter.pos_z=new_stress_2D.x_normal_stress
             
         #y方向上正应力
         if output_mode=='y_normal':
         
-            new_discrete_point.pos_z=new_stress_2D.y_normal_stress
+            new_scatter.pos_z=new_stress_2D.y_normal_stress
          
         #剪应力
         if output_mode=='shear':
         
-            new_discrete_point.pos_z=new_stress_2D.shear_stress
+            new_scatter.pos_z=new_stress_2D.shear_stress
         
         #平均剪应力
         if output_mode=='mean_normal':
         
-            new_discrete_point.pos_z=new_stress_2D.mean_normal_stress
+            new_scatter.pos_z=new_stress_2D.mean_normal_stress
         
         #最大剪应力
         if output_mode=='maximal_shear':
             
-            new_discrete_point.pos_z=new_stress_2D.maximal_shear_stress
+            new_scatter.pos_z=new_stress_2D.maximal_shear_stress
             
         #删除z值无限大的点
-        if new_discrete_point.pos_z==np.inf or new_discrete_point.pos_z==-np.inf:
-            
-            print(new_discrete_point.pos_z)
-            
+        if new_scatter.pos_z==np.inf or new_scatter.pos_z==-np.inf:
+
             continue
             
-        discrete_points.append(new_discrete_point)
+        scatters.append(new_scatter)
         
-    return discrete_points
+    return scatters
 
 #============================================================================== 
 #系列图：1 构造形态 2 应力偏量 3 剪切形变
@@ -137,18 +136,18 @@ def StressSeriesPlot(which_spheres,pixel_step):
 #    print(np.shape(spheres_grids.img_tag))
     
     #表面兄弟
-    surface=SB.SpheresSurface(spheres_grids)
+    surface=C_S_B.SpheresSurface(spheres_grids)
     
     #标题与细节
 #    ChineseTitle('构造形态')
-    In.TicksAndSpines(ax)
+    C_I.TicksAndSpines(ax)
     
     #各种应力
-    discrete_points_σ_x=DiscreteValueStress(which_spheres,'x_normal_stress') 
-    discrete_points_σ_y=DiscreteValueStress(which_spheres,'y_normal_stress') 
-    discrete_points_τ_xy=DiscreteValueStress(which_spheres,'shear_stress')    
-    discrete_points_σ_m=DiscreteValueStress(which_spheres,'mean_normal_stress') 
-    discrete_points_τ_max=DiscreteValueStress(which_spheres,'maximal_shear_stress')  
+    discrete_points_σ_x=ScattersStress(which_spheres,'x_normal_stress') 
+    discrete_points_σ_y=ScattersStress(which_spheres,'y_normal_stress') 
+    discrete_points_τ_xy=ScattersStress(which_spheres,'shear_stress')    
+    discrete_points_σ_m=ScattersStress(which_spheres,'mean_normal_stress') 
+    discrete_points_τ_max=ScattersStress(which_spheres,'maximal_shear_stress')  
 
     #所有哥的列表
     discrete_points=[discrete_points_σ_x,
@@ -165,14 +164,14 @@ def StressSeriesPlot(which_spheres,pixel_step):
         this_ax=plt.subplot(6,1,number)
     
         #网格点
-        this_mesh_points=In.MeshGrid(this_ax,this_discrete_points,pixel_step)
+        this_mesh_points=C_S_M.MeshGrid(this_ax,this_discrete_points,pixel_step)
         
 #    return In.IDWInterpolation(ax,this_discrete_points,this_mesh_points,surface)
 
 #        print(this_mesh_points)
 #        
         #最终矩阵
-        this_img=In.ImgFlip(In.ImgRotate(In.IDWInterpolation(ax,this_discrete_points,this_mesh_points,surface)),0)  
+        this_img=C_Im.ImgFlip(C_Im.ImgRotate(C_In.IDWInterpolation(ax,this_discrete_points,this_mesh_points,surface)),0)  
         
         plt.imshow(this_img,cmap='gist_rainbow')
         
@@ -181,7 +180,7 @@ def StressSeriesPlot(which_spheres,pixel_step):
         #标题与细节
     #    ChineseTitle('应力偏量σ_m')
     
-        In.TicksAndSpines(this_ax)
+        C_In.TicksAndSpines(this_ax)
             
 #============================================================================== 
 #σ_ij为应力张量
@@ -235,7 +234,7 @@ def Stress2D(σ_ij):
 #    print(θ_τ_max,θ_τ_min)
     
     #定义新的应力变量
-    that_stress_2D=o_stress_2D.stress_2D() 
+    that_stress_2D=stress_2D() 
     
     #赋值  
     that_stress_2D.σ_ij=σ_ij

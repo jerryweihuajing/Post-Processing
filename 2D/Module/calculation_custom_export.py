@@ -24,14 +24,14 @@ import matplotlib.pyplot as plt
 
 import Norm as No
 import operation_case as O_C
-import operation_path_v1 as O_P_1
-import Image as Img
-import operation_path_v2 as O_P_2
-import Decoration as Dec
-import calculation_spheres_matrix as C_S_M
+import operation_path as O_P
+import calculation_image as C_I
+
 import AxisBoundary as AB
-import SpheresBoundary as SB
-import SpheresAttributeMatrix as SAM
+import Decoration as Dec
+
+import calculation_spheres_matrix as C_S_M
+import calculation_spheres_boundary as C_S_B
 
 #------------------------------------------------------------------------------
 """
@@ -45,7 +45,7 @@ Args:
     pixel_step: length of single pixel
     index_list: custom index of images
     test: if there is a test with a small amount of spheres
-    data_only: whether it saves data only
+    values_only: whether it saves values only
     
 Returns:
     None
@@ -56,7 +56,7 @@ def ModeCalculation(which_case_path,
                     which_plane='XoY',
                     pixel_step=1,
                     test=False,
-                    data_only=True):
+                    values_only=True):
     
     print('')
     print('-- Mode Calculation')
@@ -69,27 +69,27 @@ def ModeCalculation(which_case_path,
     #list of spheres
     spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
     
-    #通用的axis
+    #global axis
     global_axis_boundary=AB.GlobalAxisBoundary(spheres_list)
     
     #file name list in this case
-    file_names=O_P_2.FileNamesThisCase(which_case_path)
+    file_names=O_P.FileNamesThisCase(which_case_path)
     
     if which_input_mode=='structural_deformation':
         
         which_output_mode=''
     
     '''Medival fold will be generated as well'''
-    output_folder=O_P_2.OutputFolder(which_case_path,which_input_mode,which_output_mode)
+    output_folder=O_P.OutputFolder(which_case_path,which_input_mode,which_output_mode)
     
-    #images and values
+    #images and values folder
     images_folder=output_folder+'images\\'
     values_folder=output_folder+'values\\'
     
-    #Gnenerate these Folder
-    O_P_1.GenerateFolder(images_folder)
-    O_P_1.GenerateFolder(values_folder)
-    
+    #generate these folder
+    O_P.GenerateFolder(images_folder)
+    O_P.GenerateFolder(values_folder)
+     
     #construct the map between postfix and colormap
     if which_input_mode=='stress':
         
@@ -137,9 +137,9 @@ def ModeCalculation(which_case_path,
           
         if test:
             
-            pixel_step=20 
+            pixel_step=23 
             
-        if not data_only:
+        if not values_only:
             
             #图片和填充柄
             this_fig=plt.figure(count)
@@ -152,10 +152,10 @@ def ModeCalculation(which_case_path,
             spheres_grids=C_S_M.SpheresImage(this_spheres,pixel_step)
             
             #图像
-            this_img=Img.ImgFlip(spheres_grids.img_color,0)
-            this_img_tag=Img.ImgFlip(spheres_grids.img_tag,0)
+            this_img=C_I.ImgFlip(spheres_grids.img_color,0)
+            this_img_tag=C_I.ImgFlip(spheres_grids.img_tag,0)
 
-            if not data_only:
+            if not values_only:
                 
                 plt.imshow(this_img)
                 
@@ -165,24 +165,24 @@ def ModeCalculation(which_case_path,
         else:
        
             #final matrix
-            this_img=SAM.SpheresValueMatrix(pixel_step,
+            this_img=C_S_M.SpheresValueMatrix(pixel_step,
                                             this_spheres,
                                             which_plane,
                                             which_input_mode,
                                             which_output_mode,
                                             which_interpolation='spheres_in_grid')
             
-            if not data_only:
+            if not values_only:
                 
-                plt.imshow(Img.ImgFlip(this_img,0),norm=norm,cmap=colormap) 
+                plt.imshow(C_I.ImgFlip(this_img,0),norm=norm,cmap=colormap) 
 
             #save as txt
             np.savetxt(values_folder+this_txt_name,this_img,fmt="%.3f",delimiter=",")   
          
-        if not data_only:
+        if not values_only:
             
             #draw outline
-            SB.SimpleSpheresBoundary(this_spheres,pixel_step,show=True)
+            C_S_B.SimpleSpheresBoundary(this_spheres,pixel_step,show=True)
             
             #坐标轴和边
             Dec.TicksAndSpines(this_ax)
@@ -198,7 +198,7 @@ def ModeCalculation(which_case_path,
             
         count+=1
         
-    if not data_only:
+    if not values_only:
         
         #GIF name
         gif_name=which_output_mode.replace('_',' ')+' '+which_input_mode.replace('_',' ')+'.gif'
@@ -216,7 +216,7 @@ Args:
     pixel_step: length of single pixel
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
-    data_only: whether it saves data only
+    values_only: whether it saves values only
     
 Returns:
     None
@@ -226,7 +226,7 @@ def CaseCalculation(which_case_path,
                     pixel_step=1,
                     which_mode_list=None,
                     test=False,
-                    data_only=True):
+                    values_only=True):
     
     #argument information
     argument_str=''
@@ -269,18 +269,18 @@ def CaseCalculation(which_case_path,
     if which_mode_list==None:
         
         #structural deformation
-        ModeCalculation(which_case_path,'structural_deformation','',which_plane,pixel_step,test,data_only)
+        ModeCalculation(which_case_path,'structural_deformation','',which_plane,pixel_step,test,values_only)
                 
         #stress
         for this_stress_mode in stress_mode:
             
-            ModeCalculation(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test,data_only)
+            ModeCalculation(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test,values_only)
             
         #strain
         for this_strain_mode in strain_mode:
             
-            ModeCalculation(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test,data_only)
-            ModeCalculation(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test,data_only)
+            ModeCalculation(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test,values_only)
+            ModeCalculation(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test,values_only)
     
     else:
         
@@ -295,22 +295,22 @@ def CaseCalculation(which_case_path,
             #structural deformation
             if this_mode=='structural_deformation':
  
-                ModeCalculation(which_case_path,'structural_deformation','',which_plane,pixel_step,test,data_only)
+                ModeCalculation(which_case_path,'structural_deformation','',which_plane,pixel_step,test,values_only)
                 
             #stress
             if 'stress' in this_mode:
                             
                 this_stress_mode=this_mode.strip('stress').strip('_')
                
-                ModeCalculation(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test,data_only)
+                ModeCalculation(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test,values_only)
             
             #strain
             if 'strain' in this_mode:
                 
                 this_strain_mode=this_mode.strip('strain').strip('_')
                 
-                ModeCalculation(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test,data_only)
-                ModeCalculation(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test,data_only)
+                ModeCalculation(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test,values_only)
+                ModeCalculation(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test,values_only)
 
 #------------------------------------------------------------------------------   
 """

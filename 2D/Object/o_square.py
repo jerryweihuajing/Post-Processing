@@ -2,24 +2,18 @@
 """
 Created on Mon Jun 17 15:04:38 2019
 
-@author:Wei Huajing
-@company:Nanjing University
-@e-mail:jerryweihuajing@126.com
+@author: Wei Huajing
+@company: Nanjing University
+@e-mail: jerryweihuajing@126.com
 
 @title：Object-square
 """
 
 import numpy as np
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
 import o_line
     
-import Rasterization as Ra
+import calculation_rasterization as C_R
 
 #==============================================================================
 #正方形
@@ -121,14 +115,14 @@ class square:
             self.points_above.append(list(this_pos_D.astype(int)))
             
         #填充content
-        Ra.Boundary2Content(self)
+        C_R.Boundary2Content(self)
             
     #画出位置
     def Plot(self,which_canvas):
         
-        Ra.GraphicPlot(self,which_canvas)
+        C_R.GraphicPlot(self,which_canvas)
         
     #填充图形
     def Fill(self,which_canvas):
         
-        Ra.GraphicFill(self,which_canvas)
+        C_R.GraphicFill(self,which_canvas)

@@ -12,7 +12,7 @@ Created on Wed Nov 27 18:29:24 2019
 import numpy as np
 from matplotlib import colors
 
-import Matrix as Mat
+import calculation_matrix as C_I
 
 #------------------------------------------------------------------------------
 """
@@ -46,8 +46,8 @@ def GlobalNorm(which_case,post_fix):
             
             this_matrix=this_progress.maximal_shear_stress
             
-        values_max.append(Mat.MatrixMaximum(this_matrix))
-        values_min.append(Mat.MatrixMinimum(this_matrix))
+        values_max.append(C_I.MatrixMaximum(this_matrix))
+        values_min.append(C_M.MatrixMinimum(this_matrix))
       
     #values maximum and minimum norm
     return colors.Normalize(vmin=np.min(values_min),vmax=np.max(values_max))

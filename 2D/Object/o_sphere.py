@@ -45,9 +45,7 @@ class sphere:
         
     #将张量转化为三维,生成应力二维张量   
     def Init(self):
-        
-        print('-- sphere.Init')
-        
+
         #Area Calculation
         self.area=np.pi*self.radius**2
         

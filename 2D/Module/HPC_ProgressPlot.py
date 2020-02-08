@@ -11,8 +11,6 @@ Created on Tue Nov  5 23:49:51 2019
 
 import matplotlib.pyplot as plt
 
-import operation_path_v1 as O_P_1
-
 import HPC_IndividualPlot as HPC_IP
 
 #------------------------------------------------------------------------------

@@ -14,9 +14,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-import operation_path_v1 as O_P_1
-import Image as Img
-import Matrix as Mat
+import BETA_operation_path as B_O_P
+import calculation_image as C_I
+import calculation_matrix as C_M
 import Decoration as Dec
 
 import HPC_Global as HPC_Glo
@@ -67,7 +67,7 @@ def IndividualStructuralDeformationInProgress(which_progress,
     if with_fracture:
 
         #filter fracture matrix and plot farcture
-        if type(Mat.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+        if type(C_M.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
             
             print('=> WARNING: without fracture')
                            
@@ -148,14 +148,14 @@ def IndividualStressOrStrainInProgress(which_progress,
         
         print('--> Local Norm')
         
-        plt.imshow(Img.ImgFlip(value_matrix,0),
+        plt.imshow(C_I.ImgFlip(value_matrix,0),
                    cmap=HPC_Glo.GlobalColormap(post_fix))
         
     else:
         
         print('--> Global Norm')
         
-        plt.imshow(Img.ImgFlip(value_matrix,0),
+        plt.imshow(C_I.ImgFlip(value_matrix,0),
                    cmap=HPC_Glo.GlobalColormap(post_fix),
                    norm=HPC_Glo.GlobalNorm(which_progress.case,post_fix))
     
@@ -172,7 +172,7 @@ def IndividualStressOrStrainInProgress(which_progress,
     if with_fracture:
 
         #filter fracture matrix and plot farcture
-        if type(Mat.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+        if type(C_M.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
             
             print('==>WARNING: without fracture')
             
@@ -260,7 +260,7 @@ def IndividualInProgress(output_folder,
         fig_name+=' with fracture'
         
     #generate folder
-    O_P_1.GenerateFolder(output_folder)
+    B_O_P.GenerateFolder(output_folder)
     
     #path of this figure
     this_fig_path=output_folder+'\\'+fig_name+'.png'

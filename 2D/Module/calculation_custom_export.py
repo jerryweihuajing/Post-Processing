@@ -230,10 +230,10 @@ def CaseCalculation(which_case_path,
     #argument information
     argument_str=''
     
-    for this_str in which_case_path.split('\\Data\\')[1].split('\\input\\'):
+    for this_str in which_case_path.split('\\input\\'):
         
         argument_str+='\\'
-        argument_str+=this_str
+        argument_str+=this_str.split('\\')[-1]
         
     print('')
     print('-- Case Calculation')

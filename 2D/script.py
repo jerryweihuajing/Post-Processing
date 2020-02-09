@@ -19,7 +19,7 @@ demand 5:
 
 from __init__ import *
 
-case_path=r'H:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
+case_path=r'H:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input\single-1'
 
 '''pixel_step=0.5???'''
 

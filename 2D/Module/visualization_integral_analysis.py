@@ -40,7 +40,7 @@ def SingleIntegralAnalysis(output_folder,
     
     print('')
     print('-- Single Integral Analysis In Progress')
-    print('-> progress:',which_progress.percentage)
+    print('-> progress='+which_progress.percentage)
     
     #title font
     title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=13)

@@ -182,7 +182,7 @@ def ProgressConstruction(progress_path):
     
     that_progress.stress_or_strain=dict(zip(list_post_fix,matrix_list))
     
-    print('-> progress:',that_progress.percentage)
+    print('-> progress='+that_progress.percentage)
     
     return that_progress
 
@@ -204,7 +204,7 @@ def ProgressAllIndividuals(output_folder,
     
     print('')
     print('-- Progress All Individuals')
-    print('-> progress:',which_progress.percentage)
+    print('-> progress='+which_progress.percentage)
     
     list_post_fix=['Structural Deformation',
                    'Mean Normal Stress',

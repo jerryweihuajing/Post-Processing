@@ -42,14 +42,13 @@ def IndividualStructuralDeformation(which_progress,
                                     with_title=False):
     print('')
     print('-- Structural Deformation')
-
+    print('-> progress='+which_progress.percentage)
+    
     #global shape of progress or integral analysis
     global_shape=which_progress.shape
     
     #percentage of progress
     progress_percentage=which_progress.percentage
-    
-    print('-> progress:',progress_percentage)
 
     #transform to RGB format
     structural_deformation_img_rgb=which_progress.structural_deformation
@@ -121,14 +120,13 @@ def IndividualStressOrStrain(which_progress,
                              with_title=False):
     print('')
     print('-- '+post_fix)
-
+    print('-> progress='+which_progress.percentage)
+    
     #global shape of progress or integral analysis
     global_shape=which_progress.shape
     
     #percentage of progress
     progress_percentage=which_progress.percentage
-    
-    print('-> progress:',progress_percentage)
     
     #stress or strain value matrix to be plotted
     value_matrix=which_progress.stress_or_strain[post_fix]

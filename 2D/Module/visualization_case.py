@@ -87,7 +87,7 @@ def CaseVisualization(case_path,output_folder=None,with_fracture=False):
     
     if output_folder==None:
         
-        case_folder=case_path.replace('output','figures')
+        case_folder=case_path.replace('output','Figures')
         
     V_S.SeriesAll(case_folder,that_case,with_fracture)   
     V_A.AnimationAll(case_folder,that_case,with_fracture)
@@ -96,16 +96,13 @@ def CaseVisualization(case_path,output_folder=None,with_fracture=False):
     #figures in different progress
     for this_progress in that_case.list_progress:
         
-        #output folder of this progress
-        progress_folder=case_folder+'\\'+this_progress.percentage
-        
         #imaging and output
-        V_P.ProgressAllIndividuals(progress_folder,this_progress,with_fracture)
+        V_P.ProgressAllIndividuals(case_folder,this_progress,with_fracture)
         
         #integral analysis
         for this_mode in ['standard','all']:
             
-            V_I_A.SingleIntegralAnalysis(progress_folder,
+            V_I_A.SingleIntegralAnalysis(case_folder,
                                          this_progress,
                                          this_mode,
                                          with_fracture,

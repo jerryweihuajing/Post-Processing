@@ -49,7 +49,7 @@ def IndividualStructuralDeformation(which_progress,
     #percentage of progress
     progress_percentage=which_progress.percentage
     
-    print('-> progress='+progress_percentage)
+    print('-> progress:',progress_percentage)
 
     #transform to RGB format
     structural_deformation_img_rgb=which_progress.structural_deformation
@@ -128,7 +128,7 @@ def IndividualStressOrStrain(which_progress,
     #percentage of progress
     progress_percentage=which_progress.percentage
     
-    print('-> progress='+progress_percentage)
+    print('-> progress:',progress_percentage)
     
     #stress or strain value matrix to be plotted
     value_matrix=which_progress.stress_or_strain[post_fix]
@@ -212,6 +212,7 @@ Args:
     which_progress: progress object
     post_fix: post fix of txt file
     with_fracture: (bool) plot fracture or not 
+    situation: for 'case' or 'progress'
     
 Returns:
     None
@@ -219,7 +220,8 @@ Returns:
 def Individual(output_folder,
                which_progress,
                post_fix='Structural Deformation',
-               with_fracture=False):
+               with_fracture=False,
+               situation='case'):
      
     print('')
     print('-- Single Individual In Progress')
@@ -256,50 +258,31 @@ def Individual(output_folder,
 
     this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
     
-    #percentage of progress
-    fig_name=post_fix
-    
+    #figure path and name    
+    if situation=='case':
+        
+        individual_folder=output_folder+'\\'+post_fix+'\\'
+        fig_name=which_progress.percentage
+        
+    if situation=='progress':
+
+        individual_folder=output_folder+'\\'+which_progress.percentage+'\\'
+        fig_name=post_fix
+        
     #re-name
     if with_fracture:
         
         fig_name+=' with fracture'
         
     #generate folder
-    O_P.GenerateFolder(output_folder)
+    O_P.GenerateFolder(individual_folder)
     
     #path of this figure
-    this_fig_path=output_folder+'\\'+fig_name+'.png'
+    this_fig_path=individual_folder+'\\'+fig_name+'.png'
     
     #save this fig
     figure.savefig(this_fig_path,dpi=300,bbox_inches='tight')
     
     plt.close()
     
-#------------------------------------------------------------------------------
-"""
-Plot single figure
-
-Args:
-    output_folder: folder to contain result
-    which_progress: progress object
-    with_fracture: (bool) plot fracture or not 
-    
-Returns:
-    None
-"""     
-def AllIndividuals(output_folder,
-                   which_progress,
-                   with_fracture=False):  
-    
-    list_post_fix=['Structural Deformation',
-                   'Mean Normal Stress',
-                   'Maximal Shear Stress',
-                   'Volumetric Strain-Periodical',
-                   'Distortional Strain-Periodical',
-                   'Volumetric Strain-Cumulative',
-                   'Distortional Strain-Cumulative']
-    
-    #plot all postfix mode
-    for this_post_fix in list_post_fix:
-        
-        Individual(output_folder,which_progress,this_post_fix,with_fracture)
+    return this_fig_path

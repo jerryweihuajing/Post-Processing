@@ -10,7 +10,6 @@ Created on Tue Nov  5 23:53:13 2019
 """
 
 import imageio
-import matplotlib.pyplot as plt
 
 import operation_path as O_P
 
@@ -89,9 +88,6 @@ def AnimationIndividual(output_folder,
     
     #figures to generate GIF
     figures=[]
-       
-    #global shape of progress or integral analysis
-    global_shape=which_case.list_progress[-1].shape 
 
     #animation folder path
     post_fix_folder=output_folder+'\\'+post_fix+'\\'
@@ -101,69 +97,31 @@ def AnimationIndividual(output_folder,
     
     for this_progress in which_case.list_progress:
         
-        #100-1000
-        if global_shape==(100,1000):
-            
-            this_figure=plt.subplots(figsize=(13,13))[0]
-            
-        #100-500
-        if global_shape==(100,500):
-        
-            this_figure=plt.subplots(figsize=(7,13))[0]
-
-        #100-200
-        if global_shape==(100,350):
-        
-            this_figure=plt.subplots(figsize=(5,13))[0]
-            
-        #new picture and ax
-        this_ax=plt.subplot()
-
-        if post_fix=='Structural Deformation':
-            
-            V_I.IndividualStructuralDeformation(this_progress,this_ax,with_fracture,1,1)  
-            
-        else:
-               
-            V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,with_fracture,1,1)
-    
-        this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
-        
-        #percentage of progress
-        fig_name=this_progress.percentage
-        
-        #re-name
-        if with_fracture:
-            
-            fig_name+=' with fracture'
-            
-        #path of this figure
-        this_fig_path=post_fix_folder+fig_name+'.png'
-        
-        #save this fig
-        this_figure.savefig(this_fig_path,dpi=300,bbox_inches='tight')
-        
-        plt.close()
+        this_fig_path=V_I.Individual(output_folder,this_progress,post_fix,with_fracture)
         
         #collect fig to create GIF
         figures.append(imageio.imread(this_fig_path))    
         
+    #animation folder path
+    animation_folder=output_folder+'\\animation\\'
+    post_fix_folder=output_folder+'\\'+post_fix+'\\'
+    
+    #Generate folder of output figures
+    O_P.GenerateFolder(animation_folder)    
+    O_P.GenerateFolder(animation_folder) 
     #GIF name
-    gif_name=post_fix
+    animation_gif_name=post_fix
+    post_fix_gif_name='animation'
     
     #re-name
     if with_fracture:
         
-        gif_name+=' with fracture'
-
-    #animation folder path
-    animation_folder=output_folder+'\\animation\\'
-    
-    #Generate folder of output figures
-    O_P.GenerateFolder(animation_folder)    
-    
+        animation_gif_name+=' with fracture'
+        post_fix_gif_name+=' with fracture'
+        
     #save GIF
-    imageio.mimsave(animation_folder+gif_name+'.gif',figures,duration=0.5)
+    imageio.mimsave(animation_folder+animation_gif_name+'.gif',figures,duration=0.5)
+    imageio.mimsave(post_fix_folder+post_fix_gif_name+'.gif',figures,duration=0.5)
     
 #------------------------------------------------------------------------------
 """

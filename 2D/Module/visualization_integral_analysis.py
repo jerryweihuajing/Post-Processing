@@ -27,6 +27,7 @@ Args:
     which_progress: progress object
     mode: 'standard' 'all'
     with_farcture: (bool) plot fracture and interface or not 
+    situation: for 'case' or 'progress'
 
 Returns:
     Figure path
@@ -34,11 +35,13 @@ Returns:
 def SingleIntegralAnalysis(output_folder,
                            which_progress,
                            mode='standard',
-                           with_fracture=False):
+                           with_fracture=False,
+                           situation='case'):
     
     print('')
     print('-- Single Integral Analysis In Progress')
-
+    print('-> progress:',which_progress.percentage)
+    
     #title font
     title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=13)
     
@@ -138,16 +141,22 @@ def SingleIntegralAnalysis(output_folder,
         
         this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
      
-    #figure name
-    fig_name=which_progress.percentage
+    #figure path and name    
+    if situation=='case':
+        
+        integral_analysis_folder=output_folder+'\\integral analysis\\'
+        fig_name=which_progress.percentage
+        
+    if situation=='progress':
 
+        integral_analysis_folder=output_folder+'\\'+which_progress.percentage+'\\'
+        fig_name='integral analysis'
+        
     #re-name
     if with_fracture:
         
-        fig_name+=' with fracture'
+        fig_name+=' with fracture'    
         
-    integral_analysis_folder=output_folder+'\\integral analysis\\'
-    
     #generate folder
     O_P.GenerateFolder(integral_analysis_folder)
     

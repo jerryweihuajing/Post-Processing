@@ -16,6 +16,7 @@ import calculation_matrix as C_M
 import calculation_image_smoothing as C_I_S
 
 import visualization_individual as V_I
+import visualization_integral_analysis as V_I_A
 
 from data_yade_color import yade_rgb_map
 
@@ -155,6 +156,7 @@ def ProgressConstruction(progress_path):
     that_progress.cumulative_volumrtric_strain,\
     that_progress.cumulative_distortional_strain=matrix_list
 
+    #outlines of stress and strain are not the same
     stress_path=file_path.replace('structural deformation','stress\\mean normal')
     strain_path=file_path.replace('structural deformation','periodical strain\\volumetric')
     
@@ -180,8 +182,47 @@ def ProgressConstruction(progress_path):
     
     that_progress.stress_or_strain=dict(zip(list_post_fix,matrix_list))
     
+    print('-> progress:',that_progress.percentage)
+    
     return that_progress
 
+#------------------------------------------------------------------------------
+"""
+Plot single figure
+
+Args:
+    output_folder: folder to contain result
+    which_progress: progress object
+    with_fracture: (bool) plot fracture or not 
+    
+Returns:
+    None
+"""     
+def ProgressAllIndividuals(output_folder,
+                           which_progress,
+                           with_fracture=False):  
+    
+    print('')
+    print('-- Progress All Individuals')
+    print('-> progress:',which_progress.percentage)
+    
+    list_post_fix=['Structural Deformation',
+                   'Mean Normal Stress',
+                   'Maximal Shear Stress',
+                   'Volumetric Strain-Periodical',
+                   'Distortional Strain-Periodical',
+                   'Volumetric Strain-Cumulative',
+                   'Distortional Strain-Cumulative']
+    
+    #plot all postfix mode
+    for this_post_fix in list_post_fix:
+        
+        V_I.Individual(output_folder,
+                       which_progress,
+                       this_post_fix,
+                       with_fracture,
+                       situation='progress')
+        
 #------------------------------------------------------------------------------   
 """
 Construct a progress object and post processing
@@ -194,7 +235,10 @@ Args:
 Returns:
     None
 """ 
-def ProgressPostProcessing(progress_path,output_folder,with_fracture=False):
+def ProgressVisualization(progress_path,output_folder,with_fracture=False):
+    
+    print('')
+    print('-- Progress Visualization')
     
     #construct a progress
     that_progress=ProgressConstruction(progress_path)
@@ -203,4 +247,13 @@ def ProgressPostProcessing(progress_path,output_folder,with_fracture=False):
     progress_folder=output_folder+'\\'+that_progress.percentage
     
     #imaging and output
-    V_I.AllIndividuals(progress_folder,that_progress,with_fracture)
+    ProgressAllIndividuals(progress_folder,that_progress,with_fracture)
+    
+    #integral analysis
+    for this_mode in ['standard','all']:
+        
+        V_I_A.SingleIntegralAnalysis(output_folder,
+                                     that_progress,
+                                     this_mode,
+                                     with_fracture,
+                                     situation='progress')

@@ -28,8 +28,8 @@ Returns:
     None
 """
 def SeriesStructuralDeformation(output_folder,
-                                  which_case,
-                                  with_fracture=False):
+                                which_case,
+                                with_fracture=False):
     
     print('')
     print('-- Progress Structural Deformation')
@@ -67,21 +67,26 @@ def SeriesStructuralDeformation(output_folder,
         
         this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
  
+    #animation folder path
+    series_folder=output_folder+'\\series\\'
+    post_fix_folder=output_folder+'\\Structural Deformation\\'
+    
+    O_P.GenerateFolder(series_folder)
+    O_P.GenerateFolder(post_fix_folder)
+    
     #figure name
-    fig_name='Sturctural Deformation'
+    series_fig_name='Structural Deformation'
+    post_fix_fig_name='series'
     
     #re-name
     if with_fracture:
         
-        fig_name+=' with fracture'
-       
-    #animation folder path
-    series_folder=output_folder+'\\series\\'
-    
-    O_P.GenerateFolder(series_folder)
+        series_fig_name+=' with fracture'
+        series_fig_name+=' with fracture'
     
     #save this fig
-    figure.savefig(series_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
+    figure.savefig(series_folder+series_fig_name+'.png',dpi=300,bbox_inches='tight')
+    figure.savefig(post_fix_folder+post_fix_fig_name+'.png',dpi=300,bbox_inches='tight')
     
     plt.close()
         
@@ -99,9 +104,9 @@ Returns:
     None
 """
 def SeriesStressOrStrain(output_folder,
-                           which_case,
-                           post_fix,
-                           with_fracture=False):
+                         which_case,
+                         post_fix,
+                         with_fracture=False):
     
     print('')
     print('-- Progress Structural Deformation')
@@ -138,22 +143,27 @@ def SeriesStressOrStrain(output_folder,
         V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,with_fracture)
         
         this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
-  
+        
+    #animation folder path
+    series_folder=output_folder+'\\series\\'
+    post_fix_folder=output_folder+'\\'+post_fix+'\\'
+    
+    O_P.GenerateFolder(series_folder)
+    O_P.GenerateFolder(post_fix_folder)
+    
     #figure name
-    fig_name=post_fix
+    series_fig_name=post_fix
+    post_fix_fig_name='series'
     
     #re-name
     if with_fracture:
         
-        fig_name+=' with fracture'
-       
-    #animation folder path
-    series_folder=output_folder+'\\series\\'
-    
-    O_P.GenerateFolder(series_folder)
+        series_fig_name+=' with fracture'
+        series_fig_name+=' with fracture'
     
     #save this fig
-    figure.savefig(series_folder+fig_name+'.png',dpi=300,bbox_inches='tight')
+    figure.savefig(series_folder+series_fig_name+'.png',dpi=300,bbox_inches='tight')
+    figure.savefig(post_fix_folder+post_fix_fig_name+'.png',dpi=300,bbox_inches='tight')
     
     plt.close()
     

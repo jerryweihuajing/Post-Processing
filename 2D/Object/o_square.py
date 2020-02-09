@@ -102,7 +102,7 @@ class square:
         self.corner_D=self.center+np.array([-self.length/2,+self.length/2])
        
         #矩形上的点
-        for k in range(self.length+1):
+        for k in range(1+self.length):
             
             this_pos_A=self.center+np.array([-self.length/2,-self.length/2+k])
             this_pos_B=self.center+np.array([+self.length/2,-self.length/2+k])

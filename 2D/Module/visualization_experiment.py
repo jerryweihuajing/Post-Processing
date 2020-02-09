@@ -25,10 +25,10 @@ Args:
 Returns:
     None
 """ 
-def ExperimentPlotAll(experiment_path):
+def VisualizationExperiment(experiment_path):
     
     print('')
-    print('-- Experiment Plot All')
+    print('-- Visualization Experiment')
     
     #cases folder
     folder_path=experiment_path+'\\output'

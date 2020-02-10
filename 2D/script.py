@@ -19,14 +19,15 @@ demand 5:
 
 from __init__ import *
 
-case_path=r'H:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input\single-1'
+case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\output\single-1'
 
 '''pixel_step=0.5???'''
 
 #step 1
-C_C_E.CaseCalculation(case_path,which_mode_list='standard')
+#C_C_E.CaseCalculation(case_path,which_mode_list='standard')
 
 #step 2
-case_path=case_path.replace('in','out')
+case_path=case_path.replace('input','output')
 
 V_C.CaseVisualization(case_path)
+

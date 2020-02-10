@@ -322,7 +322,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                 
                         map_tag_area[this_sphere.tag]=area_this_sphere_in_this_grid
                         
-                #print(map_tag_area)
+#                print(map_tag_area)
                 #print(area_inside)
                         
         #        print(DictKeyOfValue(map_tag_area,max(list(map_tag_area.values()))))
@@ -363,9 +363,9 @@ Displacement interpolation image (mesh points)
 
 Args:
     which_spheres: input sphere objects list
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
-    which_direction: 'x' 'y' 'z' displacement in 3 different direction
-    which_input_mode: 'periodical_strain' 'cumulative_strain' dispalcement mode
+    which_plane: ['XoY','YoZ','ZoX]' displacement in 3 planes
+    which_direction: ['x','y','z'] displacement in 3 different direction
+    which_input_mode: ['periodical_strain','cumulative_strain'] dispalcement mode
     
 Returns:
     discrete points objects list
@@ -379,13 +379,13 @@ def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_in
     print('-> input mode:',which_input_mode.replace('_',' '))
     
     #result list
-    discrete_points=[]
+    scatters=[]
     
     #遍历所有的sphere
     for this_sphere in which_spheres:
     
         #new discrete point object
-        new_discrete_point=scatter()
+        new_scatter=scatter()
         
 #        print(this_sphere.position)
 #        print(this_sphere.displacemnet_3D_periodical)
@@ -433,8 +433,8 @@ def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_in
         #create index-value map
         map_plane_position_index=dict(zip(list_plane,list_position_index))
         
-        new_discrete_point.pos_x=this_sphere.position[map_plane_position_index[which_plane][0]]
-        new_discrete_point.pos_y=this_sphere.position[map_plane_position_index[which_plane][1]]
+        new_scatter.pos_x=this_sphere.position[map_plane_position_index[which_plane][0]]
+        new_scatter.pos_y=this_sphere.position[map_plane_position_index[which_plane][1]]
                    
         #dispalcement mode
         list_mode=['periodical_strain','cumulative_strain']
@@ -459,10 +459,10 @@ def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_in
 #        print(which_direction)
         
         #value
-        new_discrete_point.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
+        new_scatter.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
               
         #radius
-        new_discrete_point.radius=this_sphere.radius
+        new_scatter.radius=this_sphere.radius
         
 #        print(this_displacement)
 #        print(map_direction_displacment_index)
@@ -473,21 +473,21 @@ def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_in
 #        print(new_discrete_point.pos_y)
 #        print(new_discrete_point.pos_z)
         
-        discrete_points.append(new_discrete_point)
+        scatters.append(new_scatter)
         
-    return discrete_points
+    return scatters
 
 #------------------------------------------------------------------------------
 """
 Displacement interpolation image (mesh points)
 
 Args:
-    pixel_step: length of single pixel
+    pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
-    which_direction: 'x' 'y' 'z' displacement in 3 different direction
-    which_input_mode: 'periodical' 'cumulative' dispalcement mode
-    which_interpolation: 'spheres_in_grid' 'global'
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
+    which_direction: ['x','y','z'] displacement in 3 different direction
+    which_input_mode: ['periodical','cumulative'] dispalcement mode
+    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
     Displacement matrix in one direction
@@ -497,33 +497,33 @@ def SpheresDisplacementMatrix(pixel_step,
                               which_plane,
                               which_direction,
                               which_input_mode,
-                              which_interpolation='spheres_in_grid',
+                              which_interpolation,
                               show=False):
     
-    #discrete point objects
-    discrete_points=DiscreteValueDisplacement(which_spheres,
-                                              which_plane,
-                                              which_direction,
-                                              which_input_mode)    
+    #scatter objects
+    scatters=DiscreteValueDisplacement(which_spheres,
+                                       which_plane,
+                                       which_direction,
+                                       which_input_mode)    
 
     #top surface map
     surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
     
-    if which_interpolation=='spheres_in_grid':
+    if which_interpolation=='scatters_in_grid':
         
-        return C_In.SpheresInGridIDW(discrete_points,pixel_step,surface_map,show)
+        return C_In.ScattersInGridIDW(scatters,pixel_step,surface_map,show)
 
 #------------------------------------------------------------------------------
 """
 Spheres strain objects matrix throughout args such as pixel step
 
 Args:
-    pixel_step: length of single pixel
+    pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
-    which_input_mode: 'periodical' 'cumulative' dispalcement mode
-    which_output_mode: 'x_normal' 'y_normal' 'shear' 'volumetric' 'distortional'
-    which_interpolation: 'spheres_in_grid' 'global'
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
+    which_input_mode: ['periodical','cumulative'] dispalcement mode
+    which_output_mode: ['x_normal','y_normal','shear','volumetric','distortional']
+    which_interpolation: ['scatters_in_grid','grids_in_scatter]
     
 Returns:
     Spheres strain values matrix
@@ -533,21 +533,26 @@ def SpheresStrainMatrix(pixel_step,
                         which_plane,
                         which_input_mode,
                         which_output_mode,
-                        which_interpolation='spheres_in_grid'):
+                        which_interpolation):
+    
+    print('')
+    print('-- Spheres Strain Matrix')
     
     #displacemnt in x direction
     x_displacement=SpheresDisplacementMatrix(pixel_step,
                                              which_spheres,
                                              which_plane,
                                              'x',
-                                             which_input_mode)
+                                             which_input_mode,
+                                             which_interpolation)
     
     #displacemnt in y direction
     y_displacement=SpheresDisplacementMatrix(pixel_step,
                                              which_spheres,
                                              which_plane,
                                              'y',
-                                             which_input_mode)
+                                             which_input_mode,
+                                             which_interpolation)
 #    print(x_displacement)
 #    print(y_displacement)
     
@@ -643,12 +648,12 @@ def SpheresStrainMatrix(pixel_step,
 Spheres stress values matrix throughout args such as pixel step
 
 Args:
-    pixel_step: length of single pixel
+    pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_input_mode: 'stress'
-    which_output_mode: 'x_normal' 'y_normal' 'shear' 'mean_normal' 'maximal_shear'
-    which_interpolation: 'spheres_in_grid' 'global'
+    which_output_mode: ['x_normal','y_normal','shear','mean_normal','maximal_shear']
+    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
     Spheres stress value matrix
@@ -658,7 +663,7 @@ def SpheresStressMatrix(pixel_step,
                         which_plane,
                         which_input_mode,
                         which_output_mode,
-                        which_interpolation='spheres_in_grid'):
+                        which_interpolation):
 
     if which_input_mode!='stress':
         
@@ -675,21 +680,21 @@ def SpheresStressMatrix(pixel_step,
     #top surface map
     surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
     
-    if which_interpolation=='spheres_in_grid':
+    if which_interpolation=='scatters_in_grid':
         
-        return C_In.SpheresInGridIDW(discrete_points,pixel_step,surface_map)
+        return C_In.ScattersInGridIDW(discrete_points,pixel_step,surface_map)
     
 #------------------------------------------------------------------------------
 """
 Spheres values objects matrix throughout args such as pixel step
 
 Args:
-    pixel_step: length of single pixel
+    pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
-    which_input_mode: 'stress' 'cumulative_strain' 'periodical_strain' 
-    which_output_mode: 'x_normal' 'y_normal' 'shear' ......
-    which_interpolation: 'spheres_in_grid' 'global'
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
+    which_input_mode: ['stress','cumulative_strain','periodical_strain']
+    which_output_mode: ['x_normal','y_normal','shear',......]
+    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
     Spheres value matrix
@@ -699,7 +704,7 @@ def SpheresValueMatrix(pixel_step,
                        which_plane,
                        which_input_mode,
                        which_output_mode,
-                       which_interpolation='spheres_in_grid'):
+                       which_interpolation):
     
     if which_input_mode=='stress':
         

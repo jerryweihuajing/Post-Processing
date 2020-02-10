@@ -38,7 +38,7 @@ def CaseGeneration(case_path):
     
     #input txt file names
     file_names=O_P.FilePathsThisCase(case_path)
-    
+
     #traverse all file to consruct progress
     for this_file_name in file_names:
         
@@ -69,7 +69,8 @@ def CaseGeneration(case_path):
             new_sphere.radius=float(this_list[1])
             new_sphere.color=[float(this_str) for this_str in this_list[2:5]] 
             new_sphere.position=np.array([float(this_str) for this_str in this_list[5:8]])
-            new_sphere.stress_tensor=np.array([float(this_str) for this_str in this_list[8:]])
+            new_sphere.velocity=np.array([float(this_str) for this_str in this_list[8:11]])
+            new_sphere.stress_tensor=np.array([float(this_str) for this_str in this_list[11:]])
          
             #plane: default XoY
             new_sphere.plane='XoY'

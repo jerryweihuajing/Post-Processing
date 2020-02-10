@@ -38,10 +38,11 @@ Plot different phase image in a custom style
 
 Args:
     which_case_path: load path of all input files
-    which_input_mode: 'structural_deformation' 'stress' 'cumulative_strain' 'periodical strain'
-    which_output_mode: 'x_normal' 'y_normal' 'shear' 'mean_normal' 'maximal_shear'
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
-    pixel_step: length of single pixel
+    which_input_mode: ['structural_deformation','stress','cumulative_strain','periodical strain']
+    which_output_mode: '[x_normal','y_normal','shear','mean_normal','maximal_shear]'
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
+    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
+    pixel_step: length of single pixel (int)
     index_list: custom index of images
     test: if there is a test with a small amount of spheres
     values_only: whether it saves values only
@@ -53,9 +54,10 @@ def ModeCalculation(which_case_path,
                     which_input_mode,
                     which_output_mode,
                     which_plane='XoY',
+                    which_interpolation='scatters_in_grid',
                     pixel_step=1,
                     test=False,
-                    values_only=True):
+                    values_only=True,):
     
     print('')
     print('-- Mode Calculation')
@@ -64,7 +66,7 @@ def ModeCalculation(which_case_path,
     
     #construct case object
     that_case=C_C.CaseGeneration(which_case_path)
-    
+
     #list of spheres
     spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
     
@@ -165,11 +167,11 @@ def ModeCalculation(which_case_path,
        
             #final matrix
             this_img=C_S_M.SpheresValueMatrix(pixel_step,
-                                            this_spheres,
-                                            which_plane,
-                                            which_input_mode,
-                                            which_output_mode,
-                                            which_interpolation='spheres_in_grid')
+                                              this_spheres,
+                                              which_plane,
+                                              which_input_mode,
+                                              which_output_mode,
+                                              which_interpolation)
             
             if not values_only:
                 
@@ -211,8 +213,9 @@ Total export depending on mode list
 
 Args:
     which_case_path: load path of all input files
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes 
-    pixel_step: length of single pixel
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes 
+    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
+    pixel_step: length of single pixel (int)
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
     values_only: whether it saves values only
@@ -222,6 +225,7 @@ Returns:
 """    
 def CaseCalculation(which_case_path,
                     which_plane='XoY',
+                    which_interpolation='scatters_in_grid',
                     pixel_step=1,
                     which_mode_list=None,
                     test=False,
@@ -268,18 +272,47 @@ def CaseCalculation(which_case_path,
     if which_mode_list==None:
         
         #structural deformation
-        ModeCalculation(which_case_path,'structural_deformation','',which_plane,pixel_step,test,values_only)
+        ModeCalculation(which_case_path,
+                        'structural_deformation',
+                        '',
+                        which_plane,
+                        which_interpolation,
+                        pixel_step,
+                        test,
+                        values_only)
                 
         #stress
         for this_stress_mode in stress_mode:
             
-            ModeCalculation(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test,values_only)
+            ModeCalculation(which_case_path,
+                            'stress',
+                            this_stress_mode,
+                            which_plane,
+                            which_interpolation,
+                            pixel_step,
+                            test,
+                            values_only)
             
         #strain
         for this_strain_mode in strain_mode:
+                
+            ModeCalculation(which_case_path,
+                            'cumulative_strain',
+                            this_strain_mode,
+                            which_plane,
+                            which_interpolation,
+                            pixel_step,
+                            test,
+                            values_only)
             
-            ModeCalculation(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test,values_only)
-            ModeCalculation(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test,values_only)
+            ModeCalculation(which_case_path,
+                            'periodical_strain',
+                            this_strain_mode,
+                            which_plane,
+                            which_interpolation,
+                            pixel_step,
+                            test,
+                            values_only)
     
     else:
         
@@ -294,22 +327,51 @@ def CaseCalculation(which_case_path,
             #structural deformation
             if this_mode=='structural_deformation':
  
-                ModeCalculation(which_case_path,'structural_deformation','',which_plane,pixel_step,test,values_only)
+                ModeCalculation(which_case_path,
+                                'structural_deformation',
+                                '',
+                                which_plane,
+                                which_interpolation,
+                                pixel_step,
+                                test,
+                                values_only)
                 
             #stress
             if 'stress' in this_mode:
                             
                 this_stress_mode=this_mode.strip('stress').strip('_')
                
-                ModeCalculation(which_case_path,'stress',this_stress_mode,which_plane,pixel_step,test,values_only)
+                ModeCalculation(which_case_path,
+                                'stress',
+                                this_stress_mode,
+                                which_plane,
+                                which_interpolation,
+                                pixel_step,
+                                test,
+                                values_only)
             
             #strain
             if 'strain' in this_mode:
                 
                 this_strain_mode=this_mode.strip('strain').strip('_')
                 
-                ModeCalculation(which_case_path,'cumulative_strain',this_strain_mode,which_plane,pixel_step,test,values_only)
-                ModeCalculation(which_case_path,'periodical_strain',this_strain_mode,which_plane,pixel_step,test,values_only)
+                ModeCalculation(which_case_path,
+                                'cumulative_strain',
+                                this_strain_mode,
+                                which_plane,
+                                which_interpolation,
+                                pixel_step,
+                                test,
+                                values_only)
+                
+                ModeCalculation(which_case_path,
+                                'periodical_strain',
+                                this_strain_mode,
+                                which_plane,
+                                which_interpolation,
+                                pixel_step,
+                                test,
+                                values_only)
 
 #------------------------------------------------------------------------------   
 """
@@ -317,8 +379,9 @@ Total export depending on mode list of an experiment which contain a branch of c
 
 Args:
     which_experiment_path: load path of all input files cases
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes 
-    pixel_step: length of single pixel
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes 
+    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
+    pixel_step: length of single pixel (int)
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
     data_only: whether it saves data only
@@ -327,8 +390,9 @@ Returns:
     None
 """ 
 def ExperimentCalculation(which_experiment_path,
-                          which_plane,
-                          pixel_step,
+                          which_plane='XoY',
+                          which_interpolation='scatters_in_grid',
+                          pixel_step=1,
                           which_mode_list=None,
                           test=False,
                           data_only=True):
@@ -338,4 +402,9 @@ def ExperimentCalculation(which_experiment_path,
         
         this_case_path=which_experiment_path+'\\input\\'+this_case_name
         
-        CaseCalculation(this_case_path,which_plane,pixel_step,which_mode_list,test,data_only)        
+        CaseCalculation(this_case_path,
+                        which_plane,
+                        which_interpolation,
+                        pixel_step,
+                        which_mode_list,
+                        test,data_only)        

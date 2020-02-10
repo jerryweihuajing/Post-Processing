@@ -24,12 +24,12 @@ class sphere:
                  plane=None,
                  radius=None,
                  position=None,
+                 velocity=None,
                  stress_tensor=None,             
                  periodical_strain_tensor=None,
                  cumulative_strain_tensor=None,        
                  periodical_displacement=None,            
                  cumulative_displacement=None):     
-       
         self.Id=Id
         self.tag=tag
         self.area=area
@@ -37,6 +37,7 @@ class sphere:
         self.plane=plane
         self.radius=radius
         self.position=position
+        self.velocity=velocity
         self.stress_tensor=stress_tensor         
         self.periodical_strain_tensor=periodical_strain_tensor
         self.cumulative_strain_tensor=periodical_strain_tensor  

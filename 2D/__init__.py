@@ -18,4 +18,6 @@ sys.path=list(set(sys.path))
 
 import visualization_case as V_C
 
+import calculation_case as C_C
 import calculation_custom_export as C_C_E
+import calculation_spheres_matrix as C_S_M

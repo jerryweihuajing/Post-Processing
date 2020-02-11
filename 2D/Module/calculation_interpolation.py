@@ -137,19 +137,27 @@ def InverseDistanceWeight(which_pos,which_other_points):
     
     return np.array(weight)
    
-'''surface: to save computation time by not directly participating in interpolation calculation'''
-#==============================================================================   
-#反距离加权插值：
-#将离散点discrete_points插至mesh_points网格点上
-#which_surface_map用于限制点的范围，减少计算量
-#all the discrete points will take part in the interpolation
-def GlobalIDWInterpolation(which_discrete_points,
+'''all the scatters will take part in the interpolation'''
+#------------------------------------------------------------------------------   
+"""
+Calculation of global inverse distance weighting
+
+Args:
+   which_scatters: scatter objects to be operated
+   grid_length: length of grid
+   which_surface_map: to save computation time by not directly participating in interpolation calculation
+   show: whether to show (default: False)
+   
+Returns:
+    mesh_points from inverse distance weighting interpolation
+"""  
+def GlobalIDWInterpolation(which_scatters,
                            grid_length,
                            which_surface_map=None,
                            show=False):
     
     #construct mesh points
-    mesh_points=C_S_M.MeshGrid(which_discrete_points,grid_length,show=False)
+    mesh_points=C_S_M.MeshGrid(which_scatters,grid_length,show=False)
     
     #which_surface default to be None
     if which_surface_map==None:
@@ -192,10 +200,10 @@ def GlobalIDWInterpolation(which_discrete_points,
 #            print(this_pos)
 
             #calculate the weights for each point
-            weight=InverseDistanceWeight(this_pos,which_discrete_points)
+            weight=InverseDistanceWeight(this_pos,which_scatters)
             
             #vector of z value
-            z_discrete_points=np.array([this_discrete_point.pos_z for this_discrete_point in which_discrete_points])
+            z_discrete_points=np.array([this_discrete_point.pos_z for this_discrete_point in which_scatters])
             
             #assgin the value one by one
             z_mesh_points[i,j]=np.dot(z_discrete_points,weight)
@@ -207,6 +215,19 @@ def GlobalIDWInterpolation(which_discrete_points,
 
     return C_I.ImgFlip(C_I.ImgRotate(z_mesh_points),0)
  
+#------------------------------------------------------------------------------   
+"""
+Calculation of global inverse distance weighting
+
+Args:
+   which_scatters: scatter objects to be operated
+   grid_length: length of grid
+   which_surface_map: to save computation time by not directly participating in interpolation calculation
+   show: whether to show (default: False)
+   
+Returns:
+    mesh_points from inverse distance weighting interpolation
+""" 
 #==============================================================================  
 #Interpolation in each grid
 #surface is no need: skip the grid which has no discrete point inside
@@ -238,6 +259,7 @@ def ScattersInGridIDW(which_scatters,
     #IDW
     for this_grid in grids:
     
+        '''surface is no need: skip the grid which has no discrete point inside'''
         if this_grid.scatters_inside!=[]:
                 
 #            print(this_grid.position)

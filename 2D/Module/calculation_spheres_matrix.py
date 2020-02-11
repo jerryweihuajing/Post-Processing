@@ -36,8 +36,16 @@ import calculation_spheres_boundary as C_S_B
 
 from data_yade_color import yade_rgb_list
 
-#==============================================================================
-#绘制所有的sphere对象
+#------------------------------------------------------------------------------
+"""
+Draws all sphere objects via MatplotLib
+
+Args:
+    which_spheres: spheres object to be operated
+    
+Returns:
+    None
+"""
 def SpheresPlot(which_spheres):
     
     for this_sphere in which_spheres:
@@ -46,74 +54,90 @@ def SpheresPlot(which_spheres):
                  this_sphere.position[1],
                  marker='o',
                  markersize=this_sphere.radius,
-                 color=this_sphere.color)           
-  
-#============================================================================== 
-#表征构造形态rgb颗粒列表
+                 color=this_sphere.color)      
+        
+#------------------------------------------------------------------------------
+"""
+Characterization of RGB particle list in structural form
+
+Args:
+    which_spheres: spheres object to be operated
+    
+Returns:
+    scatter objects
+""" 
 def DiscreteValue_rgb(which_spheres):
     
-     #结果列表
-    discrete_points=[]
+    #result scatter list
+    scatters=[]
     
-    #遍历所有的sphere
+    #traverse all spheres
     for this_sphere in which_spheres:
     
-        #创建discrete_point对象
-        new_discrete_point=scatter()
+        #create dscatter objects
+        new_scatter=scatter()
         
-        #定义基本属性
-        new_discrete_point.pos_x=this_sphere.position[0]
-        new_discrete_point.pos_y=this_sphere.position[1]
-        new_discrete_point.pos_z=this_sphere.color
+        #define basic attributes
+        new_scatter.pos_x=this_sphere.position[0]
+        new_scatter.pos_y=this_sphere.position[1]
+        new_scatter.pos_z=this_sphere.color
         
-        #删除z值无限大的点
-        if max(new_discrete_point.pos_z)>1 or min(new_discrete_point.pos_z)<0:
+        #delete the point with an infinite z value
+        if max(new_scatter.pos_z)>1 or min(new_scatter.pos_z)<0:
             
-            print(new_discrete_point.pos_z)
+            print(new_scatter.pos_z)
             
             continue
             
-        discrete_points.append(new_discrete_point)
+        scatters.append(new_scatter)
         
-    return discrete_points
-        
+    return scatters
+
 """
-将sphere投入grid的2种投射方法:
-A grid内spheres的面积
-B grid内spheres的数量
-attention:1和2面临网格小于颗粒的情况，分辨率受限
-"""        
-#==============================================================================  
-#构造颗粒映射网格
-#length为网格边长
-#factor: very important paramete
-'''the calculation corresponding with factor is not correct'''
+2 methods of putting spheres into the grid:
+    A: Area of spheres within the grid
+    B: Amount of spheres within the grid
+
+attention: 
+    when the mesh is smaller than the particle, the resolution is limited
+"""  
+#------------------------------------------------------------------------------
+"""
+Characterization of RGB particle list in structural form
+
+Args:
+    which_spheres: spheres object to be operated
+    length: length of grid
+    show: (bool) whether to show
+    
+Returns:
+    grid objects
+"""       
 def SpheresGrids(which_spheres,length,show=False):
 
-    #首先找出网格的坐标范围
+    #find out the coordinate range of the grid
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
     y_spheres=[this_sphere.position[1] for this_sphere in which_spheres]
     
-    #xy边界
+    #xy boundary
     boundary_x=[min(x_spheres),max(x_spheres)]
     boundary_y=[min(y_spheres),max(y_spheres)]
     
-    #xy边长
+    #xy length
     length_x=boundary_x[1]-boundary_x[0]
     length_y=boundary_y[1]-boundary_y[0]
         
-    #xy方向上的网格数
+    #amount of grids in the xy direction
     amount_grid_x=int(np.ceil(length_x/length))
     amount_grid_y=int(np.ceil(length_y/length))
     
-    #xy方向上的网格交点数
+    #amount of grid intersections in the xy direction
     amount_mesh_points_x=amount_grid_x+1
     amount_mesh_points_y=amount_grid_y+1
     
-    #显示吗哥
     if show:
         
-        #x向
+        #X direction
         for k_x in range(amount_mesh_points_x):
             
             plt.vlines(boundary_x[0]+k_x*length,
@@ -122,7 +146,7 @@ def SpheresGrids(which_spheres,length,show=False):
                        color='k',
                        linestyles="--")
             
-        #y向
+        #Y direction
         for k_y in range(amount_mesh_points_y):
             
             plt.hlines(boundary_y[0]+k_y*length,
@@ -131,7 +155,7 @@ def SpheresGrids(which_spheres,length,show=False):
                        color='k',
                        linestyles="--")
              
-    #Initialize grids list
+    #initialize grids list
     grids=[]
     
     for k_x in range(amount_grid_x):
@@ -156,10 +180,25 @@ def SpheresGrids(which_spheres,length,show=False):
             
     return grids
 
-#============================================================================== 
-#transgorm spheres into image
+#------------------------------------------------------------------------------
+"""
+Transform spheres into image
+
+Args:
+    which_spheres: spheres object to be operated
+    length: length of grid
+    show: (bool) whether to show
+    method: fill-in method (default: 'A')
+    factor: zoom factor (default: 1)
+    
+Returns:
+    mesh object
+"""  
 def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
 
+    print('')
+    print('-- Spheres Image')
+    
     #generate spheres grids
     grids=SpheresGrids(which_spheres,length)
     
@@ -218,7 +257,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
     '''A'''
     if method=='A':
         
-        #spheres中最大半径
+        #max radiu in spheres
         radius_list=[this_sphere.radius for this_sphere in which_spheres]
         radius_max=max(radius_list)
         
@@ -229,7 +268,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
             new_square=square()
             
             new_square.length=this_grid.length*factor
-            new_square.center=this_grid.position+np.array([new_square.length/2,new_square.length/2])
+            new_square.center=(this_grid.position+np.array([new_square.length/2,new_square.length/2]))*factor
             new_square.Init()
     
             #print(new_square.area)
@@ -294,7 +333,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                     new_circle=circle()
                     
                     new_circle.radius=this_sphere.radius*factor
-                    new_circle.center=np.array([this_sphere.position[0],this_sphere.position[1]])
+                    new_circle.center=np.array([this_sphere.position[0],this_sphere.position[1]])*factor
                     
                     new_circle.Init()
                     
@@ -323,11 +362,11 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                         map_tag_area[this_sphere.tag]=area_this_sphere_in_this_grid
                         
 #                print(map_tag_area)
-                #print(area_inside)
-                        
-        #        print(DictKeyOfValue(map_tag_area,max(list(map_tag_area.values()))))
+#                print(area_inside)
                 
                 this_grid.tag=O_D.DictKeyOfValue(map_tag_area,max(list(map_tag_area.values())))
+                
+#                print(this_grid.tag)
                 
                 #与之对应的color
                 this_grid.color=yade_rgb_list[this_grid.tag] 
@@ -368,9 +407,9 @@ Args:
     which_input_mode: ['periodical_strain','cumulative_strain'] dispalcement mode
     
 Returns:
-    discrete points objects list
+    scatters objects list
 """
-def DiscreteValueDisplacement(which_spheres,which_plane,which_direction,which_input_mode):
+def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_mode):
     
     print('')
     print('-- Discrete Value Displacement')
@@ -501,10 +540,10 @@ def SpheresDisplacementMatrix(pixel_step,
                               show=False):
     
     #scatter objects
-    scatters=DiscreteValueDisplacement(which_spheres,
-                                       which_plane,
-                                       which_direction,
-                                       which_input_mode)    
+    scatters=ScattersDisplacement(which_spheres,
+                                  which_plane,
+                                  which_direction,
+                                  which_input_mode)    
 
     #top surface map
     surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
@@ -672,17 +711,17 @@ def SpheresStressMatrix(pixel_step,
         return 
 
     #discrete point objects
-    discrete_points=C_S.ScattersStress(which_spheres,
-                                               which_plane,
-                                               which_input_mode,
-                                               which_output_mode)   
+    scatters=C_S.ScattersStress(which_spheres,
+                                which_plane,
+                                which_input_mode,
+                                which_output_mode)   
 
     #top surface map
     surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
     
     if which_interpolation=='scatters_in_grid':
         
-        return C_In.ScattersInGridIDW(discrete_points,pixel_step,surface_map)
+        return C_In.ScattersInGridIDW(scatters,pixel_step,surface_map)
     
 #------------------------------------------------------------------------------
 """

@@ -11,8 +11,10 @@ Created on Mon Jun 17 15:04:38 2019
 
 import numpy as np
 
-import o_line
+from o_line import line
     
+import operation_list as O_L
+
 import calculation_rasterization as C_R
 
 #==============================================================================
@@ -60,10 +62,10 @@ class square:
         self.points_inside=[]
         
         #定义四条边
-        top_line=o_line.line()
-        left_line=o_line.line()
-        right_line=o_line.line()
-        bottom_line=o_line.line()
+        top_line=line()
+        left_line=line()
+        right_line=line()
+        bottom_line=line()
         
         #定义走向
         top_line.orientation='H'
@@ -102,6 +104,8 @@ class square:
         self.corner_D=self.center+np.array([-self.length/2,+self.length/2])
        
         #矩形上的点
+        points_above=[]
+        
         for k in range(1+self.length):
             
             this_pos_A=self.center+np.array([-self.length/2,-self.length/2+k])
@@ -109,11 +113,13 @@ class square:
             this_pos_C=self.center+np.array([-self.length/2+k,-self.length/2])
             this_pos_D=self.center+np.array([-self.length/2+k,+self.length/2])
             
-            self.points_above.append(list(this_pos_A.astype(int)))
-            self.points_above.append(list(this_pos_B.astype(int)))
-            self.points_above.append(list(this_pos_C.astype(int)))
-            self.points_above.append(list(this_pos_D.astype(int)))
-            
+            points_above.append(list(this_pos_A.astype(int)))
+            points_above.append(list(this_pos_B.astype(int)))
+            points_above.append(list(this_pos_C.astype(int)))
+            points_above.append(list(this_pos_D.astype(int)))
+           
+        self.points_above=O_L.Set(points_above)
+        
         #填充content
         C_R.Boundary2Content(self)
             

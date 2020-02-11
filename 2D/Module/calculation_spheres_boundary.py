@@ -52,15 +52,10 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     #xy边长
     length_x=boundary_x[1]-boundary_x[0]
     length_y=boundary_y[1]-boundary_y[0]
-        
-#    print(boundary_x,boundary_y)
-#    print(length_x,length_y)
-    
+
     #xy方向上的网格数
     amount_grid_x=int(np.ceil(length_x/length))
     amount_grid_y=int(np.ceil(length_y/length))
-    
-#    print(amount_grid_x,amount_grid_y)
 
     #total pixels
     spheres_content=[]
@@ -90,20 +85,13 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     #check the shape
     img_tag_mesh=np.zeros((amount_grid_x,amount_grid_y))
    
-#    print(np.shape(img_tag_mesh))
-#    print(len(spheres_content))
-    
     for this_i,this_j in spheres_content:
                
         #restrict the boundary  
         if 0<=this_i<amount_grid_x and 0<=this_j<amount_grid_y:
 
             img_tag_mesh[this_i,this_j]=1
-     
-#        print(this_i,this_j)
-            
-#    print(np.shape(img_tag_mesh))     
-      
+
     #define new mesh
     that_mesh=o_mesh.mesh()
     
@@ -132,7 +120,7 @@ def SpheresTopMap(which_spheres,length,factor=1):
     #fetch the mesh object
     that_mesh=SpheresContent(which_spheres,length)
  
-    #地表的列表
+    #surfave dictionary
     map_j_i_top={}
     
     #img tag
@@ -143,9 +131,7 @@ def SpheresTopMap(which_spheres,length,factor=1):
         for i in range(np.shape(that_mesh.img_tag)[0]):
 
             if that_mesh.img_tag[i,j]!=0:
-                
-#                print(np.shape(that_mesh.img_tag)[0]-i)
-                
+                             
                 map_j_i_top[j]=i
                 
                 break
@@ -200,9 +186,7 @@ def SpheresBottomMap(which_spheres,length,factor=1):
         for i in range(np.shape(that_mesh.img_tag)[0]-1,-1,-1):
 
             if that_mesh.img_tag[i,j]!=0:
-                
-#                print(np.shape(that_mesh.img_tag)[0]-i)
-                
+                              
                 map_j_i_bottom[j]=i
                 
                 break
@@ -258,8 +242,6 @@ def SpheresLeftMap(which_spheres,length,factor=1):
 
             if that_mesh.img_tag[i,j]!=0:
                 
-#                print(np.shape(that_mesh.img_tag)[0]-i)
-                
                 map_i_j_left[i]=j
                 
                 break
@@ -314,8 +296,6 @@ def SpheresRightMap(which_spheres,length,factor=1):
         for j in range(np.shape(that_mesh.img_tag)[1]-1,-1,-1):
 
             if that_mesh.img_tag[i,j]!=0:
-                
-#                print(np.shape(that_mesh.img_tag)[0]-i)
                 
                 map_i_j_right[i]=j
                 
@@ -448,8 +428,6 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
     
     if show:
               
-#        print(np.shape(that_img_tag))
-        
         #draw boundary
         plt.imshow(C_I.ImgFlip(that_img_tag,0),cmap='gray')
             

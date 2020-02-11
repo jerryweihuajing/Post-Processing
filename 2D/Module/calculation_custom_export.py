@@ -2,8 +2,6 @@
 """
 Created on Tue Jul 23 14:13:18 2019
 
-Created on Mon Jul 15 00:25:15 2019
-
 @author: Wei Huajing
 @company: Nanjing University
 @e-mail: jerryweihuajing@126.com
@@ -108,13 +106,12 @@ def ModeCalculation(which_case_path,
         #strain norm
         norm=C_N.StrainNorm()
      
-    #计数器
     count=1
     
     #figures to generate GIF
     images=[]
     
-    #绘制不同期次的形态
+    #draws the form of different periods
     for k in range(len(that_case.list_progress)):    
                    
         print('')
@@ -142,7 +139,7 @@ def ModeCalculation(which_case_path,
             
         if not values_only:
             
-            #图片和填充柄
+            #figure and axe
             this_fig=plt.figure(count)
             
             this_ax=plt.subplot()
@@ -152,7 +149,7 @@ def ModeCalculation(which_case_path,
             #Spheres image
             spheres_grids=C_S_M.SpheresImage(this_spheres,pixel_step)
             
-            #图像
+            #image
             this_img=C_I.ImgFlip(spheres_grids.img_color,0)
             this_img_tag=C_I.ImgFlip(spheres_grids.img_tag,0)
 

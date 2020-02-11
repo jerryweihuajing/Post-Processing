@@ -23,31 +23,27 @@ import Tensor2D as Ts2D
 def ScattersStrain(which_spheres,input_mode,output_mode):
       
     #for output
-    discrete_points_strain=[]
+    scatters_strain=[]
     
     count=-1
     
     #traverse
     for this_sphere in which_spheres:
         
-        this_discrete_point=scatter()
+        this_scatter=scatter()
         
         count+=1
-#        print(count)
-#        
-#        print(this_sphere.Id)
-#        print(this_sphere.position)
-        
+      
         #define the attribute
         if isinstance(this_sphere.position,str):
                 
-            this_discrete_point.pos_x=float(this_sphere.position.split()[0])
-            this_discrete_point.pos_y=float(this_sphere.position.split()[1])
+            this_scatter.pos_x=float(this_sphere.position.split()[0])
+            this_scatter.pos_y=float(this_sphere.position.split()[1])
             
         else:
             
-            this_discrete_point.pos_x=this_sphere.position[0]
-            this_discrete_point.pos_y=this_sphere.position[1]
+            this_scatter.pos_x=this_sphere.position[0]
+            this_scatter.pos_y=this_sphere.position[1]
  
         #cumulative
         if input_mode=='cumulative_strain':
@@ -68,38 +64,36 @@ def ScattersStrain(which_spheres,input_mode,output_mode):
         #x方向上正应变
         if output_mode=='x_normal_strain':
         
-            this_discrete_point.pos_z=new_strain_2D.x_normal_strain
+            this_scatter.pos_z=new_strain_2D.x_normal_strain
         
         #y方向上正应变
         if output_mode=='y_normal_strain':
         
-            this_discrete_point.pos_z=new_strain_2D.y_normal_strain
+            this_scatter.pos_z=new_strain_2D.y_normal_strain
         
         #剪切应变
         if output_mode=='shear_strain':
         
-            this_discrete_point.pos_z=new_strain_2D.shear_strain
+            this_scatter.pos_z=new_strain_2D.shear_strain
         
         #体积应变
         if output_mode=='volumetric_strain':
         
-            this_discrete_point.pos_z=new_strain_2D.volumetric_strain
+            this_scatter.pos_z=new_strain_2D.volumetric_strain
         
         #变形应变
         if output_mode=='distortional_strain':
         
-            this_discrete_point.pos_z=new_strain_2D.distortional_strain              
+            this_scatter.pos_z=new_strain_2D.distortional_strain              
         
         #删除z值无限大的点
-        if this_discrete_point.pos_z==np.inf or this_discrete_point.pos_z==-np.inf:
-            
-            print(this_discrete_point.pos_z)
-            
+        if this_scatter.pos_z==np.inf or this_scatter.pos_z==-np.inf:
+
             continue
         
-        discrete_points_strain.append(this_discrete_point)
+        scatters_strain.append(this_scatter)
         
-    return discrete_points_strain
+    return scatters_strain
 
 #============================================================================== 
 #pixel_step:网格点边长的长度
@@ -132,10 +126,9 @@ def Strain2D(which_strain_tensor):
             
         which_strain_tensor=which_strain_tensor.reshape((int(np.sqrt(product)),int(np.sqrt(product))))
     
-#    print(which_strain_tensor)
-    
     x_normal_strain=which_strain_tensor[0,0]
     y_normal_strain=which_strain_tensor[1,1]
+    
     shear_strain=which_strain_tensor[0,1]+which_strain_tensor[1,0]
     
 #    shear_strain=np.sqrt(which_strain_tensor[0,1]**2+\

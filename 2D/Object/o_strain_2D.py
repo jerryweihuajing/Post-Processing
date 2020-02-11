@@ -50,10 +50,9 @@ class strain_2D:
                 
             which_strain_tensor=which_strain_tensor.reshape((int(np.sqrt(product)),int(np.sqrt(product))))
         
-    #    print(which_strain_tensor)
-        
         x_normal_strain=which_strain_tensor[0,0]
         y_normal_strain=which_strain_tensor[1,1]
+        
         shear_strain=which_strain_tensor[0,1]+which_strain_tensor[1,0]
         
     #    shear_strain=np.sqrt(which_strain_tensor[0,1]**2+\

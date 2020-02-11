@@ -77,8 +77,6 @@ def ProgressPos(file_path):
         #judge if total length is OK
         if len(this_list)!=correct_length:
             
-#            print(this_list[0])
-            
             continue
           
         progress_pos.append(np.array([float(this_str) for this_str in this_list[5:8]]))
@@ -147,10 +145,7 @@ def GenerateSpheresMapWithSample(case_path):
         if k:
                        
             spheres_pos_last_progress=all_progress_pos[k-1]
-        
-#        print(len(spheres_pos_this_progress))
-#        print(len(lines_this_progress))
-                   
+
         for kk in range(len(spheres_pos_last_progress)):
       
             this_list=lines_this_progress[kk].strip('\n').split(',')
@@ -179,8 +174,6 @@ def GenerateSpheresMapWithSample(case_path):
             #judge if there is inf
             if np.inf in new_sphere.stress_tensor or -np.inf in new_sphere.stress_tensor:
                      
-    #            print(new_sphere.stress_tensor_3D)
-         
                 continue
             
             #judge if there is nan
@@ -192,12 +185,8 @@ def GenerateSpheresMapWithSample(case_path):
             
             new_sphere.Init()
             
-#            print(new_sphere.position)
-            
             spheres_this_progress.append(new_sphere)
-            
-#        print(len(spheres_this_progress))
-        
+              
         #collect it
         map_all_progress_spheres[k]=spheres_this_progress
         

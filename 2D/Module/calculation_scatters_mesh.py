@@ -20,13 +20,6 @@ from o_scatter import scatter
 #显示二维散点
 def ScatterPlot(ax,which_discrete_points):
     
-#    #判断类型  
-#    if isinstance(which_discrete_points[0],sphere):
-#        
-#        for this_point in which_discrete_points:
-#            
-#            plt.scatter(this_point.pos_x,this_point.pos_y,color='c')
-        
     if isinstance(which_discrete_points[0],scatter):
         
         for this_point in which_discrete_points:
@@ -132,9 +125,6 @@ def MeshGrid(which_discrete_points,step,show=False):
                        color='k',
                        linestyles="--")
      
-#    print('length_x:',amount_x)
-#    print('length_y:',amount_y)
-          
     #生成网格交点的坐标矩阵
     mesh_points=[]
     
@@ -143,9 +133,7 @@ def MeshGrid(which_discrete_points,step,show=False):
         for k_y in range(amount_grid_y):
             
             mesh_points.append([boundary_x[0]+k_x*step_x,boundary_y[0]+k_y*step_y])
-            
-#    print(len(mesh_points),amount_x*amount_y)
-    
+                
     return np.array(mesh_points).reshape((amount_grid_x,amount_grid_y,2)) 
 
 #==============================================================================  
@@ -171,9 +159,6 @@ def ScattersMesh(which_scatters,grid_length,show=False):
     #xy边长
     length_x=boundary_x[1]-boundary_x[0]
     length_y=boundary_y[1]-boundary_y[0]
-    
-#    print(boundary_x,boundary_y)
-#    print(length_x,length_y) 
     
     #xy方向上的网格数
     amount_grid_x=int(np.ceil(length_x/grid_length))
@@ -236,7 +221,5 @@ def ScattersMesh(which_scatters,grid_length,show=False):
     #赋值
     that_mesh.grids=grids
     that_mesh.img_tag=img_tag_mesh
-    
-#    print(np.shape(img_tag_mesh))
     
     return that_mesh

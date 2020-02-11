@@ -16,8 +16,6 @@ def Tensor1stInvariant(which_tensor):
 
     I_1=np.trace(which_tensor)
     
-#    print(I_1)
-    
     return I_1
 
 #============================================================================== 
@@ -36,8 +34,6 @@ def Tensor2ndInvariant(which_tensor):
         
         this_dimensions=[this_dimension for this_dimension in dimensions if this_dimension!=k]
         
-#        print(this_dimensions)
-        
         #define the index
         i,j=this_dimensions
         
@@ -51,18 +47,13 @@ def Tensor2ndInvariant(which_tensor):
         #accumulate result
         I_2+=np.linalg.det(this_matrix)
         another_I_2+=(this_normal_product-this_shear_product)
-#    
-#    print(I_2)
-#    print(another_I_2)
-    
+
     return I_2
 
 #============================================================================== 
 def Tensor3rdInvariant(which_tensor):
     
     I_3=np.linalg.det(which_tensor)
-    
-#    print(I_3)
     
     return I_3
 

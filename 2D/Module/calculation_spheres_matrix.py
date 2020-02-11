@@ -206,7 +206,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
     amount_grid_x=max([this_grid.index_x for this_grid in grids])+1
     amount_grid_y=max([this_grid.index_y for this_grid in grids])+1
     
-    #建立tag_color映射关系字典
+    #create a tag_color mapping dictionary
     for this_sphere in which_spheres:
 
         this_sphere.tag=yade_rgb_list.index(this_sphere.color)
@@ -215,21 +215,21 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
         
         tag_list=[k for k in range(len(yade_rgb_list))]
         
-        #将sphere投入grid
+        #put spheres into grid
         for this_sphere in which_spheres:
             
             for this_grid in grids:
                 
-                #判断是否在grid内
+                #judge if it is inside grid
                 if this_grid.position_x<=this_sphere.position[0]<this_grid.position_x+this_grid.length and\
                    this_grid.position_y<=this_sphere.position[1]<this_grid.position_y+this_grid.length:
                     
                     this_grid.spheres_inside.append(this_sphere)  
                     
-        #各个tag的数量字典
+        #dictionary of each tag and amount
         grid_map_tag_color=dict(zip(tag_list,len(tag_list)*[0]))
              
-        #计算某种各颜色的数量           
+        #calculate the number of certain colors           
         for this_grid in grids:     
             
             #每个grid都会有的
@@ -239,25 +239,17 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
             for this_sphere_inside in this_grid.spheres_inside:
                 
                 this_grid.map_tag_color[this_sphere_inside.tag]+=1
-            
-    #        print(this_grid.map_tag_color)
-            
-            #数量最多的像素
+             
+            #tag of the most amount
             this_grid.tag=O_D.DictKeyOfValue(this_grid.map_tag_color,max(list(this_grid.map_tag_color.values())))
             
-    #        print(this_grid.tag)
-                  
-            #与之对应的color
+            #its rgb
             this_grid.color=yade_rgb_list[this_grid.tag]       
             
-    #        print(this_grid.color)
-        
-    #    print(amount_grid_x,amount_grid_y)
-    
     '''A'''
     if method=='A':
         
-        #max radiu in spheres
+        #max radius in spheres
         radius_list=[this_sphere.radius for this_sphere in which_spheres]
         radius_max=max(radius_list)
         
@@ -271,22 +263,18 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
             new_square.center=(this_grid.position+np.array([new_square.length/2,new_square.length/2]))*factor
             new_square.Init()
     
-            #print(new_square.area)
-            #print(len(new_square.points_inside))
-            
-            #print(which_grid.position_x)
-            #print(which_grid.position_y)
-            
+            #construct virtual grid
             virtual_grid=cp.deepcopy(this_grid)
+            
             virtual_grid.position_x-=radius_max
             virtual_grid.position_y-=radius_max
             virtual_grid.position=np.array([virtual_grid.position_x,virtual_grid.position_y])
             virtual_grid.length+=2*radius_max
             
-            #画出虚拟边框
+            #draw a virtual border
             if show:
                      
-                #画一个虚拟边框，半径为a+r_max
+                #draw a virtual border with a radius of a+r_max
                 plt.vlines(virtual_grid.position_x,
                            virtual_grid.position_y,
                            virtual_grid.position_y+virtual_grid.length,
@@ -311,25 +299,25 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                            color='r',
                            linestyles="--")
             
-            #判断哪些圆心在红色方框内
+            #determine which centers are in the red box
             for this_sphere in which_spheres:
                 
                 if virtual_grid.SphereInside(this_sphere):
                     
                     this_grid.spheres_inside.append(this_sphere)
             
-            #计算总面积
+            #calculate total area
             area_inside_this_grid=0
             
-            #tag频率的映射
+            #map between tag and its area
             map_tag_area={}
             
-            #在spheres_inside里做文章
+            #work on spheres_inside
             if this_grid.spheres_inside!=[]:
                     
                 for this_sphere in this_grid.spheres_inside:
                     
-                    #二维圆
+                    #2d circle object
                     new_circle=circle()
                     
                     new_circle.radius=this_sphere.radius*factor
@@ -337,47 +325,34 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
                     
                     new_circle.Init()
                     
-                #    print(new_circle.center)
-                #    print(new_circle.area)
-                #    print(len(new_circle.points_inside))
-                
-                    #同样一个像素点不同的circle表示的面积是不一样的
+                    #circles with the same pixel represent different areas
                     area_this_sphere_in_this_grid=new_circle.area*len(C_R.ContentSquareCrossCircle(new_square,new_circle))/len(new_circle.points_inside)
                     
-                    #面积累加
+                    #accumulate area
                     area_inside_this_grid+=area_this_sphere_in_this_grid
-                    
-                #    print(area_this_sphere_in_this_grid)
-                    
-                #    print(this_sphere.tag)
-                    
-                    #事先存在
+
+                    #it exists already
                     if this_sphere.tag in map_tag_area.keys():
                 
                         map_tag_area[this_sphere.tag]+=area_this_sphere_in_this_grid    
                         
-                    #初次添加
+                    #add for the 1st time
                     if this_sphere.tag not in map_tag_area.keys():
                 
                         map_tag_area[this_sphere.tag]=area_this_sphere_in_this_grid
                         
-#                print(map_tag_area)
-#                print(area_inside)
-                
                 this_grid.tag=O_D.DictKeyOfValue(map_tag_area,max(list(map_tag_area.values())))
-                
-#                print(this_grid.tag)
-                
-                #与之对应的color
+              
+                #its rgb
                 this_grid.color=yade_rgb_list[this_grid.tag] 
         
-            #集合为空
+            #void set
             if this_grid.spheres_inside==[]:
                 
                 this_grid.tag=-1
                 this_grid.color=np.array([1.0,1.0,1.0])
         
-    #输出图像
+    #output image
     img_tag_mesh=np.zeros((amount_grid_x,amount_grid_y))
     img_color_mesh=np.full((amount_grid_x,amount_grid_y,3),np.array([1.0,1.0,1.0]))
    
@@ -386,10 +361,10 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
         img_tag_mesh[this_grid.index_x,this_grid.index_y]=this_grid.tag
         img_color_mesh[this_grid.index_x,this_grid.index_y]=this_grid.color
         
-    #要输出的mesh对象
+    #output mesh object
     that_mesh=mesh()
     
-    #赋值
+    #assign the value
     that_mesh.grids=grids
     that_mesh.img_tag=C_Im.ImgFlip(C_Im.ImgRotate(cp.deepcopy(img_tag_mesh)),0)
     that_mesh.img_color=C_Im.ImgFlip(C_Im.ImgRotate(cp.deepcopy(img_color_mesh)),0)
@@ -420,16 +395,12 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
     #result list
     scatters=[]
     
-    #遍历所有的sphere
+    #traverse all spheres
     for this_sphere in which_spheres:
     
         #new discrete point object
         new_scatter=scatter()
-        
-#        print(this_sphere.position)
-#        print(this_sphere.displacemnet_3D_periodical)
-#        print(this_sphere.displacemnet_3D_cumulative)
-        
+
 #        if which_plane=='XoY':
 #            
 #            new_discrete_point.pos_x=this_sphere.position[0]
@@ -479,9 +450,7 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
         list_mode=['periodical_strain','cumulative_strain']
         list_displacement=[cp.deepcopy(this_sphere.periodical_displacement),
                            cp.deepcopy(this_sphere.cumulative_displacement)]
-        
-#        print(list_displacement)
-        
+     
         #create index-value map
         map_mode_displacement=dict(zip(list_mode,list_displacement))
         
@@ -493,25 +462,13 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
         
         #create index-value map
         map_direction_displacment_index=dict(zip(list_direction,list_displacement_index))
-
-#        print(map_direction_displacment_index)
-#        print(which_direction)
-        
+ 
         #value
         new_scatter.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
               
         #radius
         new_scatter.radius=this_sphere.radius
-        
-#        print(this_displacement)
-#        print(map_direction_displacment_index)
-#        print(map_direction_displacment_index[which_direction])
-#        print(this_displacement[map_direction_displacment_index[which_direction]] )
-        
-#        print(new_discrete_point.pos_x)
-#        print(new_discrete_point.pos_y)
-#        print(new_discrete_point.pos_z)
-        
+             
         scatters.append(new_scatter)
         
     return scatters
@@ -592,25 +549,13 @@ def SpheresStrainMatrix(pixel_step,
                                              'y',
                                              which_input_mode,
                                              which_interpolation)
-#    print(x_displacement)
-#    print(y_displacement)
-    
+
     #axis=0 x gradient
     #axis=1 y gradient
     gradient_xx=np.gradient(x_displacement,axis=0)
     gradient_xy=np.gradient(x_displacement,axis=1)
     gradient_yx=np.gradient(y_displacement,axis=0)
     gradient_yy=np.gradient(y_displacement,axis=1)
-    
-#    print(np.shape(gradient_xx))
-#    print(np.shape(gradient_xy))
-#    print(np.shape(gradient_yx))
-#    print(np.shape(gradient_yy))
-#    
-#    print(gradient_xx)
-#    print(gradient_xy)
-#    print(gradient_yx)
-#    print(gradient_yy)
     
     #make sure shape is same
     if not (np.shape(gradient_xx)==np.shape(gradient_xy)==np.shape(gradient_yx)==np.shape(gradient_yy)):
@@ -641,14 +586,9 @@ def SpheresStrainMatrix(pixel_step,
             this_strain_tensor[1,0]=(gradient_xy[i,j]+gradient_yx[i,j])/2
             this_strain_tensor[1,1]=gradient_yy[i,j]
 
-#            print(this_strain_tensor)            
-                      
             '''3D 2D Init is different'''
             new_strain_2D.Init(cp.deepcopy(this_strain_tensor))
-            
-#            print(new_strain_2D.strain_tensor)
-#            print(new_strain_2D.x_normal_strain)
-            
+
             strain_object_matrix[i,j]=cp.deepcopy(new_strain_2D)
             
     '''generate strain values'''

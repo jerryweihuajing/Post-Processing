@@ -47,8 +47,6 @@ def ScattersStress(which_spheres,plane,input_mode,output_mode):
         
         #new stress object
         new_stress_2D=stress_2D()
-        
-#        print(this_sphere.stress_tensor_2D)
 
         '''plane'''
         list_plane=['XoY','YoZ','ZoX']
@@ -74,14 +72,7 @@ def ScattersStress(which_spheres,plane,input_mode,output_mode):
             
             for j in range(2):
                 
-#                print(this_position_index[i])
-#                print(this_position_index[j])
-#                
-#                print(this_sphere.stress_tensor)
-                
                 this_stress_tensor[i,j]=this_sphere.stress_tensor[this_position_index[i],this_position_index[j]]
-        
-#        print(this_stress_tensor)
         
         #Initialize and gain attributes
         new_stress_2D.Init(this_stress_tensor)
@@ -135,8 +126,6 @@ def StressSeriesPlot(which_spheres,pixel_step):
     spheres_grids=C_S_M.SpheresGrids(ax,which_spheres,pixel_step)
     spheres_grids.Plot()
     
-#    print(np.shape(spheres_grids.img_tag))
-    
     #表面兄弟
     surface=C_S_B.SpheresSurface(spheres_grids)
     
@@ -169,15 +158,11 @@ def StressSeriesPlot(which_spheres,pixel_step):
         this_mesh_points=C_S_M.MeshGrid(this_ax,this_discrete_points,pixel_step)
         
 #    return In.IDWInterpolation(ax,this_discrete_points,this_mesh_points,surface)
-
-#        print(this_mesh_points)
-#        
+       
         #最终矩阵
         this_img=C_Im.ImgFlip(C_Im.ImgRotate(C_In.IDWInterpolation(ax,this_discrete_points,this_mesh_points,surface)),0)  
         
         plt.imshow(this_img,cmap='gist_rainbow')
-        
-#        print(np.shape(this_img)[:2])
         
         #标题与细节
     #    ChineseTitle('应力偏量σ_m')
@@ -210,31 +195,21 @@ def Stress2D(σ_ij):
     τ_max=+np.sqrt((σ_x-σ_y)**2+τ_xy**2)
     τ_min=-np.sqrt((σ_x-σ_y)**2+τ_xy**2)
     
-#    print(τ_max,τ_min)
-    
     #正应力
     σ_max=σ_m+τ_max
     σ_min=σ_m+τ_min
-    
-#    print(σ_max,σ_min)
-    
+ 
     #差异应力
     σ_d=σ_max-σ_min
-    
-#    print(σ_m,σ_d)
     
     #正应力对应的主方向
     θ_σ_max=np.arctan(2*τ_xy/(σ_x-σ_y))
     θ_σ_min=θ_σ_max+np.pi/2
-    
-#    print(θ_σ_max,θ_σ_min)
-    
+
     #剪应力对应的主方向
     θ_τ_max=θ_σ_max+np.pi/4
     θ_τ_min=θ_σ_max-np.pi/4
 
-#    print(θ_τ_max,θ_τ_min)
-    
     #定义新的应力变量
     that_stress_2D=stress_2D() 
     

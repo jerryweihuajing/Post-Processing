@@ -207,4 +207,4 @@ def ImageSmooth(which_image,smooth_operator='Gaussian'):
                 
                 smooth_image[i,j]=Convolution(Window(which_image,i,j,window_size),kernel)
     
-    return smooth_image
+    return smooth_image[wingspan:-wingspan,wingspan:-wingspan]

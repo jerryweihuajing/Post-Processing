@@ -9,12 +9,154 @@ Created on Tue Jun 11 21:08:13 2019
 @title：Module-Plot the Strain
 """
 
+import copy as cp
 import numpy as np
 
 from o_scatter import scatter    
 from o_strain_2D import strain_2D
 
-import Tensor2D as Ts2D
+import calculation_interpolation as C_In
+import calculation_spheres_boundary as C_S_B
+
+import calculation_tensor2D as C_T2D
+
+#------------------------------------------------------------------------------
+"""
+Generate displacement scatters
+
+Args:
+    which_spheres: input sphere objects list
+    which_plane: ['XoY','YoZ','ZoX]' displacement in 3 planes
+    which_direction: ['x','y','z'] displacement in 3 different direction
+    which_input_mode: ['periodical_strain','cumulative_strain'] dispalcement mode
+    
+Returns:
+    scatters objects list
+"""
+def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_mode):
+    
+    print('')
+    print('-- Scatters Displacement')
+    print('-> plane:',which_plane)
+    print('-> direction:',which_direction)
+    print('-> input mode:',which_input_mode.replace('_',' '))
+    
+    #result list
+    scatters=[]
+    
+    #traverse all spheres
+    for this_sphere in which_spheres:
+    
+        #new discrete point object
+        new_scatter=scatter()
+
+#        if which_plane=='XoY':
+#            
+#            new_discrete_point.pos_x=this_sphere.position[0]
+#            new_discrete_point.pos_y=this_sphere.position[1]
+#        
+#        if which_plane=='YoZ':
+#            
+#            new_discrete_point.pos_x=this_sphere.position[1]
+#            new_discrete_point.pos_y=this_sphere.position[2]
+#            
+#        if which_plane=='ZoX':
+#            
+#            new_discrete_point.pos_x=this_sphere.position[2]
+#            new_discrete_point.pos_y=this_sphere.position[0]
+#            
+#        if which_mode=='periodical':
+#            
+#            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_periodical)
+#        
+#        if which_mode=='cumulative':
+#            
+#            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_cumulative)
+#            
+#        if which_direction=='x':
+#            
+#            new_discrete_point.pos_z=this_displacment[0]
+#            
+#        if which_direction=='y':
+#            
+#            new_discrete_point.pos_z=this_displacment[1]
+#        
+#        if which_direction=='z':
+#            
+#            new_discrete_point.pos_z=this_displacment[2]
+            
+        #plane
+        list_plane=['XoY','YoZ','ZoX']
+        list_position_index=[(0,1),(1,2),(2,0)]
+        
+        #create index-value map
+        map_plane_position_index=dict(zip(list_plane,list_position_index))
+        
+        new_scatter.pos_x=this_sphere.position[map_plane_position_index[which_plane][0]]
+        new_scatter.pos_y=this_sphere.position[map_plane_position_index[which_plane][1]]
+                   
+        #dispalcement mode
+        list_mode=['periodical_strain','cumulative_strain']
+        list_displacement=[cp.deepcopy(this_sphere.periodical_displacement),
+                           cp.deepcopy(this_sphere.cumulative_displacement)]
+     
+        #create index-value map
+        map_mode_displacement=dict(zip(list_mode,list_displacement))
+        
+        this_displacement=map_mode_displacement[which_input_mode]
+                    
+        #direction
+        list_direction=['x','y','z']
+        list_displacement_index=[0,1,2]
+        
+        #create index-value map
+        map_direction_displacment_index=dict(zip(list_direction,list_displacement_index))
+ 
+        #value
+        new_scatter.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
+              
+        #radius
+        new_scatter.radius=this_sphere.radius
+             
+        scatters.append(new_scatter)
+        
+    return scatters
+
+#------------------------------------------------------------------------------
+"""
+Displacement interpolation image (mesh points)
+
+Args:
+    pixel_step: length of single pixel (int)
+    which_spheres: input sphere objects list
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
+    which_direction: ['x','y','z'] displacement in 3 different direction
+    which_input_mode: ['periodical','cumulative'] dispalcement mode
+    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
+    
+Returns:
+    Displacement matrix in one direction
+"""
+def SpheresDisplacementMatrix(pixel_step,
+                              which_spheres,
+                              which_plane,
+                              which_direction,
+                              which_input_mode,
+                              which_interpolation,
+                              show=False):
+    
+    #scatter objects
+    scatters=ScattersDisplacement(which_spheres,
+                                  which_plane,
+                                  which_direction,
+                                  which_input_mode)    
+
+    #top surface map
+    surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
+    
+    if which_interpolation=='scatters_in_grid':
+        
+        return C_In.ScattersInGridIDW(scatters,pixel_step,surface_map,show)
 
 #============================================================================== 
 #表征strain的discrete_point对象列表
@@ -135,8 +277,8 @@ def Strain2D(which_strain_tensor):
 #                         which_strain_tensor[0,2]**2+\
 #                         which_strain_tensor[1,2]**2)
         
-    volumetric_strain=Ts2D.Tensor1stInvariant(which_strain_tensor)
-    distortional_strain=Ts2D.Tensor2ndInvariant(which_strain_tensor)
+    volumetric_strain=C_T2D.Tensor1stInvariant(which_strain_tensor)
+    distortional_strain=C_T2D.Tensor2ndInvariant(which_strain_tensor)
     
     #定义新的应变变量
     that_strain_2D=strain_2D() 

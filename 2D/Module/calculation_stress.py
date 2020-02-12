@@ -22,26 +22,37 @@ import calculation_interpolation as C_In
 import calculation_spheres_matrix as C_S_M
 import calculation_spheres_boundary as C_S_B
 
-#============================================================================== 
-#表征应力的scatter对象列表
-def ScattersStress(which_spheres,plane,input_mode,output_mode):
+#------------------------------------------------------------------------------
+"""
+Generate stress scatters
+
+Args:
+    which_spheres: input sphere objects list
+    which_plane: ['XoY','YoZ','ZoX]' displacement in 3 planes
+    which_direction: ['x','y','z'] displacement in 3 different direction
+    which_input_mode: ['periodical_strain','cumulative_strain'] dispalcement mode
     
-    if input_mode!='stress':
+Returns:
+    scatters objects list
+"""
+def ScattersStress(which_spheres,which_plane,which_input_mode,which_output_mode):
+    
+    if which_input_mode!='stress':
         
         print('ERROR:Incorrect input mode')
         
         return
     
-    #结果列表
+    #final result
     scatters=[]
     
-    #遍历所有的sphere
+    #traverse all spheres
     for this_sphere in which_spheres:
     
-        #创建discrete_point对象
+        #construct new scatter
         new_scatter=scatter()
         
-        #定义基本属性
+        #define basic attributes
         new_scatter.pos_x=this_sphere.position[0]
         new_scatter.pos_y=this_sphere.position[1]
         
@@ -56,7 +67,7 @@ def ScattersStress(which_spheres,plane,input_mode,output_mode):
         map_plane_position_index=dict(zip(list_plane,list_position_index))
         
         #true: default (0,1)
-        this_position_index=map_plane_position_index[plane]
+        this_position_index=map_plane_position_index[which_plane]
         
         #XY
         new_scatter.pos_x=this_sphere.position[this_position_index[0]]
@@ -77,32 +88,32 @@ def ScattersStress(which_spheres,plane,input_mode,output_mode):
         #Initialize and gain attributes
         new_stress_2D.Init(this_stress_tensor)
         
-        #x方向上正应力
-        if output_mode=='x_normal':
+        #x normal stress
+        if which_output_mode=='x_normal':
         
             new_scatter.pos_z=new_stress_2D.x_normal_stress
             
-        #y方向上正应力
-        if output_mode=='y_normal':
+        #y normal stress
+        if which_output_mode=='y_normal':
         
             new_scatter.pos_z=new_stress_2D.y_normal_stress
          
-        #剪应力
-        if output_mode=='shear':
+        #shear stress
+        if which_output_mode=='shear':
         
             new_scatter.pos_z=new_stress_2D.shear_stress
         
-        #平均剪应力
-        if output_mode=='mean_normal':
+        #mean normal stress
+        if which_output_mode=='mean_normal':
         
             new_scatter.pos_z=new_stress_2D.mean_normal_stress
         
-        #最大剪应力
-        if output_mode=='maximal_shear':
+        #maximal shear stress
+        if which_output_mode=='maximal_shear':
             
             new_scatter.pos_z=new_stress_2D.maximal_shear_stress
             
-        #删除z值无限大的点
+        #delete scatter with infinite value
         if new_scatter.pos_z==np.inf or new_scatter.pos_z==-np.inf:
 
             continue

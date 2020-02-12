@@ -20,7 +20,7 @@ import calculation_stress as C_S
 Calculate stress norm object depending on spheres list
 
 Args:
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_Spheres_list: spheres list
     which_output_mode: which attriutes value to be calculated
     
@@ -70,7 +70,7 @@ def StressNorm(which_spheres_list,which_plane,which_output_mode):
 Calculate strain norm object depending on spheres list
 
 Args:
-    which_plane: 'XoY' 'YoZ' 'ZoX' displacement in 3 planes
+    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_Spheres_list: spheres list
     which_output_mode: which attriutes value to be calculated
     

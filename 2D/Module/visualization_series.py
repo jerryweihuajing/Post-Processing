@@ -103,10 +103,10 @@ Args:
 Returns:
     None
 """
-def SeriesStressOrStrain(output_folder,
-                         which_case,
-                         post_fix,
-                         with_fracture=False):
+def Series(output_folder,
+           which_case,
+           post_fix,
+           with_fracture=False):
     
     print('')
     print('-- Progress Structural Deformation')
@@ -140,7 +140,13 @@ def SeriesStressOrStrain(output_folder,
         
         this_ax=plt.subplot(len(which_case.list_progress),1,index)
         
-        V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,with_fracture)
+        if post_fix=='Structural Deformation':
+        
+            V_I.IndividualStructuralDeformation(this_progress,this_ax,with_fracture) 
+      
+        else:
+            
+            V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,with_fracture)
         
         this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
         
@@ -167,32 +173,32 @@ def SeriesStressOrStrain(output_folder,
     
     plt.close()
     
-#------------------------------------------------------------------------------
-"""
-Plot stress or strain series
-
-Args:
-    output_folder: folder to contain result
-    which_case: case object to be proccessed
-    post_fix: post fix of txt file
-    with_fracture: (bool) plot fracture or not 
-    
-Returns:
-    None
-"""
-def Series(output_folder,
-           which_case,
-           post_fix,
-           with_fracture=False):
-    
-    if post_fix=='Structural Deformation':
-        
-        SeriesStructuralDeformation(output_folder,which_case,with_fracture) 
-        
-    else:
-           
-        SeriesStressOrStrain(output_folder,which_case,post_fix,with_fracture)
-        
+##------------------------------------------------------------------------------
+#"""
+#Plot stress or strain series
+#
+#Args:
+#    output_folder: folder to contain result
+#    which_case: case object to be proccessed
+#    post_fix: post fix of txt file
+#    with_fracture: (bool) plot fracture or not 
+#    
+#Returns:
+#    None
+#"""
+#def Series(output_folder,
+#           which_case,
+#           post_fix,
+#           with_fracture=False):
+#    
+#    if post_fix=='Structural Deformation':
+#        
+#        SeriesStructuralDeformation(output_folder,which_case,with_fracture) 
+#        
+#    else:
+#           
+#        SeriesStressOrStrain(output_folder,which_case,post_fix,with_fracture)
+#        
 #------------------------------------------------------------------------------
 """
 Plot all series

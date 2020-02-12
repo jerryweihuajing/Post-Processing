@@ -13,6 +13,7 @@ from o_progress import progress
 
 import calculation_image as C_I
 import calculation_matrix as C_M
+import calculation_matrix_outline as C_M_O
 import calculation_image_smoothing as C_I_S
 
 import visualization_individual as V_I
@@ -113,24 +114,9 @@ def ProgressConstruction(progress_path):
     if '100-200' in progress_path:
         
         that_progress.shape=(100,350) 
-    
-    #map between tag and rgb in this case
-    rgb_map=yade_rgb_map
-    
-    #Generate tag image and rgb image
-    structural_deformation_img_tag=C_M.ImportMatrixFromTXT(progress_path)
-    
-    #transform to RGB format
-    structural_deformation_img_rgb=C_I.ImageTag2RGB(structural_deformation_img_tag,rgb_map)
 
-    #percentage of progress
-    progress_percentage=ProgressPercentageFromTXT(progress_path)
-    
     #plot fracture
     fracture_file_path=progress_path.replace('structural deformation','cumulative strain\\distortional')
-    
-    #fracture matrix
-    fracture_matrix=C_I_S.ImageSmooth(C_M.ImportMatrixFromTXT(fracture_file_path))
     
     list_post_fix=['stress\\mean normal',
                    'stress\\maximal shear',
@@ -155,23 +141,7 @@ def ProgressConstruction(progress_path):
     that_progress.periodical_distortional_strain,\
     that_progress.cumulative_volumrtric_strain,\
     that_progress.cumulative_distortional_strain=matrix_list
-
-    #outlines of stress and strain are not the same
-    stress_path=file_path.replace('structural deformation','stress\\mean normal')
-    strain_path=file_path.replace('structural deformation','periodical strain\\volumetric')
     
-    #import outline matrix
-    outline_stress=C_I.ImgFlip(C_M.ImportOutlineFromTXT(stress_path),0)
-    outline_strain=C_I.ImgFlip(C_M.ImportOutlineFromTXT(strain_path),0)
-    
-    that_progress.rgb_map=rgb_map
-    that_progress.fracture=fracture_matrix
-    that_progress.outline_stress=outline_stress
-    that_progress.outline_strain=outline_strain
-    that_progress.percentage=progress_percentage
-    that_progress.img_tag=structural_deformation_img_tag
-    that_progress.structural_deformation=structural_deformation_img_rgb
-
     #construct a map between post fix name and matrix
     list_post_fix=['Mean Normal Stress',
                    'Maximal Shear Stress',
@@ -180,7 +150,28 @@ def ProgressConstruction(progress_path):
                    'Volumetric Strain-Cumulative',
                    'Distortional Strain-Cumulative']
     
+    #stress and strain map
     that_progress.stress_or_strain=dict(zip(list_post_fix,matrix_list))
+
+    #map between tag and YADE rgb
+    that_progress.rgb_map=yade_rgb_map
+    
+    #img tag and img rgb of structural deformation
+    that_progress.img_tag=C_M.ImportMatrixFromTXT(progress_path)
+    that_progress.structural_deformation=C_I.ImageTag2RGB(that_progress.img_tag,that_progress.rgb_map)
+    
+    #fracture matrix
+    that_progress.fracture=C_I_S.ImageSmooth(C_M.ImportMatrixFromTXT(fracture_file_path))
+    
+    '''they are different for the existence of gradient calculation'''
+    #stress outline
+    that_progress.outline_stress=C_M_O.OutlineFromMatrix(that_progress.stress_or_strain['Mean Normal Stress'])
+    
+    #stress outline
+    that_progress.outline_strain=C_M_O.OutlineFromMatrix(that_progress.stress_or_strain['Volumetric Strain-Periodical'])
+    
+    #progress percentage
+    that_progress.percentage=ProgressPercentageFromTXT(progress_path)
     
     print('-> progress='+that_progress.percentage)
     

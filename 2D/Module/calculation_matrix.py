@@ -174,24 +174,23 @@ def OutlineImprovement(outline):
         
         if content_surface[k] not in NeighborInImage(content_surface[k+1]):
     
-            #relative position
+            #calculate relative position and collect new coordinates
             if content_surface[k][0]>content_surface[k+1][0]:
                 
-                offset=content_surface[k+1][0]+1-content_surface[k][0]
+                offset=content_surface[k][0]-content_surface[k+1][0]
                 
+                for this_offset in range(1,offset):
+                    
+                    content_to_add.append([content_surface[k+1][0]+int(this_offset),content_surface[k+1][1]])
+            
             if content_surface[k][0]<content_surface[k+1][0]:
                 
-                offset=content_surface[k+1][0]-1-content_surface[k][0]
+                offset=content_surface[k+1][0]-content_surface[k][0]
                
-            #collect new coordinates
-            for this_offset in list(np.linspace(offset,0,abs(offset)+1)):
-                
-                if this_offset==0:
+                for this_offset in range(1,offset):
                     
-                    continue
-    
-                content_to_add.append([content_surface[k][0]+int(this_offset),content_surface[k][1]])
-    
+                    content_to_add.append([content_surface[k][0]+int(this_offset),content_surface[k][1]])
+
     #plot surface
     for this_i,this_j in content_surface+content_to_add:
         

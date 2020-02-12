@@ -19,12 +19,20 @@ demand 5:
 
 from __init__ import *
 
-case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single with deposit T=20 D=200 L=100 P=1'
+#case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
 
 #step 1
 #C_C_E.CaseCalculation(case_path,which_mode_list='standard')
 
-##step 2
+#step 2
 #case_path=case_path.replace('input','output')
-#
+
 #V_C.CaseVisualization(case_path)
+                      
+import os
+
+case_folder=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
+
+for this_case_path in os.listdir(case_folder):
+    
+    V_C.CaseVisualization(case_folder+'\\'+this_case_path)

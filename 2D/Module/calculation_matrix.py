@@ -174,24 +174,23 @@ def OutlineImprovement(outline):
         
         if content_surface[k] not in NeighborInImage(content_surface[k+1]):
     
-            #relative position
+            #calculate relative position and collect new coordinates
             if content_surface[k][0]>content_surface[k+1][0]:
                 
-                offset=content_surface[k+1][0]+1-content_surface[k][0]
+                offset=content_surface[k][0]-content_surface[k+1][0]
                 
+                for this_offset in range(1,offset):
+                    
+                    content_to_add.append([content_surface[k+1][0]+int(this_offset),content_surface[k+1][1]])
+            
             if content_surface[k][0]<content_surface[k+1][0]:
                 
-                offset=content_surface[k+1][0]-1-content_surface[k][0]
+                offset=content_surface[k+1][0]-content_surface[k][0]
                
-            #collect new coordinates
-            for this_offset in list(np.linspace(offset,0,abs(offset)+1)):
-                
-                if this_offset==0:
+                for this_offset in range(1,offset):
                     
-                    continue
-    
-                content_to_add.append([content_surface[k][0]+int(this_offset),content_surface[k][1]])
-    
+                    content_to_add.append([content_surface[k][0]+int(this_offset),content_surface[k][1]])
+
     #plot surface
     for this_i,this_j in content_surface+content_to_add:
         
@@ -359,12 +358,12 @@ Args:
     show: Display or not
     
 Returns:
-    New matrix with the position whose value between low value and high value present 1
+    New matrix with the position whose value below low value and above high value
 """
 def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
     
     #if valid
-    if MatrixMinimum(which_matrix)>lower_value or MatrixMaximum(which_matrix)<upper_value:
+    if MatrixMinimum(which_matrix)>lower_value and MatrixMaximum(which_matrix)<upper_value:
     
         print('ERROR: Incorrect value range!')
         
@@ -379,7 +378,7 @@ def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
             
             if not np.isnan(which_matrix[i,j]):
                 
-                if lower_value<=which_matrix[i,j]<=upper_value:
+                if which_matrix[i,j]<=lower_value or which_matrix[i,j]>=upper_value:
                     
                     new_matrix[i,j]=which_matrix[i,j]
     

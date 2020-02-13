@@ -23,7 +23,7 @@ import calculation_global_parameter as C_G_P
 
 #------------------------------------------------------------------------------
 """
-Plot single structural deformation in different progress with fracture
+Plot single structural deformation in different progress with fracture (do not save)
 
 Args:
     which_progress: progress object
@@ -66,7 +66,7 @@ def IndividualStructuralDeformation(which_progress,
     if with_fracture:
 
         #filter fracture matrix and plot farcture
-        if type(C_M.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+        if type(C_M.MatrixFilter(fracture_matrix,-1,1,show=True)) is bool:
             
             print('=> WARNING: without fracture')
                            
@@ -99,7 +99,7 @@ def IndividualStructuralDeformation(which_progress,
         
 #------------------------------------------------------------------------------
 """
-Plot single stress of strain in different progress with fracture
+Plot single stress of strain in different progress with fracture (do not save)
 
 Args:
     which_progress: progress object
@@ -160,19 +160,21 @@ def IndividualStressOrStrain(which_progress,
     #plot outline
     if 'Stress' in post_fix:
         
-        plt.imshow(outline_stress,cmap='gray')
+        plt.imshow(np.flip(outline_stress,0),cmap='gray')
     
+        with_fracture=True
+        
     if 'Strain' in post_fix:
         
-        plt.imshow(outline_strain,cmap='gray')
+        plt.imshow(np.flip(outline_strain,0),cmap='gray')
         
     """regard cumulative distortional strain as fracture"""
     if with_fracture:
 
         #filter fracture matrix and plot farcture
-        if type(C_M.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+        if type(C_M.MatrixFilter(fracture_matrix,-1,1,show=True)) is bool:
             
-            print('==>WARNING: without fracture')
+            print('==> WARNING: without fracture')
             
     '''revision'''
     #decoration  
@@ -211,7 +213,7 @@ Args:
     post_fix: post fix of txt file
     with_fracture: (bool) plot fracture or not 
     situation: for 'case' or 'progress'
-    
+
 Returns:
     None
 """        

@@ -233,9 +233,9 @@ Returns:
 #surface is no need: skip the grid which has no discrete point inside
 '''surface is necessary to avoid void mesh point'''
 def ScattersInGridIDW(which_scatters,
-                     grid_length,
-                     which_surface_map=None,
-                     show=False):
+                      grid_length,
+                      which_surface_map=None,
+                      show=False):
             
     #generate grid object
     that_mesh=C_S_M.ScattersMesh(which_scatters,grid_length)

@@ -19,5 +19,8 @@ sys.path=list(set(sys.path))
 import visualization_case as V_C
 
 import calculation_case as C_C
+import calculation_matrix as C_M
 import calculation_custom_export as C_C_E
 import calculation_spheres_matrix as C_S_M
+import calculation_matrix_outline as C_M_O
+import calculation_image_smoothing as C_I_S

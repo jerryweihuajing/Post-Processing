@@ -45,7 +45,7 @@ def CaseConstruction(case_path):
     
     #file names in pogress order
     file_names=O_Pa.FileNamesThisCase(folder_path)
-    
+
     for file_name in file_names:
         
         #txt file path

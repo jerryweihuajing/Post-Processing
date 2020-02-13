@@ -106,6 +106,7 @@ Returns:
 """
 def GlobalNorm(which_case,post_fix):
 
+    '''vmin and vmax stand for the value which is below and above'''
     if 'Strain' in post_fix:
         
         return colors.Normalize(vmin=-1,vmax=1)

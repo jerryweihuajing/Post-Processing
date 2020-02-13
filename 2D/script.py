@@ -19,8 +19,6 @@ demand 5:
 
 from __init__ import *
 
-#import os
-#
 #case_folder=r'H:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 #
 #for this_case_name in os.listdir(case_folder):
@@ -39,8 +37,6 @@ from __init__ import *
 
 #V_C.CaseVisualization(case_path)
                       
-import os
-
 case_folder=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 
 for this_case_path in os.listdir(case_folder):

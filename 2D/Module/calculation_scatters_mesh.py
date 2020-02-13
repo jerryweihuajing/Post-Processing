@@ -16,98 +16,127 @@ from o_grid import grid
 from o_mesh import mesh
 from o_scatter import scatter
 
-#==============================================================================
-#显示二维散点
-def ScatterPlot(ax,which_discrete_points):
+#------------------------------------------------------------------------------
+"""
+Shows 2d scatter
+
+Args:
+    ax: axes
+    which_scatters: scatters object to be operated
     
-    if isinstance(which_discrete_points[0],scatter):
+Returns:
+    scatter objects
+"""
+def ScatterPlot(ax,which_scatters):
+    
+    if isinstance(which_scatters[0],scatter):
         
-        for this_point in which_discrete_points:
+        for this_point in which_scatters:
             
             plt.scatter(this_point.pos_x,this_point.pos_y,color='c') 
             
-    if isinstance(which_discrete_points[0],list) and len(which_discrete_points[0])==2:
+    if isinstance(which_scatters[0],list) and len(which_scatters[0])==2:
         
-        for this_point in which_discrete_points:
+        for this_point in which_scatters:
             
             plt.scatter(this_point[0],this_point[1],color='c') 
-            
-#==============================================================================         
-#生成离散颗粒对象列表
-#width,length为建立插值区域的尺寸
-#m_width,n_length表示width和length的等分数量
+      
+#------------------------------------------------------------------------------
+"""
+Generate a list of discrete granular objects
+
+Args:
+    ax: axes
+    width, length: the dimensions of the interpolation region
+    m_width, n_length: equal amount of width and length
+    show: (bool) whether to show
+    
+Returns:
+    scatter objects
+"""
 def GeneratePoints(ax,width,length,m_width,n_length,show=False):
     
-    #结果列表
-    discrete_points=[]
+    #final result
+    scatters=[]
     
     for m in range(m_width):
         
         for n in range(n_length):
             
-            #建立新的点
+            #new scatter
             this_point=scatter()
             
-            #院有网格上的点坐标
+            #the courtyard has point coordinates on the grid
             original_m=m*width/m_width
             original_n=n*length/n_length
             
-            #新的点坐标
+            #new point coordinates
             new_m=original_m+np.random.rand()
             new_n=original_n+np.random.rand()
             
-            #开始定义各个属性
+            #define attributes of the point
             this_point.pos_x=new_m
             this_point.pos_y=new_n
             
-            #z的大小：视情况而定
             for k in range(5):
                 
                 if k*(width/5)<=original_m<=(k+1)*(width/5):
                 
                     this_point.pos_z=k
           
-            #收录进列表里
-            discrete_points.append(this_point)
-    
-    #显示吗哥
+            #accumulate them
+            scatters.append(this_point)
+
     if show:
             
-        ScatterPlot(ax,discrete_points)
+        ScatterPlot(ax,scatters)
             
-    return discrete_points
+    return scatters
 
-#==============================================================================  
-#构造网格点矩阵
-def MeshGrid(which_discrete_points,step,show=False):
+#------------------------------------------------------------------------------
+"""
+Construct the grid point matrix
+
+Args:
+    which_scatters: scatters object to be operated
+    step: length of grid
+    show: (bool) whether to show
     
-    #x,y方向上的步长
+Returns:
+    mesh points coordinates
+"""  
+def MeshGrids(which_scatters,step,show=False):
+    
+    #step in x and y direction
     step_x=step_y=step
     
-    #首先找出网格的坐标范围
-    x_discrete_points=[this_point.pos_x for this_point in which_discrete_points]
-    y_discrete_points=[this_point.pos_y for this_point in which_discrete_points]
+    #coordinates boundary of mesh
+    x_scatters=[this_point.pos_x for this_point in which_scatters]
+    y_scatters=[this_point.pos_y for this_point in which_scatters]
     
-    #xy边界
-    boundary_x=[min(x_discrete_points),max(x_discrete_points)]
-    boundary_y=[min(y_discrete_points),max(y_discrete_points)]
+    #the radius corresponding to the maximum and minimum
+    radius_of_min=which_scatters[x_scatters.index(min(x_scatters))].radius
+    radius_of_max=which_scatters[y_scatters.index(max(y_scatters))].radius
     
-    #xy边长
+    #xy boundary
+    boundary_x=[min(x_scatters)-radius_of_min,max(x_scatters)+radius_of_min]
+    boundary_y=[min(y_scatters)-radius_of_max,max(y_scatters)+radius_of_max]
+    
+    #xy length
     length_x=boundary_x[1]-boundary_x[0]
     length_y=boundary_y[1]-boundary_y[0]
          
-    #xy方向上的网格数
+    #amount of grid in x and y respectively
     amount_grid_x=int(np.ceil(length_x/step_x))
     amount_grid_y=int(np.ceil(length_y/step_y))
     
-    #xy方向上的网格交点数
+    #amount of mesh cross points in x and y respectively
     amount_mesh_points_x=amount_grid_x+1
     amount_mesh_points_y=amount_grid_y+1
     
-    #显示吗哥
     if show:
         
-        #x向
+        #x direction
         for k_x in range(amount_mesh_points_x):
             
             plt.vlines(boundary_x[0]+k_x*step_x,
@@ -116,7 +145,7 @@ def MeshGrid(which_discrete_points,step,show=False):
                        color='k',
                        linestyles="--")
             
-        #y向
+        #y direction
         for k_y in range(amount_mesh_points_y):
             
             plt.hlines(boundary_y[0]+k_y*step_y,
@@ -125,7 +154,7 @@ def MeshGrid(which_discrete_points,step,show=False):
                        color='k',
                        linestyles="--")
      
-    #生成网格交点的坐标矩阵
+    #Generate the coordinate matrix of the grid intersection
     mesh_points=[]
     
     for k_x in range(amount_grid_x):
@@ -136,42 +165,51 @@ def MeshGrid(which_discrete_points,step,show=False):
                 
     return np.array(mesh_points).reshape((amount_grid_x,amount_grid_y,2)) 
 
-#==============================================================================  
-#disrete points grid is better
+#------------------------------------------------------------------------------
+"""
+Transform scatters into mesh object
+
+Args:
+    which_scatters: scatters object to be operated
+    grid_length: length of grid
+    show: (bool) whether to show
+    
+Returns:
+    mesh object
+"""      
 def ScattersMesh(which_scatters,grid_length,show=False):
 
     print('')
     print('-- Discrete Points Grids')
     print('-> grid length:',grid_length)
     
-    #首先找出网格的坐标范围
+    #coordinates boundary of mesh
     x_scatters=[this_scatter.pos_x for this_scatter in which_scatters]
     y_scatters=[this_scatter.pos_y for this_scatter in which_scatters]
     
-    #最大最小值对应的半径
+    #the radius corresponding to the maximum and minimum
     radius_of_min=which_scatters[x_scatters.index(min(x_scatters))].radius
     radius_of_max=which_scatters[y_scatters.index(max(y_scatters))].radius
     
-    #xy边界
+    #xy boundary
     boundary_x=[min(x_scatters)-radius_of_min,max(x_scatters)+radius_of_min]
     boundary_y=[min(y_scatters)-radius_of_max,max(y_scatters)+radius_of_max]
     
-    #xy边长
+    #xy length
     length_x=boundary_x[1]-boundary_x[0]
     length_y=boundary_y[1]-boundary_y[0]
     
-    #xy方向上的网格数
+    #amount of grid in x and y respectively
     amount_grid_x=int(np.ceil(length_x/grid_length))
     amount_grid_y=int(np.ceil(length_y/grid_length))
     
-    #xy方向上的网格交点数
+    #amount of mesh cross points in x and y respectively
     amount_mesh_points_x=amount_grid_x+1
     amount_mesh_points_y=amount_grid_y+1
-    
-    #显示吗哥
+
     if show:
         
-        #x向
+        #x direction
         for k_x in range(amount_mesh_points_x):
             
             plt.vlines(boundary_x[0]+k_x*grid_length,
@@ -180,7 +218,7 @@ def ScattersMesh(which_scatters,grid_length,show=False):
                        color='k',
                        linestyles="--")
             
-        #y向
+        #y direction
         for k_y in range(amount_mesh_points_y):
             
             plt.hlines(boundary_y[0]+k_y*grid_length,
@@ -189,7 +227,7 @@ def ScattersMesh(which_scatters,grid_length,show=False):
                        color='k',
                        linestyles="--")
              
-    #Initialize grids list
+    #initialize grids list
     grids=[]
     
     for k_x in range(amount_grid_x):
@@ -212,13 +250,13 @@ def ScattersMesh(which_scatters,grid_length,show=False):
             #involved
             grids.append(this_grid)
             
-    #输出图像
+    #output image tag
     img_tag_mesh=np.full((amount_grid_x,amount_grid_y),np.nan) 
     
-    #要输出的mesh对象
+    #define new mesh object
     that_mesh=mesh()
     
-    #赋值
+    #assign the value
     that_mesh.grids=grids
     that_mesh.img_tag=img_tag_mesh
     

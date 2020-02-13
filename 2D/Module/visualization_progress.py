@@ -9,6 +9,8 @@ Created on Tue Nov 26 22:37:12 2019
 @title：Module-Progress Operation
 """
 
+import copy as cp
+
 from o_progress import progress
 
 import calculation_image as C_I
@@ -115,9 +117,6 @@ def ProgressConstruction(progress_path):
         
         that_progress.shape=(100,350) 
 
-    #plot fracture
-    fracture_file_path=progress_path.replace('structural deformation','cumulative strain\\distortional')
-    
     list_post_fix=['stress\\mean normal',
                    'stress\\maximal shear',
                    'periodical strain\\volumetric',
@@ -133,7 +132,7 @@ def ProgressConstruction(progress_path):
         #stress and strain itself
         file_path=progress_path.replace('structural deformation',this_post_fix)
         
-        matrix_list.append(C_I_S.ImageSmooth(C_M.ImportMatrixFromTXT(file_path)))
+        matrix_list.append(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(file_path))))
         
     that_progress.mean_normal_stress,\
     that_progress.maximal_shear_stress,\
@@ -161,12 +160,12 @@ def ProgressConstruction(progress_path):
     that_progress.structural_deformation=C_I.ImageTag2RGB(that_progress.img_tag,that_progress.rgb_map)
     
     #fracture matrix
-    that_progress.fracture=C_I_S.ImageSmooth(C_M.ImportMatrixFromTXT(fracture_file_path))
+    that_progress.fracture=cp.deepcopy(that_progress.stress_or_strain['Distortional Strain-Cumulative'])
     
     '''they are different for the existence of gradient calculation'''
     #stress outline
     that_progress.outline_stress=C_M_O.OutlineFromMatrix(that_progress.stress_or_strain['Mean Normal Stress'])
-    
+ 
     #stress outline
     that_progress.outline_strain=C_M_O.OutlineFromMatrix(that_progress.stress_or_strain['Volumetric Strain-Periodical'])
     

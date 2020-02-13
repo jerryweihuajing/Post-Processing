@@ -45,7 +45,7 @@ def CaseConstruction(case_path):
     
     #file names in pogress order
     file_names=O_Pa.FileNamesThisCase(folder_path)
-    
+
     for file_name in file_names:
         
         #txt file path
@@ -89,9 +89,9 @@ def CaseVisualization(case_path,output_folder=None,with_fracture=False):
         
         case_folder=case_path.replace('output','Figures')
         
-    V_S.SeriesAll(case_folder,that_case,with_fracture)   
-    V_A.AnimationAll(case_folder,that_case,with_fracture)
-    V_I_A.IntegralAnalysisAll(case_folder,that_case,with_fracture)
+#    V_S.SeriesAll(case_folder,that_case,with_fracture)   
+#    V_A.AnimationAll(case_folder,that_case,with_fracture)
+#    V_I_A.IntegralAnalysisAll(case_folder,that_case,with_fracture)
     
     #figures in different progress
     for this_progress in that_case.list_progress:

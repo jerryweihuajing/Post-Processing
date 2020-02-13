@@ -114,7 +114,7 @@ def Convolution(which_window,which_kernel):
     
     if not np.shape(which_window)==np.shape(which_kernel):
         
-        print('--ERROR: Incorrect dimensions')
+        print('-- ERROR: Incorrect dimensions')
         
         return
     
@@ -127,6 +127,7 @@ def Convolution(which_window,which_kernel):
             
             for j in range(np.shape(which_window)[1]):
                 
+                '''expire nan'''
                 if np.isnan(which_window[i,j]):
                     
                     list_invalid_index.append([i,j])
@@ -183,11 +184,15 @@ Smooth image
 Args:
     which_image: image matrix to be smoothed
     smooth_operator: operator which performs (default: Gaussian)
-        
+    wingspan: half size of kernel and window    
+    
 Returns:
     image matrix which has been smoothed
 """
-def ImageSmooth(which_image,smooth_operator='Gaussian'):
+def ImageSmooth(which_image,smooth_operator='Gaussian',wingspan=1):
+    
+    print('')
+    print('-- Image Smooth')
     
     #result image
     smooth_image=cp.deepcopy(which_image)
@@ -195,7 +200,6 @@ def ImageSmooth(which_image,smooth_operator='Gaussian'):
     if smooth_operator=='Gaussian':
         
         #image boundary length
-        wingspan=2
         window_size=2*wingspan+1
         
         #kernel default to be (0,1)

@@ -33,6 +33,6 @@ import os
 
 case_folder=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 
-for this_case_path in os.listdir(case_folder):
+for this_case_path in os.listdir(case_folder)[:1]:
     
     V_C.CaseVisualization(case_folder+'\\'+this_case_path)

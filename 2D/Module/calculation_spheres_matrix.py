@@ -120,9 +120,13 @@ def SpheresGrids(which_spheres,length,show=False):
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
     y_spheres=[this_sphere.position[1] for this_sphere in which_spheres]
     
-    #xy boundary
-    boundary_x=[min(x_spheres),max(x_spheres)]
-    boundary_y=[min(y_spheres),max(y_spheres)]
+    #最大最小值对应的半径
+    radius_of_min=which_spheres[x_spheres.index(min(x_spheres))].radius
+    radius_of_max=which_spheres[y_spheres.index(max(y_spheres))].radius
+    
+    #xy边界
+    boundary_x=[min(x_spheres)-radius_of_min,max(x_spheres)+radius_of_min]
+    boundary_y=[min(y_spheres)-radius_of_max,max(y_spheres)+radius_of_max]
     
     #xy length
     length_x=boundary_x[1]-boundary_x[0]

@@ -358,12 +358,12 @@ Args:
     show: Display or not
     
 Returns:
-    New matrix with the position whose value between low value and high value present 1
+    New matrix with the position whose value below low value and above high value
 """
 def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
     
     #if valid
-    if MatrixMinimum(which_matrix)>lower_value or MatrixMaximum(which_matrix)<upper_value:
+    if MatrixMinimum(which_matrix)>lower_value and MatrixMaximum(which_matrix)<upper_value:
     
         print('ERROR: Incorrect value range!')
         
@@ -378,7 +378,7 @@ def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
             
             if not np.isnan(which_matrix[i,j]):
                 
-                if lower_value<=which_matrix[i,j]<=upper_value:
+                if which_matrix[i,j]<=lower_value or which_matrix[i,j]>=upper_value:
                     
                     new_matrix[i,j]=which_matrix[i,j]
     

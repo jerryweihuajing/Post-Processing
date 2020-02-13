@@ -66,7 +66,7 @@ def IndividualStructuralDeformation(which_progress,
     if with_fracture:
 
         #filter fracture matrix and plot farcture
-        if type(C_M.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+        if type(C_M.MatrixFilter(fracture_matrix,-1,1,show=True)) is bool:
             
             print('=> WARNING: without fracture')
                            
@@ -162,6 +162,8 @@ def IndividualStressOrStrain(which_progress,
         
         plt.imshow(np.flip(outline_stress,0),cmap='gray')
     
+        with_fracture=True
+        
     if 'Strain' in post_fix:
         
         plt.imshow(np.flip(outline_strain,0),cmap='gray')
@@ -170,9 +172,9 @@ def IndividualStressOrStrain(which_progress,
     if with_fracture:
 
         #filter fracture matrix and plot farcture
-        if type(C_M.MatrixFilter(fracture_matrix,0.23,1,show=True)) is bool:
+        if type(C_M.MatrixFilter(fracture_matrix,-1,1,show=True)) is bool:
             
-            print('==>WARNING: without fracture')
+            print('==> WARNING: without fracture')
             
     '''revision'''
     #decoration  

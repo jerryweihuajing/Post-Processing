@@ -41,7 +41,7 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
     y_spheres=[this_sphere.position[1] for this_sphere in which_spheres]
     
-     #最大最小值对应的半径
+    #最大最小值对应的半径
     radius_of_min=which_spheres[x_spheres.index(min(x_spheres))].radius
     radius_of_max=which_spheres[y_spheres.index(max(y_spheres))].radius
     
@@ -67,7 +67,7 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
         new_circle=o_circle.circle()
         
         new_circle.radius=this_sphere.radius*factor
-        new_circle.center=np.array([this_sphere.position[0],this_sphere.position[1]])
+        new_circle.center=np.array([this_sphere.position[0],this_sphere.position[1]])*factor
         
         new_circle.Init()
         

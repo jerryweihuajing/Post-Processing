@@ -37,7 +37,7 @@ Args:
 Returns:
     content to add to outline image
 """
-def OutlineImprovement(outline):
+def SurfaceOutlineImprovement(outline):
     
     #store surface information
     map_surface={}
@@ -112,24 +112,25 @@ Returns:
 """
 def OutlineFromMatrix(which_matrix):
     
+    print('')
+    print('-- Outline From Matrix')
+    
     #matrix to draw outline image
     outline_matrix=np.full(np.shape(which_matrix),np.nan)
     
-    #top and bottom
+    #surface
     for j in range(np.shape(which_matrix)[1]):
         
         for i in range(np.shape(which_matrix)[0]):    
             
             if not np.isnan(which_matrix[i,j]):
       
-                if i:
-                    
-                    i-=1
-                    
                 outline_matrix[i,j]=1
-                outline_matrix[-1,j]=1
-                
+
                 break
+            
+    #improve the surface
+    outline_matrix=SurfaceOutlineImprovement(outline_matrix)
     
     #left and right
     for j in [0,-1]:
@@ -138,6 +139,40 @@ def OutlineFromMatrix(which_matrix):
             
             if not np.isnan(which_matrix[i,j]):
                 
-                outline_matrix[i:,j]=1          
+                outline_matrix[i:,j]=1   
+                
+                break
     
-    return OutlineImprovement(outline_matrix)
+    #bottom
+    for j in range(np.shape(which_matrix)[1]):    
+            
+        if not np.isnan(which_matrix[-1,j]):
+            
+            outline_matrix[-1,j]=1
+    
+    return outline_matrix
+
+#------------------------------------------------------------------------------
+"""
+Add bound to matrix
+
+Args:
+    which_matrix: matrix to be operated
+    cell_padding: bound size (default: 1)
+    
+Returns:
+    matrix with bound
+"""
+def AddBound(which_matrix,cell_padding=1):
+    
+    print('')
+    print('-- Add Bound')
+    
+    shape_new_mat=(np.shape(which_matrix)[0]+2*cell_padding,np.shape(which_matrix)[1]+2*cell_padding)
+    
+    #new matrix
+    new_mat=np.full(shape_new_mat,np.nan)
+    
+    new_mat[cell_padding:-cell_padding,cell_padding:-cell_padding]=which_matrix
+    
+    return new_mat

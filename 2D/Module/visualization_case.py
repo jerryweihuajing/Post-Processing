@@ -37,9 +37,12 @@ def CaseConstruction(case_path):
     that_case=case()
     
     that_case.list_progress=[]
-    that_case.condition=case_path.split('\\')[-1]
     that_case.experiment=case_path.split('\\')[-3]
-
+    that_case.condition=case_path.split('\\')[-1]
+    
+    print('-> experiment:',that_case.experiment)
+    print('-> condition:',that_case.condition)
+    
     #strutrual deformation path
     folder_path=case_path+'\\structural deformation\\values\\'
     

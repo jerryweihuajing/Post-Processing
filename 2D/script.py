@@ -12,9 +12,6 @@ Created on Thu Jan  9 19:14:09 2020
 ''' 
 demand 4:
     add colorbar
-    
-demand 5:
-    comparision as an experiment
 '''
 
 from __init__ import *

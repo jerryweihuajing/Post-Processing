@@ -16,9 +16,9 @@ folder_Figures=folder_output.replace('output','Figures')
 
 list_case_output=[folder_output+'\\'+this_case_name for this_case_name in os.listdir(folder_output)]
 list_case_Figures=[folder_Figures+'\\'+this_case_name for this_case_name in os.listdir(folder_Figures)]
-#
-#for this_case_path in list_case_output:
-#    
-#    if this_case_path not in list_case_Figures:
-#        
-#        V_C.CaseVisualization(this_case_path)
+
+for this_case_path in list_case_output:
+    
+    if this_case_path not in list_case_Figures:
+        
+        V_C.CaseVisualization(this_case_path)

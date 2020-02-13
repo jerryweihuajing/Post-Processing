@@ -19,6 +19,16 @@ demand 5:
 
 from __init__ import *
 
+import os
+
+case_folder=r'H:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
+
+for this_case_name in os.listdir(case_folder):
+    
+    this_case_path=case_folder.replace('output','input')+'\\'+this_case_name
+    
+    C_C_E.CaseCalculation(this_case_path,which_mode_list=['structural_deformation'])
+    
 #case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
 
 #step 1
@@ -29,10 +39,10 @@ from __init__ import *
 
 #V_C.CaseVisualization(case_path)
                       
-import os
-
-case_folder=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
-
-for this_case_path in os.listdir(case_folder)[:1]:
-    
-    V_C.CaseVisualization(case_folder+'\\'+this_case_path)
+#import os
+#
+#case_folder=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
+#
+#for this_case_path in os.listdir(case_folder)[:1]:
+#    
+#    V_C.CaseVisualization(case_folder+'\\'+this_case_path)

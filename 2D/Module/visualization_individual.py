@@ -57,7 +57,7 @@ def IndividualStructuralDeformation(which_progress,
     fracture_matrix=which_progress.fracture
     
     #shape of this img
-    this_shape=np.shape(fracture_matrix)
+    this_shape=np.shape(which_progress.img_tag)
     
     #plot main body
     plt.imshow(structural_deformation_img_rgb)

@@ -22,9 +22,11 @@ list_case_Figures=[this_case_name for this_case_name in os.listdir(folder_Figure
 
 for this_case_name in list_case_output:
     
+    amount_files=O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]
+    
     if version=='lite':
         
-        if this_case_name not in list_case_Figures:
+        if this_case_name not in list_case_Figures or amount_files==0:
             
             progress_folder=folder_output+'\\'+this_case_name+'\\structural deformation\\values'
             
@@ -38,7 +40,7 @@ for this_case_name in list_case_output:
             
     if version=='pro':
     
-        if O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]!=174:
+        if amount_files!=174:
             
             V_C.CaseVisualization(folder_output+'\\'+this_case_name,lite=False)
                 

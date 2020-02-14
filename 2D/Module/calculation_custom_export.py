@@ -66,21 +66,20 @@ def ModeCalculation(which_case_path,
     
     #construct case object
     that_case=C_C.CaseGeneration(which_case_path)
-   
-    #list of spheres
+
+    #list of spheres and file name list in this case
     if final_only:
         
         spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress[-1:]]
+        file_names=O_P.FileNamesThisCase(which_case_path)[-1:]
         
     else:
         
         spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
+        file_names=O_P.FileNamesThisCase(which_case_path)
         
     #global axis
     global_axis_boundary=C_A_B.GlobalAxisBoundary(spheres_list)
-    
-    #file name list in this case
-    file_names=O_P.FileNamesThisCase(which_case_path)
     
     if which_input_mode=='structural_deformation':
         

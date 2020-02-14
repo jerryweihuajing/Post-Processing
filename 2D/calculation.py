@@ -29,6 +29,5 @@ for this_case_name in list_case_input:
         
         else:
             
-            if O_P.FilesAmount(folder_output+'\\'+this_case_name)!=56:
-                
-                C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list='standard',final_only=False)
+            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list='standard',final_only=False)
+            

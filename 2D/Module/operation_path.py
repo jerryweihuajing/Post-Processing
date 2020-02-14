@@ -222,3 +222,43 @@ def OutputFolder(which_case_path,
     case_output_path_with_IM_and_OM=case_output_path_with_IM+which_output_mode.replace('_',' ')+'\\'
 
     return case_output_path_with_IM_and_OM
+
+#------------------------------------------------------------------------------
+"""
+Calculate the number of files under the folder
+
+Args:
+    which_folder: folder to be calculated
+    
+Returns:
+    amount of files under the folder
+"""
+def FilesAmount(which_folder):
+    
+    #amount of folders under path
+    num_dirs = 0  
+    
+    #amount of files under path (including folders)
+    num_files = 0  
+    
+    #amount of files under path, including number of files in subfolders, not including empty folders
+    num_files_rec = 0  
+
+    #traverse and make statistics
+    for root, dirs, files in os.walk(which_folder):
+        
+        for each in files:
+                
+            num_files_rec += 1
+    
+        for name in dirs:
+            
+            num_dirs += 1
+    
+            os.path.join(root, name)
+    
+    for fn in os.listdir(which_folder):
+        
+        num_files += 1
+
+    return num_dirs,num_files,num_files_rec

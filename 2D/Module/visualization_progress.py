@@ -21,7 +21,7 @@ import calculation_image_smoothing as C_I_S
 import visualization_individual as V_I
 import visualization_integral_analysis as V_I_A
 
-from data_yade_color import yade_rgb_map
+from variable_yade_color import yade_rgb_map
 
 #------------------------------------------------------------------------------
 """
@@ -93,11 +93,12 @@ Construct a progress object
 
 Args:
    progress_path: path to construct
+   lite: (bool) whether only structural deformation
    
 Returns:
     progress object
 """ 
-def ProgressConstruction(progress_path):
+def ProgressConstruction(progress_path,lite=False):
     
     print('')
     print('-- Progress Construction')
@@ -116,62 +117,64 @@ def ProgressConstruction(progress_path):
     if '100-200' in progress_path:
         
         that_progress.shape=(100,350) 
-
-    list_post_fix=['stress\\mean normal',
-                   'stress\\maximal shear',
-                   'periodical strain\\volumetric',
-                   'periodical strain\\distortional',
-                   'cumulative strain\\volumetric',
-                   'cumulative strain\\distortional']
-    
-    #containing result matrix
-    matrix_list=[]
-    
-    for this_post_fix in list_post_fix:
         
-        #stress and strain itself
-        file_path=progress_path.replace('structural deformation',this_post_fix)
-        
-        matrix_list.append(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(file_path))))
-        
-    that_progress.mean_normal_stress,\
-    that_progress.maximal_shear_stress,\
-    that_progress.periodical_volumrtric_strain,\
-    that_progress.periodical_distortional_strain,\
-    that_progress.cumulative_volumrtric_strain,\
-    that_progress.cumulative_distortional_strain=matrix_list
-    
-    #construct a map between post fix name and matrix
-    list_post_fix=['Mean Normal Stress',
-                   'Maximal Shear Stress',
-                   'Volumetric Strain-Periodical',
-                   'Distortional Strain-Periodical',
-                   'Volumetric Strain-Cumulative',
-                   'Distortional Strain-Cumulative']
-    
-    #stress and strain map
-    that_progress.stress_or_strain=dict(zip(list_post_fix,matrix_list))
-
     #map between tag and YADE rgb
     that_progress.rgb_map=yade_rgb_map
+    
+    #progress percentage
+    that_progress.percentage=ProgressPercentageFromTXT(progress_path)
     
     #img tag and img rgb of structural deformation
     that_progress.img_tag=C_M.ImportMatrixFromTXT(progress_path)
     that_progress.structural_deformation=C_I.ImageTag2RGB(that_progress.img_tag,that_progress.rgb_map)
     
-    #fracture matrix
-    that_progress.fracture=cp.deepcopy(that_progress.stress_or_strain['Distortional Strain-Cumulative'])
+    if not lite:
+        
+        list_post_fix=['stress\\mean normal',
+                       'stress\\maximal shear',
+                       'periodical strain\\volumetric',
+                       'periodical strain\\distortional',
+                       'cumulative strain\\volumetric',
+                       'cumulative strain\\distortional']
+        
+        #containing result matrix
+        matrix_list=[]
+        
+        for this_post_fix in list_post_fix:
+            
+            #stress and strain itself
+            file_path=progress_path.replace('structural deformation',this_post_fix)
+            
+            matrix_list.append(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(file_path))))
+            
+        that_progress.mean_normal_stress,\
+        that_progress.maximal_shear_stress,\
+        that_progress.periodical_volumrtric_strain,\
+        that_progress.periodical_distortional_strain,\
+        that_progress.cumulative_volumrtric_strain,\
+        that_progress.cumulative_distortional_strain=matrix_list
+        
+        #construct a map between post fix name and matrix
+        list_post_fix=['Mean Normal Stress',
+                       'Maximal Shear Stress',
+                       'Volumetric Strain-Periodical',
+                       'Distortional Strain-Periodical',
+                       'Volumetric Strain-Cumulative',
+                       'Distortional Strain-Cumulative']
+        
+        #stress and strain map
+        that_progress.stress_or_strain=dict(zip(list_post_fix,matrix_list))
     
-    '''they are different for the existence of gradient calculation'''
-    #stress outline
-    that_progress.outline_stress=C_M_O.OutlineFromMatrix(that_progress.stress_or_strain['Mean Normal Stress'])
- 
-    #stress outline
-    that_progress.outline_strain=C_M_O.OutlineFromMatrix(that_progress.stress_or_strain['Volumetric Strain-Periodical'])
-    
-    #progress percentage
-    that_progress.percentage=ProgressPercentageFromTXT(progress_path)
-    
+        #fracture matrix
+        that_progress.fracture=cp.deepcopy(that_progress.stress_or_strain['Distortional Strain-Cumulative'])
+        
+        '''they are different for the existence of gradient calculation'''
+        #stress outline
+        that_progress.outline_stress=C_M_O.OutlineFromMatrix(that_progress.stress_or_strain['Mean Normal Stress'])
+     
+        #stress outline
+        that_progress.outline_strain=C_M_O.OutlineFromMatrix(that_progress.stress_or_strain['Volumetric Strain-Periodical'])
+        
     print('-> progress='+that_progress.percentage)
     
     return that_progress

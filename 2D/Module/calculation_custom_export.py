@@ -43,7 +43,8 @@ Args:
     pixel_step: length of single pixel (int)
     index_list: custom index of images
     test: if there is a test with a small amount of spheres
-    values_only: whether it saves values only
+    values_only: (bool) whether it saves values only (default: True)
+    final_only: (bool) whether it calculate the final progress only (default: True)
     
 Returns:
     None
@@ -55,7 +56,8 @@ def ModeCalculation(which_case_path,
                     which_interpolation='scatters_in_grid',
                     pixel_step=1,
                     test=False,
-                    values_only=True,):
+                    values_only=True,
+                    final_only=True):
     
     print('')
     print('-- Mode Calculation')
@@ -64,10 +66,16 @@ def ModeCalculation(which_case_path,
     
     #construct case object
     that_case=C_C.CaseGeneration(which_case_path)
-
+   
     #list of spheres
-    spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
-    
+    if final_only:
+        
+        spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress[-1:]]
+        
+    else:
+        
+        spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
+        
     #global axis
     global_axis_boundary=C_A_B.GlobalAxisBoundary(spheres_list)
     
@@ -112,7 +120,7 @@ def ModeCalculation(which_case_path,
     images=[]
     
     #draws the form of different periods
-    for k in range(len(that_case.list_progress)):    
+    for k in range(len(spheres_list)):    
                    
         print('')
         print('======')
@@ -215,7 +223,8 @@ Args:
     pixel_step: length of single pixel (int)
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
-    values_only: whether it saves values only
+    values_only: (bool) whether it saves values only (default: True)
+    final_only: (bool) whether it calculate the final progress only (default: True)
     
 Returns:
     None
@@ -226,7 +235,8 @@ def CaseCalculation(which_case_path,
                     pixel_step=1,
                     which_mode_list=None,
                     test=False,
-                    values_only=True):
+                    values_only=True,
+                    final_only=True):
     
     #argument information
     argument_str=''
@@ -276,7 +286,8 @@ def CaseCalculation(which_case_path,
                         which_interpolation,
                         pixel_step,
                         test,
-                        values_only)
+                        values_only,
+                        final_only)
                 
         #stress
         for this_stress_mode in stress_mode:
@@ -288,7 +299,8 @@ def CaseCalculation(which_case_path,
                             which_interpolation,
                             pixel_step,
                             test,
-                            values_only)
+                            values_only,
+                            final_only)
             
         #strain
         for this_strain_mode in strain_mode:
@@ -300,7 +312,8 @@ def CaseCalculation(which_case_path,
                             which_interpolation,
                             pixel_step,
                             test,
-                            values_only)
+                            values_only,
+                            final_only)
             
             ModeCalculation(which_case_path,
                             'periodical_strain',
@@ -309,7 +322,8 @@ def CaseCalculation(which_case_path,
                             which_interpolation,
                             pixel_step,
                             test,
-                            values_only)
+                            values_only,
+                            final_only)
     
     else:
         
@@ -331,7 +345,8 @@ def CaseCalculation(which_case_path,
                                 which_interpolation,
                                 pixel_step,
                                 test,
-                                values_only)
+                                values_only,
+                                final_only)
                 
             #stress
             if 'stress' in this_mode:
@@ -345,7 +360,8 @@ def CaseCalculation(which_case_path,
                                 which_interpolation,
                                 pixel_step,
                                 test,
-                                values_only)
+                                values_only,
+                                final_only)
             
             #strain
             if 'strain' in this_mode:
@@ -359,7 +375,8 @@ def CaseCalculation(which_case_path,
                                 which_interpolation,
                                 pixel_step,
                                 test,
-                                values_only)
+                                values_only,
+                                final_only)
                 
                 ModeCalculation(which_case_path,
                                 'periodical_strain',
@@ -368,7 +385,8 @@ def CaseCalculation(which_case_path,
                                 which_interpolation,
                                 pixel_step,
                                 test,
-                                values_only)
+                                values_only,
+                                final_only)
 
 #------------------------------------------------------------------------------   
 """
@@ -381,7 +399,8 @@ Args:
     pixel_step: length of single pixel (int)
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
-    data_only: whether it saves data only
+    values_only: (bool) whether it saves values only (default: True)
+    final_only: (bool) whether it calculate the final progress only (default: True)
     
 Returns:
     None
@@ -392,7 +411,8 @@ def ExperimentCalculation(which_experiment_path,
                           pixel_step=1,
                           which_mode_list=None,
                           test=False,
-                          data_only=True):
+                          values_only=True,
+                          final_only=True):
     
     #traverse
     for this_case_name in os.listdir(which_experiment_path+'\\input'):
@@ -404,4 +424,6 @@ def ExperimentCalculation(which_experiment_path,
                         which_interpolation,
                         pixel_step,
                         which_mode_list,
-                        test,data_only)        
+                        test,
+                        values_only,
+                        final_only)        

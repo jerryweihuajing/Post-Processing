@@ -35,7 +35,7 @@ import calculation_rasterization as C_R
 import calculation_interpolation as C_In
 import calculation_spheres_boundary as C_S_B
 
-from data_yade_color import yade_rgb_list
+from variable_yade_color import yade_rgb_list
 
 #------------------------------------------------------------------------------
 """

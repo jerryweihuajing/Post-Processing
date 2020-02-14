@@ -17,7 +17,7 @@ from o_progress import progress
 
 import operation_path as O_P
 
-from data_yade_color import yade_rgb_list
+from variable_yade_color import yade_rgb_list
 
 #------------------------------------------------------------------------------
 """

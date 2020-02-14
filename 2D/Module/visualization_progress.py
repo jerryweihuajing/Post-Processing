@@ -93,12 +93,12 @@ Construct a progress object
 
 Args:
    progress_path: path to construct
-   lite: (bool) whether only structural deformation
+   lite: (bool) whether only structural deformation (defualt: True)
    
 Returns:
     progress object
 """ 
-def ProgressConstruction(progress_path,lite=False):
+def ProgressConstruction(progress_path,lite=True):
     
     print('')
     print('-- Progress Construction')

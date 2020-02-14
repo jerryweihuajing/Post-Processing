@@ -29,7 +29,7 @@ for this_case_name in list_case_output:
             progress_folder=folder_output+'\\'+this_case_name+'\\structural deformation\\values'
             progress_name=os.listdir(progress_folder)[-1]
             
-            final_progress=V_P.ProgressConstruction(progress_folder+'\\'+progress_name,lite=True)
+            final_progress=V_P.ProgressConstruction(progress_folder+'\\'+progress_name)
             
             V_I.Individual(folder_Figures+'\\'+this_case_name,final_progress,situation='progress')
             
@@ -37,5 +37,5 @@ for this_case_name in list_case_output:
     
         if O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]!=174:
             
-            V_C.CaseVisualization(folder_output+'\\'+this_case_name)
+            V_C.CaseVisualization(folder_output+'\\'+this_case_name,lite=False)
                 

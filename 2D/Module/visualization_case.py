@@ -54,7 +54,7 @@ def CaseConstruction(case_path):
         #txt file path
         structural_deformation_path=folder_path+file_name
    
-        that_case.list_progress.append(V_P.ProgressConstruction(structural_deformation_path))
+        that_case.list_progress.append(V_P.ProgressConstruction(structural_deformation_path,lite=False))
     
     #give them house
     for this_progress in that_case.list_progress:

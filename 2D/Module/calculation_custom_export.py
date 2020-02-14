@@ -77,7 +77,7 @@ def ModeCalculation(which_case_path,
         
         spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
         file_names=O_P.FileNamesThisCase(which_case_path)
-        
+
     #global axis
     global_axis_boundary=C_A_B.GlobalAxisBoundary(spheres_list)
     

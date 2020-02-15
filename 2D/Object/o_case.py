@@ -18,8 +18,10 @@ class case:
     def __init__(self,
                  experiment=None,
                  condition=None,
-                 list_progress=None):
+                 list_A_progress=None,
+                 list_B_progress=None):
         
         self.experiment=experiment
         self.condition=condition
-        self.list_progress=list_progress
+        self.list_A_progress=list_A_progress
+        self.list_B_progress=list_B_progress

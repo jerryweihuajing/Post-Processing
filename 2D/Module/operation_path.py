@@ -262,3 +262,53 @@ def FilesAmount(which_folder):
         num_files += 1
 
     return num_dirs,num_files,num_files_rec
+
+#------------------------------------------------------------------------------
+"""
+Generate file names list of A and B in case path
+
+Args:
+    case_path: case path to be operated
+    
+Returns:
+    file names list of A and B in case path
+"""
+def FileNamesAB(case_path):
+    
+    #file names of A and B progress respectively
+    file_names_A=[this_file_name for this_file_name in os.listdir(case_path) if 'A' in this_file_name]
+    file_names_B=[this_file_name for this_file_name in os.listdir(case_path) if 'B' in this_file_name]
+    
+    #A and B progress respectively
+    progress_A=[float(this_file_name.strip('.txt').strip('A_progress').strip('=').split('%')) for this_file_name in file_names_A]
+    progress_B=[float(this_file_name.strip('.txt').strip('B_progress').strip('=').split('%')) for this_file_name in file_names_B]
+    
+    #sort in order
+    progress_A.sort()
+    progress_B.sort()
+    
+    #file names after sorting
+    file_names_A_in_order=[file_names_A[progress_A.index(this_progress)] for this_progress in progress_A]
+    file_names_B_in_order=[file_names_B[progress_B.index(this_progress)] for this_progress in progress_B]
+    
+    return file_names_A_in_order,file_names_B_in_order
+    
+#------------------------------------------------------------------------------
+"""
+Generate file paths list of A and B in case path
+
+Args:
+    case_path: case path to be operated
+    
+Returns:
+    file names list of A and B in case path
+"""
+def FilePathsAB(case_path):
+    
+    file_names_A_in_order,file_names_B_in_order=FileNamesAB(case_path)
+    
+    #join case and file names to generate path
+    file_paths_A_in_order=[case_path+'\\'+this_file_name for this_file_name in file_names_A_in_order]
+    file_paths_B_in_order=[case_path+'\\'+this_file_name for this_file_name in file_names_B_in_order]
+    
+    return file_paths_A_in_order,file_paths_B_in_order

@@ -94,7 +94,10 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
         
         new_scatter.pos_x=this_sphere.position[map_plane_position_index[which_plane][0]]
         new_scatter.pos_y=this_sphere.position[map_plane_position_index[which_plane][1]]
-                   
+        
+        #radius
+        new_scatter.radius=this_sphere.radius   
+        
         #dispalcement mode
         list_mode=['periodical_strain','cumulative_strain']
         list_displacement=[cp.deepcopy(this_sphere.periodical_displacement),
@@ -112,12 +115,15 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
         #create index-value map
         map_direction_displacment_index=dict(zip(list_direction,list_displacement_index))
  
-        #value
-        new_scatter.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
+        try:
+            
+            #value
+            new_scatter.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
               
-        #radius
-        new_scatter.radius=this_sphere.radius
-             
+        except:
+            
+            continue
+        
         scatters.append(new_scatter)
         
     return scatters

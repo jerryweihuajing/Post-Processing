@@ -37,123 +37,83 @@ def CaseGeneration(case_path):
     that_case.list_progress=[]
     
     #input txt file names
-    file_names=O_P.FilePathsThisCase(case_path)
+    file_paths_A,file_paths_B=O_P.FilePathsAB(case_path)
 
     #traverse all file to consruct progress
-    for this_file_name in file_names:
+    for this_file_path in file_paths_A:
         
-        that_progress=progress()
+        that_progress_A=progress()
         
-        #all lines
-        lines=open(this_file_name,'r').readlines()
-        
-        #correct legnth of each line
-        correct_length=len(lines[0].strip('\n').split(','))
-    
-        list_spheres=[]
-        
-        #traverse all lines
-        for this_line in lines:
-            
-            this_list=this_line.strip('\n').split(',')
-            
-            #judge if total length is OK
-            if len(this_list)!=correct_length:
-                        
-                continue
-        
-            #define new sphere object
-            new_sphere=sphere()
-            
-            new_sphere.Id=int(this_list[0])
-            new_sphere.radius=float(this_list[1])
-            new_sphere.color=[float(this_str) for this_str in this_list[2:5]] 
-            new_sphere.position=np.array([float(this_str) for this_str in this_list[5:8]])
-            new_sphere.velocity=np.array([float(this_str) for this_str in this_list[8:11]])
-            new_sphere.stress_tensor=np.array([float(this_str) for this_str in this_list[11:]])
-         
-            #plane: default XoY
-            new_sphere.plane='XoY'
-            
-            #3D tensor length is correct
-            if len(new_sphere.stress_tensor)!=9:
-                
-                continue
-            
-            #judge if there is inf
-            if np.inf in new_sphere.stress_tensor or -np.inf in new_sphere.stress_tensor:
-       
-                continue
-            
-            #judge if there is nan
-            for this_element in new_sphere.stress_tensor:
-            
-                if np.isnan(this_element):
-      
-                    continue
-               
-            list_spheres.append(new_sphere)
-                
-        #id and tag list
-        list_id=[this_sphere.Id for this_sphere in list_spheres]
-        list_tag=[yade_rgb_list.index(this_sphere.color) for this_sphere in list_spheres]
-        
-        #construct map between id and tag
-        map_id_tag=dict(zip(list_id,list_tag))
-        
-        list_set_tag=list(set(list_tag))
-            
-        #construct map between tag and id list
-        that_progress.map_tag_list_id={}
-        
-        for this_tag in list_set_tag:
-            
-            that_progress.map_tag_list_id[this_tag]=[]
-            
-        for this_id in list_id:
-            
-            that_progress.map_tag_list_id[map_id_tag[this_id]].append(this_id)
-        
-        #construct map between id and spheres
-        that_progress.map_id_spheres=dict(zip(list_id,list_spheres))
+        that_progress_A.Init(this_file_path)
         
         #case collect progress
-        that_case.list_progress.append(that_progress)
+        that_case.list_A_progress.append(that_progress_A)
         
+    #traverse all file to consruct progress
+    for this_file_path in file_paths_B:
+        
+        that_progress_B=progress()
+        
+        that_progress_B.Init(this_file_path)
+        
+        #case collect progress
+        that_case.list_B_progress.append(that_progress_B)
+        
+    if len(that_case.list_A_progress)!=len(that_case.list_B_progress):
+        
+        print('-> ERROR: Incorrect progress amount')
+        
+        return
+
+    amount_progress=len(that_case.list_A_progress)
+    
     #traverse all progress to calculate displacement
-    for k in range(len(that_case.list_progress)):
+    for k in range(amount_progress):
     
         #progress object
-        that_progress=that_case.list_progress[k]
+        that_progress_A=that_case.list_A_progress[k]
+        that_progress_B=that_case.list_B_progress[k]
+
+        all_tag=list(that_progress_A.map_tag_list_id.keys())
+        all_id_list=list(that_progress_A.map_tag_list_id.values())
         
-        #init spheres list    
-        that_progress.list_spheres=[]
+        '''instantaneous displacement'''
+        for this_id in list(that_progress_A.map_id_spheres.keys()):
         
-        all_tag=list(that_progress.map_tag_list_id.keys())
-        all_id_list=list(that_progress.map_tag_list_id.values())
-        
+            #A: start, B: end
+            position_A=that_progress_A.map_id_spheres[this_id].position
+            position_B=that_progress_B.map_id_spheres[this_id].position
+            
+            try:
+                
+                #give value to displacement
+                that_progress_A.map_id_spheres[this_id].instantaneous_displacement=position_A-position_B
+
+            except:
+                
+                pass
+            
+        '''cumulative and periodical displacement'''
         #first progress
         if k==0:
             
-            for this_id in list(that_progress.map_id_spheres.keys()):
+            for this_id in list(that_progress_A.map_id_spheres.keys()):
                 
-                current_position=that_progress.map_id_spheres[this_id].position
+                current_position=that_progress_A.map_id_spheres[this_id].position
                 
                 #give value to displacement
-                that_progress.map_id_spheres[this_id].cumulative_displacement=current_position-current_position
-                that_progress.map_id_spheres[this_id].periodical_displacement=current_position-current_position
-        
-                that_progress.map_id_spheres[this_id].Init()
+                that_progress_A.map_id_spheres[this_id].cumulative_displacement=current_position-current_position
+                that_progress_A.map_id_spheres[this_id].periodical_displacement=current_position-current_position
     
         #then
         if k>0:
             
-            for kk in range(len(that_progress.map_tag_list_id)):
+            for kk in range(len(that_progress_A.map_tag_list_id)):
                 
                 this_tag=all_tag[kk]
                 
                 current_list_id_this_tag=all_id_list[kk]
-                current_list_spheres_this_tag=[that_progress.map_id_spheres[this_id] for this_id in current_list_id_this_tag]
+                current_list_spheres_this_tag=[that_progress_A.map_id_spheres[this_id] for this_id in current_list_id_this_tag]
                 current_map_id_spheres_this_tag=dict(zip(current_list_id_this_tag,current_list_spheres_this_tag))
                 
                 #find last progress with this tag
@@ -182,19 +142,24 @@ def CaseGeneration(case_path):
                 for this_id in current_list_id_this_tag:
                      
                     current_position=current_map_id_spheres_this_tag[this_id].position
-                    first_position=first_map_id_spheres_this_tag[this_id].position
-                    last_position=last_map_id_spheres_this_tag[this_id].position
                     
                     #give value to displacement
-                    that_progress.map_id_spheres[this_id].cumulative_displacement=current_position-first_position
-                    that_progress.map_id_spheres[this_id].periodical_displacement=current_position-last_position
-            
-                    that_progress.map_id_spheres[this_id].Init()
-                
-#        for this_sphere in list(that_progress.map_id_spheres.values()):
-#            
-#            print(this_sphere.cumulative_dispalcement)
-#            print(this_sphere.periodical_dispalcement)
-#            print(this_sphere.stress_tensor)
-    
+                    try:
+                        
+                        first_position=first_map_id_spheres_this_tag[this_id].position
+                        that_progress_A.map_id_spheres[this_id].cumulative_displacement=current_position-first_position
+                    
+                    except:
+                        
+                        pass
+                    
+                    try:
+                        
+                        last_position=last_map_id_spheres_this_tag[this_id].position
+                        that_progress_A.map_id_spheres[this_id].periodical_displacement=current_position-last_position
+                    
+                    except:
+                        
+                        pass
+                    
     return that_case

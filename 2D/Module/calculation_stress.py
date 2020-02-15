@@ -79,11 +79,17 @@ def ScattersStress(which_spheres,which_plane,which_input_mode,which_output_mode)
         #define new 2D stess tensor
         this_stress_tensor=np.zeros((2,2))
         
-        for i in range(2):
+        try:
             
-            for j in range(2):
+            for i in range(2):
                 
-                this_stress_tensor[i,j]=this_sphere.stress_tensor[this_position_index[i],this_position_index[j]]
+                for j in range(2):
+                    
+                    this_stress_tensor[i,j]=this_sphere.stress_tensor[this_position_index[i],this_position_index[j]]
+        
+        except:
+            
+            continue
         
         #Initialize and gain attributes
         new_stress_2D.Init(this_stress_tensor)

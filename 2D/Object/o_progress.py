@@ -9,11 +9,19 @@ Created on Tue Nov 26 22:34:04 2019
 @title：Object-progress
 """
 
+import copy as cp
 import numpy as np
+
+import calculation_image as C_I
+import calculation_matrix as C_M
+import calculation_matrix_outline as C_M_O
+import calculation_image_smoothing as C_I_S
+
+import operation_path as O_P
 
 from o_sphere import sphere
 
-from variable_yade_color import yade_rgb_list
+from variable_yade_color import yade_rgb_list,yade_rgb_map
 
 #==============================================================================
 #object progress to manage data efficiently
@@ -62,7 +70,7 @@ class progress:
                  instantaneous_volumrtric_strain=None,
                  instantaneous_distortional_strain=None,
                  
-                 velocity=None,
+                 resultant_velocity=None,
                  x_velocity=None,
                  y_velocity=None,
                  
@@ -122,7 +130,7 @@ class progress:
         self.instantaneous_volumrtric_strain=instantaneous_volumrtric_strain
         self.instantaneous_distortional_strain=instantaneous_distortional_strain
         
-        self.velocity=velocity
+        self.resultant_velocity=resultant_velocity
         self.x_velocity=x_velocity
         self.y_velocity=y_velocity
         
@@ -141,7 +149,7 @@ class progress:
         self.map_stress_or_strain=map_stress_or_strain
         self.map_velocity_or_displacement=map_velocity_or_displacement
         
-    def Init(self,file_path):
+    def InitCalculation(self,file_path):
         
         #all lines
         lines=open(file_path,'r').readlines()
@@ -217,3 +225,75 @@ class progress:
         
         #construct map between id and spheres
         self.map_id_spheres=dict(zip(list_id,list_spheres))
+        
+    def InitVisualization(self,progress_path,lite):
+        
+        if '100-500' in progress_path:
+        
+            self.shape=(100,500)
+            
+        if '100-1000' in progress_path:
+            
+            self.shape=(100,1000)   
+            
+        if '100-200' in progress_path:
+            
+            self.shape=(100,350) 
+            
+        #map between tag and YADE rgb
+        self.rgb_map=yade_rgb_map
+        
+        #progress percentage
+        self.percentage=O_P.ProgressPercentageFromTXT(progress_path)
+        
+        #img tag and img rgb of structural deformation
+        self.img_tag=C_M.ImportMatrixFromTXT(progress_path)
+        self.structural_deformation=C_I.ImageTag2RGB(self.img_tag,self.rgb_map)
+        
+        if not lite:
+            
+            list_post_fix=['stress\\mean normal',
+                           'stress\\maximal shear',
+                           'periodical strain\\volumetric',
+                           'periodical strain\\distortional',
+                           'cumulative strain\\volumetric',
+                           'cumulative strain\\distortional']
+            
+            #containing result matrix
+            matrix_list=[]
+            
+            for this_post_fix in list_post_fix:
+                
+                #stress and strain itself
+                file_path=progress_path.replace('structural deformation',this_post_fix)
+                
+                matrix_list.append(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(file_path))))
+                
+            self.mean_normal_stress,\
+            self.maximal_shear_stress,\
+            self.periodical_volumrtric_strain,\
+            self.periodical_distortional_strain,\
+            self.cumulative_volumrtric_strain,\
+            self.cumulative_distortional_strain=matrix_list
+            
+            #construct a map between post fix name and matrix
+            list_post_fix=['Mean Normal Stress',
+                           'Maximal Shear Stress',
+                           'Volumetric Strain-Periodical',
+                           'Distortional Strain-Periodical',
+                           'Volumetric Strain-Cumulative',
+                           'Distortional Strain-Cumulative']
+            
+            #stress and strain map
+            self.stress_or_strain=dict(zip(list_post_fix,matrix_list))
+        
+            #fracture matrix
+            self.fracture=cp.deepcopy(self.stress_or_strain['Distortional Strain-Cumulative'])
+            
+            '''they are different for the existence of gradient calculation'''
+            #stress outline
+            self.outline_stress=C_M_O.OutlineFromMatrix(self.stress_or_strain['Mean Normal Stress'])
+         
+            #stress outline
+            self.outline_strain=C_M_O.OutlineFromMatrix(self.stress_or_strain['Volumetric Strain-Periodical'])
+        

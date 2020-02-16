@@ -15,9 +15,6 @@ import numpy as np
 from o_scatter import scatter    
 from o_strain_2D import strain_2D
 
-import calculation_interpolation as C_In
-import calculation_spheres_boundary as C_S_B
-
 import calculation_tensor2D as C_T2D
 
 #------------------------------------------------------------------------------
@@ -28,7 +25,7 @@ Args:
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX]' displacement in 3 planes
     which_direction: ['x','y','z'] displacement in 3 different direction
-    which_input_mode: ['periodical_strain','cumulative_strain'] dispalcement mode
+    which_input_mode: ['periodical_strain','cumulative_strain','instantaneous'] dispalcement mode
     
 Returns:
     scatters objects list
@@ -99,9 +96,13 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
         new_scatter.radius=this_sphere.radius   
         
         #dispalcement mode
-        list_mode=['periodical_strain','cumulative_strain']
+        list_mode=['periodical',
+                   'cumulative',
+                   'instantaneous']
+        
         list_displacement=[cp.deepcopy(this_sphere.periodical_displacement),
-                           cp.deepcopy(this_sphere.cumulative_displacement)]
+                           cp.deepcopy(this_sphere.cumulative_displacement),
+                           cp.deepcopy(this_sphere.instantaneous_displacement)]
      
         #create index-value map
         map_mode_displacement=dict(zip(list_mode,list_displacement))
@@ -117,8 +118,13 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
  
         try:
             
-            #value
-            new_scatter.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
+            if which_direction=='resultant':
+                
+                new_scatter.pos_z=np.sqrt(this_displacement[0]**2+this_displacement[1]**2)
+                
+            else:
+
+                new_scatter.pos_z=this_displacement[map_direction_displacment_index[which_direction]]
               
         except:
             
@@ -127,42 +133,6 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
         scatters.append(new_scatter)
         
     return scatters
-
-#------------------------------------------------------------------------------
-"""
-Displacement interpolation image (mesh points)
-
-Args:
-    pixel_step: length of single pixel (int)
-    which_spheres: input sphere objects list
-    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
-    which_direction: ['x','y','z'] displacement in 3 different direction
-    which_input_mode: ['periodical','cumulative'] dispalcement mode
-    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
-    
-Returns:
-    Displacement matrix in one direction
-"""
-def SpheresDisplacementMatrix(pixel_step,
-                              which_spheres,
-                              which_plane,
-                              which_direction,
-                              which_input_mode,
-                              which_interpolation,
-                              show=False):
-    
-    #scatter objects
-    scatters=ScattersDisplacement(which_spheres,
-                                  which_plane,
-                                  which_direction,
-                                  which_input_mode)    
-
-    #top surface map
-    surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
-    
-    if which_interpolation=='scatters_in_grid':
-        
-        return C_In.ScattersInGridIDW(scatters,pixel_step,surface_map,show)
 
 #============================================================================== 
 #表征strain的discrete_point对象列表

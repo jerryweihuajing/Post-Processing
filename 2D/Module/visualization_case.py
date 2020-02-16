@@ -11,8 +11,6 @@ Created on Tue Nov 26 22:38:28 2019
 
 from o_case import case
 
-import operation_path as O_Pa
-
 import visualization_series as V_S
 import visualization_progress as V_P
 import visualization_animation as V_A
@@ -36,30 +34,10 @@ def CaseConstruction(case_path):
     #construct case object to save the image data
     that_case=case()
     
-    that_case.list_progress=[]
-    that_case.experiment=case_path.split('\\')[-3]
-    that_case.condition=case_path.split('\\')[-1]
+    that_case.InitVisualization(case_path)
     
     print('-> experiment:',that_case.experiment)
     print('-> condition:',that_case.condition)
-    
-    #strutrual deformation path
-    folder_path=case_path+'\\structural deformation\\values\\'
-    
-    #file names in pogress order
-    file_names=O_Pa.FileNamesThisCase(folder_path)
-
-    for file_name in file_names:
-        
-        #txt file path
-        structural_deformation_path=folder_path+file_name
-   
-        that_case.list_progress.append(V_P.ProgressConstruction(structural_deformation_path,lite=False))
-    
-    #give them house
-    for this_progress in that_case.list_progress:
-        
-        this_progress.case=that_case
         
     return that_case
 

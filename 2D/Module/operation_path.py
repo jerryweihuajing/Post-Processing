@@ -312,3 +312,67 @@ def FilePathsAB(case_path):
     file_paths_B_in_order=[case_path+'\\'+this_file_name for this_file_name in file_names_B_in_order]
     
     return file_paths_A_in_order,file_paths_B_in_order
+
+#------------------------------------------------------------------------------
+"""
+Translate file name post fix to title string
+
+Args:
+    which_post_fix: post fix of file name 
+
+Returns:
+    None
+"""
+def PostFix2Title(which_post_fix):
+    
+    temp_str=which_post_fix.split('\\')
+    
+    #S+C to C+S
+    temp_str.reverse()
+
+    #output str
+    title_str=''
+    
+    #strain mode
+    if 'strain' in temp_str[-1]:
+        
+        title_str_list=[temp_str[-1].split(' ')[0],
+                        temp_str[0],
+                        temp_str[-1].split(' ')[1]]
+        
+    #stress and deformation    
+    else:
+        
+        title_str_list=temp_str[0].split(' ')+[temp_str[-1]]
+
+    for this_str in title_str_list:
+        
+        title_str+=' '+this_str[0].upper()+this_str[1:]
+       
+    return title_str
+
+#------------------------------------------------------------------------------
+"""
+Calculate progress percentage from file path
+
+Args:
+    file_path: load path of research case
+    
+Returns:
+    percentage of progress
+"""
+def ProgressPercentageFromTXT(file_path):
+    
+    #where is the %
+    percentage_index=file_path.index('%')
+    
+    #start char
+    start_char=file_path[percentage_index-5]
+    
+    if start_char=='\\':
+        
+        return file_path[percentage_index-4:percentage_index+1]
+    
+    else:
+        
+        return file_path[percentage_index-5:percentage_index+1]

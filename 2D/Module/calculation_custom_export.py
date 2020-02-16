@@ -23,12 +23,32 @@ import matplotlib.pyplot as plt
 import operation_path as O_P
 import operation_decoration as O_D
 
-import calculation_case as C_C
 import calculation_norm as C_N
 import calculation_image as C_I
 import calculation_axis_boundary as C_A_B
 import calculation_spheres_matrix as C_S_M
 import calculation_spheres_boundary as C_S_B
+
+from o_case import case
+
+#------------------------------------------------------------------------------
+"""
+Generate case object from case path (in calculation)
+
+Args:
+    case_path: load path of all input files
+    
+Returns:
+    A case object
+"""
+def CaseGeneration(case_path):
+    
+    #final result
+    that_case=case()
+    
+    that_case.InitCalculation(case_path)
+                    
+    return that_case
 
 #------------------------------------------------------------------------------
 """
@@ -36,8 +56,25 @@ Plot different phase image in a custom style
 
 Args:
     which_case_path: load path of all input files
-    which_input_mode: ['structural_deformation','stress','cumulative_strain','periodical strain']
-    which_output_mode: '[x_normal','y_normal','shear','mean_normal','maximal_shear]'
+    which_input_mode: ['structural_deformation',
+                       'stress',
+                       'velocity',
+                       'cumulative_strain',
+                       'periodical strain',
+                       'instantaneous_strain',
+                       'cumulative_displacement',
+                       'periodical_displacement',
+                       'instantaneous_displacement']
+    which_output_mode: '[x_normal',
+                        'y_normal',
+                        'shear',
+                        'mean_normal',
+                        'maximal_shear,
+                        'volumetric',
+                        'distortional',
+                        'x',
+                        'y',
+                        'resultant']
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     pixel_step: length of single pixel (int)
@@ -65,18 +102,18 @@ def ModeCalculation(which_case_path,
     print('-> output mode:',which_output_mode.replace('_',' '))
     
     #construct case object
-    that_case=C_C.CaseGeneration(which_case_path)
+    that_case=CaseGeneration(which_case_path)
 
     #list of spheres and file name list in this case
     if final_only:
         
-        spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress[-1:]]
-        file_names=O_P.FileNamesThisCase(which_case_path)[-1:]
-        
+        spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_A_progress[-1:]]
+        file_names=O_P.FileNamesAB(which_case_path)[0][-1:]
+
     else:
         
-        spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_progress]
-        file_names=O_P.FileNamesThisCase(which_case_path)
+        spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_A_progress]
+        file_names=O_P.FileNamesAB(which_case_path)[0]
 
     #global axis
     global_axis_boundary=C_A_B.GlobalAxisBoundary(spheres_list)
@@ -126,7 +163,7 @@ def ModeCalculation(which_case_path,
         
         #file name and progress percentage
         this_file_name=file_names[k]
-        this_progress=this_file_name.strip('.txt')
+        this_progress=this_file_name.strip('.txt').strip('A_')
         this_percentage=this_progress.strip('progress=')
         
         print('-->',this_progress)
@@ -266,14 +303,28 @@ def CaseCalculation(which_case_path,
                  'shear',
                  'volumetric',
                  'distortional']  
-        
+    
+    #posible condition of velocity
+    velocity_mode=['x',
+                   'y',
+                   'resultant']
+
+    #posible condition of displacement
+    displacement_mode=['x',
+                       'y',
+                       'resultant']
+    
     #standard mode of output
     standard_mode=['structural_deformation',
                    'mean_normal_stress',
                    'maximal_shear_stress',
-                   'volumetric_strain',
-                   'distortional_strain']
-            
+                   'volumetric_cumulative_strain',
+                   'distortional_cumulative_strain']
+      
+    list_output_mode=['cumulative',
+                      'periodical',
+                      'instantaneous']
+    
     #default: all modes
     if which_mode_list==None:
         
@@ -289,11 +340,11 @@ def CaseCalculation(which_case_path,
                         final_only)
                 
         #stress
-        for this_stress_mode in stress_mode:
+        for this_input_mode in stress_mode:
             
             ModeCalculation(which_case_path,
                             'stress',
-                            this_stress_mode,
+                            this_input_mode,
                             which_plane,
                             which_interpolation,
                             pixel_step,
@@ -302,11 +353,26 @@ def CaseCalculation(which_case_path,
                             final_only)
             
         #strain
-        for this_strain_mode in strain_mode:
+        for this_input_mode in strain_mode:
+                
+            for this_output_mode in list_output_mode:
+                
+                ModeCalculation(which_case_path,
+                                this_output_mode+'_strain',
+                                this_input_mode,
+                                which_plane,
+                                which_interpolation,
+                                pixel_step,
+                                test,
+                                values_only,
+                                final_only)
+                
+        #velocity
+        for this_input_mode in velocity_mode:
                 
             ModeCalculation(which_case_path,
-                            'cumulative_strain',
-                            this_strain_mode,
+                            'velocity',
+                            this_input_mode,
                             which_plane,
                             which_interpolation,
                             pixel_step,
@@ -314,16 +380,21 @@ def CaseCalculation(which_case_path,
                             values_only,
                             final_only)
             
-            ModeCalculation(which_case_path,
-                            'periodical_strain',
-                            this_strain_mode,
-                            which_plane,
-                            which_interpolation,
-                            pixel_step,
-                            test,
-                            values_only,
-                            final_only)
-    
+        #displacement
+        for this_input_mode in displacement_mode:
+                
+            for this_output_mode in list_output_mode:
+                
+                ModeCalculation(which_case_path,
+                                this_output_mode+'_displacement',
+                                this_input_mode,
+                                which_plane,
+                                which_interpolation,
+                                pixel_step,
+                                test,
+                                values_only,
+                                final_only)
+
     else:
         
         #standard for resaerch    
@@ -346,40 +417,31 @@ def CaseCalculation(which_case_path,
                                 test,
                                 values_only,
                                 final_only)
+            else:
                 
-            #stress
-            if 'stress' in this_mode:
-                            
-                this_stress_mode=this_mode.strip('stress').strip('_')
-               
+                if 'stress' in this_mode:
+                    
+                    this_input_mode=this_mode.split('_')[2]
+                    this_output_mode=this_mode.split('_')[0]+'_'+this_mode.split('_')[1]
+                    
+                if 'strain' in this_mode:
+                    
+                    this_input_mode=this_mode.split('_')[1]+'_'+this_mode.split('_')[2]
+                    this_output_mode=this_mode.split('_')[0]
+                      
+                if 'displacement' in this_mode:
+                    
+                    this_input_mode=this_mode.split('_')[1]+'_'+this_mode.split('_')[2]
+                    this_output_mode=this_mode.split('_')[0]
+                    
+                if 'displacement' in this_mode:
+                    
+                    this_input_mode=this_mode.split('_')[1]
+                    this_output_mode=this_mode.split('_')[0]
+                    
                 ModeCalculation(which_case_path,
-                                'stress',
-                                this_stress_mode,
-                                which_plane,
-                                which_interpolation,
-                                pixel_step,
-                                test,
-                                values_only,
-                                final_only)
-            
-            #strain
-            if 'strain' in this_mode:
-                
-                this_strain_mode=this_mode.strip('strain').strip('_')
-                
-                ModeCalculation(which_case_path,
-                                'cumulative_strain',
-                                this_strain_mode,
-                                which_plane,
-                                which_interpolation,
-                                pixel_step,
-                                test,
-                                values_only,
-                                final_only)
-                
-                ModeCalculation(which_case_path,
-                                'periodical_strain',
-                                this_strain_mode,
+                                this_input_mode,
+                                this_output_mode,
                                 which_plane,
                                 which_interpolation,
                                 pixel_step,

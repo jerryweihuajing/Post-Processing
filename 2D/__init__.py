@@ -18,7 +18,6 @@ sys.path=list(set(sys.path))
 
 import operation_path as O_P
 
-import calculation_case as C_C
 import calculation_matrix as C_M
 import calculation_custom_export as C_C_E
 import calculation_spheres_matrix as C_S_M

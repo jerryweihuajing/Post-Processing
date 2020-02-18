@@ -56,10 +56,9 @@ def SingleIntegralAnalysis(output_folder,
         list_post_fix=['Structural Deformation',
                        'Mean Normal Stress',
                        'Maximal Shear Stress',
-                       'Volumetric Strain-Periodical',
-                       'Distortional Strain-Periodical']
+                       'Volumetric Strain-Cumulative',
+                       'Distortional Strain-Cumulative']
 
-        
         #new picture and ax
         #100-1000
         if global_shape==(100,1000):
@@ -190,7 +189,7 @@ def IntegralAnalysisAll(output_folder,
     print('-- Integral Analysis Plot')
     
     #integral analysis
-    list_mode=['standard','all']
+    list_mode=['standard','all'][:1]
     
     for this_mode in list_mode:
         

@@ -11,8 +11,8 @@ Created on Thu Feb 13 23:03:54 2020
 
 from __init__ import *
 
-version='lite'
-#version='pro'
+#version='lite'
+version='pro'
 
 folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 folder_Figures=folder_output.replace('output','Figures')
@@ -38,7 +38,7 @@ for this_case_name in list_case_output:
             
     if version=='pro':
     
-        if O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]!=174:
+        if this_case_name not in list_case_Figures or O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]!=174:
             
-            V_C.CaseVisualization(folder_output+'\\'+this_case_name,lite=False)
-                
+            V_C.CaseVisualization(folder_output+'\\'+this_case_name)
+            

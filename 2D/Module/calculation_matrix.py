@@ -384,6 +384,6 @@ def MatrixFilter(which_matrix,lower_value,upper_value,show=False):
     
     if show:
         
-        plt.imshow(C_I.ImgFlip(new_matrix,0),cmap='gray')
+        plt.imshow(C_I.ImgFlip(new_matrix,0),cmap='gray',alpha=.5)
             
     return new_matrix

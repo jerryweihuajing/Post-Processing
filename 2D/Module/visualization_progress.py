@@ -67,8 +67,18 @@ def ProgressAllIndividuals(output_folder,
                    'Volumetric Strain-Cumulative',
                    'Distortional Strain-Cumulative']
     
+    list_title=['Structural Deformation',
+                'Mean Normal Stress',
+                'Maximal Shear Stress',
+                'Volumetric Strain-Cumulative',
+                'Distortional Strain-Cumulative',
+                'Resultant Velocity',
+                'Resultant Displacement-Cumulative',
+                'Volumetric Strain-Instantaneous',
+                'Distortional Strain-Instantaneous']
+    
     #plot all postfix mode
-    for this_post_fix in list_post_fix:
+    for this_post_fix in list_title:
         
         V_I.Individual(output_folder,
                        which_progress,

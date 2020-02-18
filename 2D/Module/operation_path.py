@@ -35,6 +35,7 @@ strain: xx strain
 '''
     
 import os
+import copy as cp
 
 import BETA_operation_path as B_O_P
 import operation_dictionary as O_D
@@ -280,16 +281,12 @@ def FileNamesAB(case_path):
     file_names_B=[this_file_name for this_file_name in os.listdir(case_path) if 'B' in this_file_name]
     
     #A and B progress respectively
-    progress_A=[float(this_file_name.strip('.txt').strip('A_progress').strip('=').split('%')) for this_file_name in file_names_A]
-    progress_B=[float(this_file_name.strip('.txt').strip('B_progress').strip('=').split('%')) for this_file_name in file_names_B]
-    
-    #sort in order
-    progress_A.sort()
-    progress_B.sort()
+    progress_A=[float(this_file_name.strip('.txt').strip('A_progress=').strip('%')) for this_file_name in file_names_A]
+    progress_B=[float(this_file_name.strip('.txt').strip('B_progress=').strip('%')) for this_file_name in file_names_B]
     
     #file names after sorting
-    file_names_A_in_order=[file_names_A[progress_A.index(this_progress)] for this_progress in progress_A]
-    file_names_B_in_order=[file_names_B[progress_B.index(this_progress)] for this_progress in progress_B]
+    file_names_A_in_order=[file_names_A[progress_A.index(this_progress)] for this_progress in sorted(progress_A)]
+    file_names_B_in_order=[file_names_B[progress_B.index(this_progress)] for this_progress in sorted(progress_B)]
     
     return file_names_A_in_order,file_names_B_in_order
     

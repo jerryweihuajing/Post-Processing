@@ -34,8 +34,9 @@ class case:
         
     def InitCalculation(self,case_path):
         
-        self.list_progress=[]
-    
+        self.list_A_progress=[]
+        self.list_B_progress=[]
+        
         #input txt file names
         file_paths_A,file_paths_B=O_P.FilePathsAB(case_path)
     
@@ -117,7 +118,7 @@ class case:
                     current_map_id_spheres_this_tag=dict(zip(current_list_id_this_tag,current_list_spheres_this_tag))
                     
                     #find last progress with this tag
-                    for this_progress in self.list_progress[k-1::-1]+self.list_progress[k:]:
+                    for this_progress in self.list_A_progress[k-1::-1]+self.list_A_progress[k:]:
                 
                         if this_tag in list(this_progress.map_tag_list_id.keys()):
                                 
@@ -128,7 +129,7 @@ class case:
                             break
                     
                     #find 1st progress with this tag
-                    for this_progress in self.list_progress[:k+1]:
+                    for this_progress in self.list_A_progress[:k+1]:
                         
                         if this_tag in list(this_progress.map_tag_list_id.keys()):
                             

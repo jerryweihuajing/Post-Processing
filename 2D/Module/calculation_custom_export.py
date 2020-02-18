@@ -319,7 +319,11 @@ def CaseCalculation(which_case_path,
                    'mean_normal_stress',
                    'maximal_shear_stress',
                    'volumetric_cumulative_strain',
-                   'distortional_cumulative_strain']
+                   'distortional_cumulative_strain',
+                   'volumetric_instantaneous_strain',
+                   'distortional_instantaneous_strain',
+                   'resultant_velocity',
+                   'resultant_cumulative_displacement']
       
     list_output_mode=['cumulative',
                       'periodical',
@@ -434,7 +438,7 @@ def CaseCalculation(which_case_path,
                     this_input_mode=this_mode.split('_')[1]+'_'+this_mode.split('_')[2]
                     this_output_mode=this_mode.split('_')[0]
                     
-                if 'displacement' in this_mode:
+                if 'velocity' in this_mode:
                     
                     this_input_mode=this_mode.split('_')[1]
                     this_output_mode=this_mode.split('_')[0]

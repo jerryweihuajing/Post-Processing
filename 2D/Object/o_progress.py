@@ -74,15 +74,15 @@ class progress:
                  x_velocity=None,
                  y_velocity=None,
                  
-                 cumulative_displacement=None,
+                 cumulative_resultant_displacement=None,
                  cumulative_x_displacement=None,
                  cumulative_y_displacement=None,
                  
-                 periodical_displacement=None,
+                 periodical_resultant_displacement=None,
                  periodical_x_displacement=None,
                  periodical_y_displacement=None,
                  
-                 instantaneous_displacement=None,
+                 instantaneous_resultant_displacement=None,
                  instantaneous_x_displacement=None,
                  instantaneous_y_displacement=None,
                  
@@ -134,15 +134,15 @@ class progress:
         self.x_velocity=x_velocity
         self.y_velocity=y_velocity
         
-        self.cumulative_displacement=cumulative_displacement
+        self.cumulative_resultant_displacement=cumulative_resultant_displacement
         self.cumulative_x_displacement=cumulative_x_displacement
         self.cumulative_y_displacement=cumulative_y_displacement
         
-        self.periodical_displacement=periodical_displacement
+        self.periodical_resultant_displacement=periodical_resultant_displacement
         self.periodical_x_displacement=periodical_x_displacement
         self.periodical_y_displacement=periodical_y_displacement
         
-        self.instantaneous_displacement=instantaneous_displacement
+        self.instantaneous_resultant_displacement=instantaneous_resultant_displacement
         self.instantaneous_x_displacement=instantaneous_x_displacement
         self.instantaneous_y_displacement=instantaneous_y_displacement
         
@@ -254,10 +254,12 @@ class progress:
             
             list_post_fix=['stress\\mean normal',
                            'stress\\maximal shear',
-                           'periodical strain\\volumetric',
-                           'periodical strain\\distortional',
                            'cumulative strain\\volumetric',
-                           'cumulative strain\\distortional']
+                           'cumulative strain\\distortional',
+                           'velocity\\resultant',
+                           'cumulative displacement\\resultant',
+                           'instantaneous strain\\volumetric',
+                           'instantaneous strain\\distortional']
             
             #containing result matrix
             matrix_list=[]
@@ -271,29 +273,34 @@ class progress:
                 
             self.mean_normal_stress,\
             self.maximal_shear_stress,\
-            self.periodical_volumrtric_strain,\
-            self.periodical_distortional_strain,\
             self.cumulative_volumrtric_strain,\
-            self.cumulative_distortional_strain=matrix_list
+            self.cumulative_distortional_strain,\
+            self.resultant_velocity,\
+            self.cumulative_resultant_displacement,\
+            self.instantaneous_distortional_strain,\
+            self.instantaneous_volumrtric_strain=matrix_list
             
+            '''None list to present'''
             #construct a map between post fix name and matrix
-            list_post_fix=['Mean Normal Stress',
-                           'Maximal Shear Stress',
-                           'Volumetric Strain-Periodical',
-                           'Distortional Strain-Periodical',
-                           'Volumetric Strain-Cumulative',
-                           'Distortional Strain-Cumulative']
+            list_title=['Mean Normal Stress',
+                        'Maximal Shear Stress',
+                        'Volumetric Strain-Cumulative',
+                        'Distortional Strain-Cumulative',
+                        'Resultant Velocity',
+                        'Resultant Displacement-Cumulative',
+                        'Volumetric Strain-Instantaneous',
+                        'Distortional Strain-Instantaneous']
             
             #stress and strain map
-            self.stress_or_strain=dict(zip(list_post_fix,matrix_list))
+            self.map_stress_or_strain=dict(zip(list_title,matrix_list))
         
             #fracture matrix
-            self.fracture=cp.deepcopy(self.stress_or_strain['Distortional Strain-Cumulative'])
+            self.fracture=cp.deepcopy(self.map_stress_or_strain['Distortional Strain-Cumulative'])
             
             '''they are different for the existence of gradient calculation'''
             #stress outline
-            self.outline_stress=C_M_O.OutlineFromMatrix(self.stress_or_strain['Mean Normal Stress'])
+            self.outline_stress=C_M_O.OutlineFromMatrix(self.map_stress_or_strain['Mean Normal Stress'])
          
             #stress outline
-            self.outline_strain=C_M_O.OutlineFromMatrix(self.stress_or_strain['Volumetric Strain-Periodical'])
+            self.outline_strain=C_M_O.OutlineFromMatrix(self.map_stress_or_strain['Volumetric Strain-Cumulative'])
         

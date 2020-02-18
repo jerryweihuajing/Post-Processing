@@ -117,15 +117,9 @@ def GlobalNorm(which_case,post_fix):
     
     #traverse txt names
     for this_progress in which_case.list_progress:
-        
-        if 'Mean Normal' in post_fix:
-            
-            this_matrix=this_progress.mean_normal_stress
-        
-        if 'Maximal Shear' in post_fix:
-            
-            this_matrix=this_progress.maximal_shear_stress
-            
+
+        this_matrix=this_progress.map_stress_or_strain[post_fix]
+           
         values_max.append(C_M.MatrixMaximum(this_matrix))
         values_min.append(C_M.MatrixMinimum(this_matrix))
       
@@ -159,3 +153,7 @@ def GlobalColormap(post_fix):
     if 'Shear' in post_fix:
         
         return 'terrain'
+    
+    '''displacement and velocity'''
+
+    return 'seismic'

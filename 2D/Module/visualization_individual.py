@@ -129,7 +129,7 @@ def IndividualStressOrStrain(which_progress,
     progress_percentage=which_progress.percentage
     
     #stress or strain value matrix to be plotted
-    value_matrix=which_progress.stress_or_strain[post_fix]
+    value_matrix=which_progress.map_stress_or_strain[post_fix]
 
     #outline matrix
     outline_stress=which_progress.outline_stress

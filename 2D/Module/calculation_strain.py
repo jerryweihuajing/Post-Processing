@@ -47,41 +47,6 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
         #new discrete point object
         new_scatter=scatter()
 
-#        if which_plane=='XoY':
-#            
-#            new_discrete_point.pos_x=this_sphere.position[0]
-#            new_discrete_point.pos_y=this_sphere.position[1]
-#        
-#        if which_plane=='YoZ':
-#            
-#            new_discrete_point.pos_x=this_sphere.position[1]
-#            new_discrete_point.pos_y=this_sphere.position[2]
-#            
-#        if which_plane=='ZoX':
-#            
-#            new_discrete_point.pos_x=this_sphere.position[2]
-#            new_discrete_point.pos_y=this_sphere.position[0]
-#            
-#        if which_mode=='periodical':
-#            
-#            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_periodical)
-#        
-#        if which_mode=='cumulative':
-#            
-#            this_displacment=cp.deepcopy(this_sphere.displacemnet_3D_cumulative)
-#            
-#        if which_direction=='x':
-#            
-#            new_discrete_point.pos_z=this_displacment[0]
-#            
-#        if which_direction=='y':
-#            
-#            new_discrete_point.pos_z=this_displacment[1]
-#        
-#        if which_direction=='z':
-#            
-#            new_discrete_point.pos_z=this_displacment[2]
-            
         #plane
         list_plane=['XoY','YoZ','ZoX']
         list_position_index=[(0,1),(1,2),(2,0)]

@@ -558,6 +558,7 @@ def SpheresStrainMatrix(pixel_step,
   
                 strain_value_matrix[i,j]=this_strain_2D.distortional_strain
                 
+    '''return a map of matrix!'''
     return strain_value_matrix
     
 #------------------------------------------------------------------------------
@@ -568,8 +569,7 @@ Args:
     pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
-    which_input_mode: 'stress'
-    which_output_mode: ['x_normal','y_normal','shear','mean_normal','maximal_shear']
+    which_surface_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
@@ -578,28 +578,37 @@ Returns:
 def SpheresStressMatrix(pixel_step,
                         which_spheres,
                         which_plane,
-                        which_input_mode,
-                        which_output_mode,
+                        which_surface_map,
                         which_interpolation):
-
-    if which_input_mode!='stress':
-        
-        print('ERROR: you idiot!')        
-        
-        return 
-
-    #discrete point objects
-    scatters=C_Stress.ScattersStress(which_spheres,
-                                     which_plane,
-                                     which_input_mode,
-                                     which_output_mode)   
-
-    #top surface map
-    surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
     
+    '''same calculation as strain'''
+
+    #component of stress scatters object
+    scatters_stress_xx=C_Stress.ScattersStress(which_spheres,which_plane,'xx')   
+    scatters_stress_yy=C_Stress.ScattersStress(which_spheres,which_plane,'yy')  
+    scatters_stress_xy=C_Stress.ScattersStress(which_spheres,which_plane,'xy') 
+    
+    #matrix of stress components
     if which_interpolation=='scatters_in_grid':
-        
-        return C_In.ScattersInGridIDW(scatters,pixel_step,surface_map)
+    
+        matrix_stress_xx=C_In.ScattersInGridIDW(scatters_stress_xx,pixel_step,which_surface_map)
+        matrix_stress_yy=C_In.ScattersInGridIDW(scatters_stress_yy,pixel_step,which_surface_map)
+        matrix_stress_xy=C_In.ScattersInGridIDW(scatters_stress_xy,pixel_step,which_surface_map)
+    
+    #mao between name and stress
+    map_stress={}
+    
+    map_stress['x normal stress']=matrix_stress_xx
+    map_stress['y normal stress']=matrix_stress_yy
+    map_stress['shear stress']=matrix_stress_xy
+    map_stress['mean normal stress']=0.5*(matrix_stress_xx+matrix_stress_xy)
+    map_stress['diff normal stress']=0.5*(matrix_stress_xx-matrix_stress_xy)
+    map_stress['maximal normal stress']=map_stress['mean normal stress']+np.sqrt(map_stress['diff normal stress']**2+map_stress['shear stress']**2)
+    map_stress['minimal normal stress']=map_stress['mean normal stress']-np.sqrt(map_stress['diff normal stress']**2+map_stress['shear stress']**2)
+    map_stress['maximal shear stress']=0.5*(map_stress['maximal normal stress']-map_stress['minimal normal stress'])
+    map_stress['minimal shear stress']=0.5*(map_stress['minimal normal stress']-map_stress['maximal normal stress'])
+    
+    return map_stress
     
 #------------------------------------------------------------------------------
 """

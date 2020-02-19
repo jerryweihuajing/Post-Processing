@@ -101,9 +101,16 @@ def ModeCalculation(which_case_path,
     print('-> input mode:',which_input_mode.replace('_',' '))
     print('-> output mode:',which_output_mode.replace('_',' '))
     
+    if test:
+            
+        pixel_step=23 
+            
     #construct case object
     that_case=CaseGeneration(which_case_path)
 
+    #list of surface map
+    list_surface_map=[C_S_B.SpheresTopMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in that_case.list_A_progress]
+    
     #list of spheres and file name list in this case
     if final_only:
         
@@ -165,6 +172,7 @@ def ModeCalculation(which_case_path,
         this_file_name=file_names[k]
         this_progress=this_file_name.strip('.txt').strip('A_')
         this_percentage=this_progress.strip('progress=')
+        this_surface_map=list_surface_map[k]
         
         print('-->',this_progress)
 
@@ -176,11 +184,7 @@ def ModeCalculation(which_case_path,
         
         #spheres system
         this_spheres=spheres_list[k] 
-          
-        if test:
-            
-            pixel_step=23 
-            
+             
         if not values_only:
             
             #figure and axe

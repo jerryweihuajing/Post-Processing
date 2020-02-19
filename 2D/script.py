@@ -18,13 +18,15 @@ from __init__ import *
 
 case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
 
-#step 1
-C_C_E.CaseCalculation(case_path,which_mode_list='standard',final_only=False)
+that_case=C_C_E.CaseGeneration(case_path)
 
-#step 2
-case_path=case_path.replace('input','output')
+##step 1
+#C_C_E.CaseCalculation(case_path,which_mode_list='standard',final_only=False)
 #
-V_C.CaseVisualization(case_path)
+##step 2
+#case_path=case_path.replace('input','output')
+##
+#V_C.CaseVisualization(case_path)
 #         
 #case_folder=r'H:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input'
 #

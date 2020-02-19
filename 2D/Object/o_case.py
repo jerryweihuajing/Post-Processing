@@ -31,11 +31,13 @@ class case:
         self.list_progress=list_progress
         self.list_A_progress=list_A_progress
         self.list_B_progress=list_B_progress
-        
+
     def InitCalculation(self,case_path):
         
         self.list_A_progress=[]
         self.list_B_progress=[]
+        
+        self.list_surface_map=[]
         
         #input txt file names
         file_paths_A,file_paths_B=O_P.FilePathsAB(case_path)
@@ -162,7 +164,7 @@ class case:
                         except:
                             
                             pass
-    
+
     def InitVisualization(self,case_path):
         
         self.list_progress=[]

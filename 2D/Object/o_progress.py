@@ -40,52 +40,10 @@ class progress:
                  img_tag=None,
                  structural_deformation=None,
                  fracture=None,
-
                  outline_stress=None,
                  outline_strain=None,
                  outline_velocity=None,
                  outline_displacement=None,
-                 
-                 x_normal_stress=None,
-                 y_normal_stress=None,
-                 shear_stress=None,
-                 mean_normal_stress=None,
-                 maximal_shear_stress=None,
-                 
-                 periodical_x_normal_strain=None,
-                 periodical_y_normal_strain=None,
-                 periodical_shear_strain=None,
-                 periodical_volumrtric_strain=None,
-                 periodical_distortional_strain=None,
-                 
-                 cumulative_x_normal_strain=None,
-                 cumulative_y_normal_strain=None,
-                 cumulative_shear_strain=None,
-                 cumulative_volumrtric_strain=None,
-                 cumulative_distortional_strain=None,
-                 
-                 instantaneous_x_normal_strain=None,
-                 instantaneous_y_normal_strain=None,
-                 instantaneous_shear_strain=None,
-                 instantaneous_volumrtric_strain=None,
-                 instantaneous_distortional_strain=None,
-                 
-                 resultant_velocity=None,
-                 x_velocity=None,
-                 y_velocity=None,
-                 
-                 cumulative_resultant_displacement=None,
-                 cumulative_x_displacement=None,
-                 cumulative_y_displacement=None,
-                 
-                 periodical_resultant_displacement=None,
-                 periodical_x_displacement=None,
-                 periodical_y_displacement=None,
-                 
-                 instantaneous_resultant_displacement=None,
-                 instantaneous_x_displacement=None,
-                 instantaneous_y_displacement=None,
-                 
                  map_stress_or_strain=None,
                  map_velocity_or_displacement=None):
         
@@ -105,46 +63,6 @@ class progress:
         self.outline_strain=outline_strain
         self.outline_velocity=outline_velocity
         self.outline_displacement=outline_displacement
-        
-        self.x_normal_stress=x_normal_stress
-        self.y_normal_stress=y_normal_stress
-        self.shear_stress=shear_stress
-        self.mean_normal_stress=mean_normal_stress
-        self.maximal_shear_stress=maximal_shear_stress
-        
-        self.periodical_x_normal_strain=periodical_x_normal_strain
-        self.periodical_y_normal_strain=periodical_y_normal_strain
-        self.periodical_shear_strain=periodical_shear_strain
-        self.periodical_volumrtric_strain=periodical_volumrtric_strain
-        self.periodical_distortional_strain=periodical_distortional_strain
-        
-        self.cumulative_x_normal_strain=cumulative_x_normal_strain
-        self.cumulative_y_normal_strain=cumulative_y_normal_strain
-        self.cumulative_shear_strain=cumulative_shear_strain
-        self.cumulative_volumrtric_strain=cumulative_volumrtric_strain
-        self.cumulative_distortional_strain=cumulative_distortional_strain
-        
-        self.instantaneous_x_normal_strain=instantaneous_x_normal_strain
-        self.instantaneous_y_normal_strain=instantaneous_y_normal_strain
-        self.instantaneous_shear_strain=instantaneous_shear_strain
-        self.instantaneous_volumrtric_strain=instantaneous_volumrtric_strain
-        self.instantaneous_distortional_strain=instantaneous_distortional_strain
-        
-        self.resultant_velocity=resultant_velocity
-        self.x_velocity=x_velocity
-        self.y_velocity=y_velocity
-        
-        self.cumulative_resultant_displacement=cumulative_resultant_displacement
-        self.cumulative_x_displacement=cumulative_x_displacement
-        self.cumulative_y_displacement=cumulative_y_displacement
-        
-        self.periodical_resultant_displacement=periodical_resultant_displacement
-        self.periodical_x_displacement=periodical_x_displacement
-        self.periodical_y_displacement=periodical_y_displacement
-        
-        self.instantaneous_resultant_displacement=instantaneous_resultant_displacement
-        self.instantaneous_x_displacement=instantaneous_x_displacement
-        self.instantaneous_y_displacement=instantaneous_y_displacement
         
         self.map_stress_or_strain=map_stress_or_strain
         self.map_velocity_or_displacement=map_velocity_or_displacement

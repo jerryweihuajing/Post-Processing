@@ -29,19 +29,12 @@ Generate stress scatters
 Args:
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX]' displacement in 3 planes
-    which_direction: ['x','y','z'] displacement in 3 different direction
-    which_input_mode: ['periodical_strain','cumulative_strain'] dispalcement mode
+    which_direction: ['xx','xy','xy'] displacement in 3 different direction
     
 Returns:
     scatters objects list
 """
-def ScattersStress(which_spheres,which_plane,which_input_mode,which_output_mode):
-    
-    if which_input_mode!='stress':
-        
-        print('ERROR:Incorrect input mode')
-        
-        return
+def ScattersStress(which_spheres,which_plane,which_direction):
     
     #final result
     scatters=[]
@@ -52,14 +45,7 @@ def ScattersStress(which_spheres,which_plane,which_input_mode,which_output_mode)
         #construct new scatter
         new_scatter=scatter()
         
-        #define basic attributes
-        new_scatter.pos_x=this_sphere.position[0]
-        new_scatter.pos_y=this_sphere.position[1]
-        
-        #new stress object
-        new_stress_2D=stress_2D()
-
-        '''plane'''
+        #plane
         list_plane=['XoY','YoZ','ZoX']
         list_position_index=[(0,1),(1,2),(2,0)]
         
@@ -68,62 +54,79 @@ def ScattersStress(which_spheres,which_plane,which_input_mode,which_output_mode)
         
         #true: default (0,1)
         this_position_index=map_plane_position_index[which_plane]
-        
+       
         #XY
-        new_scatter.pos_x=this_sphere.position[this_position_index[0]]
-        new_scatter.pos_y=this_sphere.position[this_position_index[1]]
+        ix_x=this_position_index[0]
+        ix_y=this_position_index[1]
+        
+        #define basic attributes
+        new_scatter.pos_x=this_sphere.position[ix_x]
+        new_scatter.pos_y=this_sphere.position[ix_y]
         
         #radius
         new_scatter.radius=this_sphere.radius
         
-        #define new 2D stess tensor
-        this_stress_tensor=np.zeros((2,2))
-        
-        try:
+        if which_direction=='xx':
             
-            for i in range(2):
-                
-                for j in range(2):
-                    
-                    this_stress_tensor[i,j]=this_sphere.stress_tensor[this_position_index[i],this_position_index[j]]
+            new_scatter.pos_z=this_sphere.stress_tensor[ix_x,ix_x]
         
-        except:
+        if which_direction=='yy':
             
-            continue
-        
-        #Initialize and gain attributes
-        new_stress_2D.Init(this_stress_tensor)
-        
-        #x normal stress
-        if which_output_mode=='x_normal':
-        
-            new_scatter.pos_z=new_stress_2D.x_normal_stress
+            new_scatter.pos_z=this_sphere.stress_tensor[ix_y,ix_y]
             
-        #y normal stress
-        if which_output_mode=='y_normal':
-        
-            new_scatter.pos_z=new_stress_2D.y_normal_stress
-         
-        #shear stress
-        if which_output_mode=='shear':
-        
-            new_scatter.pos_z=new_stress_2D.shear_stress
-        
-        #mean normal stress
-        if which_output_mode=='mean_normal':
-        
-            new_scatter.pos_z=new_stress_2D.mean_normal_stress
-        
-        #maximal shear stress
-        if which_output_mode=='maximal_shear':
+        if which_direction=='xy':
             
-            new_scatter.pos_z=new_stress_2D.maximal_shear_stress
+            new_scatter.pos_z=0.5*(this_sphere.stress_tensor[ix_x,ix_y]+\
+                                   this_sphere.stress_tensor[ix_y,ix_x])
             
-        #delete scatter with infinite value
-        if new_scatter.pos_z==np.inf or new_scatter.pos_z==-np.inf:
-
-            continue
-            
+#        #define new 2D stess tensor
+#        this_stress_tensor=np.zeros((2,2))
+#        
+#        try:
+#            
+#            for i in range(2):
+#                
+#                for j in range(2):
+#                    
+#                    this_stress_tensor[i,j]=this_sphere.stress_tensor[this_position_index[i],this_position_index[j]]
+#        
+#        except:
+#            
+#            continue
+#        
+#        #Initialize and gain attributes
+#        new_stress_2D.Init(this_stress_tensor)
+#        
+#        #x normal stress
+#        if which_output_mode=='x_normal':
+#        
+#            new_scatter.pos_z=new_stress_2D.x_normal_stress
+#            
+#        #y normal stress
+#        if which_output_mode=='y_normal':
+#        
+#            new_scatter.pos_z=new_stress_2D.y_normal_stress
+#         
+#        #shear stress
+#        if which_output_mode=='shear':
+#        
+#            new_scatter.pos_z=new_stress_2D.shear_stress
+#        
+#        #mean normal stress
+#        if which_output_mode=='mean_normal':
+#        
+#            new_scatter.pos_z=new_stress_2D.mean_normal_stress
+#        
+#        #maximal shear stress
+#        if which_output_mode=='maximal_shear':
+#            
+#            new_scatter.pos_z=new_stress_2D.maximal_shear_stress
+#            
+#        #delete scatter with infinite value
+#        if new_scatter.pos_z==np.inf or new_scatter.pos_z==-np.inf:
+#
+#            continue
+#            
         scatters.append(new_scatter)
         
     return scatters

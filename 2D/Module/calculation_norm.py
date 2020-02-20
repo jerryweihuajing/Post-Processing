@@ -44,7 +44,7 @@ def StressNorm(which_spheres_list,which_plane,which_output_mode):
         this_spheres=which_spheres_list[k]
         
         #scatters
-        scatters=C_S.ScattersStress(this_spheres,which_plane,'stress',which_output_mode)
+        scatters=C_S.ScattersStress(this_spheres,which_plane,'xx')
         
         #z_values
         z_values=[this_discrete_point.pos_z for this_discrete_point in scatters]  

@@ -24,7 +24,6 @@ from o_mesh import mesh
 from o_square import square
 from o_circle import circle
 from o_scatter import scatter
-from o_strain_2D import strain_2D
 
 import operation_dictionary as O_D
 
@@ -35,7 +34,6 @@ import calculation_image as C_Im
 import calculation_velocity as C_V
 import calculation_rasterization as C_R
 import calculation_interpolation as C_In
-import calculation_spheres_boundary as C_S_B
 
 from variable_yade_color import yade_rgb_list
 
@@ -386,7 +384,7 @@ Args:
     pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
-    which_direction: ['x','y','z'] displacement in 3 different direction
+    which_surface_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
@@ -395,22 +393,52 @@ Returns:
 def SpheresVelocityMatrix(pixel_step,
                           which_spheres,
                           which_plane,
-                          which_direction,
-                          which_interpolation,
-                          show=False):
+                          which_surface_map,
+                          which_interpolation):
     
-    #scatter objects
-    scatters=C_V.ScattersVelocity(which_spheres,
-                                  which_plane,
-                                  which_direction)    
-
-    #top surface map
-    surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
+    #scatter objects: components of velocity
+    scatters_velocity_x=C_V.ScattersVelocity(which_spheres,which_plane,'x')    
+    scatters_velocity_y=C_V.ScattersVelocity(which_spheres,which_plane,'y')  
     
+    #matrix of velocity components
     if which_interpolation=='scatters_in_grid':
         
-        return C_In.ScattersInGridIDW(scatters,pixel_step,surface_map,show)
+        velocity_x=C_In.ScattersInGridIDW(scatters_velocity_x,pixel_step,which_surface_map)
+        velocity_y=C_In.ScattersInGridIDW(scatters_velocity_y,which_surface_map)
+
+    #axis=0 x gradient, axis=1 y gradient
+    gradient_xx=np.gradient(velocity_x,axis=0)
+    gradient_xy=np.gradient(velocity_x,axis=1)
+    gradient_yx=np.gradient(velocity_y,axis=0)
+    gradient_yy=np.gradient(velocity_y,axis=1)
     
+    #make sure shape is same
+    if not (np.shape(gradient_xx)==np.shape(gradient_xy)==np.shape(gradient_yx)==np.shape(gradient_yy)):
+        
+        print('=> ERROR: Incorrect dimension')
+        
+        return
+    
+    #map between name and strain
+    map_velocity={}
+    
+    map_velocity['x velocity']=velocity_x
+    map_velocity['y velocity']=velocity_y
+    map_velocity['x gradient of x velocity']=gradient_xx
+    map_velocity['y gradient of x velocity']=gradient_xy
+    map_velocity['x gradient of y velocity']=gradient_yx
+    map_velocity['y gradient of y velocity']=gradient_yy
+    
+    map_velocity['resultant velocity']=np.sqrt(map_velocity['x velocity']**2+map_velocity['y velocity']**2)   
+    map_velocity['x gradient of resultant velocity']=np.gradient(map_velocity['resultant velocity'],axis=0)
+    map_velocity['y gradient of resultant velocity']=np.gradient(map_velocity['resultant velocity'],axis=1)
+    
+    map_velocity['resultant gradient of x velocity']=np.sqrt(map_velocity['x gradient of x velocity']**2+map_velocity['y gradient of x displacement']**2)
+    map_velocity['resultant gradient of y velocity']=np.sqrt(map_velocity['x gradient of y velocity']**2+map_velocity['y gradient of y displacement']**2)
+    map_velocity['resultant gradient of resultant velocity']=np.sqrt(map_velocity['x gradient of resultant velocity']**2+map_velocity['y gradient of resultant velocity']**2)
+    
+    return map_velocity
+
 #------------------------------------------------------------------------------
 """
 Displacement interpolation image (mesh points)
@@ -421,6 +449,7 @@ Args:
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_direction: ['x','y','z'] displacement in 3 different direction
     which_input_mode: ['periodical','cumulative','instantaneous'] dispalcement mode
+    which_surface_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
@@ -431,21 +460,18 @@ def SpheresDisplacementMatrix(pixel_step,
                               which_plane,
                               which_direction,
                               which_input_mode,
-                              which_interpolation,
-                              show=False):
+                              which_surface_map,
+                              which_interpolation):
     
     #scatter objects
     scatters=C_Strain.ScattersDisplacement(which_spheres,
                                            which_plane,
                                            which_direction,
-                                           which_input_mode.split('_')[0])  
-
-    #top surface map
-    surface_map=C_S_B.SpheresTopMap(which_spheres,pixel_step)
+                                           which_input_mode.split('_')[0])
     
     if which_interpolation=='scatters_in_grid':
         
-        return C_In.ScattersInGridIDW(scatters,pixel_step,surface_map,show)
+        return C_In.ScattersInGridIDW(scatters,pixel_step,which_surface_map)
     
 #------------------------------------------------------------------------------
 """
@@ -456,7 +482,7 @@ Args:
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_input_mode: ['periodical','cumulative','instantaneous'] dispalcement mode
-    which_output_mode: ['x_normal','y_normal','shear','volumetric','distortional']
+    which_surface_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter]
     
 Returns:
@@ -466,34 +492,36 @@ def SpheresStrainMatrix(pixel_step,
                         which_spheres,
                         which_plane,
                         which_input_mode,
-                        which_output_mode,
+                        which_surface_map,
                         which_interpolation):
     
     print('')
     print('-- Spheres Strain Matrix')
     
     #displacemnt in x direction
-    x_displacement=SpheresDisplacementMatrix(pixel_step,
+    displacement_x=SpheresDisplacementMatrix(pixel_step,
                                              which_spheres,
                                              which_plane,
                                              'x',
                                              which_input_mode,
+                                             which_surface_map,
                                              which_interpolation)
     
     #displacemnt in y direction
-    y_displacement=SpheresDisplacementMatrix(pixel_step,
+    displacement_y=SpheresDisplacementMatrix(pixel_step,
                                              which_spheres,
                                              which_plane,
                                              'y',
                                              which_input_mode,
+                                             which_surface_map,
                                              which_interpolation)
 
     #axis=0 x gradient
     #axis=1 y gradient
-    gradient_xx=np.gradient(x_displacement,axis=0)
-    gradient_xy=np.gradient(x_displacement,axis=1)
-    gradient_yx=np.gradient(y_displacement,axis=0)
-    gradient_yy=np.gradient(y_displacement,axis=1)
+    gradient_xx=np.gradient(displacement_x,axis=0)
+    gradient_xy=np.gradient(displacement_x,axis=1)
+    gradient_yx=np.gradient(displacement_y,axis=0)
+    gradient_yy=np.gradient(displacement_y,axis=1)
     
     #make sure shape is same
     if not (np.shape(gradient_xx)==np.shape(gradient_xy)==np.shape(gradient_yx)==np.shape(gradient_yy)):
@@ -502,64 +530,39 @@ def SpheresStrainMatrix(pixel_step,
         
         return
     
-    row,column=np.shape(gradient_xx)
+    #map between name and strain
+    map_strain={}
     
-    #result strain matrix
-    strain_object_matrix=np.full((row,column),strain_2D())
+    map_strain['x normal strain']=gradient_xx
+    map_strain['y normal strain']=gradient_yy
+    map_strain['shear strain']=gradient_yx+gradient_xy
+    map_strain['mean normal strain']=0.5*(gradient_xx+gradient_yy)
+    map_strain['diff normal strain']=0.5*(gradient_xx-gradient_yy)
     
-    '''generate strain objects'''
-    for i in range(row):
-        
-        for j in range(column):
-            
-            #defien new strain 2D object
-            new_strain_2D=strain_2D()
-            
-            #new 2D strain object and its strain tensor
-            this_strain_tensor=np.zeros((2,2))
-            
-            #give the value
-            this_strain_tensor[0,0]=gradient_xx[i,j]
-            this_strain_tensor[0,1]=(gradient_xy[i,j]+gradient_yx[i,j])/2
-            this_strain_tensor[1,0]=(gradient_xy[i,j]+gradient_yx[i,j])/2
-            this_strain_tensor[1,1]=gradient_yy[i,j]
-
-            '''3D 2D Init is different'''
-            new_strain_2D.Init(cp.deepcopy(this_strain_tensor))
-
-            strain_object_matrix[i,j]=cp.deepcopy(new_strain_2D)
-            
-    '''generate strain values'''
-    strain_value_matrix=np.zeros(np.shape(strain_object_matrix))
+    map_strain['maximal normal strain']=map_strain['mean normal strain']+np.sqrt(map_strain['diff normal strain']**2+(0.5*map_strain['shear strain'])**2)
+    map_strain['minimal normal strain']=map_strain['mean normal strain']-np.sqrt(map_strain['diff normal strain']**2+(0.5*map_strain['shear strain'])**2)
+    map_strain['maximal shear strain']=0.5*(map_strain['maximal normal strain']-map_strain['minimal normal strain'])
+    map_strain['minimal shear strain']=0.5*(map_strain['minimal normal strain']-map_strain['maximal normal strain'])
     
-    for i in range(row):
-        
-        for j in range(column):
+    map_strain['volumetric strain']=2*map_strain['mean normal strain']
+    map_strain['distortional strain']=map_strain['diff normal strain']**2+(0.5*map_strain['shear strain'])**2
 
-            this_strain_2D=cp.deepcopy(strain_object_matrix[i,j])
-          
-            if which_output_mode=='x_normal':
-  
-                strain_value_matrix[i,j]=this_strain_2D.x_normal_strain
-                
-            if which_output_mode=='y_normal':
-  
-                strain_value_matrix[i,j]=this_strain_2D.y_normal_strain
-                
-            if which_output_mode=='shear':
-                
-                strain_value_matrix[i,j]=this_strain_2D.shear_strain
-                
-            if which_output_mode=='volumetric':
-  
-                strain_value_matrix[i,j]=this_strain_2D.volumetric_strain
-            
-            if which_output_mode=='distortional':
-  
-                strain_value_matrix[i,j]=this_strain_2D.distortional_strain
-                
-    '''return a map of matrix!'''
-    return strain_value_matrix
+    map_strain['x displacement']=displacement_x
+    map_strain['y displacement']=displacement_y
+    map_strain['x gradient of x displacement']=gradient_xx
+    map_strain['y gradient of x displacement']=gradient_xy
+    map_strain['x gradient of y displacement']=gradient_yx
+    map_strain['y gradient of y displacement']=gradient_yy
+    
+    map_strain['resultant displacement']=np.sqrt(map_strain['x displacement']**2+map_strain['y displacement']**2)   
+    map_strain['x gradient of resultant displacement']=np.gradient(map_strain['resultant displacement'],axis=0)
+    map_strain['y gradient of resultant displacement']=np.gradient(map_strain['resultant displacement'],axis=1)
+    
+    map_strain['resultant gradient of x displacement']=np.sqrt(map_strain['x gradient of x displacement']**2+map_strain['y gradient of x displacement']**2)
+    map_strain['resultant gradient of y displacement']=np.sqrt(map_strain['x gradient of y displacement']**2+map_strain['y gradient of y displacement']**2)
+    map_strain['resultant gradient of resultant displacement']=np.sqrt(map_strain['x gradient of resultant displacement']**2+map_strain['y gradient of resultant displacement']**2)
+    
+    return map_strain
     
 #------------------------------------------------------------------------------
 """
@@ -580,8 +583,6 @@ def SpheresStressMatrix(pixel_step,
                         which_plane,
                         which_surface_map,
                         which_interpolation):
-    
-    '''same calculation as strain'''
 
     #component of stress scatters object
     scatters_stress_xx=C_Stress.ScattersStress(which_spheres,which_plane,'xx')   
@@ -591,18 +592,20 @@ def SpheresStressMatrix(pixel_step,
     #matrix of stress components
     if which_interpolation=='scatters_in_grid':
     
-        matrix_stress_xx=C_In.ScattersInGridIDW(scatters_stress_xx,pixel_step,which_surface_map)
-        matrix_stress_yy=C_In.ScattersInGridIDW(scatters_stress_yy,pixel_step,which_surface_map)
-        matrix_stress_xy=C_In.ScattersInGridIDW(scatters_stress_xy,pixel_step,which_surface_map)
+        stress_xx=C_In.ScattersInGridIDW(scatters_stress_xx,pixel_step,which_surface_map)
+        stress_yy=C_In.ScattersInGridIDW(scatters_stress_yy,pixel_step,which_surface_map)
+        stress_xy=C_In.ScattersInGridIDW(scatters_stress_xy,pixel_step,which_surface_map)
     
     #mao between name and stress
     map_stress={}
     
-    map_stress['x normal stress']=matrix_stress_xx
-    map_stress['y normal stress']=matrix_stress_yy
-    map_stress['shear stress']=matrix_stress_xy
-    map_stress['mean normal stress']=0.5*(matrix_stress_xx+matrix_stress_xy)
-    map_stress['diff normal stress']=0.5*(matrix_stress_xx-matrix_stress_xy)
+    map_stress['x normal stress']=stress_xx
+    map_stress['y normal stress']=stress_yy
+    map_stress['shear stress']=stress_xy
+    
+    map_stress['mean normal stress']=0.5*(stress_xx+stress_yy)
+    map_stress['diff normal stress']=0.5*(stress_xx-stress_yy)
+    
     map_stress['maximal normal stress']=map_stress['mean normal stress']+np.sqrt(map_stress['diff normal stress']**2+map_stress['shear stress']**2)
     map_stress['minimal normal stress']=map_stress['mean normal stress']-np.sqrt(map_stress['diff normal stress']**2+map_stress['shear stress']**2)
     map_stress['maximal shear stress']=0.5*(map_stress['maximal normal stress']-map_stress['minimal normal stress'])
@@ -618,25 +621,8 @@ Args:
     pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
-    which_input_mode: ['structural_deformation',
-                       'stress',
-                       'velocity',
-                       'cumulative_strain',
-                       'periodical strain',
-                       'instantaneous_strain',
-                       'cumulative_displacement',
-                       'periodical_displacement',
-                       'instantaneous_displacement']
-    which_output_mode: '[x_normal',
-                        'y_normal',
-                        'shear',
-                        'mean_normal',
-                        'maximal_shear,
-                        'volumetric',
-                        'distortional',
-                        'x',
-                        'y',
-                        'resultant']
+    which_input_mode: ['stress','velocity','cumulative_strain','periodical strain','instantaneous_strain']
+    which_surface_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
@@ -646,40 +632,31 @@ def SpheresValueMatrix(pixel_step,
                        which_spheres,
                        which_plane,
                        which_input_mode,
-                       which_output_mode,
+                       which_surface_map,
                        which_interpolation):
     
-    if which_input_mode=='stress':
-        
-        return SpheresStressMatrix(pixel_step,
-                                   which_spheres,
-                                   which_plane,
-                                   which_input_mode,
-                                   which_output_mode,
-                                   which_interpolation)
-        
     if 'strain' in which_input_mode:
         
         return SpheresStrainMatrix(pixel_step,
                                    which_spheres,
                                    which_plane,
                                    which_input_mode,
-                                   which_output_mode,
+                                   which_surface_map,
+                                   which_interpolation)
+        
+    if which_input_mode=='stress':
+        
+        return SpheresStressMatrix(pixel_step,
+                                   which_spheres,
+                                   which_plane,
+                                   which_surface_map,
                                    which_interpolation)
     
-    if 'velocity' in which_input_mode:
+    if which_input_mode=='velocity':
         
         return SpheresVelocityMatrix(pixel_step,
                                      which_spheres,
                                      which_plane,
-                                     which_output_mode,
+                                     which_surface_map,
                                      which_interpolation)
         
-    if 'displacement' in which_input_mode:
-        
-        return SpheresDisplacementMatrix(pixel_step,
-                                         which_spheres,
-                                         which_plane,
-                                         which_output_mode,
-                                         which_input_mode,
-                                         which_interpolation)

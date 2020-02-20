@@ -136,8 +136,8 @@ def CaseCalculation(which_case_path,
         this_surface_map=list_surface_map[k]
         
         print('')
-        print('-->',this_progress)
         print('======')
+        print('-->',this_progress)
         
         #this txt name
         this_txt_name=this_percentage+'.txt'

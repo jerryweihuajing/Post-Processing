@@ -118,7 +118,7 @@ def ModeCalculation(which_case_path,
             
         if which_input_mode=='structural_deformation':
             
-            values_folder=output_folder+'\\structural deformation'    
+            O_P.GenerateFolder(values_folder=output_folder+'\\'+this_name)
             
             #Spheres image
             spheres_grids=C_S_M.SpheresImage(this_spheres,pixel_step)
@@ -145,7 +145,7 @@ def ModeCalculation(which_case_path,
                 #folder name and matrix
                 this_name,this_img=list(map_matrix.items())
 
-                values_folder=output_folder+'\\'+this_name
+                O_P.GenerateFolder(values_folder=output_folder+'\\'+this_name)
                 
                 #save as txt
                 np.savetxt(values_folder+'\\'+this_txt_name,this_img,fmt="%.3f",delimiter=",")   

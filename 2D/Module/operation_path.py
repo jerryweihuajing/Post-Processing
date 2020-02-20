@@ -35,7 +35,6 @@ strain: xx strain
 '''
     
 import os
-import copy as cp
 
 import BETA_operation_path as B_O_P
 import operation_dictionary as O_D

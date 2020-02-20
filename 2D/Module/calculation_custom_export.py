@@ -50,7 +50,12 @@ Plot different phase image in a custom style
 
 Args:
     which_case_path: load path of all input files
-    which_input_mode: ['structural_deformation','stress','velocity','cumulative_strain','periodical strain','instantaneous_strain']
+    which_mode_list: ['structural_deformation',
+                      'stress',
+                      'velocity',
+                      'cumulative_strain',
+                      'periodical strain',
+                      'instantaneous_strain']
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     pixel_step: length of single pixel (int)
@@ -60,18 +65,43 @@ Args:
 Returns:
     None
 """
-def ModeCalculation(which_case_path,
-                    which_input_mode,
+def CaseCalculation(which_case_path,
+                    which_mode_list=None,
                     which_plane='XoY',
                     which_interpolation='scatters_in_grid',
                     pixel_step=1,
                     test=False,
                     final_only=True):
     
-    print('')
-    print('-- Mode Calculation')
-    print('-> input mode:',which_input_mode.replace('_',' '))
+    #argument information
+    argument_str=''
     
+    for this_str in which_case_path.split('\\input\\'):
+        
+        argument_str+='\\'
+        argument_str+=this_str.split('\\')[-1]
+        
+    print('')
+    print('-- Case Calculation')
+    print('-> case:',argument_str.strip('\\'))
+    
+    print('')
+    print('...')
+    print('......')
+    
+    #standard mode of output
+    standard_mode=['structural_deformation',
+                   'stress',
+                   'velocity',
+                   'cumulative_strain',
+                   'periodical_strain',
+                   'instantaneous_strain']
+    
+    #default: all modes
+    if which_mode_list==None:
+        
+        which_mode_list=cp.deepcopy(standard_mode)
+        
     if test:
             
         pixel_step=23 
@@ -99,125 +129,64 @@ def ModeCalculation(which_case_path,
     #draws the form of different periods
     for k in range(len(spheres_list)):    
                    
-        print('')
-        print('======')
-        
         #file name and progress percentage
         this_file_name=file_names[k]
         this_progress=this_file_name.strip('.txt').strip('A_')
         this_percentage=this_progress.strip('progress=')
         this_surface_map=list_surface_map[k]
         
+        print('')
         print('-->',this_progress)
-
+        print('======')
+        
         #this txt name
         this_txt_name=this_percentage+'.txt'
         
         #spheres system
         this_spheres=spheres_list[k] 
             
-        if which_input_mode=='structural_deformation':
-            
-            values_folder=output_folder+'\\structural deforamtion'
-            
-            O_P.GenerateFolder(values_folder)
-            
-            #Spheres image
-            spheres_grids=C_S_M.SpheresImage(this_spheres,pixel_step)
-            
-            #image
-            this_img=C_I.ImgFlip(spheres_grids.img_color,0)
-            this_img_tag=C_I.ImgFlip(spheres_grids.img_tag,0)
+        for this_mode in which_mode_list:
 
-            #save as txt
-            np.savetxt(values_folder+'\\'+this_txt_name,this_img_tag,fmt="%.3f",delimiter=",") 
-
-        else:
-       
-            #final matrix map
-            map_matrix=C_S_M.SpheresValueMatrix(pixel_step,
-                                                this_spheres,
-                                                which_plane,
-                                                which_input_mode,
-                                                this_surface_map,
-                                                which_interpolation)
-            
-            for kk in range(len(map_matrix)):
+            print('')
+            print('---> input mode:',this_mode.replace('_',' '))
                 
-                #folder name and matrix
-                this_name,this_img=list(map_matrix.items())
+            if this_mode=='structural_deformation':
                 
-                values_folder=output_folder+'\\'+this_name
+                values_folder=output_folder+'\\structural deforamtion'
                 
                 O_P.GenerateFolder(values_folder)
                 
+                #Spheres image
+                spheres_grids=C_S_M.SpheresImage(this_spheres,pixel_step)
+                
+                #image
+                this_img=C_I.ImgFlip(spheres_grids.img_color,0)
+                this_img_tag=C_I.ImgFlip(spheres_grids.img_tag,0)
+    
                 #save as txt
-                np.savetxt(values_folder+'\\'+this_txt_name,this_img,fmt="%.3f",delimiter=",")   
-
-#------------------------------------------------------------------------------   
-"""
-Total export depending on mode list 
-
-Args:
-    which_case_path: load path of all input files
-    which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes 
-    which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
-    pixel_step: length of single pixel (int)
-    mode_list: output mode which user need
-    test: if there is a test with a small amount of spheres
-    values_only: (bool) whether it saves values only (default: True)
-    final_only: (bool) whether it calculate the final progress only (default: True)
+                np.savetxt(values_folder+'\\'+this_txt_name,this_img_tag,fmt="%.3f",delimiter=",") 
     
-Returns:
-    None
-"""    
-def CaseCalculation(which_case_path,
-                    which_plane='XoY',
-                    which_interpolation='scatters_in_grid',
-                    pixel_step=1,
-                    which_mode_list=None,
-                    test=False,
-                    values_only=True,
-                    final_only=True):
-    
-    #argument information
-    argument_str=''
-    
-    for this_str in which_case_path.split('\\input\\'):
-        
-        argument_str+='\\'
-        argument_str+=this_str.split('\\')[-1]
-        
-    print('')
-    print('-- Case Calculation')
-    print('-> case:',argument_str.strip('\\'))
-    
-    print('')
-    print('...')
-    print('......')
-
-    #standard mode of output
-    standard_mode=['structural_deformation',
-                   'stress',
-                   'velocity',
-                   'cumulative_strain',
-                   'periodical_strain',
-                   'instantaneous_strain']
-    
-    #default: all modes
-    if which_mode_list==None:
-        
-        which_mode_list=cp.deepcopy(standard_mode)
-        
-    for this_mode in which_mode_list:
-        
-        ModeCalculation(which_case_path,
-                        this_mode,
-                        which_plane,
-                        which_interpolation,
-                        pixel_step,
-                        test,
-                        final_only)
+            else:
+           
+                #final matrix map
+                map_matrix=C_S_M.SpheresValueMatrix(pixel_step,
+                                                    this_spheres,
+                                                    which_plane,
+                                                    this_mode,
+                                                    this_surface_map,
+                                                    which_interpolation)
+                
+                for kk in range(len(map_matrix)):
+                    
+                    #folder name and matrix
+                    this_name,this_img=list(map_matrix.items())[kk]
+                    
+                    values_folder=output_folder+'\\'+this_name
+                    
+                    O_P.GenerateFolder(values_folder)
+                    
+                    #save as txt
+                    np.savetxt(values_folder+'\\'+this_txt_name,this_img,fmt="%.3f",delimiter=",")   
                 
 #------------------------------------------------------------------------------   
 """
@@ -230,7 +199,6 @@ Args:
     pixel_step: length of single pixel (int)
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
-    values_only: (bool) whether it saves values only (default: True)
     final_only: (bool) whether it calculate the final progress only (default: True)
     
 Returns:
@@ -242,19 +210,17 @@ def ExperimentCalculation(which_experiment_path,
                           pixel_step=1,
                           which_mode_list=None,
                           test=False,
-                          values_only=True,
                           final_only=True):
     
     #traverse
     for this_case_name in os.listdir(which_experiment_path+'\\input'):
         
         this_case_path=which_experiment_path+'\\input\\'+this_case_name
-        
+
         CaseCalculation(this_case_path,
+                        which_mode_list,
                         which_plane,
                         which_interpolation,
                         pixel_step,
-                        which_mode_list,
                         test,
-                        values_only,
                         final_only)        

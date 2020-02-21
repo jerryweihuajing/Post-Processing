@@ -156,6 +156,9 @@ def GlobalIDWInterpolation(which_scatters,
                            which_surface_map=None,
                            show=False):
     
+    print('')
+    print('-- Global IDW Interpolation')
+    
     #construct mesh points
     mesh_points=C_S_M.MeshGrid(which_scatters,grid_length,show=False)
     
@@ -214,7 +217,8 @@ def GlobalIDWInterpolation(which_scatters,
         plt.imshow(z_mesh_points)  
 
     return C_I.ImgFlip(C_I.ImgRotate(z_mesh_points),0)
- 
+
+'''surface is necessary to avoid void mesh point''' 
 #------------------------------------------------------------------------------   
 """
 Calculation of global inverse distance weighting
@@ -227,13 +231,12 @@ Args:
    
 Returns:
     mesh_points from inverse distance weighting interpolation
-""" 
-#==============================================================================  
-#Interpolation in each grid
-#surface is no need: skip the grid which has no discrete point inside
-'''surface is necessary to avoid void mesh point'''
+"""
 def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=False):
             
+    print('')
+    print('-- Scatters In Grid IDW')
+    
     #generate grid object
     that_mesh=C_S_M.ScattersMesh(which_scatters,grid_length)
 

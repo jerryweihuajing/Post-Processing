@@ -61,9 +61,9 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
         new_scatter.radius=this_sphere.radius   
         
         #dispalcement mode
-        list_mode=['periodical',
-                   'cumulative',
-                   'instantaneous']
+        list_mode=['-Periodical',
+                   '-Cumulative',
+                   '-Instantaneous']
         
         list_displacement=[cp.deepcopy(this_sphere.periodical_displacement),
                            cp.deepcopy(this_sphere.cumulative_displacement),

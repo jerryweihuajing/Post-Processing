@@ -9,6 +9,7 @@ Created on Tue Nov 26 22:34:04 2019
 @title：Object-progress
 """
 
+import os
 import copy as cp
 import numpy as np
 
@@ -35,17 +36,15 @@ class progress:
                  case=None,
                  shape=None,
                  percentage=None,
-                 
                  rgb_map=None,
                  img_tag=None,
                  structural_deformation=None,
                  fracture=None,
+                 map_matrix=None,
                  outline_stress=None,
                  outline_strain=None,
                  outline_velocity=None,
-                 outline_displacement=None,
-                 map_stress_or_strain=None,
-                 map_velocity_or_displacement=None):
+                 outline_displacement=None):
         
         self.map_tag_id=map_tag_id
         self.map_id_spheres=map_id_spheres
@@ -53,19 +52,15 @@ class progress:
         self.case=case
         self.shape=shape
         self.percentage=percentage
-        
         self.rgb_map=rgb_map
         self.img_tag=img_tag
         self.structural_deformation=structural_deformation
         self.fracture=fracture
-        
+        self.map_matrix=map_matrix
         self.outline_stress=outline_stress
         self.outline_strain=outline_strain
         self.outline_velocity=outline_velocity
         self.outline_displacement=outline_displacement
-        
-        self.map_stress_or_strain=map_stress_or_strain
-        self.map_velocity_or_displacement=map_velocity_or_displacement
         
     def InitCalculation(self,file_path):
         
@@ -170,6 +165,18 @@ class progress:
         
         if not lite:
             
+            #init map of matrix
+            self.map_matrix={}
+            
+            case_path=progress_path.split['\\sturctural deformation'][0]
+            
+            list_title=os.listdir(case_path)
+            
+            for this_title in os.listdir(case_path):
+                
+                this_matrix_path=progress_path.replace('sturctural deformation',this_title)
+                
+                self.map_matrix[this_title]
             list_post_fix=['stress\\mean normal',
                            'stress\\maximal shear',
                            'cumulative strain\\volumetric',

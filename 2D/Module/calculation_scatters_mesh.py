@@ -180,7 +180,7 @@ Returns:
 def ScattersMesh(which_scatters,grid_length,show=False):
 
     print('')
-    print('-- Discrete Points Grids')
+    print('-- Scatters Mesh')
     print('-> grid length:',grid_length)
     
     #coordinates boundary of mesh

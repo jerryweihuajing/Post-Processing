@@ -90,12 +90,12 @@ def CaseCalculation(which_case_path,
     print('......')
     
     #standard mode of output
-    standard_mode=['structural_deformation',
-                   'stress',
-                   'velocity',
-                   'cumulative_strain',
-                   'periodical_strain',
-                   'instantaneous_strain']
+    standard_mode=['Structural Deformation',
+                   'Stress',
+                   'Velocity',
+                   '-Cumulative',
+                   '-Periodical',
+                   '-Instantaneous']
     
     #default: all modes
     if which_mode_list==None:
@@ -150,9 +150,9 @@ def CaseCalculation(which_case_path,
             print('')
             print('---> input mode:',this_mode.replace('_',' '))
                 
-            if this_mode=='structural_deformation':
+            if this_mode=='Structural Deformation':
                 
-                values_folder=output_folder+'\\structural deforamtion'
+                values_folder=output_folder+'\\Structural Deforamtion'
                 
                 O_P.GenerateFolder(values_folder)
                 

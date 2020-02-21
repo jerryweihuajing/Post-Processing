@@ -403,17 +403,30 @@ def SpheresVelocityMatrix(pixel_step,
     #matrix of velocity components
     if which_interpolation=='scatters_in_grid':
         
-        velocity_x=C_In.ScattersInGridIDW(scatters_velocity_x,pixel_step,which_surface_map)
-        velocity_y=C_In.ScattersInGridIDW(scatters_velocity_y,which_surface_map)
+        X=C_In.ScattersInGridIDW(scatters_velocity_x,pixel_step,which_surface_map)
+        Y=C_In.ScattersInGridIDW(scatters_velocity_y,pixel_step,which_surface_map)
 
     #axis=0 x gradient, axis=1 y gradient
-    gradient_xx=np.gradient(velocity_x,axis=0)
-    gradient_xy=np.gradient(velocity_x,axis=1)
-    gradient_yx=np.gradient(velocity_y,axis=0)
-    gradient_yy=np.gradient(velocity_y,axis=1)
+    X_x=np.gradient(X,axis=1)
+    X_y=np.gradient(X,axis=0)
+    Y_x=np.gradient(Y,axis=1)
+    Y_y=np.gradient(Y,axis=0)
+
+    #resultant displacement
+    V=np.sqrt(X**2+Y**2) 
+    V_x=np.gradient(V,axis=1)
+    V_y=np.gradient(V,axis=0)
     
     #make sure shape is same
-    if not (np.shape(gradient_xx)==np.shape(gradient_xy)==np.shape(gradient_yx)==np.shape(gradient_yy)):
+    if not (np.shape(X)==\
+            np.shape(Y)==\
+            np.shape(V)==\
+            np.shape(V_x)==\
+            np.shape(V_y)==\
+            np.shape(X_y)==\
+            np.shape(Y_y)==\
+            np.shape(X_x)==\
+            np.shape(Y_x)):
         
         print('=> ERROR: Incorrect dimension')
         
@@ -422,23 +435,23 @@ def SpheresVelocityMatrix(pixel_step,
     #map between name and strain
     map_velocity={}
     
-    map_velocity['x velocity']=velocity_x
-    map_velocity['y velocity']=velocity_y
-    map_velocity['x gradient of x velocity']=gradient_xx
-    map_velocity['y gradient of x velocity']=gradient_xy
-    map_velocity['x gradient of y velocity']=gradient_yx
-    map_velocity['y gradient of y velocity']=gradient_yy
+    map_velocity['X']=X
+    map_velocity['Y']=Y
+    map_velocity['X Gradient of X']=X_x
+    map_velocity['Y Gradient of X']=X_y
+    map_velocity['X Gradient of Y']=Y_x
+    map_velocity['Y Gradient of Y']=Y_y
     
-    map_velocity['resultant velocity']=np.sqrt(map_velocity['x velocity']**2+map_velocity['y velocity']**2)   
-    map_velocity['x gradient of resultant velocity']=np.gradient(map_velocity['resultant velocity'],axis=0)
-    map_velocity['y gradient of resultant velocity']=np.gradient(map_velocity['resultant velocity'],axis=1)
+    map_velocity['Resultant']=V  
+    map_velocity['X Gradient of Resultant']=V_x
+    map_velocity['Y Gradient of Resultant']=V_y
     
-    map_velocity['resultant gradient of x velocity']=np.sqrt(map_velocity['x gradient of x velocity']**2+map_velocity['y gradient of x displacement']**2)
-    map_velocity['resultant gradient of y velocity']=np.sqrt(map_velocity['x gradient of y velocity']**2+map_velocity['y gradient of y displacement']**2)
-    map_velocity['resultant gradient of resultant velocity']=np.sqrt(map_velocity['x gradient of resultant velocity']**2+map_velocity['y gradient of resultant velocity']**2)
+    map_velocity['Resultant Gradient of X']=np.sqrt(X_x**2+X_y**2)
+    map_velocity['Resultant Gradient of Y']=np.sqrt(Y_x**2+Y_y**2)
+    map_velocity['Resultant Gradient of Resultant']=np.sqrt(V_x**2+V_y**2)
     
-    return map_velocity
-
+    return dict(zip([this_key+' Velocity' for this_key in list(map_velocity.keys())],list(map_velocity.values())))
+    
 #------------------------------------------------------------------------------
 """
 Displacement interpolation image (mesh points)
@@ -499,32 +512,32 @@ def SpheresStrainMatrix(pixel_step,
     print('-- Spheres Strain Matrix')
     
     #displacemnt in x direction
-    displacement_x=SpheresDisplacementMatrix(pixel_step,
-                                             which_spheres,
-                                             which_plane,
-                                             'x',
-                                             which_input_mode,
-                                             which_surface_map,
-                                             which_interpolation)
+    X=SpheresDisplacementMatrix(pixel_step,
+                                which_spheres,
+                                which_plane,
+                                'x',
+                                which_input_mode,
+                                which_surface_map,
+                                which_interpolation)
     
     #displacemnt in y direction
-    displacement_y=SpheresDisplacementMatrix(pixel_step,
-                                             which_spheres,
-                                             which_plane,
-                                             'y',
-                                             which_input_mode,
-                                             which_surface_map,
-                                             which_interpolation)
+    Y=SpheresDisplacementMatrix(pixel_step,
+                                which_spheres,
+                                which_plane,
+                                'y',
+                                which_input_mode,
+                                which_surface_map,
+                                which_interpolation)
 
-    #axis=0 x gradient
-    #axis=1 y gradient
-    gradient_xx=np.gradient(displacement_x,axis=0)
-    gradient_xy=np.gradient(displacement_x,axis=1)
-    gradient_yx=np.gradient(displacement_y,axis=0)
-    gradient_yy=np.gradient(displacement_y,axis=1)
-    
+    #axis=0 x gradient, axis=1 y gradient
+    ε_xx=np.gradient(X,axis=1)
+    ε_yy=np.gradient(Y,axis=0)
+    γ_xy=np.gradient(Y,axis=1)+np.gradient(X,axis=0)
+
     #make sure shape is same
-    if not (np.shape(gradient_xx)==np.shape(gradient_xy)==np.shape(gradient_yx)==np.shape(gradient_yy)):
+    if not (np.shape(ε_xx)==\
+            np.shape(ε_yy)==\
+            np.shape(γ_xy)):
         
         print('=> ERROR: Incorrect dimension')
         
@@ -533,36 +546,70 @@ def SpheresStrainMatrix(pixel_step,
     #map between name and strain
     map_strain={}
     
-    map_strain['x normal strain']=gradient_xx
-    map_strain['y normal strain']=gradient_yy
-    map_strain['shear strain']=gradient_yx+gradient_xy
-    map_strain['mean normal strain']=0.5*(gradient_xx+gradient_yy)
-    map_strain['diff normal strain']=0.5*(gradient_xx-gradient_yy)
+    map_strain['X Normal']=ε_xx
+    map_strain['Y Normal']=ε_yy
+    map_strain['Shear Strain']=γ_xy
+    map_strain['Mean Normal']=0.5*(ε_xx+ε_yy)
+    map_strain['Diff Normal']=0.5*(ε_xx-ε_yy)
     
-    map_strain['maximal normal strain']=map_strain['mean normal strain']+np.sqrt(map_strain['diff normal strain']**2+(0.5*map_strain['shear strain'])**2)
-    map_strain['minimal normal strain']=map_strain['mean normal strain']-np.sqrt(map_strain['diff normal strain']**2+(0.5*map_strain['shear strain'])**2)
-    map_strain['maximal shear strain']=0.5*(map_strain['maximal normal strain']-map_strain['minimal normal strain'])
-    map_strain['minimal shear strain']=0.5*(map_strain['minimal normal strain']-map_strain['maximal normal strain'])
+    map_strain['Maximal Normal']=0.5*(ε_xx+ε_yy)+np.sqrt((0.5*(ε_xx-ε_yy))**2+(0.5*γ_xy)**2)
+    map_strain['Minimal Normal']=0.5*(ε_xx+ε_yy)-np.sqrt((0.5*(ε_xx-ε_yy))**2+(0.5*γ_xy)**2)
+    map_strain['Maximal Shear']=+np.sqrt((0.5*(ε_xx-ε_yy))**2+(0.5*γ_xy)**2)
+    map_strain['Minimal Shear']=-np.sqrt((0.5*(ε_xx-ε_yy))**2+(0.5*γ_xy)**2)
     
-    map_strain['volumetric strain']=2*map_strain['mean normal strain']
-    map_strain['distortional strain']=map_strain['diff normal strain']**2+(0.5*map_strain['shear strain'])**2
-
-    map_strain['x displacement']=displacement_x
-    map_strain['y displacement']=displacement_y
-    map_strain['x gradient of x displacement']=gradient_xx
-    map_strain['y gradient of x displacement']=gradient_xy
-    map_strain['x gradient of y displacement']=gradient_yx
-    map_strain['y gradient of y displacement']=gradient_yy
+    map_strain['Volumetric']=ε_xx+ε_yy
+    map_strain['Distortional']=(0.5*(ε_xx-ε_yy))**2+(0.5*γ_xy)**2
+ 
+    #x, y gradient of X, Y
+    X_x=np.gradient(X,axis=1)
+    X_y=np.gradient(X,axis=0)
+    Y_x=np.gradient(Y,axis=1)
+    Y_y=np.gradient(Y,axis=0)
     
-    map_strain['resultant displacement']=np.sqrt(map_strain['x displacement']**2+map_strain['y displacement']**2)   
-    map_strain['x gradient of resultant displacement']=np.gradient(map_strain['resultant displacement'],axis=0)
-    map_strain['y gradient of resultant displacement']=np.gradient(map_strain['resultant displacement'],axis=1)
+    #resultant displacement
+    D=np.sqrt(X**2+Y**2) 
+    D_x=np.gradient(D,axis=1)
+    D_y=np.gradient(D,axis=0)
     
-    map_strain['resultant gradient of x displacement']=np.sqrt(map_strain['x gradient of x displacement']**2+map_strain['y gradient of x displacement']**2)
-    map_strain['resultant gradient of y displacement']=np.sqrt(map_strain['x gradient of y displacement']**2+map_strain['y gradient of y displacement']**2)
-    map_strain['resultant gradient of resultant displacement']=np.sqrt(map_strain['x gradient of resultant displacement']**2+map_strain['y gradient of resultant displacement']**2)
+    #make sure shape is same
+    if not (np.shape(X)==\
+            np.shape(Y)==\
+            np.shape(D)==\
+            np.shape(D_x)==\
+            np.shape(D_y)==\
+            np.shape(X_y)==\
+            np.shape(Y_y)==\
+            np.shape(X_x)==\
+            np.shape(Y_x)):
+        
+        print('=> ERROR: Incorrect dimension')
+        
+        return
     
-    return map_strain
+    #map between name and displacement
+    map_displacement={}
+    
+    map_displacement['X']=X
+    map_displacement['Y']=Y
+    map_displacement['X Gradient of X']=X_x
+    map_displacement['Y Gradient of X']=X_y
+    map_displacement['X Gradient of Y']=Y_x
+    map_displacement['Y Gradient of Y']=Y_y
+    
+    map_displacement['Resultant']=D  
+    map_displacement['X Gradient of Resultant']=D_x
+    map_displacement['Y Gradient of Resultant']=D_y
+    
+    map_displacement['Resultant Gradient of X']=np.sqrt(X_x**2+X_y**2)
+    map_displacement['Resultant Gradient of Y']=np.sqrt(Y_x**2+Y_y**2)
+    map_displacement['Resultant Gradient of Resultant']=np.sqrt(D_x**2+D_y**2)
+    
+    #add the mode to the tail of title
+    map_strain=dict(zip([this_key+' Strain'+which_input_mode for this_key in list(map_strain.keys())],list(map_strain.values())))
+    map_displacement=dict(zip([this_key+' Displacement'+which_input_mode for this_key in list(map_displacement.keys())],list(map_displacement.values())))
+    
+    '''{**Dict_A,**Dict_B}: merge the dict'''
+    return  {**map_strain,**map_displacement}
     
 #------------------------------------------------------------------------------
 """
@@ -585,33 +632,33 @@ def SpheresStressMatrix(pixel_step,
                         which_interpolation):
 
     #component of stress scatters object
-    scatters_stress_xx=C_Stress.ScattersStress(which_spheres,which_plane,'xx')   
-    scatters_stress_yy=C_Stress.ScattersStress(which_spheres,which_plane,'yy')  
-    scatters_stress_xy=C_Stress.ScattersStress(which_spheres,which_plane,'xy') 
+    scatters_σ_xx=C_Stress.ScattersStress(which_spheres,which_plane,'xx')   
+    scatters_σ_yy=C_Stress.ScattersStress(which_spheres,which_plane,'yy')  
+    scatters_τ_xy=C_Stress.ScattersStress(which_spheres,which_plane,'xy') 
     
     #matrix of stress components
     if which_interpolation=='scatters_in_grid':
     
-        stress_xx=C_In.ScattersInGridIDW(scatters_stress_xx,pixel_step,which_surface_map)
-        stress_yy=C_In.ScattersInGridIDW(scatters_stress_yy,pixel_step,which_surface_map)
-        stress_xy=C_In.ScattersInGridIDW(scatters_stress_xy,pixel_step,which_surface_map)
+        σ_xx=C_In.ScattersInGridIDW(scatters_σ_xx,pixel_step,which_surface_map)
+        σ_yy=C_In.ScattersInGridIDW(scatters_σ_yy,pixel_step,which_surface_map)
+        τ_xy=C_In.ScattersInGridIDW(scatters_τ_xy,pixel_step,which_surface_map)
     
     #mao between name and stress
     map_stress={}
     
-    map_stress['x normal stress']=stress_xx
-    map_stress['y normal stress']=stress_yy
-    map_stress['shear stress']=stress_xy
+    map_stress['X Normal']=σ_xx
+    map_stress['Y Normal']=σ_yy
+    map_stress['Shear Stress']=τ_xy
     
-    map_stress['mean normal stress']=0.5*(stress_xx+stress_yy)
-    map_stress['diff normal stress']=0.5*(stress_xx-stress_yy)
+    map_stress['Mean Normal']=0.5*(σ_xx+σ_yy)
+    map_stress['Diff Normal']=0.5*(σ_xx-σ_yy)
     
-    map_stress['maximal normal stress']=map_stress['mean normal stress']+np.sqrt(map_stress['diff normal stress']**2+map_stress['shear stress']**2)
-    map_stress['minimal normal stress']=map_stress['mean normal stress']-np.sqrt(map_stress['diff normal stress']**2+map_stress['shear stress']**2)
-    map_stress['maximal shear stress']=0.5*(map_stress['maximal normal stress']-map_stress['minimal normal stress'])
-    map_stress['minimal shear stress']=0.5*(map_stress['minimal normal stress']-map_stress['maximal normal stress'])
+    map_stress['Maximal Normal']=0.5*(σ_xx+σ_yy)+np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
+    map_stress['Minimal Normal']=0.5*(σ_xx+σ_yy)-np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
+    map_stress['Maximal Shear']=+np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
+    map_stress['Minimal Shear']=-np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
     
-    return map_stress
+    return dict(zip([this_key+' Stress' for this_key in list(map_stress.keys())],list(map_stress.values())))
     
 #------------------------------------------------------------------------------
 """
@@ -635,7 +682,7 @@ def SpheresValueMatrix(pixel_step,
                        which_surface_map,
                        which_interpolation):
     
-    if 'strain' in which_input_mode:
+    if '-' in which_input_mode:
         
         return SpheresStrainMatrix(pixel_step,
                                    which_spheres,
@@ -644,7 +691,7 @@ def SpheresValueMatrix(pixel_step,
                                    which_surface_map,
                                    which_interpolation)
         
-    if which_input_mode=='stress':
+    if which_input_mode=='Stress':
         
         return SpheresStressMatrix(pixel_step,
                                    which_spheres,
@@ -652,7 +699,7 @@ def SpheresValueMatrix(pixel_step,
                                    which_surface_map,
                                    which_interpolation)
     
-    if which_input_mode=='velocity':
+    if which_input_mode=='Velocity':
         
         return SpheresVelocityMatrix(pixel_step,
                                      which_spheres,

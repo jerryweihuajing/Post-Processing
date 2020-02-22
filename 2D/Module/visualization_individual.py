@@ -129,11 +129,10 @@ def IndividualStressOrStrain(which_progress,
     progress_percentage=which_progress.percentage
     
     #stress or strain value matrix to be plotted
-    value_matrix=which_progress.map_stress_or_strain[post_fix]
-
+    value_matrix=which_progress.map_matrix[post_fix]
+    
     #outline matrix
-    outline_stress=which_progress.outline_stress
-    outline_strain=which_progress.outline_strain
+    outline_matrix=which_progress.map_outline[post_fix]
 
     #fracture matrix
     fracture_matrix=which_progress.fracture
@@ -156,17 +155,13 @@ def IndividualStressOrStrain(which_progress,
         plt.imshow(C_I.ImgFlip(value_matrix,0),
                    cmap=C_G_P.GlobalColormap(post_fix),
                    norm=C_G_P.GlobalNorm(which_progress.case,post_fix))
+        
+    plt.imshow(np.flip(outline_matrix,0),cmap='gray')
     
     #plot outline
     if 'Stress' in post_fix:
         
-        plt.imshow(np.flip(outline_stress,0),cmap='gray')
-    
         with_fracture=True
-        
-    if 'Strain' in post_fix:
-        
-        plt.imshow(np.flip(outline_strain,0),cmap='gray')
         
     """regard cumulative distortional strain as fracture"""
     if with_fracture:

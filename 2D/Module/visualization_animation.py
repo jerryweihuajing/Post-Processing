@@ -16,6 +16,8 @@ import operation_path as O_P
 import visualization_individual as V_I
 import visualization_integral_analysis as V_I_A
 
+from variable_list_title import list_title
+
 #------------------------------------------------------------------------------
 """
 Plot progress integral analysis animation
@@ -141,17 +143,8 @@ def AnimationAll(output_folder,
     
     print('')
     print('-- Animation Analysis Plot')
-
-    #all individuals
-    list_post_fix=['Structural Deformation',
-                   'Mean Normal Stress',
-                   'Maximal Shear Stress',
-                   'Volumetric Strain-Periodical',
-                   'Distortional Strain-Periodical',
-                   'Volumetric Strain-Cumulative',
-                   'Distortional Strain-Cumulative']
         
     #stress and strain
-    for this_post_fix in list_post_fix:
+    for this_post_fix in list_title:
         
         AnimationIndividual(output_folder,which_case,this_post_fix,with_fracture)

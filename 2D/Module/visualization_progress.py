@@ -14,6 +14,8 @@ from o_progress import progress
 import visualization_individual as V_I
 import visualization_integral_analysis as V_I_A
 
+from variable_list_title import list_title
+
 #------------------------------------------------------------------------------   
 """
 Construct a progress object
@@ -58,24 +60,6 @@ def ProgressAllIndividuals(output_folder,
     print('')
     print('-- Progress All Individuals')
     print('-> progress='+which_progress.percentage)
-    
-    list_post_fix=['Structural Deformation',
-                   'Mean Normal Stress',
-                   'Maximal Shear Stress',
-                   'Volumetric Strain-Periodical',
-                   'Distortional Strain-Periodical',
-                   'Volumetric Strain-Cumulative',
-                   'Distortional Strain-Cumulative']
-    
-    list_title=['Structural Deformation',
-                'Mean Normal Stress',
-                'Maximal Shear Stress',
-                'Volumetric Strain-Cumulative',
-                'Distortional Strain-Cumulative',
-                'Resultant Velocity',
-                'Resultant Displacement-Cumulative',
-                'Volumetric Strain-Instantaneous',
-                'Distortional Strain-Instantaneous']
     
     #plot all postfix mode
     for this_post_fix in list_title:

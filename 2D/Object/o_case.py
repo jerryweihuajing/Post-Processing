@@ -168,11 +168,12 @@ class case:
     def InitVisualization(self,case_path):
         
         self.list_progress=[]
+        
         self.experiment=case_path.split('\\')[-3]
         self.condition=case_path.split('\\')[-1]
         
         #strutrual deformation path
-        folder_path=case_path+'\\structural deformation\\values\\'
+        folder_path=case_path+'\\Structural Deformation'
         
         #file names in pogress order
         file_names=O_P.FileNamesThisCase(folder_path)
@@ -180,7 +181,7 @@ class case:
         for file_name in file_names:
             
             #txt file path
-            structural_deformation_path=folder_path+file_name
+            structural_deformation_path=folder_path+'\\'+file_name
            
             self.list_progress.append(V_P.ProgressConstruction(structural_deformation_path,lite=False))
         

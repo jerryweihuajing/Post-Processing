@@ -22,14 +22,15 @@ import operation_path as O_P
 
 from o_sphere import sphere
 
+from variable_list_title import list_title
 from variable_yade_color import yade_rgb_list,yade_rgb_map
 
 #==============================================================================
 #object progress to manage data efficiently
 #==============================================================================            
 class progress:
-    
     def __init__(self,
+                 path=None,
                  map_tag_id=None,
                  map_id_spheres=None,
                  list_spheres=None,
@@ -45,7 +46,7 @@ class progress:
                  outline_strain=None,
                  outline_velocity=None,
                  outline_displacement=None):
-        
+        self.path=path
         self.map_tag_id=map_tag_id
         self.map_id_spheres=map_id_spheres
         self.list_spheres=list_spheres
@@ -141,6 +142,8 @@ class progress:
         
     def InitVisualization(self,progress_path,lite):
         
+        self.path=progress_path
+        
         if '100-500' in progress_path:
         
             self.shape=(100,500)
@@ -164,68 +167,27 @@ class progress:
         self.structural_deformation=C_I.ImageTag2RGB(self.img_tag,self.rgb_map)
         
         if not lite:
-            
-            #init map of matrix
+
+            case_path=progress_path.split('\\Structural Deformation')[0]
+           
+            #init map of matrix and outline
             self.map_matrix={}
-            
-            case_path=progress_path.split['\\sturctural deformation'][0]
-            
-            list_title=os.listdir(case_path)
+            self.map_outline={}
             
             for this_title in os.listdir(case_path):
                 
-                this_matrix_path=progress_path.replace('sturctural deformation',this_title)
-                
-                self.map_matrix[this_title]
-            list_post_fix=['stress\\mean normal',
-                           'stress\\maximal shear',
-                           'cumulative strain\\volumetric',
-                           'cumulative strain\\distortional',
-                           'velocity\\resultant',
-                           'cumulative displacement\\resultant',
-                           'instantaneous strain\\volumetric',
-                           'instantaneous strain\\distortional']
-            
-            #containing result matrix
-            matrix_list=[]
-            
-            for this_post_fix in list_post_fix:
-                
-                #stress and strain itself
-                file_path=progress_path.replace('structural deformation',this_post_fix)
-                
-                matrix_list.append(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(file_path))))
-                
-            self.mean_normal_stress,\
-            self.maximal_shear_stress,\
-            self.cumulative_volumrtric_strain,\
-            self.cumulative_distortional_strain,\
-            self.resultant_velocity,\
-            self.cumulative_resultant_displacement,\
-            self.instantaneous_distortional_strain,\
-            self.instantaneous_volumrtric_strain=matrix_list
-            
-            '''None list to present'''
-            #construct a map between post fix name and matrix
-            list_title=['Mean Normal Stress',
-                        'Maximal Shear Stress',
-                        'Volumetric Strain-Cumulative',
-                        'Distortional Strain-Cumulative',
-                        'Resultant Velocity',
-                        'Resultant Displacement-Cumulative',
-                        'Volumetric Strain-Instantaneous',
-                        'Distortional Strain-Instantaneous']
-            
-            #stress and strain map
-            self.map_stress_or_strain=dict(zip(list_title,matrix_list))
-        
+                if this_title in list_title:
+                    
+                    if this_title=='Structural Deformation':
+                    
+                        continue
+                    
+                    this_matrix_path=progress_path.replace('Structural Deformation',this_title)
+                    
+                    self.map_matrix[this_title]=C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(this_matrix_path)))
+                    self.map_outline[this_title]=C_M_O.OutlineFromMatrix(self.map_matrix[this_title])
+                    
             #fracture matrix
-            self.fracture=cp.deepcopy(self.map_stress_or_strain['Distortional Strain-Cumulative'])
+            self.fracture=cp.deepcopy(self.map_matrix['Distortional Strain-Cumulative'])
             
-            '''they are different for the existence of gradient calculation'''
-            #stress outline
-            self.outline_stress=C_M_O.OutlineFromMatrix(self.map_stress_or_strain['Mean Normal Stress'])
-         
-            #stress outline
-            self.outline_strain=C_M_O.OutlineFromMatrix(self.map_stress_or_strain['Volumetric Strain-Cumulative'])
-        
+            '''outlines are different for the existence of gradient calculation'''

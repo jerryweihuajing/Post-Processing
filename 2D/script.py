@@ -19,12 +19,12 @@ from __init__ import *
 case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
 
 #step 1
-C_C_E.CaseCalculation(case_path,final_only=False)
+#C_C_E.CaseCalculation(case_path,final_only=False)
+
+#step 2
+case_path=case_path.replace('input','output')
 #
-##step 2
-#case_path=case_path.replace('input','output')
-##
-#V_C.CaseVisualization(case_path)
+V_C.CaseVisualization(case_path)
 #         
 #case_folder=r'H:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input'
 #

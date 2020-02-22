@@ -15,6 +15,8 @@ import operation_path as O_P
 
 import visualization_individual as V_I
 
+from variable_list_title import list_title
+
 #------------------------------------------------------------------------------
 """
 Plot structural deformation series
@@ -172,33 +174,7 @@ def Series(output_folder,
     figure.savefig(post_fix_folder+post_fix_fig_name+'.png',dpi=300,bbox_inches='tight')
     
     plt.close()
-    
-##------------------------------------------------------------------------------
-#"""
-#Plot stress or strain series
-#
-#Args:
-#    output_folder: folder to contain result
-#    which_case: case object to be proccessed
-#    post_fix: post fix of txt file
-#    with_fracture: (bool) plot fracture or not 
-#    
-#Returns:
-#    None
-#"""
-#def Series(output_folder,
-#           which_case,
-#           post_fix,
-#           with_fracture=False):
-#    
-#    if post_fix=='Structural Deformation':
-#        
-#        SeriesStructuralDeformation(output_folder,which_case,with_fracture) 
-#        
-#    else:
-#           
-#        SeriesStressOrStrain(output_folder,which_case,post_fix,with_fracture)
-#        
+
 #------------------------------------------------------------------------------
 """
 Plot all series
@@ -218,15 +194,7 @@ def SeriesAll(output_folder,
     print('')
     print('-- Progress Plot')
     
-    list_post_fix=['Structural Deformation',
-                   'Mean Normal Stress',
-                   'Maximal Shear Stress',
-                   'Volumetric Strain-Periodical',
-                   'Distortional Strain-Periodical',
-                   'Volumetric Strain-Cumulative',
-                   'Distortional Strain-Cumulative']
-    
     #stress and strain progress
-    for this_post_fix in list_post_fix:        
+    for this_post_fix in list_title:        
         
         Series(output_folder,which_case,this_post_fix)

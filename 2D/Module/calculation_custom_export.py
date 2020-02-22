@@ -152,7 +152,7 @@ def CaseCalculation(which_case_path,
                 
             if this_mode=='Structural Deformation':
                 
-                values_folder=output_folder+'\\Structural Deforamtion'
+                values_folder=output_folder+'\\Structural Deformation'
                 
                 O_P.GenerateFolder(values_folder)
                 

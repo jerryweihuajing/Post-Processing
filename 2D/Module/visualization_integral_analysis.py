@@ -80,10 +80,10 @@ def SingleIntegralAnalysis(output_folder,
         list_post_fix=['Structural Deformation',
                        'Mean Normal Stress',
                        'Maximal Shear Stress',
-                       'Volumetric Strain-Periodical',
-                       'Distortional Strain-Periodical',
                        'Volumetric Strain-Cumulative',
-                       'Distortional Strain-Cumulative']
+                       'Distortional Strain-Cumulative'
+                       'Volumetric Strain-Periodical',
+                       'Distortional Strain-Periodical']
     
         #new picture and ax
         #100-1000

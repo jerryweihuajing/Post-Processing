@@ -11,8 +11,8 @@ Created on Thu Feb 13 23:03:54 2020
 
 from __init__ import *
 
-#version='lite'
-version='pro'
+version='lite'
+#version='pro'
 
 folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 folder_Figures=folder_output.replace('output','Figures')
@@ -24,9 +24,9 @@ for this_case_name in list_case_output:
     
     if version=='lite':
         
-        if this_case_name not in list_case_Figures or O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]==0:
+        if this_case_name not in list_case_Figures:
             
-            progress_folder=folder_output+'\\'+this_case_name+'\\structural deformation\\values'
+            progress_folder=folder_output+'\\'+this_case_name+'\\structural deformation'
             
             #looking for final progress by index of max
             list_percentage=[float(this_str.split('%')[0]) for this_str in os.listdir(progress_folder)]
@@ -38,7 +38,4 @@ for this_case_name in list_case_output:
             
     if version=='pro':
     
-        if this_case_name not in list_case_Figures or O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]!=174:
-            
-            V_C.CaseVisualization(folder_output+'\\'+this_case_name)
-            
+        V_C.CaseVisualization(folder_output+'\\'+this_case_name)

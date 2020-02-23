@@ -11,8 +11,8 @@ Created on Thu Feb 13 21:23:14 2020
 
 from __init__ import *
 
-#version='lite'
-version='pro'
+version='lite'
+#version='pro'
 
 folder_input=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input'
 folder_output=folder_input.replace('input','output')
@@ -26,11 +26,11 @@ for this_case_name in list_case_input:
         
         if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]==0:
             
-            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list=['structural_deformation'])
+            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list=['Structural Deformation'])
         
     if version=='pro':
         
-        if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]!=56:
+        if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]==122:
             
-            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list='standard',final_only=False,test=1)
+            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list='standard',final_only=False)
             

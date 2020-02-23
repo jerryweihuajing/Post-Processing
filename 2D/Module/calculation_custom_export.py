@@ -90,18 +90,26 @@ def CaseCalculation(which_case_path,
     print('......')
     
     #standard mode of output
+    all_mode=['Structural Deformation',
+              'Stress',
+              'Velocity',
+              '-Cumulative',
+              '-Periodical',
+              '-Instantaneous']
+    
     standard_mode=['Structural Deformation',
                    'Stress',
-                   'Velocity',
-                   '-Cumulative',
-                   '-Periodical',
-                   '-Instantaneous']
+                   '-Cumulative']
     
     #default: all modes
     if which_mode_list==None:
         
-        which_mode_list=cp.deepcopy(standard_mode)
+        which_mode_list=cp.deepcopy(all_mode)
         
+    if which_mode_list=='standard':
+        
+        which_mode_list=cp.deepcopy(standard_mode)
+    
     if test:
             
         pixel_step=23 
@@ -109,20 +117,23 @@ def CaseCalculation(which_case_path,
     #construct case object
     that_case=CaseGeneration(which_case_path)
 
-    #list of surface map
-    list_surface_map=[C_S_B.SpheresTopMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in that_case.list_A_progress]
-    
-    #list of spheres and file name list in this case
     if final_only:
+       
+        start_index=-1
         
-        spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_A_progress[-1:]]
-        file_names=O_P.FileNamesAB(which_case_path)[0][-1:]
-
     else:
         
-        spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_A_progress]
-        file_names=O_P.FileNamesAB(which_case_path)[0]
+        start_index=0
+        
+    #file name list
+    file_names=O_P.FileNamesAB(which_case_path)[0][start_index:]    
     
+    #list of spheres and
+    spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_A_progress[start_index:]]
+    
+    #list of surface map in this case
+    list_surface_map=[C_S_B.SpheresTopMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in that_case.list_A_progress[start_index:]]
+
     '''Medival fold will be generated as well'''
     output_folder=which_case_path.replace('input','output')
     

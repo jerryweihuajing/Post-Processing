@@ -16,7 +16,7 @@ import operation_path as O_P
 import visualization_individual as V_I
 import visualization_integral_analysis as V_I_A
 
-from variable_list_title import list_title
+from variable_list_title import list_title,flag_all
 
 #------------------------------------------------------------------------------
 """
@@ -144,7 +144,15 @@ def AnimationAll(output_folder,
     print('')
     print('-- Animation Analysis Plot')
         
+    if flag_all:
+                
+        real_list_title=list(which_case.list_progress[-1].map_matrix.keys())
+
+    else:
+        
+        real_list_title=list_title
+    
     #stress and strain
-    for this_post_fix in list_title:
+    for this_post_fix in real_list_title:
         
         AnimationIndividual(output_folder,which_case,this_post_fix,with_fracture)

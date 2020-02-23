@@ -14,7 +14,7 @@ from o_progress import progress
 import visualization_individual as V_I
 import visualization_integral_analysis as V_I_A
 
-from variable_list_title import list_title
+from variable_list_title import list_title,flag_all
 
 #------------------------------------------------------------------------------   
 """
@@ -61,8 +61,16 @@ def ProgressAllIndividuals(output_folder,
     print('-- Progress All Individuals')
     print('-> progress='+which_progress.percentage)
     
+    if flag_all:
+                
+        real_list_title=list(which_progress.map_matrix.keys())
+
+    else:
+        
+        real_list_title=list_title
+                
     #plot all postfix mode
-    for this_post_fix in list_title:
+    for this_post_fix in real_list_title:
         
         V_I.Individual(output_folder,
                        which_progress,

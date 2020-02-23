@@ -138,22 +138,57 @@ Returns:
 """
 def GlobalColormap(post_fix):
 
-    if 'Volumetric' in post_fix:
+    if 'Strain' in post_fix:
         
-        return 'RdBu'
-    
-    if 'Distortional' in post_fix:
+        if 'Volumetric' in post_fix:
+            
+            return 'RdBu'
         
-        return 'BrBG'
-    
-    if 'Normal' in post_fix:
+        if 'Distortional' in post_fix:
+            
+            return 'BrBG'
         
-        return 'gist_earth'
+        if 'Normal' in post_fix:
     
-    if 'Shear' in post_fix:
+            return 'RdGy'
         
-        return 'terrain'
+        if 'Shear' in post_fix:
+            
+            return 'PuOr'
+        
+    if 'Stress' in post_fix:
+        
+        if 'Mean Normal' in post_fix:
+            
+            return 'gist_earth'
+        
+        if 'Maximal Shear' in post_fix:
+            
+            return 'terrain'
+        
+        if 'Normal' in post_fix:
+            
+            return 'gist_sterm'
+        
+        if 'Shear' in post_fix:
+            
+            return 'ocean'
+        
+    if 'Gradient' in post_fix:
+        
+        if 'Velocity' in post_fix:
+            
+            return 'Spectral'   
+        
+        if 'Displacement' in post_fix:
+            
+            return 'seismic'
+        
+    if 'Velocity' in post_fix:
+        
+        return 'hot'
     
-    '''displacement and velocity'''
-
-    return 'seismic'
+    if 'Displacement' in post_fix:
+            
+        return 'cool'
+    

@@ -22,7 +22,7 @@ import operation_path as O_P
 
 from o_sphere import sphere
 
-from variable_list_title import list_title
+from variable_list_title import list_title,flag_all
 from variable_yade_color import yade_rgb_list,yade_rgb_map
 
 #==============================================================================
@@ -174,9 +174,17 @@ class progress:
             self.map_matrix={}
             self.map_outline={}
             
+            if flag_all:
+                
+                real_list_title=os.listdir(case_path)
+
+            else:
+                
+                real_list_title=list_title
+                
             for this_title in os.listdir(case_path):
                 
-                if this_title in list_title:
+                if this_title in real_list_title:
                     
                     if this_title=='Structural Deformation':
                     

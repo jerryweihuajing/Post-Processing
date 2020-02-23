@@ -9,6 +9,8 @@ Created on Sat Feb 22 20:58:59 2020
 @title：Module-name of postfix list
 """
 
+flag_all=True
+
 list_standard=['Structural Deformation',
                'Mean Normal Stress',
                'Maximal Shear Stress',

@@ -20,6 +20,7 @@ from o_progress import progress
 #==============================================================================    
 class case:
     def __init__(self,
+                 path=None,
                  experiment=None,
                  condition=None,
                  list_progress=None,
@@ -33,6 +34,8 @@ class case:
         self.list_B_progress=list_B_progress
 
     def InitCalculation(self,case_path):
+        
+        self.path=case_path
         
         self.list_A_progress=[]
         self.list_B_progress=[]

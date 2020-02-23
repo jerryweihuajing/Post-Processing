@@ -184,7 +184,7 @@ Smooth image
 Args:
     which_image: image matrix to be smoothed
     smooth_operator: operator which performs (default: Gaussian)
-    wingspan: half size of kernel and window    
+    wingspan: half size of kernel and window (defualt: 1)
     
 Returns:
     image matrix which has been smoothed
@@ -197,18 +197,47 @@ def ImageSmooth(which_image,smooth_operator='Gaussian',wingspan=1):
     #result image
     smooth_image=cp.deepcopy(which_image)
     
+    #image boundary length
+    window_size=2*wingspan+1
+    
     if smooth_operator=='Gaussian':
-        
-        #image boundary length
-        window_size=2*wingspan+1
         
         #kernel default to be (0,1)
         kernel=GaussianKernel(0,1,window_size)
         
-        for i in range(wingspan,np.shape(which_image)[0]-wingspan):
+    for i in range(wingspan,np.shape(which_image)[0]-wingspan):
+        
+        for j in range(wingspan,np.shape(which_image)[1]-wingspan):
             
-            for j in range(wingspan,np.shape(which_image)[1]-wingspan):
-                
-                smooth_image[i,j]=Convolution(Window(which_image,i,j,window_size),kernel)
+            smooth_image[i,j]=Convolution(Window(which_image,i,j,window_size),kernel)
     
     return smooth_image[wingspan:-wingspan,wingspan:-wingspan]
+
+#------------------------------------------------------------------------------
+"""
+Smooth tag image
+
+Args:
+    which_img_tag: tag image matrix to be smoothed
+    wingspan: half size of kernel and window    
+    
+Returns:
+    tag image matrix which has been smoothed
+"""
+def TagImageSmooth(which_img_tag,wingspan=1):
+    
+    #result image
+    smooth_img_tag=cp.deepcopy(which_img_tag)
+    
+    for i in range(wingspan,np.shape(which_img_tag)[0]-wingspan):
+        
+        for j in range(wingspan,np.shape(which_img_tag)[1]-wingspan):
+            
+            list_window=list(Window(which_img_tag,i,j,2*wingspan+1).flatten())
+            
+            list_tag=list(set(list_window))
+            list_frequency=[list_window.count(this_tag) for this_tag in list_tag]
+            
+            smooth_img_tag[i,j]=list_tag[list_frequency.index(np.max(list_frequency))]
+   
+    return smooth_img_tag[wingspan:-wingspan,wingspan:-wingspan]

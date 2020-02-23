@@ -163,9 +163,9 @@ class progress:
         self.percentage=O_P.ProgressPercentageFromTXT(progress_path)
         
         #img tag and img rgb of structural deformation
-        self.img_tag=C_M.ImportMatrixFromTXT(progress_path)
+        self.img_tag=C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path)))
         self.structural_deformation=C_I.ImageTag2RGB(self.img_tag,self.rgb_map)
-        
+
         if not lite:
 
             case_path=progress_path.split('\\Structural Deformation')[0]

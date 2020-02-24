@@ -53,7 +53,8 @@ def GaussianKernel(miu,sigma,kernel_size):
             #value assignment
             kernel[i,j]=np.exp(-(x**2+y**2)/2*sigma**2)/(2*np.pi*sigma**2)
             
-    return kernel
+    #normalization
+    return kernel/np.sum(kernel.ravel())
         
 #------------------------------------------------------------------------------
 """

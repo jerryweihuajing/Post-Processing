@@ -69,7 +69,7 @@ Returns:
     window matrix
 """    
 def Window(which_image,i,j,window_size):
-    
+
     #wingspan
     wingspan=window_size//2
     
@@ -186,17 +186,18 @@ Args:
     which_image: image matrix to be smoothed
     smooth_operator: operator which performs (default: Gaussian)
     wingspan: half size of kernel and window (defualt: 1)
+    algorithm: to calculate element of smoothed image (defualt: traverse)
     
 Returns:
     image matrix which has been smoothed
 """
-def ImageSmooth(which_image,smooth_operator='Gaussian',wingspan=1):
+def ImageSmooth(which_image,
+                wingspan=1,
+                smooth_operator='Gaussian',
+                algorithm='traverse'):
     
     print('')
     print('-- Image Smooth')
-    
-    #result image
-    smooth_image=cp.deepcopy(which_image)
     
     #image boundary length
     window_size=2*wingspan+1
@@ -206,14 +207,86 @@ def ImageSmooth(which_image,smooth_operator='Gaussian',wingspan=1):
         #kernel default to be (0,1)
         kernel=GaussianKernel(0,1,window_size)
         
-    for i in range(wingspan,np.shape(which_image)[0]-wingspan):
+    '''traverse algorithm: slow but accurate'''   
+    if algorithm=='traverse':
         
-        for j in range(wingspan,np.shape(which_image)[1]-wingspan):
+        #result image
+        smooth_image=cp.deepcopy(which_image)
+        
+        for i in range(wingspan,np.shape(which_image)[0]-wingspan):
             
-            smooth_image[i,j]=Convolution(Window(which_image,i,j,window_size),kernel)
-    
-    return smooth_image[wingspan:-wingspan,wingspan:-wingspan]
+            for j in range(wingspan,np.shape(which_image)[1]-wingspan):
+                
+                smooth_image[i,j]=Convolution(Window(which_image,i,j,window_size),kernel)
+        
+        return smooth_image[wingspan:-wingspan,wingspan:-wingspan]
 
+    '''matrix algorithm: adding bound is not necessary'''
+    if algorithm=='matrix':
+        
+        smooth_image=np.zeros((np.shape(which_image)[0]-2*wingspan,
+                               np.shape(which_image)[1]-2*wingspan))
+        
+        #relative_coordinate of window
+        relative_coordinates=list(np.linspace(-wingspan,wingspan,window_size))
+       
+        start_i,end_i=wingspan,np.shape(which_image)[0]-wingspan
+        start_j,end_j=wingspan,np.shape(which_image)[1]-wingspan
+        
+        for ii in relative_coordinates:
+            
+            for jj in relative_coordinates:
+                
+                ii,jj=int(ii),int(jj)
+                
+                smooth_image+=(kernel[wingspan+ii,wingspan+jj]*which_image[start_i+ii:end_i+ii,start_j+jj:end_j+jj])
+
+        return smooth_image
+    
+    '''fusion algorithm: loss of surface whose thickness is wingspan'''
+    if algorithm=='fusion':
+    
+        #result image
+        smooth_image=cp.deepcopy(which_image)
+        
+        #real bound
+        for i in [1,np.shape(which_image)[0]-2]:
+            
+            for j in range(wingspan,np.shape(which_image)[1]-wingspan):
+
+                smooth_image[i,j]=Convolution(Window(which_image,i,j,window_size),kernel)
+                
+        for j in [1,np.shape(which_image)[1]-2]:
+            
+            for i in range(wingspan,np.shape(which_image)[0]-wingspan):
+                
+                smooth_image[i,j]=Convolution(Window(which_image,i,j,window_size),kernel)
+               
+        #center image
+        center_image=which_image[wingspan:-wingspan,wingspan:-wingspan]
+        
+        smooth_center_image=np.zeros((np.shape(center_image)[0]-2*wingspan,
+                                      np.shape(center_image)[1]-2*wingspan))
+        
+        #relative_coordinate of window
+        relative_coordinates=list(np.linspace(-wingspan,wingspan,window_size))
+       
+        start_i,end_i=wingspan,np.shape(center_image)[0]-wingspan
+        start_j,end_j=wingspan,np.shape(center_image)[1]-wingspan
+        
+        for ii in relative_coordinates:
+            
+            for jj in relative_coordinates:
+                
+                ii,jj=int(ii),int(jj)
+                
+                smooth_center_image+=(kernel[wingspan+ii,wingspan+jj]*center_image[start_i+ii:end_i+ii,start_j+jj:end_j+jj])
+        
+        #stack the image
+        smooth_image[2*wingspan:-2*wingspan,2*wingspan:-2*wingspan]=smooth_center_image
+        
+        return smooth_image[wingspan:-wingspan,wingspan:-wingspan]
+    
 #------------------------------------------------------------------------------
 """
 Smooth tag image

@@ -168,7 +168,7 @@ def GlobalColormap(post_fix):
         
         if 'Normal' in post_fix:
             
-            return 'gist_sterm'
+            return 'gist_stern'
         
         if 'Shear' in post_fix:
             

@@ -11,8 +11,8 @@ Created on Thu Feb 13 23:03:54 2020
 
 from __init__ import *
 
-version='lite'
-#version='pro'
+#version='lite'
+version='pro'
 
 folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 folder_Figures=folder_output.replace('output','Figures')

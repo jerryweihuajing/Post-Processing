@@ -192,9 +192,10 @@ class progress:
                     
                     this_matrix_path=progress_path.replace('Structural Deformation',this_title)
                     
+                    #add bound before smoothing
                     self.map_matrix[this_title]=C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(this_matrix_path)))
-                    self.map_outline[this_title]=C_M_O.OutlineFromMatrix(self.map_matrix[this_title])
-                    
+                    self.map_outline[this_title]=C_M_O.OutlineFromMatrix(self.map_matrix[this_title])         
+
             #fracture matrix
             self.fracture=cp.deepcopy(self.map_matrix['Distortional Strain-Cumulative'])
             

@@ -11,8 +11,8 @@ Created on Thu Feb 13 21:23:14 2020
 
 from __init__ import *
 
-#version='lite'
-version='pro'
+version='lite'
+#version='pro'
 
 folder_input=r'H:\GitHub\YADE\Controlling-Simulation\2D\compression 100-1000\input'
 folder_output=folder_input.replace('input','output')

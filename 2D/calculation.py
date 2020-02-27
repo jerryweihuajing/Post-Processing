@@ -11,10 +11,10 @@ Created on Thu Feb 13 21:23:14 2020
 
 from __init__ import *
 
-#version='lite'
-version='pro'
+version='lite'
+#version='pro'
 
-folder_input=r'H:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input'
+folder_input=r'H:\GitHub\YADE\Controlling-Simulation\2D\compression 100-1000\input'
 folder_output=folder_input.replace('input','output')
 
 list_case_input=[this_case_name for this_case_name in os.listdir(folder_input)]
@@ -31,7 +31,7 @@ for this_case_name in list_case_input:
     if version=='pro':
         
         '''standard: 264 all: 728'''
-        if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]!=264:
+        if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]<264:
             
             C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list='standard',final_only=False)
             

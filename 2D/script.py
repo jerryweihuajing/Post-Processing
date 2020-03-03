@@ -16,7 +16,7 @@ demand 4:
 
 from __init__ import *
 
-case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
+case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single base-5km with deposit DT=10 DD=100 DL=100 DP=1'
 
 #step 1
 #C_C_E.CaseCalculation(case_path,final_only=False)

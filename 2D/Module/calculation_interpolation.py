@@ -244,6 +244,9 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
     img_tag=that_mesh.img_tag
     grids=that_mesh.grids
     
+    '''raw method'''
+    raw_sum=0
+    
     #put scatters into the grid
     for this_grid in grids:
         
@@ -255,6 +258,25 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
             if this_grid.ScatterInside(this_scatter):
 
                 this_grid.scatters_inside.append(this_scatter)  
+         
+        raw_sum+=len(this_grid.scatters_inside)*this_grid.index(grids)
+        
+    '''HPC method (in essay)'''
+    HPC_sum=0
+    
+    for this_scatter in which_scatters:
+        
+        X=int(np.floor(this_scatter.pos_x/grid_length))
+        Y=int(np.floor(this_scatter.pos_y/grid_length))
+        
+        grids[np.shape(img_tag)[1]*X+Y].scatters_inside.append(this_scatter)  
+             
+    for this_grid in grids:
+        
+        HPC_sum+=len(this_grid.scatters_inside)*this_grid.index(grids)
+       
+    print('-> raw sum:',raw_sum)
+    print('-> HPC sum:',HPC_sum)
     
     #IDW
     for this_grid in grids:
@@ -262,11 +284,7 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
         '''surface is no need: skip the grid which has no discrete point inside'''
         if this_grid.scatters_inside!=[]:
                 
-#            print(this_grid.position)
-            
             this_pos=this_grid.position+np.array([this_grid.length,this_grid.length])/2
-            
-#            print(this_pos)
             
             #calculate the weight each point
             this_weight=InverseDistanceWeight(this_pos,this_grid.scatters_inside)
@@ -293,11 +311,7 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
         for k in range(np.shape(z_mesh_points)[0]):
             
             which_surface_map[k]=0
-        
-#    print(which_surface_map)
-#    print(len(which_surface_map))
-#    print(np.shape(z_mesh_points)[1])
-       
+         
     #judge whether which_surface matches mesh_points or not
     if len(which_surface_map)!=np.shape(z_mesh_points)[1]:
         
@@ -353,6 +367,6 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
                 
     return z_mesh_points
 
-def GridsInScatter():
+def GridsInScatterIDW():
     
     pass

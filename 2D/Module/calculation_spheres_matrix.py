@@ -706,4 +706,3 @@ def SpheresValueMatrix(pixel_step,
                                      which_plane,
                                      which_surface_map,
                                      which_interpolation)
-        

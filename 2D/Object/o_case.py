@@ -85,12 +85,12 @@ class case:
             
             '''instantaneous displacement'''
             for this_id in list(that_progress_A.map_id_spheres.keys()):
-            
-                #A: start, B: end
-                position_A=that_progress_A.map_id_spheres[this_id].position
-                position_B=that_progress_B.map_id_spheres[this_id].position
-                
+
                 try:
+                    
+                    #A: start, B: end
+                    position_A=that_progress_A.map_id_spheres[this_id].position
+                    position_B=that_progress_B.map_id_spheres[this_id].position
                     
                     #give value to displacement
                     that_progress_A.map_id_spheres[this_id].instantaneous_displacement=position_A-position_B

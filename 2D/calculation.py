@@ -14,7 +14,7 @@ from __init__ import *
 version='lite'
 #version='pro'
 
-folder_input=r'H:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input'
+folder_input=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input'
 folder_output=folder_input.replace('input','output')
 
 list_case_input=[this_case_name for this_case_name in os.listdir(folder_input)]

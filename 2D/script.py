@@ -16,15 +16,15 @@ demand 4:
 
 from __init__ import *
 
-case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single base-5km with deposit DT=10 DD=100 DL=100 DP=1'
+case_path=r'H:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input\double-1'
 
 #step 1
-#C_C_E.CaseCalculation(case_path,final_only=False)
+C_C_E.CaseCalculation(case_path,final_only=False,which_mode_list='standard')
 
-#step 2
-case_path=case_path.replace('input','output')
-
-V_C.CaseVisualization(case_path)
+##step 2
+#case_path=case_path.replace('input','output')
+#
+#V_C.CaseVisualization(case_path)
 #         
 #case_folder=r'H:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input'
 #

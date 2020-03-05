@@ -23,6 +23,7 @@ demand:
 2 grid in sphere
 '''
 
+import time
 import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -228,11 +229,12 @@ Args:
    grid_length: length of grid
    which_surface_map: to save computation time by not directly participating in interpolation calculation
    show: whether to show (default: False)
+   method: method of putting scatters into grids (default: 'advanced')
    
 Returns:
     mesh_points from inverse distance weighting interpolation
 """
-def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=False):
+def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=False,method='advanced'):
             
     print('')
     print('-- Scatters In Grid IDW')
@@ -244,39 +246,53 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
     img_tag=that_mesh.img_tag
     grids=that_mesh.grids
     
-    '''raw method'''
-    raw_sum=0
+    start_time=time.time()
     
-    #put scatters into the grid
-    for this_grid in grids:
+    '''raw method'''
+    if method=='raw':
         
-        this_grid.scatters_inside=[]
+        raw_sum=0
+        
+        #put scatters into the grid
+        for this_grid in grids:
+            
+            this_grid.scatters_inside=[]
+                
+            for this_scatter in which_scatters:
+                
+                #judge whether the discrete point is inside
+                if this_grid.ScatterInside(this_scatter):
+    
+                    this_grid.scatters_inside.append(this_scatter)  
+             
+            raw_sum+=len(this_grid.scatters_inside)*grids.index(this_grid)
+        
+        print('-> raw sum:',raw_sum)   
+        
+    '''advanced method (in essay)'''
+    if method=='advanced':
+        
+        advanced_sum=0
+        
+        #init grids
+        for this_grid in grids:
+            
+            this_grid.scatters_inside=[]
             
         for this_scatter in which_scatters:
             
-            #judge whether the discrete point is inside
-            if this_grid.ScatterInside(this_scatter):
-
-                this_grid.scatters_inside.append(this_scatter)  
-         
-        raw_sum+=len(this_grid.scatters_inside)*this_grid.index(grids)
-        
-    '''HPC method (in essay)'''
-    HPC_sum=0
+            X=int(np.floor(this_scatter.pos_x/grid_length))
+            Y=int(np.floor(this_scatter.pos_y/grid_length))
+            
+            grids[np.shape(img_tag)[1]*X+Y].scatters_inside.append(this_scatter)  
+                 
+        for this_grid in grids:
+            
+            advanced_sum+=len(this_grid.scatters_inside)*grids.index(this_grid)
+           
+        print('-> advanced sum:',advanced_sum)
     
-    for this_scatter in which_scatters:
-        
-        X=int(np.floor(this_scatter.pos_x/grid_length))
-        Y=int(np.floor(this_scatter.pos_y/grid_length))
-        
-        grids[np.shape(img_tag)[1]*X+Y].scatters_inside.append(this_scatter)  
-             
-    for this_grid in grids:
-        
-        HPC_sum+=len(this_grid.scatters_inside)*this_grid.index(grids)
-       
-    print('-> raw sum:',raw_sum)
-    print('-> HPC sum:',HPC_sum)
+    print('-> time consumed:',time.time()-start_time)
     
     #IDW
     for this_grid in grids:

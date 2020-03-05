@@ -234,7 +234,7 @@ Args:
 Returns:
     mesh_points from inverse distance weighting interpolation
 """
-def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=False,method='advanced'):
+def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=False,method='raw'):
             
     print('')
     print('-- Scatters In Grid IDW')

@@ -248,7 +248,7 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
     offset_x=that_mesh.boundary_x[0]
     offset_y=that_mesh.boundary_y[0]
     
-#    start_time=time.time()
+    start_time=time.time()
     
     '''raw method'''
     if method=='raw':
@@ -290,8 +290,8 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
             
             iter_sum+=len(this_grid.scatters_inside)*grids.index(this_grid)
            
-#    print('->'+method+'sum:',iter_sum)
-#    print('-> time consumed:',time.time()-start_time)
+    print('->'+method+'sum:',iter_sum)
+    print('-> time consumed:',time.time()-start_time)
     
     #IDW
     for this_grid in grids:

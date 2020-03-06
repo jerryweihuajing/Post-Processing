@@ -248,12 +248,12 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
     offset_x=that_mesh.boundary_x[0]
     offset_y=that_mesh.boundary_y[0]
     
-    start_time=time.time()
+#    start_time=time.time()
     
     '''raw method'''
     if method=='raw':
         
-        raw_sum=0
+        iter_sum=0
         
         #put scatters into the grid
         for this_grid in grids:
@@ -267,14 +267,12 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
     
                     this_grid.scatters_inside.append(this_scatter)  
              
-            raw_sum+=len(this_grid.scatters_inside)*grids.index(this_grid)
-        
-        print('-> raw sum:',raw_sum)   
+            iter_sum+=len(this_grid.scatters_inside)*grids.index(this_grid)
         
     '''advanced method (in essay)'''
     if method=='advanced':
         
-        advanced_sum=0
+        iter_sum=0
         
         #init grids
         for this_grid in grids:
@@ -290,11 +288,10 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
                  
         for this_grid in grids:
             
-            advanced_sum+=len(this_grid.scatters_inside)*grids.index(this_grid)
+            iter_sum+=len(this_grid.scatters_inside)*grids.index(this_grid)
            
-        print('-> advanced sum:',advanced_sum)
-    
-    print('-> time consumed:',time.time()-start_time)
+#    print('->'+method+'sum:',iter_sum)
+#    print('-> time consumed:',time.time()-start_time)
     
     #IDW
     for this_grid in grids:

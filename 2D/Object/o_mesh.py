@@ -19,14 +19,17 @@ class mesh:
                  grids=None,
                  img_tag=None,
                  img_color=None,
-                 content=None):      
+                 content=None,
+                 boundary_x=None,
+                 boundary_y=None):  
+        
         self.grids=grids
         self.img_tag=img_tag
         self.img_color=img_color
         self.content=content
+        self.boundary_x=boundary_x
+        self.boundary_y=boundary_y
         
     def Plot(self):
-        
-#        print(np.shape(self.img_tag))
-        
+
         plt.imshow(self.img_color)

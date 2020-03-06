@@ -19,8 +19,8 @@ Interpolation algorithm:
 
 '''
 demand:
-1 sphere in grid
-2 grid in sphere
+1 scatters in grid
+2 grids in scatter
 '''
 
 import time
@@ -98,9 +98,7 @@ def NanExpire(which_img,index_list):
             if not np.isnan(which_img[int(i),int(j)]):
             
                 exist_index_list.append(k)
-                
-#    print(exist_index_list)
-    
+  
     return [index_list[this_index] for this_index in exist_index_list]
    
 #------------------------------------------------------------------------------   
@@ -234,7 +232,7 @@ Args:
 Returns:
     mesh_points from inverse distance weighting interpolation
 """
-def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=False,method='raw'):
+def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=False,method='advanced'):
             
     print('')
     print('-- Scatters In Grid IDW')
@@ -245,6 +243,10 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
     #re-define
     img_tag=that_mesh.img_tag
     grids=that_mesh.grids
+    
+    #offset in minus value
+    offset_x=that_mesh.boundary_x[0]
+    offset_y=that_mesh.boundary_y[0]
     
     start_time=time.time()
     
@@ -281,10 +283,10 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
             
         for this_scatter in which_scatters:
             
-            X=int(np.floor(this_scatter.pos_x/grid_length))
-            Y=int(np.floor(this_scatter.pos_y/grid_length))
+            index_x=int(np.floor((this_scatter.pos_x-offset_x)/grid_length))
+            index_y=int(np.floor((this_scatter.pos_y-offset_y)/grid_length))
             
-            grids[np.shape(img_tag)[1]*X+Y].scatters_inside.append(this_scatter)  
+            grids[np.shape(img_tag)[1]*index_x+index_y].scatters_inside.append(this_scatter)  
                  
         for this_grid in grids:
             

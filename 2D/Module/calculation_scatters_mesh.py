@@ -259,5 +259,7 @@ def ScattersMesh(which_scatters,grid_length,show=False):
     #assign the value
     that_mesh.grids=grids
     that_mesh.img_tag=img_tag_mesh
+    that_mesh.boundary_x=boundary_x
+    that_mesh.boundary_y=boundary_y
     
     return that_mesh

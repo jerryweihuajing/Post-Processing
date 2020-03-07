@@ -20,13 +20,17 @@ from o_progress import progress
 #==============================================================================    
 class case:
     def __init__(self,
-                 path=None,
+                 input_path=None,
+                 output_path=None,
                  experiment=None,
                  condition=None,
+                 list_offset=None,
                  list_progress=None,
                  list_A_progress=None,
                  list_B_progress=None):
         
+        self.input_path=input_path
+        self.output_path=output_path
         self.experiment=experiment
         self.condition=condition
         self.list_progress=list_progress
@@ -35,7 +39,7 @@ class case:
 
     def InitCalculation(self,case_path):
         
-        self.path=case_path
+        self.input_path=case_path
         
         self.list_A_progress=[]
         self.list_B_progress=[]
@@ -168,7 +172,27 @@ class case:
                             
                             pass
 
+    def InitOffset(self,case_path):
+        
+        self.list_offset=[]
+
+        #input txt file names
+        file_paths_A=O_P.FilePathsAB(case_path)[0]
+    
+        #traverse all file to consruct progress
+        for this_file_path in file_paths_A:
+            
+            that_progress_A=progress()
+            
+            that_progress_A.InitCalculation(this_file_path)
+            that_progress_A.InitOffset(this_file_path)
+            
+            #case collect offset
+            self.list_offset.append(that_progress_A.offset)
+            
     def InitVisualization(self,case_path):
+        
+        self.output_path=case_path
         
         self.list_progress=[]
         
@@ -187,7 +211,8 @@ class case:
             structural_deformation_path=folder_path+'\\'+file_name
            
             self.list_progress.append(V_P.ProgressConstruction(structural_deformation_path,lite=False))
-        
+            self.list_progress[-1].offset=self.list_offset[file_names.index(file_name)]
+            
         #give them house
         for this_progress in self.list_progress:
             

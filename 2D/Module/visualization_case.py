@@ -34,6 +34,7 @@ def CaseConstruction(case_path):
     #construct case object to save the image data
     that_case=case()
     
+    that_case.InitOffset(case_path.replace('output','input'))
     that_case.InitVisualization(case_path)
     
     print('-> experiment:',that_case.experiment)
@@ -71,20 +72,20 @@ def CaseVisualization(case_path,output_folder=None,with_fracture=False):
         case_folder=case_path.replace('output','Figures')
         
     V_S.SeriesAll(case_folder,that_case,with_fracture)   
-    V_A.AnimationAll(case_folder,that_case,with_fracture)
-    V_I_A.IntegralAnalysisAll(case_folder,that_case,with_fracture)
-    
-    #figures in different progress
-    for this_progress in that_case.list_progress:
-        
-        #imaging and output
-        V_P.ProgressAllIndividuals(case_folder,this_progress,with_fracture)
-        
-        #integral analysis
-        for this_mode in ['standard','all'][:-1]:
-            
-            V_I_A.SingleIntegralAnalysis(case_folder,
-                                         this_progress,
-                                         this_mode,
-                                         with_fracture,
-                                         situation='progress')
+#    V_A.AnimationAll(case_folder,that_case,with_fracture)
+#    V_I_A.IntegralAnalysisAll(case_folder,that_case,with_fracture)
+#    
+#    #figures in different progress
+#    for this_progress in that_case.list_progress:
+#        
+#        #imaging and output
+#        V_P.ProgressAllIndividuals(case_folder,this_progress,with_fracture)
+#        
+#        #integral analysis
+#        for this_mode in ['standard','all'][:-1]:
+#            
+#            V_I_A.SingleIntegralAnalysis(case_folder,
+#                                         this_progress,
+#                                         this_mode,
+#                                         with_fracture,
+#                                         situation='progress')

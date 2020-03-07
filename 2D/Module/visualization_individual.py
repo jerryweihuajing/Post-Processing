@@ -69,12 +69,11 @@ def IndividualStructuralDeformation(which_progress,
         if type(C_M.MatrixFilter(fracture_matrix,-1,1,show=True)) is bool:
             
             print('=> WARNING: without fracture')
-                           
-    '''revision'''
+
     #decoration  
     O_D.TicksAndSpines(subplot_ax,1,1)
     O_D.TicksConfiguration(subplot_ax)
-    
+
     #sub annotation
     if with_annotation:
         
@@ -171,7 +170,6 @@ def IndividualStressOrStrain(which_progress,
             
             print('==> WARNING: without fracture')
             
-    '''revision'''
     #decoration  
     O_D.TicksAndSpines(subplot_ax,1,1)
     O_D.TicksConfiguration(subplot_ax)

@@ -32,13 +32,13 @@ def TicksAndSpines(ax,
     
     #拉长形态
     ax.axis(style)
-    
+
     #去掉坐标轴
     if not ticks:
 
         ax.set_xticks([])
         ax.set_yticks([])
-        
+     
      #去掉上下左右边框
     if not spines:
 
@@ -53,7 +53,7 @@ Configure ticks on ax
 
 Args:
     which_ax: axes to be plotted
-    
+
 Returns:
     None
 """        
@@ -64,10 +64,10 @@ def TicksConfiguration(which_ax):
     which_ax.yaxis.set_major_locator(MultipleLocator(50))
     
     #minor locator
-    which_ax.xaxis.set_minor_locator(MultipleLocator(20))
-    which_ax.yaxis.set_minor_locator(MultipleLocator(10))
+#    which_ax.xaxis.set_minor_locator(MultipleLocator(20))
+#    which_ax.yaxis.set_minor_locator(MultipleLocator(10))
     
     plt.tick_params(labelsize=10)
     labels = which_ax.get_xticklabels() + which_ax.get_yticklabels()
     [label.set_fontname('Times New Roman') for label in labels]
-        
+    

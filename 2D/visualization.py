@@ -11,10 +11,10 @@ Created on Thu Feb 13 23:03:54 2020
 
 from __init__ import *
 
-version='lite'
-#version='pro'
+#version='lite'
+version='pro'
 
-folder_output=r'D\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\output'
+folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\output'
 folder_Figures=folder_output.replace('output','Figures')
 
 list_case_output=[this_case_name for this_case_name in os.listdir(folder_output)]

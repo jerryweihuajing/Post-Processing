@@ -36,6 +36,7 @@ class progress:
                  list_spheres=None,
                  case=None,
                  shape=None,
+                 offset=None,
                  percentage=None,
                  rgb_map=None,
                  img_tag=None,
@@ -52,6 +53,7 @@ class progress:
         self.list_spheres=list_spheres
         self.case=case
         self.shape=shape
+        self.offset=offset
         self.percentage=percentage
         self.rgb_map=rgb_map
         self.img_tag=img_tag
@@ -139,6 +141,15 @@ class progress:
         
         #construct map between id and spheres
         self.map_id_spheres=dict(zip(list_id,list_spheres))
+        
+    def InitOffset(self,progress_path):
+        
+        #calculate offset
+        self.InitCalculation(progress_path)
+        
+        x_spheres=[this_sphere.position[0] for this_sphere in list(self.map_id_spheres.values())]
+        
+        self.offset=np.min(x_spheres)
         
     def InitVisualization(self,progress_path,lite):
         

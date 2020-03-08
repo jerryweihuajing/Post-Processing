@@ -91,7 +91,7 @@ def SeriesStructuralDeformation(output_folder,
     figure.savefig(post_fix_folder+post_fix_fig_name+'.png',dpi=300,bbox_inches='tight')
     
     plt.close()
-        
+
 #------------------------------------------------------------------------------
 """
 Plot stress or strain series
@@ -149,24 +149,16 @@ def Series(output_folder,
         else:
             
             V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,with_fracture)
-            
-        #set the interval manually  
-        plt.xticks(this_ax.get_xticks()-this_progress.offset,this_ax.get_xticks().astype(int))  
-        
+                 
         '''double'''
+        plus_offset=-this_progress.offset
+        
         if 'double' in output_folder:
             
-            plus_offset=-80
+            plus_offset-=80
         
-        else:
-            
-            plus_offset=0
-
-        this_ax.axis([plus_offset-this_progress.offset,
-                      plus_offset-this_progress.offset+global_shape[1]*1.13,
-                      0,
-                      global_shape[0]])
-            
+        this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
+        
     #animation folder path
     series_folder=output_folder+'\\series\\'
     post_fix_folder=output_folder+'\\'+post_fix+'\\'

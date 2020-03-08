@@ -9,6 +9,7 @@ Created on Tue Jun 11 21:27:13 2019
 @title：Module-Plot Decoration
 """
 
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 from matplotlib.pyplot import MultipleLocator
@@ -53,20 +54,34 @@ Configure ticks on ax
 
 Args:
     which_ax: axes to be plotted
-
+    x_offset: translate distance in x axis (toward right)
+        
 Returns:
     None
 """        
-def TicksConfiguration(which_ax):
+def TicksConfiguration(which_ax,x_offset):
     
-    #major locator
-    which_ax.xaxis.set_major_locator(MultipleLocator(100))
+    #x locator
+    x_major_interval=100
+    x_minor_interval=50
+    
+    x_min=-100
+    x_max=300
+    
+    x_major_realticks=np.array(list(range(x_min,x_max,x_major_interval)))-x_offset
+    x_major_showticks=(x_major_realticks+x_offset).astype(int)
+    x_minor_realticks=np.array(list(range(x_min,x_max,x_minor_interval)))-x_offset
+    x_minor_showticks=len(x_minor_realticks)*['']
+    
+    which_ax.set_xticks(x_major_realticks)
+    which_ax.set_xticklabels(x_major_showticks)
+    which_ax.set_xticks(x_minor_realticks,minor=True)
+    which_ax.set_xticklabels(x_minor_showticks,minor=True)
+
+    #y locator
     which_ax.yaxis.set_major_locator(MultipleLocator(50))
-    
-    #minor locator
-#    which_ax.xaxis.set_minor_locator(MultipleLocator(20))
-#    which_ax.yaxis.set_minor_locator(MultipleLocator(10))
-    
+    which_ax.yaxis.set_minor_locator(MultipleLocator(10))
+
     plt.tick_params(labelsize=10)
     labels = which_ax.get_xticklabels() + which_ax.get_yticklabels()
     [label.set_fontname('Times New Roman') for label in labels]

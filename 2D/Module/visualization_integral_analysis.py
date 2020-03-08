@@ -124,9 +124,17 @@ def SingleIntegralAnalysis(output_folder,
             #stress and strain
             V_I.IndividualStressOrStrain(which_progress,this_post_fix,this_ax)    
             
-        this_ax.axis([0,global_shape[1]*1.1,0,global_shape[0]])
+        '''double'''
+        plus_offset=-which_progress.offset
+        
+        if 'double' in output_folder:
+            
+            plus_offset-=80
+        
+        this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
         
         #sub annotation
+        
         this_ax.annotate(which_progress.percentage,
                          xy=(0,0),
                          xytext=(1.01*this_shape[1],0.23*this_shape[0]),

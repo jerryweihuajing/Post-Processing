@@ -72,7 +72,7 @@ def IndividualStructuralDeformation(which_progress,
 
     #decoration  
     O_D.TicksAndSpines(subplot_ax,1,1)
-    O_D.TicksConfiguration(subplot_ax)
+    O_D.TicksConfiguration(subplot_ax,which_progress.offset)
 
     #sub annotation
     if with_annotation:
@@ -172,7 +172,7 @@ def IndividualStressOrStrain(which_progress,
             
     #decoration  
     O_D.TicksAndSpines(subplot_ax,1,1)
-    O_D.TicksConfiguration(subplot_ax)
+    O_D.TicksConfiguration(subplot_ax,which_progress.offset)
     
     #sub annotation
     if with_annotation:
@@ -249,7 +249,14 @@ def Individual(output_folder,
            
         IndividualStressOrStrain(which_progress,post_fix,this_ax,with_fracture,1,1)
 
-    this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
+    '''double'''
+    plus_offset=-which_progress.offset
+    
+    if 'double' in output_folder:
+        
+        plus_offset-=80
+    
+    this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
     
     #figure path and name    
     if situation=='case':

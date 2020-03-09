@@ -140,7 +140,6 @@ def SingleIntegralAnalysis(output_folder,
         this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
         
         #sub annotation
-        
         this_ax.annotate(which_progress.percentage,
                          xy=(0,0),
                          xytext=(1.01*this_shape[1],0.23*this_shape[0]),
@@ -151,8 +150,6 @@ def SingleIntegralAnalysis(output_folder,
                          xy=(0,0),
                          xytext=(0,1.023*global_shape[0]),
                          fontproperties=title_font)
-        
-        this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
      
     #figure path and name    
     if situation=='case':

@@ -34,7 +34,7 @@ def ProgressConstruction(progress_path,lite=True):
     
     #construct a progress object
     that_progress=progress()
-    
+
     that_progress.InitVisualization(progress_path,lite)
     
     print('-> progress='+that_progress.percentage)

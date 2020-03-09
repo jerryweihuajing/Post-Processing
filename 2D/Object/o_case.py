@@ -212,8 +212,12 @@ class case:
            
             self.list_progress.append(V_P.ProgressConstruction(structural_deformation_path,lite=False))
             self.list_progress[-1].offset=self.list_offset[file_names.index(file_name)]
-            
+
         #give them house
         for this_progress in self.list_progress:
             
             this_progress.case=self
+            
+            if this_progress.offset==None:
+                
+                this_progress.offset=0

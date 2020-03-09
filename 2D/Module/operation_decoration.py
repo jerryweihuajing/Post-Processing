@@ -60,10 +60,10 @@ Returns:
     None
 """        
 def TicksConfiguration(which_ax,x_offset):
-    
+      
     #x locator
     x_major_interval=100
-    x_minor_interval=x_major_interval/5
+    x_minor_interval=int(x_major_interval/5)
     
     x_min=-500
     x_max=1000
@@ -80,7 +80,7 @@ def TicksConfiguration(which_ax,x_offset):
 
     #y locator
     y_major_interval=50
-    y_minor_interval=y_major_interval/5
+    y_minor_interval=int(y_major_interval/5)
     
     which_ax.yaxis.set_major_locator(MultipleLocator(y_major_interval))
     which_ax.yaxis.set_minor_locator(MultipleLocator(y_minor_interval))

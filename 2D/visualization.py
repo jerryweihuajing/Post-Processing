@@ -11,10 +11,10 @@ Created on Thu Feb 13 23:03:54 2020
 
 from __init__ import *
 
-#version='lite'
-version='pro'
+version='lite'
+#version='pro'
 
-folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\output'
+folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 folder_Figures=folder_output.replace('output','Figures')
 
 list_case_output=[this_case_name for this_case_name in os.listdir(folder_output)]
@@ -31,6 +31,8 @@ for this_case_name in list_case_output:
         progress_name=os.listdir(progress_folder)[list_percentage.index(max(list_percentage))]
         
         final_progress=V_P.ProgressConstruction(progress_folder+'\\'+progress_name)
+        
+        final_progress.offset=0
         
         V_I.Individual(folder_Figures+'\\'+this_case_name,final_progress,situation='progress')
             

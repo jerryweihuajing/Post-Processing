@@ -63,8 +63,8 @@ def TicksConfiguration(which_ax,x_offset):
     
     #x locator
     x_major_interval=100
-    x_minor_interval=50
-
+    x_minor_interval=x_major_interval/5
+    
     x_min=-500
     x_max=1000
     
@@ -79,10 +79,12 @@ def TicksConfiguration(which_ax,x_offset):
     which_ax.set_xticklabels(x_minor_showticks,minor=True)
 
     #y locator
-    which_ax.yaxis.set_major_locator(MultipleLocator(50))
-    which_ax.yaxis.set_minor_locator(MultipleLocator(10))
+    y_major_interval=50
+    y_minor_interval=y_major_interval/5
+    
+    which_ax.yaxis.set_major_locator(MultipleLocator(y_major_interval))
+    which_ax.yaxis.set_minor_locator(MultipleLocator(y_minor_interval))
 
     plt.tick_params(labelsize=10)
     labels = which_ax.get_xticklabels() + which_ax.get_yticklabels()
     [label.set_fontname('Times New Roman') for label in labels]
-    

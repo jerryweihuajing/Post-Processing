@@ -155,7 +155,13 @@ def Series(output_folder,
         
         if 'double' in output_folder:
             
-            plus_offset-=80
+            if 'diff' in output_folder:
+                
+                plus_offset-=50
+                
+            else:
+                
+                plus_offset-=80
         
         this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
         

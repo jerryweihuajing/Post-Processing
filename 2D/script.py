@@ -17,7 +17,7 @@ demand 4:
 
 from __init__ import *
 
-case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input\double-1'
+case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input\single-1'
 
 #step 1
 #C_C_E.CaseCalculation(case_path,final_only=True,which_mode_list='standard')

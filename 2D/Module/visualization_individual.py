@@ -154,8 +154,6 @@ def IndividualStressOrStrain(which_progress,
         plt.imshow(C_I.ImgFlip(value_matrix,0),
                    cmap=C_G_P.GlobalColormap(post_fix),
                    norm=C_G_P.GlobalNorm(which_progress.case,post_fix))
-        
-    plt.imshow(np.flip(outline_matrix,0),cmap='gray')
     
     #plot outline
     if 'Stress' in post_fix:
@@ -170,6 +168,8 @@ def IndividualStressOrStrain(which_progress,
             
             print('==> WARNING: without fracture')
             
+    plt.imshow(np.flip(outline_matrix,0),cmap='gray')   
+     
     #decoration  
     O_D.TicksAndSpines(subplot_ax,1,1)
     O_D.TicksConfiguration(subplot_ax,which_progress.offset)
@@ -254,7 +254,13 @@ def Individual(output_folder,
     
     if 'double' in output_folder:
         
-        plus_offset-=80
+        if 'diff' in output_folder:
+            
+            plus_offset-=50
+            
+        else:
+            
+            plus_offset-=80
     
     this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
     

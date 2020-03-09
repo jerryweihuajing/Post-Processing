@@ -64,9 +64,9 @@ def TicksConfiguration(which_ax,x_offset):
     #x locator
     x_major_interval=100
     x_minor_interval=50
-    
-    x_min=-100
-    x_max=300
+
+    x_min=-500
+    x_max=1000
     
     x_major_realticks=np.array(list(range(x_min,x_max,x_major_interval)))-x_offset
     x_major_showticks=(x_major_realticks+x_offset).astype(int)

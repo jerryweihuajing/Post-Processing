@@ -20,7 +20,7 @@ import visualization_integral_analysis as V_I_A
 Total export depending on mode list of an experiment which contain a branch of cases
 
 Args:
-   experiment_path: load path of all input files cases
+    experiment_path: load path of all input files cases
    
 Returns:
     None

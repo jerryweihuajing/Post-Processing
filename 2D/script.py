@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jan  9 19:14:09 2020
@@ -17,7 +16,7 @@ demand 4:
 
 from __init__ import *
 
-case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-1000\input\single base-5km salt-10km SD=0 SW=300'
+case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
 
 #step 1
 #C_C_E.CaseCalculation(case_path,final_only=True,which_mode_list='standard')

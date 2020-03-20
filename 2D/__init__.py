@@ -27,3 +27,5 @@ import calculation_image_smoothing as C_I_S
 import visualization_case as V_C
 import visualization_progress as V_P
 import visualization_individual as V_I
+
+from o_case import case

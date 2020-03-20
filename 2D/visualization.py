@@ -17,6 +17,8 @@ version='lite'
 folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 folder_Figures=folder_output.replace('output','Figures')
 
+O_P.GenerateFolder(folder_Figures)
+
 list_case_output=[this_case_name for this_case_name in os.listdir(folder_output)]
 list_case_Figures=[this_case_name for this_case_name in os.listdir(folder_Figures)]
 

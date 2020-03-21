@@ -63,17 +63,17 @@ def SingleIntegralAnalysis(output_folder,
         #100-1000
         if global_shape==(100,1000):
             
-            figure=plt.subplots(figsize=(13,10))[0]
+            figure=plt.subplots(figsize=(13,9))[0]
             
         #100-500
         if global_shape==(100,500):
         
-            figure=plt.subplots(figsize=(7,10))[0]
+            figure=plt.subplots(figsize=(7,9))[0]
     
         #100-200
         if global_shape==(100,350):
         
-            figure=plt.subplots(figsize=(5,10))[0]
+            figure=plt.subplots(figsize=(5,9))[0]
             
     if mode=='all':
         
@@ -148,7 +148,7 @@ def SingleIntegralAnalysis(output_folder,
         #sub title
         this_ax.annotate(this_post_fix,
                          xy=(0,0),
-                         xytext=(0,1.023*global_shape[0]),
+                         xytext=(plus_offset,1.023*global_shape[0]),
                          fontproperties=title_font)
      
     #figure path and name    

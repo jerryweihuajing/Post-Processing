@@ -11,9 +11,26 @@ Created on Mon Mar 16 13:59:03 2020
 
 from __init__ import *
 
-case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-1000\input\single base-5km salt-10km SD=0 SW=300'
+case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
 
-#final result
+pixel_step=10
+
 that_case=case()
 
 that_case.InitCalculation(case_path)
+
+spheres=list(that_case.list_A_progress[-1].map_id_spheres.values())
+
+surface_map=C_S_B.SpheresTopMap(spheres,pixel_step) 
+
+'''effect of rasterization'''
+#plot scatter
+#plot image
+
+'''effect of interplation'''
+#plot scatter in grid
+#plot gird without value
+
+'''effet of boundary'''
+
+'''effect of edge tracing'''

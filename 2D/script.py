@@ -31,11 +31,3 @@ C_C_E.CaseCalculation(case_path,final_only=False,which_mode_list='standard')
 #for this_case_name in os.listdir(case_folder):
 #    
 #    C_C_E.CaseCalculation(case_folder+'\\'+this_case_name,which_mode_list=['structural_deformation'],final_only=False)
-
-#import numpy as np 
-#
-#A=np.array([[1,2,3],[4,5,6],[7,8,9]])
-#
-#B=np.flip(np.flip(A,0),1)
-#
-#C=np.rot90(A,2)

@@ -28,15 +28,17 @@ for this_case_name in list_case_input:
         
         if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]==0:
             
-            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list=['Structural Deformation'])
+            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list=['Structural Deformation'],exception='final only')
         
     if version=='pro':
         
-        '''final only standard: 33'''
-        '''final only all: 91'''
-        '''standard: 264'''
         '''all: 728'''
-        if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]<33:
+        '''standard: 264'''
+        '''final only all: 91'''
+        '''final only standard: 33'''
+        '''original and final all: 182'''
+        '''original and final standard: 66'''
+        if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]<66:
             
-            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list='standard',final_only=True)
+            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list='standard',exception='original and final')
             

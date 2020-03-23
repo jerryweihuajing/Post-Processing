@@ -36,8 +36,8 @@ import calculation_scatters_mesh as C_S_M
 Calculate the distance between two points
 
 Args:
-   pos_A: coordinate of point A
-   pos_B: coordinate of point B
+    pos_A: coordinate of point A
+    pos_B: coordinate of point B
    
 Returns:
     the distance between two points
@@ -60,8 +60,8 @@ def Distance(pos_A,pos_B):
 Genertate the neighbor points index
 
 Args:
-   which_index: index (i, j)
-   pad: half length of neighbor area
+    which_index: index (i, j)
+    pad: half length of neighbor area
    
 Returns:
     the neighbor points index
@@ -78,8 +78,8 @@ def Neighbor(which_index,pad):
 Delete nan in index list in an img
 
 Args:
-   which_img: image to be operated
-   index_list: list of index
+    which_img: image to be operated
+    index_list: list of index
    
 Returns:
     index list without nan
@@ -106,8 +106,8 @@ def NanExpire(which_img,index_list):
 Calculate weight of inverse distance weighting
 
 Args:
-   which_pos: point to be operated
-   which_other_points: points to calculate
+    which_pos: point to be operated
+    which_other_points: points to calculate
    
 Returns:
     weight of inverse distance weighting
@@ -142,10 +142,10 @@ def InverseDistanceWeight(which_pos,which_other_points):
 Calculation of global inverse distance weighting
 
 Args:
-   which_scatters: scatter objects to be operated
-   grid_length: length of grid
-   which_surface_map: to save computation time by not directly participating in interpolation calculation
-   show: whether to show (default: False)
+    which_scatters: scatter objects to be operated
+    grid_length: length of grid
+    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    show: whether to show (default: False)
    
 Returns:
     mesh_points from inverse distance weighting interpolation
@@ -220,19 +220,23 @@ def GlobalIDWInterpolation(which_scatters,
 '''surface is necessary to avoid void mesh point''' 
 #------------------------------------------------------------------------------   
 """
-Calculation of global inverse distance weighting
+Calculation of scatters in grid inverse distance weighting
 
 Args:
-   which_scatters: scatter objects to be operated
-   grid_length: length of grid
-   which_surface_map: to save computation time by not directly participating in interpolation calculation
-   show: whether to show (default: False)
-   method: method of putting scatters into grids (default: 'advanced')
+    which_scatters: scatter objects to be operated
+    grid_length: length of grid
+    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    show: whether to show (default: False)
+    method: method of putting scatters into grids (default: 'advanced')
    
 Returns:
     mesh_points from inverse distance weighting interpolation
 """
-def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=False,method='advanced'):
+def ScattersInGridIDW(which_scatters,
+                      grid_length,
+                      which_surface_map=None,
+                      show=False,
+                      method='advanced'):
             
     print('')
     print('-- Scatters In Grid IDW')
@@ -290,7 +294,7 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
             
             iter_sum+=len(this_grid.scatters_inside)*grids.index(this_grid)
            
-    print('->'+method+'sum:',iter_sum)
+    print('->',method,'sum:',iter_sum)
     print('-> time consumed:',time.time()-start_time)
     
     #IDW
@@ -310,7 +314,7 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
             #assign the value one by one
             img_tag[this_grid.index_x,this_grid.index_y]=np.dot(z_scatters,this_weight)
    
-    #comfortable
+    #comfortable image matrix
     z_mesh_points=C_I.ImgFlip(C_I.ImgRotate(img_tag),0)
     
     #preview
@@ -352,9 +356,7 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
                    
                 #expire the nan
                 this_neighbor_expire_nan=NanExpire(z_mesh_points,this_neighbor)
-
-#                print(this_neighbor_expire_nan)
-                
+              
                 #into the loop
                 while not len(this_neighbor_expire_nan):
                     
@@ -366,8 +368,6 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
                     #expire the nan
                     this_neighbor_expire_nan=NanExpire(z_mesh_points,this_neighbor)
                     
-#                    print(this_neighbor_expire_nan)
-                
                 '''interpolate directly with the values on the neighbor grid'''
                 #calculate the weight each point
                 this_weight=InverseDistanceWeight(this_index,this_neighbor_expire_nan)
@@ -379,9 +379,27 @@ def ScattersInGridIDW(which_scatters,grid_length,which_surface_map=None,show=Fal
                 
                 #assgin the value one by one
                 z_mesh_points[i,j]=np.dot(z_this_neighbor,this_weight)
-                
+    
+    #preview
+    if show:
+        
+        plt.imshow(z_mesh_points)   
+         
     return z_mesh_points
 
+#------------------------------------------------------------------------------   
+"""
+Calculation of grids in scatter inverse distance weighting
+
+Args:
+    which_scatters: scatter objects to be operated
+    grid_length: length of grid
+    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    show: whether to show (default: False)
+   
+Returns:
+    mesh_points from inverse distance weighting interpolation
+"""
 def GridsInScatterIDW():
     
     pass

@@ -31,3 +31,23 @@ def Set(which_list):
             
     return new_list
     
+#------------------------------------------------------------------------------
+"""
+Calculate real list content from index list
+
+Args:
+    which_list: list to be operated
+    index_list: list of index
+    
+Returns:
+    valid list
+"""
+def ListFromIndex(which_list,index_list=False):
+    
+    if index_list:
+
+        return [which_list[this_index] for this_index in index_list]
+    
+    else:
+        
+        return which_list

@@ -14,7 +14,7 @@ from __init__ import *
 #version='lite'
 version='pro'
 
-folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\output'
+folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\output'
 folder_Figures=folder_output.replace('output','Figures')
 
 O_P.GenerateFolder(folder_Figures)
@@ -39,5 +39,13 @@ for this_case_name in list_case_output:
         V_I.Individual(folder_Figures+'\\'+this_case_name,final_progress,situation='progress')
             
     if version=='pro':
-    
-        V_C.CaseVisualization(folder_output+'\\'+this_case_name)
+        
+        '''all: '''
+        '''standard: 117'''
+        '''final only all: '''
+        '''final only standard: 33'''
+        '''original and final all: '''
+        '''original and final standard: '''
+        if this_case_name not in list_case_Figures or O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]<33:
+            
+            V_C.CaseVisualization(folder_output+'\\'+this_case_name)

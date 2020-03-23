@@ -17,7 +17,9 @@ draw surface with stress or strain figure
 import os
 import copy as cp
 import numpy as np
+
 import operation_path as O_P
+import operation_list as O_L
 
 import calculation_image as C_I
 import calculation_spheres_matrix as C_S_M
@@ -60,7 +62,7 @@ Args:
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     pixel_step: length of single pixel (int)
     test: if there is a test with a small amount of spheres
-    final_only: (bool) whether it calculate the final progress only (default: True)
+    exception: whether it calculate the final progress only (default: False) ['final only', 'original and final']
     
 Returns:
     None
@@ -71,7 +73,7 @@ def CaseCalculation(which_case_path,
                     which_interpolation='scatters_in_grid',
                     pixel_step=1,
                     test=False,
-                    final_only=True):
+                    exception=False):
     
     #argument information
     argument_str=''
@@ -116,23 +118,29 @@ def CaseCalculation(which_case_path,
             
     #construct case object
     that_case=CaseGeneration(which_case_path)
-
-    if final_only:
-       
-        start_index=-1
+    
+    if exception:
         
+        if exception=='final only':
+            
+            index_list=[-1]
+        
+        if exception=='original and final':
+            
+            index_list=[0,-1]
+            
     else:
         
-        start_index=0
+        index_list=False
         
     #file name list
-    file_names=O_P.FileNamesAB(which_case_path)[0][start_index:]    
+    file_names=O_L.ListFromIndex(O_P.FileNamesAB(which_case_path)[0],index_list)
     
     #list of spheres and
-    spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in that_case.list_A_progress[start_index:]]
+    spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in O_L.ListFromIndex(that_case.list_A_progress,index_list)]
     
     #list of surface map in this case
-    list_surface_map=[C_S_B.SpheresTopMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in that_case.list_A_progress[start_index:]]
+    list_surface_map=[C_S_B.SpheresTopMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in O_L.ListFromIndex(that_case.list_A_progress,index_list)]
 
     '''Medival fold will be generated as well'''
     output_folder=which_case_path.replace('input','output')
@@ -210,7 +218,7 @@ Args:
     pixel_step: length of single pixel (int)
     mode_list: output mode which user need
     test: if there is a test with a small amount of spheres
-    final_only: (bool) whether it calculate the final progress only (default: True)
+    exception: whether it calculate the final progress only (default: False) ['final only', 'original and final']
     
 Returns:
     None
@@ -221,7 +229,7 @@ def ExperimentCalculation(which_experiment_path,
                           pixel_step=1,
                           which_mode_list=None,
                           test=False,
-                          final_only=True):
+                          exception=False):
     
     #traverse
     for this_case_name in os.listdir(which_experiment_path+'\\input'):
@@ -234,4 +242,4 @@ def ExperimentCalculation(which_experiment_path,
                         which_interpolation,
                         pixel_step,
                         test,
-                        final_only)        
+                        exception)        

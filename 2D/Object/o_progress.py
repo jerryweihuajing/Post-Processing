@@ -155,14 +155,20 @@ class progress:
         
         self.path=progress_path
         
+        '''compression'''
         if '100-500' in progress_path:
         
             self.shape=(100,500)
+            
+        if '100-800' in progress_path:
+        
+            self.shape=(100,800) 
             
         if '100-1000' in progress_path:
             
             self.shape=(100,1000)   
             
+        '''extension'''
         if '100-200' in progress_path:
             
             self.shape=(100,350) 

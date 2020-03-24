@@ -11,6 +11,8 @@ Created on Fri Aug 16 23:35:27 2019
 
 import os
 import numpy as np
+import matplotlib.pyplot as plt
+
 from matplotlib import colors
 
 import calculation_matrix as C_M
@@ -192,3 +194,97 @@ def GlobalColormap(post_fix):
             
         return 'cool'
     
+#------------------------------------------------------------------------------
+"""
+Calculate figure based on global shape (for series and individual)
+
+Args:
+    global_shape: global shape of image
+    
+Returns:
+    figure object in plt
+"""
+def FigureForSeriesAndIndividual(global_shape):
+    
+    '''compression'''
+    #100-1000
+    if global_shape==(100,1000):
+        
+        return plt.subplots(figsize=(13,13))[0]
+        
+    #100-800
+    if global_shape==(100,800):
+    
+        return plt.subplots(figsize=(10,13))[0]
+        
+    #100-500
+    if global_shape==(100,500):
+    
+        return plt.subplots(figsize=(7,13))[0]
+
+    '''extension'''
+    #100-200
+    if global_shape==(100,350):
+    
+        return plt.subplots(figsize=(5,13))[0]
+        
+#------------------------------------------------------------------------------
+"""
+Calculate figure based on global shape (for integral analysis)
+
+Args:
+    global_shape: global shape of image
+    mode: mode for integral analysis ['all', 'standrad']
+    
+Returns:
+    figure object in plt
+"""
+def FigureForIntegralAnalysis(global_shape,mode):
+    
+    if mode=='standard':
+        
+        '''compression'''
+        #100-1000
+        if global_shape==(100,1000):
+            
+            return plt.subplots(figsize=(13,9))[0]
+            
+        #100-800
+        if global_shape==(100,800):
+        
+            return plt.subplots(figsize=(10,8))[0]
+            
+        #100-500
+        if global_shape==(100,500):
+        
+            return plt.subplots(figsize=(7,9))[0]
+            
+        '''extension'''
+        #100-200
+        if global_shape==(100,350):
+        
+            return plt.subplots(figsize=(5,8))[0]
+            
+    if mode=='all':
+    
+        '''compression'''
+        #100-1000
+        if global_shape==(100,1000):
+            
+            return plt.subplots(figsize=(13,13))[0]
+        
+        #100-800
+        if global_shape==(100,800):
+        
+            return plt.subplots(figsize=(10,13))[0]
+        
+        #100-500
+        if global_shape==(100,500):
+            
+            return plt.subplots(figsize=(7,13))[0]
+            
+        '''extension'''
+        #100-200
+        if global_shape==(100,350):
+            
+            return plt.subplots(figsize=(5,13))[0]

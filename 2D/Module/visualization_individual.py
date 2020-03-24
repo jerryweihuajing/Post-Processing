@@ -223,20 +223,8 @@ def Individual(output_folder,
     #global shape of progress or integral analysis
     global_shape=which_progress.shape 
     
-    #100-1000
-    if global_shape==(100,1000):
-        
-        figure=plt.subplots(figsize=(13,13))[0]
-        
-    #100-500
-    if global_shape==(100,500):
-    
-        figure=plt.subplots(figsize=(7,13))[0]
-
-    #100-500
-    if global_shape==(100,350):
-    
-        figure=plt.subplots(figsize=(5,13))[0]
+    #new picture and ax
+    figure=C_G_P.FigureForSeriesAndIndividual(global_shape)
         
     #new picture and ax
     this_ax=plt.subplot()

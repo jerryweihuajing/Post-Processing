@@ -18,6 +18,8 @@ import operation_path as O_P
 import visualization_animation as V_A
 import visualization_individual as V_I
 
+import calculation_global_parameter as C_G_P
+
 #------------------------------------------------------------------------------
 """
 Plot integral analysis of a progress
@@ -27,7 +29,7 @@ Args:
     which_progress: progress object
     mode: 'standard' 'all'
     with_farcture: (bool) plot fracture and interface or not 
-    situation: for 'case' or 'progress'
+    situation: mode for visualization ['case','progress']
 
 Returns:
     Figure path
@@ -58,22 +60,6 @@ def SingleIntegralAnalysis(output_folder,
                        'Maximal Shear Stress',
                        'Volumetric Strain-Cumulative',
                        'Distortional Strain-Cumulative']
-
-        #new picture and ax
-        #100-1000
-        if global_shape==(100,1000):
-            
-            figure=plt.subplots(figsize=(13,9))[0]
-            
-        #100-500
-        if global_shape==(100,500):
-        
-            figure=plt.subplots(figsize=(7,9))[0]
-    
-        #100-200
-        if global_shape==(100,350):
-        
-            figure=plt.subplots(figsize=(5,9))[0]
             
     if mode=='all':
         
@@ -85,21 +71,8 @@ def SingleIntegralAnalysis(output_folder,
                        'Volumetric Strain-Periodical',
                        'Distortional Strain-Periodical']
     
-        #new picture and ax
-        #100-1000
-        if global_shape==(100,1000):
-            
-            figure=plt.subplots(figsize=(13,14))[0]
-        
-        #100-500
-        if global_shape==(100,500):
-            
-            figure=plt.subplots(figsize=(7,14))[0]
-            
-        #100-200
-        if global_shape==(100,350):
-            
-            figure=plt.subplots(figsize=(5,14))[0]
+    #new picture and ax
+    figure=C_G_P.FigureForIntegralAnalysis(global_shape,mode)
      
     #shape of this img
     this_shape=np.shape(which_progress.fracture)

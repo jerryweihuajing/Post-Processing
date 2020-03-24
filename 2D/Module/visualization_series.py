@@ -15,6 +15,8 @@ import operation_path as O_P
 
 import visualization_individual as V_I
 
+import calculation_global_parameter as C_G_P
+
 from variable_list_title import list_title,flag_all
 
 #------------------------------------------------------------------------------
@@ -40,20 +42,7 @@ def SeriesStructuralDeformation(output_folder,
     global_shape=which_case.list_progress[-1].shape 
     
     #new picture and ax
-    #100-1000
-    if global_shape==(100,1000):
-        
-        figure=plt.subplots(figsize=(13,13))[0]
-        
-    #100-500
-    if global_shape==(100,500):
-    
-        figure=plt.subplots(figsize=(7,13))[0]
-
-    #100-500
-    if global_shape==(100,350):
-    
-        figure=plt.subplots(figsize=(5,13))[0]
+    figure=C_G_P.FigureForSeriesAndIndividual(global_shape)
         
     #subplot index
     index=0
@@ -117,20 +106,7 @@ def Series(output_folder,
     global_shape=which_case.list_progress[-1].shape 
     
     #new picture and ax
-    #100-1000
-    if global_shape==(100,1000):
-        
-        figure=plt.subplots(figsize=(13,13))[0]
-        
-    #100-500
-    if global_shape==(100,500):
-    
-        figure=plt.subplots(figsize=(7,13))[0]
-
-    #100-500
-    if global_shape==(100,350):
-    
-        figure=plt.subplots(figsize=(5,13))[0]
+    figure=C_G_P.FigureForSeriesAndIndividual(global_shape)
         
     #subplot index
     index=0

@@ -85,6 +85,11 @@ class progress:
                         
                 continue
         
+            #exception: '-' in the list
+            if '-' in this_list:
+                
+                continue
+            
             #define new sphere object
             new_sphere=sphere()
             

@@ -11,7 +11,7 @@ Created on Mon Mar 16 13:59:03 2020
 
 from __init__ import *
 
-case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-500\input\single'
+case_path=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\input\single'
 
 pixel_step=10
 

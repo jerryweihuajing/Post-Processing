@@ -247,7 +247,7 @@ def FigureForIntegralAnalysis(global_shape,mode):
         #100-1000
         if global_shape==(100,1000):
             
-            return plt.subplots(figsize=(13,9))[0]
+            return plt.subplots(figsize=(13,8))[0]
             
         #100-800
         if global_shape==(100,800):
@@ -263,7 +263,7 @@ def FigureForIntegralAnalysis(global_shape,mode):
         #100-200
         if global_shape==(100,350):
         
-            return plt.subplots(figsize=(5,8))[0]
+            return plt.subplots(figsize=(5,9))[0]
             
     if mode=='all':
     

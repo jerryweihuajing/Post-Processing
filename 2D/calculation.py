@@ -22,6 +22,8 @@ O_P.GenerateFolder(folder_output)
 list_case_input=[this_case_name for this_case_name in os.listdir(folder_input)]
 list_case_output=[this_case_name for this_case_name in os.listdir(folder_output)]
 
+[print('>> '+item) for item in list_case_input if item not in list_case_output]
+
 for this_case_name in list_case_input:
 
     if version=='lite':

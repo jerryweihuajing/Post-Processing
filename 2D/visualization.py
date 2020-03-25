@@ -14,13 +14,15 @@ from __init__ import *
 #version='lite'
 version='pro'
 
-folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\extension 100-200\output'
-folder_Figures=folder_output.replace('output','Figures')
+folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-800\output'
+folder_Figure=folder_output.replace('output','Figure')
 
-O_P.GenerateFolder(folder_Figures)
+O_P.GenerateFolder(folder_Figure)
 
 list_case_output=[this_case_name for this_case_name in os.listdir(folder_output)]
-list_case_Figures=[this_case_name for this_case_name in os.listdir(folder_Figures)]
+list_case_Figure=[this_case_name for this_case_name in os.listdir(folder_Figure)]
+
+[print('>> '+item) for item in list_case_output if item not in list_case_Figure]
 
 for this_case_name in list_case_output:
     
@@ -36,7 +38,7 @@ for this_case_name in list_case_output:
         
         final_progress.offset=0
         
-        V_I.Individual(folder_Figures+'\\'+this_case_name,final_progress,situation='progress')
+        V_I.Individual(folder_Figure+'\\'+this_case_name,final_progress,situation='progress')
             
     if version=='pro':
         
@@ -46,6 +48,6 @@ for this_case_name in list_case_output:
         '''final only standard: 33'''
         '''original and final all: '''
         '''original and final standard: 45'''
-        if this_case_name not in list_case_Figures or O_P.FilesAmount(folder_Figures+'\\'+this_case_name)[2]<45:
+        if this_case_name not in list_case_Figure or O_P.FilesAmount(folder_Figure+'\\'+this_case_name)[2]<45:
             
             V_C.CaseVisualization(folder_output+'\\'+this_case_name)

@@ -11,9 +11,13 @@ Created on Sat May  4 15:25:52 2019
 
 '''
 demand:
-Calculate strain via displacement
+    Calculate strain via displacement
 '''
 
+"""
+Hint:
+    Calculation for gradient on y need to add '-' for the geometry of mat and axis is not same
+"""
 import copy as cp
 import numpy as np
 
@@ -407,15 +411,15 @@ def SpheresVelocityMatrix(pixel_step,
         Y=C_In.ScattersInGridIDW(scatters_velocity_y,pixel_step,which_surface_map)
 
     #axis=0 x gradient, axis=1 y gradient
-    X_x=np.gradient(X,axis=1)
-    X_y=np.gradient(X,axis=0)
-    Y_x=np.gradient(Y,axis=1)
-    Y_y=np.gradient(Y,axis=0)
+    X_x=+np.gradient(X,axis=1)
+    X_y=-np.gradient(X,axis=0)
+    Y_x=+np.gradient(Y,axis=1)
+    Y_y=-np.gradient(Y,axis=0)
 
     #resultant displacement
     V=np.sqrt(X**2+Y**2) 
-    V_x=np.gradient(V,axis=1)
-    V_y=np.gradient(V,axis=0)
+    V_x=+np.gradient(V,axis=1)
+    V_y=-np.gradient(V,axis=0)
     
     #make sure shape is same
     if not (np.shape(X)==\
@@ -530,9 +534,9 @@ def SpheresStrainMatrix(pixel_step,
                                 which_interpolation)
 
     #axis=0 x gradient, axis=1 y gradient
-    ε_xx=np.gradient(X,axis=1)
-    ε_yy=np.gradient(Y,axis=0)
-    γ_xy=np.gradient(Y,axis=1)+np.gradient(X,axis=0)
+    ε_xx=+np.gradient(X,axis=1)
+    ε_yy=-np.gradient(Y,axis=0)
+    γ_xy=+np.gradient(Y,axis=1)-np.gradient(X,axis=0)
 
     #make sure shape is same
     if not (np.shape(ε_xx)==\
@@ -561,15 +565,15 @@ def SpheresStrainMatrix(pixel_step,
     map_strain['Distortional']=(0.5*(ε_xx-ε_yy))**2+(0.5*γ_xy)**2
  
     #x, y gradient of X, Y
-    X_x=np.gradient(X,axis=1)
-    X_y=np.gradient(X,axis=0)
-    Y_x=np.gradient(Y,axis=1)
-    Y_y=np.gradient(Y,axis=0)
+    X_x=+np.gradient(X,axis=1)
+    X_y=-np.gradient(X,axis=0)
+    Y_x=+np.gradient(Y,axis=1)
+    Y_y=-np.gradient(Y,axis=0)
     
     #resultant displacement
     D=np.sqrt(X**2+Y**2) 
-    D_x=np.gradient(D,axis=1)
-    D_y=np.gradient(D,axis=0)
+    D_x=+np.gradient(D,axis=1)
+    D_y=-np.gradient(D,axis=0)
     
     #make sure shape is same
     if not (np.shape(X)==\

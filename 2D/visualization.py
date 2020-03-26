@@ -28,7 +28,7 @@ for this_case_name in list_case_output:
     
     if version=='lite':
         
-        progress_folder=folder_output+'\\'+this_case_name+'\\structural deformation'
+        progress_folder=folder_output+'\\'+this_case_name+'\\Structural Deformation'
 
         #looking for final progress by index of max
         list_percentage=[float(this_str.split('%')[0]) for this_str in os.listdir(progress_folder)]
@@ -48,6 +48,6 @@ for this_case_name in list_case_output:
         '''final only standard: 33'''
         '''original and final all: '''
         '''original and final standard: 45'''
-        if this_case_name not in list_case_Figure or O_P.FilesAmount(folder_Figure+'\\'+this_case_name)[2]<45:
+#        if this_case_name not in list_case_Figure or O_P.FilesAmount(folder_Figure+'\\'+this_case_name)[2]<45:
             
-            V_C.CaseVisualization(folder_output+'\\'+this_case_name)
+        V_C.CaseVisualization(folder_output+'\\'+this_case_name)

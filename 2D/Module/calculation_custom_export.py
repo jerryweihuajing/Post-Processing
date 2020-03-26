@@ -62,7 +62,8 @@ Args:
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     pixel_step: length of single pixel (int)
     test: if there is a test with a small amount of spheres
-    exception: whether it calculate the final progress only (default: False) ['final only', 'original and final']
+    exception: whether it calculate the final progress only (default: False) 
+                ['origina lonly', 'final only', 'original and final']
     
 Returns:
     None
@@ -121,6 +122,10 @@ def CaseCalculation(which_case_path,
     
     if exception:
         
+        if exception=='original only':
+            
+            index_list=[0]
+            
         if exception=='final only':
             
             index_list=[-1]

@@ -36,8 +36,8 @@ for this_case_name in list_case_input:
         
         '''all: 728'''
         '''standard: 264'''
-        '''final only all: 91'''
-        '''final only standard: 33'''
+        '''original/final only all: 91'''
+        '''original/final only standard: 33'''
         '''original and final all: 182'''
         '''original and final standard: 66'''
         if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]<66:

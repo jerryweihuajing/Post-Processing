@@ -39,7 +39,7 @@ import calculation_velocity as C_V
 import calculation_rasterization as C_R
 import calculation_interpolation as C_In
 
-from variable_yade_color import yade_rgb_list
+from configuration_yade_color import yade_rgb_list
 
 #------------------------------------------------------------------------------
 """

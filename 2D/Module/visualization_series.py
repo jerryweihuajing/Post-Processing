@@ -17,7 +17,7 @@ import visualization_individual as V_I
 
 import calculation_global_parameter as C_G_P
 
-from variable_list_title import list_title,flag_all
+from configuration_list_title import list_title,flag_all
 
 #------------------------------------------------------------------------------
 """

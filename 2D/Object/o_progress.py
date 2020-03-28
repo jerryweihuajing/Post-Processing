@@ -22,8 +22,8 @@ import operation_path as O_P
 
 from o_sphere import sphere
 
-from variable_list_title import list_title,flag_all
-from variable_yade_color import yade_rgb_list,yade_rgb_map
+from configuration_list_title import list_title,flag_all
+from configuration_yade_color import yade_rgb_list,yade_rgb_map
 
 #==============================================================================
 #object progress to manage data efficiently

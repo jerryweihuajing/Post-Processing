@@ -16,7 +16,7 @@ import operation_path as O_P
 import visualization_individual as V_I
 import visualization_integral_analysis as V_I_A
 
-from variable_list_title import list_title,flag_all
+from configuration_list_title import list_title,flag_all
 
 #------------------------------------------------------------------------------
 """

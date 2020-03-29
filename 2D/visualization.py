@@ -14,7 +14,7 @@ from __init__ import *
 #version='lite'
 version='pro'
 
-folder_output=r'D:\GitHub\YADE\Controlling-Simulation\2D\compression 100-800\output'
+folder_output=r'D:\GitHub\YADEM\Controlling-Simulation\2D\compression 100-800\Data\output'
 folder_Figure=folder_output.replace('output','Figure')
 
 O_P.GenerateFolder(folder_Figure)

@@ -38,6 +38,11 @@ def ScattersVelocity(which_spheres,which_plane,which_direction):
     #traverse all spheres
     for this_sphere in which_spheres:
     
+        #expire sphere from uplift
+        if this_sphere.tag==9:
+            
+            continue
+        
         #new discrete point object
         new_scatter=scatter()
         

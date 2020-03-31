@@ -201,7 +201,7 @@ Args:
     factor: zoom factor (default: 1)
     
 Returns:
-    mesh object
+    a mesh object
 """  
 def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
 

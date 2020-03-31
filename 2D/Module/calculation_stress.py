@@ -42,6 +42,11 @@ def ScattersStress(which_spheres,which_plane,which_direction):
     #traverse all spheres
     for this_sphere in which_spheres:
     
+#        #expire sphere from uplift
+#        if this_sphere.tag==9:
+#            
+#            continue
+        
         #construct new scatter
         new_scatter=scatter()
         
@@ -79,54 +84,6 @@ def ScattersStress(which_spheres,which_plane,which_direction):
             new_scatter.pos_z=0.5*(this_sphere.stress_tensor[ix_x,ix_y]+\
                                    this_sphere.stress_tensor[ix_y,ix_x])
             
-#        #define new 2D stess tensor
-#        this_stress_tensor=np.zeros((2,2))
-#        
-#        try:
-#            
-#            for i in range(2):
-#                
-#                for j in range(2):
-#                    
-#                    this_stress_tensor[i,j]=this_sphere.stress_tensor[this_position_index[i],this_position_index[j]]
-#        
-#        except:
-#            
-#            continue
-#        
-#        #Initialize and gain attributes
-#        new_stress_2D.Init(this_stress_tensor)
-#        
-#        #x normal stress
-#        if which_output_mode=='x_normal':
-#        
-#            new_scatter.pos_z=new_stress_2D.x_normal_stress
-#            
-#        #y normal stress
-#        if which_output_mode=='y_normal':
-#        
-#            new_scatter.pos_z=new_stress_2D.y_normal_stress
-#         
-#        #shear stress
-#        if which_output_mode=='shear':
-#        
-#            new_scatter.pos_z=new_stress_2D.shear_stress
-#        
-#        #mean normal stress
-#        if which_output_mode=='mean_normal':
-#        
-#            new_scatter.pos_z=new_stress_2D.mean_normal_stress
-#        
-#        #maximal shear stress
-#        if which_output_mode=='maximal_shear':
-#            
-#            new_scatter.pos_z=new_stress_2D.maximal_shear_stress
-#            
-#        #delete scatter with infinite value
-#        if new_scatter.pos_z==np.inf or new_scatter.pos_z==-np.inf:
-#
-#            continue
-#            
         scatters.append(new_scatter)
         
     return scatters

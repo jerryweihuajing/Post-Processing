@@ -100,6 +100,9 @@ class progress:
             new_sphere.velocity=np.array([float(this_str) for this_str in this_list[8:11]])
             new_sphere.stress_tensor=np.array([float(this_str) for this_str in this_list[11:]])
          
+            #rgb represent with tag
+            new_sphere.tag=yade_rgb_list.index(new_sphere.color)
+            
             #plane: default XoY
             new_sphere.plane='XoY'
             

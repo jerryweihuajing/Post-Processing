@@ -111,6 +111,7 @@ def AnimationIndividual(output_folder,
     #Generate folder of output figures
     O_P.GenerateFolder(animation_folder)    
     O_P.GenerateFolder(animation_folder) 
+    
     #GIF name
     animation_gif_name=post_fix
     post_fix_gif_name='animation'

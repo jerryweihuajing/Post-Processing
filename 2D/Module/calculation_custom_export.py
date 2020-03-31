@@ -35,7 +35,7 @@ Args:
     case_path: load path of all input files
     
 Returns:
-    A case object
+    a case object
 """
 def CaseGeneration(case_path):
     
@@ -144,8 +144,11 @@ def CaseCalculation(which_case_path,
     #list of spheres and
     spheres_list=[list(this_progress.map_id_spheres.values()) for this_progress in O_L.ListFromIndex(that_case.list_A_progress,index_list)]
     
-    #list of surface map in this case
-    list_surface_map=[C_S_B.SpheresTopMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in O_L.ListFromIndex(that_case.list_A_progress,index_list)]
+    #map is on for the calculation of attribute matrix
+    if which_mode_list!=['Structural Deformation']:
+        
+        #list of surface map in this case
+        list_surface_map=[C_S_B.SpheresTopMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in O_L.ListFromIndex(that_case.list_A_progress,index_list)]
 
     '''Medival fold will be generated as well'''
     output_folder=which_case_path.replace('input','output')
@@ -157,7 +160,6 @@ def CaseCalculation(which_case_path,
         this_file_name=file_names[k]
         this_progress=this_file_name.strip('.txt').strip('A_')
         this_percentage=this_progress.strip('progress=')
-        this_surface_map=list_surface_map[k]
         
         print('')
         print('======')
@@ -192,6 +194,9 @@ def CaseCalculation(which_case_path,
     
             else:
            
+                #index map for strain and strain
+                this_surface_map=list_surface_map[k]
+                
                 #final matrix map
                 map_matrix=C_S_M.SpheresValueMatrix(pixel_step,
                                                     this_spheres,

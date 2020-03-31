@@ -154,11 +154,6 @@ def IndividualStressOrStrain(which_progress,
         plt.imshow(C_I.ImgFlip(value_matrix,0),
                    cmap=C_G_P.GlobalColormap(post_fix),
                    norm=C_G_P.GlobalNorm(which_progress.case,post_fix))
-    
-    #plot outline
-    if 'Stress' in post_fix:
-        
-        with_fracture=True
         
     """regard cumulative distortional strain as fracture"""
     if with_fracture:

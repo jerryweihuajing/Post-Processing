@@ -62,7 +62,12 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
                  
     #traverse spheres
     for this_sphere in which_spheres:
+        
+        #expire sphere from uplift
+        if this_sphere.tag==9:
             
+            continue
+        
         #new 2D circle
         new_circle=o_circle.circle()
         
@@ -104,6 +109,37 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
         plt.imshow(img_tag_mesh,cmap='gray')
     
     return that_mesh
+
+#------------------------------------------------------------------------------
+"""
+Calculate the max and min valid index of every col in an image
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    
+Returns:
+    map of min and max index in every col
+"""
+def SpheresTopAndBottomMap(which_spheres,length):
+    
+    print('')
+    print('-- Spheres Top and Bottom Map')
+    
+    #fetch the mesh object
+    that_mesh=SpheresContent(which_spheres,length)
+    
+    #surfave map
+    map_j_i_top_bottom={}
+    
+    #map from maximum and minimum
+    for j in range(np.shape(that_mesh.img_tag)[1]):
+        
+        this_i_list=np.where(that_mesh.img_tag[:,j]!=0)
+        
+        map_j_i_top_bottom[j]=[np.min(this_i_list),np.max(this_i_list)]
+        
+    return map_j_i_top_bottom
 
 '''
 Calculate the elavation

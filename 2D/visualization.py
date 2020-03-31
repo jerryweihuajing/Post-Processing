@@ -48,6 +48,6 @@ for this_case_name in list_case_output:
         '''final only standard: 33'''
         '''original and final all: '''
         '''original and final standard: 45'''
-        if 'uplift' in this_case_name or this_case_name not in list_case_Figure or O_P.FilesAmount(folder_Figure+'\\'+this_case_name)[2]<45:
+        if this_case_name not in list_case_Figure or O_P.FilesAmount(folder_Figure+'\\'+this_case_name)[2]<45:
             
             V_C.CaseVisualization(folder_output+'\\'+this_case_name)

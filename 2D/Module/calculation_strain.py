@@ -44,10 +44,10 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
     #traverse all spheres
     for this_sphere in which_spheres:
     
-#        #expire sphere from uplift
-#        if this_sphere.tag==9:
-#            
-#            continue
+        #expire sphere from uplift
+        if this_sphere.tag==9:
+            
+            continue
         
         #new discrete point object
         new_scatter=scatter()

@@ -42,10 +42,10 @@ def ScattersStress(which_spheres,which_plane,which_direction):
     #traverse all spheres
     for this_sphere in which_spheres:
     
-#        #expire sphere from uplift
-#        if this_sphere.tag==9:
-#            
-#            continue
+        #expire sphere from uplift
+        if this_sphere.tag==9:
+            
+            continue
         
         #construct new scatter
         new_scatter=scatter()

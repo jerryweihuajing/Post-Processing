@@ -27,11 +27,19 @@ import o_circle
 
 import calculation_image as C_I
 
-#============================================================================== 
-#Calculate the pixels up which the spheres take
-#length: length of every single grid
-#factor: expand ratio
-#return: a mesh object presenting content and img
+#------------------------------------------------------------------------------
+"""
+Calculate the pixels up which the spheres take
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    show: (bool) whether to display (default: False)
+    
+Returns:
+    a mesh object presenting content and img
+"""
 def SpheresContent(which_spheres,length,factor=1,show=False):
     
     print('')
@@ -145,9 +153,18 @@ def SpheresTopAndBottomMap(which_spheres,length):
 Calculate the elavation
 the surface could be calculated, do do the 'left' 'right' 'top' 'bottom'
 '''
-#============================================================================== 
-#Calculate spheres surface from a mesh object
-#return: an dictionary presenting the elavation and coordinates
+#------------------------------------------------------------------------------
+"""
+Calculate the min valid index of every col in an image
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    
+Returns:
+    an dictionary presenting the elavation
+"""
 def SpheresTopMap(which_spheres,length,factor=1):
 
     print('')
@@ -174,9 +191,19 @@ def SpheresTopMap(which_spheres,length,factor=1):
             
     return map_j_i_top 
  
-#==============================================================================     
-#img to map: convenient to plot
-#return: an img tag presenting the elavation
+#------------------------------------------------------------------------------
+"""
+Calculate img to present the surface
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    show: (bool) whether to display (default: False)
+    
+Returns:
+    an img tag presenting the elavation
+"""
 def SpheresTopImg(which_spheres,length,factor=1,show=False):
     
     #fetch the mesh object
@@ -203,9 +230,18 @@ def SpheresTopImg(which_spheres,length,factor=1,show=False):
       
     return that_img_tag
  
-#============================================================================== 
-#Calculate spheres bottom from a mesh object
-#return: an dictionary presenting the elavation and coordinates
+#------------------------------------------------------------------------------
+"""
+Calculate the max valid index of every col in an image
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    
+Returns:
+    an dictionary presenting the bottom
+"""
 def SpheresBottomMap(which_spheres,length,factor=1):
 
     #fetch the mesh object
@@ -229,9 +265,19 @@ def SpheresBottomMap(which_spheres,length,factor=1):
             
     return map_j_i_bottom 
 
-#==============================================================================     
-#img to map: convenient to plot
-#return: an img tag presenting the elavation
+#------------------------------------------------------------------------------
+"""
+Calculate img to present the bottom
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    show: (bool) whether to display (default: False)
+    
+Returns:
+    an img tag presenting the bottom
+"""
 def SpheresBottomImg(which_spheres,length,factor=1,show=False):
     
     #fetch the mesh object
@@ -258,9 +304,18 @@ def SpheresBottomImg(which_spheres,length,factor=1,show=False):
       
     return that_img_tag
 
-#============================================================================== 
-#Calculate Left boundary from a mesh object
-#return: an dictionary presenting the positions
+#------------------------------------------------------------------------------
+"""
+Calculate the max left valid index of every col in an image
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    
+Returns:
+    an dictionary presenting the left boundary
+"""
 def SpheresLeftMap(which_spheres,length,factor=1):
 
     #fetch the mesh object
@@ -284,9 +339,19 @@ def SpheresLeftMap(which_spheres,length,factor=1):
             
     return map_i_j_left 
 
-#==============================================================================     
-#img to map: convenient to plot
-#return: an img tag presenting the left boundary
+#------------------------------------------------------------------------------
+"""
+Calculate img to present the left boundary
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    show: (bool) whether to display (default: False)
+    
+Returns:
+    an img tag presenting the left boundary
+"""
 def SpheresLeftImg(which_spheres,length,factor=1,show=False):
     
     #fetch the mesh object
@@ -313,9 +378,18 @@ def SpheresLeftImg(which_spheres,length,factor=1,show=False):
       
     return that_img_tag
 
-#============================================================================== 
-#Calculate right boundary from a mesh object
-#return: an dictionary presenting the positions
+#------------------------------------------------------------------------------
+"""
+Calculate the max right valid index of every col in an image
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    
+Returns:
+    an dictionary presenting the right boundary
+"""
 def SpheresRightMap(which_spheres,length,factor=1):
 
     #fetch the mesh object
@@ -339,9 +413,19 @@ def SpheresRightMap(which_spheres,length,factor=1):
             
     return map_i_j_right   
  
-#==============================================================================     
-#img to map: convenient to plot
-#return: an img tag presenting the right boundary
+#------------------------------------------------------------------------------
+"""
+Calculate img to present the right boundary
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    show: (bool) whether to display (default: False)
+    
+Returns:
+    an img tag presenting the right boundary
+"""
 def SpheresRightImg(which_spheres,length,factor=1,show=False):
     
     #fetch the mesh object
@@ -368,8 +452,20 @@ def SpheresRightImg(which_spheres,length,factor=1,show=False):
       
     return that_img_tag
 
-#==============================================================================  
-#boundary map for 4 directions
+#------------------------------------------------------------------------------
+"""
+Calculate map to present the boundary
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    side: ['top','left','right','bottom]
+    factor: zoom factor (defualt: 1)
+    show: (bool) whether to display (default: False)
+    
+Returns:
+    an dictionary presenting the boundary
+"""
 def SpheresBoundaryMap(which_spheres,length,side,factor=1,show=False):
     
     if side=='top':
@@ -388,8 +484,20 @@ def SpheresBoundaryMap(which_spheres,length,side,factor=1,show=False):
         
         return SpheresBottomMap(which_spheres,length,factor)
     
-#==============================================================================  
-#boundary image for 4 directions
+#------------------------------------------------------------------------------
+"""
+Calculate img to present the boundary
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    side: ['top','left','right','bottom]
+    factor: zoom factor (defualt: 1)
+    show: (bool) whether to display (default: False)
+    
+Returns:
+    an img tag presenting the boundary
+"""
 def SpheresBoundaryImg(which_spheres,length,side,factor=1,show=False):
     
     if side=='top':
@@ -408,8 +516,19 @@ def SpheresBoundaryImg(which_spheres,length,side,factor=1,show=False):
         
         return SpheresBottomImg(which_spheres,length,factor)   
     
-#==============================================================================   
-#simple spheres boudary calculation
+#------------------------------------------------------------------------------
+"""
+Calculate coordinate list to present the boundary
+
+Args:
+    which_spheres: spheres to calculate
+    length: pixel step
+    factor: zoom factor (defualt: 1)
+    show: (bool) whether to display (default: False)
+    
+Returns:
+    an coordinates list presenting the boundary
+"""
 def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
    
     #fetch the mesh object
@@ -469,10 +588,3 @@ def SimpleSpheresBoundary(which_spheres,length,factor=1,show=False):
             
     return boundary
  
-#txt_path=r'C:\Users\whj\Desktop\L=1000 v=1.0 r=1.0\case 0'
-#ax=plt.subplot()
-#this_mesh=SP.SpheresGrids(ax,spheres,1)
-#
-#plt.figure()
-#plt.imshow(this_mesh.img_tag)
-    

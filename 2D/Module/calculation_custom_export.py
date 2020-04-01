@@ -148,7 +148,7 @@ def CaseCalculation(which_case_path,
     if which_mode_list!=['Structural Deformation']:
         
         #list of surface map in this case
-        list_surface_map=[C_S_B.SpheresTopMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in O_L.ListFromIndex(that_case.list_A_progress,index_list)]
+        list_surface_bottom_map=[C_S_B.SpheresTopAndBottomMap(list(this_progress_A.map_id_spheres.values()),pixel_step) for this_progress_A in O_L.ListFromIndex(that_case.list_A_progress,index_list)]
 
     '''Medival fold will be generated as well'''
     output_folder=which_case_path.replace('input','output')
@@ -195,14 +195,14 @@ def CaseCalculation(which_case_path,
             else:
            
                 #index map for strain and strain
-                this_surface_map=list_surface_map[k]
+                this_surface_bottom_map=list_surface_bottom_map[k]
                 
                 #final matrix map
                 map_matrix=C_S_M.SpheresValueMatrix(pixel_step,
                                                     this_spheres,
                                                     which_plane,
                                                     this_mode,
-                                                    this_surface_map,
+                                                    this_surface_bottom_map,
                                                     which_interpolation)
                 
                 for kk in range(len(map_matrix)):

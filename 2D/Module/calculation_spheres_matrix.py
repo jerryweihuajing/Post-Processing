@@ -388,7 +388,7 @@ Args:
     pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
-    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    which_surface_bottom_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
@@ -397,7 +397,7 @@ Returns:
 def SpheresVelocityMatrix(pixel_step,
                           which_spheres,
                           which_plane,
-                          which_surface_map,
+                          which_surface_bottom_map,
                           which_interpolation):
     
     #scatter objects: components of velocity
@@ -407,8 +407,8 @@ def SpheresVelocityMatrix(pixel_step,
     #matrix of velocity components
     if which_interpolation=='scatters_in_grid':
         
-        X=C_In.ScattersInGridIDW(scatters_velocity_x,pixel_step,which_surface_map)
-        Y=C_In.ScattersInGridIDW(scatters_velocity_y,pixel_step,which_surface_map)
+        X=C_In.ScattersInGridIDW(scatters_velocity_x,pixel_step,which_surface_bottom_map)
+        Y=C_In.ScattersInGridIDW(scatters_velocity_y,pixel_step,which_surface_bottom_map)
 
     #axis=0 x gradient, axis=1 y gradient
     X_x=+np.gradient(X,axis=1)
@@ -466,7 +466,7 @@ Args:
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_direction: ['x','y','z'] displacement in 3 different direction
     which_input_mode: ['periodical','cumulative','instantaneous'] dispalcement mode
-    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    which_surface_bottom_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
@@ -477,7 +477,7 @@ def SpheresDisplacementMatrix(pixel_step,
                               which_plane,
                               which_direction,
                               which_input_mode,
-                              which_surface_map,
+                              which_surface_bottom_map,
                               which_interpolation):
     
     #scatter objects
@@ -488,7 +488,7 @@ def SpheresDisplacementMatrix(pixel_step,
     
     if which_interpolation=='scatters_in_grid':
         
-        return C_In.ScattersInGridIDW(scatters,pixel_step,which_surface_map)
+        return C_In.ScattersInGridIDW(scatters,pixel_step,which_surface_bottom_map)
     
 #------------------------------------------------------------------------------
 """
@@ -499,7 +499,7 @@ Args:
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_input_mode: ['periodical','cumulative','instantaneous'] dispalcement mode
-    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    which_surface_bottom_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter]
     
 Returns:
@@ -509,7 +509,7 @@ def SpheresStrainMatrix(pixel_step,
                         which_spheres,
                         which_plane,
                         which_input_mode,
-                        which_surface_map,
+                        which_surface_bottom_map,
                         which_interpolation):
     
     print('')
@@ -521,7 +521,7 @@ def SpheresStrainMatrix(pixel_step,
                                 which_plane,
                                 'x',
                                 which_input_mode,
-                                which_surface_map,
+                                which_surface_bottom_map,
                                 which_interpolation)
     
     #displacemnt in y direction
@@ -530,7 +530,7 @@ def SpheresStrainMatrix(pixel_step,
                                 which_plane,
                                 'y',
                                 which_input_mode,
-                                which_surface_map,
+                                which_surface_bottom_map,
                                 which_interpolation)
 
     #axis=0 x gradient, axis=1 y gradient
@@ -623,7 +623,7 @@ Args:
     pixel_step: length of single pixel (int)
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
-    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    which_surface_bottom_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
@@ -632,7 +632,7 @@ Returns:
 def SpheresStressMatrix(pixel_step,
                         which_spheres,
                         which_plane,
-                        which_surface_map,
+                        which_surface_bottom_map,
                         which_interpolation):
 
     #component of stress scatters object
@@ -643,9 +643,9 @@ def SpheresStressMatrix(pixel_step,
     #matrix of stress components
     if which_interpolation=='scatters_in_grid':
     
-        σ_xx=C_In.ScattersInGridIDW(scatters_σ_xx,pixel_step,which_surface_map)
-        σ_yy=C_In.ScattersInGridIDW(scatters_σ_yy,pixel_step,which_surface_map)
-        τ_xy=C_In.ScattersInGridIDW(scatters_τ_xy,pixel_step,which_surface_map)
+        σ_xx=C_In.ScattersInGridIDW(scatters_σ_xx,pixel_step,which_surface_bottom_map)
+        σ_yy=C_In.ScattersInGridIDW(scatters_σ_yy,pixel_step,which_surface_bottom_map)
+        τ_xy=C_In.ScattersInGridIDW(scatters_τ_xy,pixel_step,which_surface_bottom_map)
     
     #mao between name and stress
     map_stress={}
@@ -673,7 +673,7 @@ Args:
     which_spheres: input sphere objects list
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_input_mode: ['stress','velocity','cumulative_strain','periodical strain','instantaneous_strain']
-    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    which_surface_bottom_map: to save computation time by not directly participating in interpolation calculation
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     
 Returns:
@@ -683,7 +683,7 @@ def SpheresValueMatrix(pixel_step,
                        which_spheres,
                        which_plane,
                        which_input_mode,
-                       which_surface_map,
+                       which_surface_bottom_map,
                        which_interpolation):
     
     if '-' in which_input_mode:
@@ -692,7 +692,7 @@ def SpheresValueMatrix(pixel_step,
                                    which_spheres,
                                    which_plane,
                                    which_input_mode,
-                                   which_surface_map,
+                                   which_surface_bottom_map,
                                    which_interpolation)
         
     if which_input_mode=='Stress':
@@ -700,7 +700,7 @@ def SpheresValueMatrix(pixel_step,
         return SpheresStressMatrix(pixel_step,
                                    which_spheres,
                                    which_plane,
-                                   which_surface_map,
+                                   which_surface_bottom_map,
                                    which_interpolation)
     
     if which_input_mode=='Velocity':
@@ -708,5 +708,5 @@ def SpheresValueMatrix(pixel_step,
         return SpheresVelocityMatrix(pixel_step,
                                      which_spheres,
                                      which_plane,
-                                     which_surface_map,
+                                     which_surface_bottom_map,
                                      which_interpolation)

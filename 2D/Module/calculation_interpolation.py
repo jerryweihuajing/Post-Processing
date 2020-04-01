@@ -225,7 +225,7 @@ Calculation of scatters in grid inverse distance weighting
 Args:
     which_scatters: scatter objects to be operated
     grid_length: length of grid
-    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    which_surface_bottom_map: to save computation time by not directly participating in interpolation calculation
     show: whether to show (default: False)
     method: method of putting scatters into grids (default: 'advanced')
    
@@ -234,7 +234,7 @@ Returns:
 """
 def ScattersInGridIDW(which_scatters,
                       grid_length,
-                      which_surface_map=None,
+                      which_surface_bottom_map=None,
                       show=False,
                       method='advanced'):
             
@@ -323,16 +323,16 @@ def ScattersInGridIDW(which_scatters,
         plt.imshow(z_mesh_points)
     
     #default: which_surface does not exist
-    if which_surface_map==None:
+    if which_surface_bottom_map==None:
         
         which_surface_map={}
         
         for k in range(np.shape(z_mesh_points)[0]):
             
-            which_surface_map[k]=0
+            which_surface_map[k]=[0,np.shape(z_mesh_points)[0]]
          
     #judge whether which_surface matches mesh_points or not
-    if len(which_surface_map)!=np.shape(z_mesh_points)[1]:
+    if len(which_surface_bottom_map)!=np.shape(z_mesh_points)[1]:
         
         print('ERROR: Incorrect dimension')
         
@@ -341,7 +341,10 @@ def ScattersInGridIDW(which_scatters,
     #check where the nan is
     for j in range(np.shape(z_mesh_points)[1]):
         
-        for i in range(which_surface_map[j],np.shape(z_mesh_points)[0]):
+        i_min=which_surface_bottom_map[j][0]
+        i_max=which_surface_bottom_map[j][1]
+        
+        for i in range(i_min,i_max+1):
                  
             #fill the nan by interpolation
             if np.isnan(z_mesh_points[i,j]):
@@ -394,7 +397,7 @@ Calculation of grids in scatter inverse distance weighting
 Args:
     which_scatters: scatter objects to be operated
     grid_length: length of grid
-    which_surface_map: to save computation time by not directly participating in interpolation calculation
+    which_surface_bottom_map: to save computation time by not directly participating in interpolation calculation
     show: whether to show (default: False)
    
 Returns:

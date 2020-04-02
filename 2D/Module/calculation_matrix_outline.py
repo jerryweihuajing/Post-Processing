@@ -29,6 +29,44 @@ def NeighborInImage(index):
 
 #------------------------------------------------------------------------------
 """
+Connect the outline
+
+Args:
+    content_outline: outline coordinates list
+
+Returns:
+    new outline content
+"""
+def OutlineImprovement(content_outline):
+    
+    #improve surface
+    content_to_add=[]
+
+    for k in range(len(content_outline)-1):
+        
+        if content_outline[k] not in NeighborInImage(content_outline[k+1]):
+    
+            #calculate relative position and collect new coordinates
+            if content_outline[k][0]>content_outline[k+1][0]:
+                
+                offset=content_outline[k][0]-content_outline[k+1][0]
+                
+                for this_offset in range(1,offset):
+                    
+                    content_to_add.append([content_outline[k+1][0]+int(this_offset),content_outline[k][1]])
+            
+            if content_outline[k][0]<content_outline[k+1][0]:
+                
+                offset=content_outline[k+1][0]-content_outline[k][0]
+               
+                for this_offset in range(1,offset):
+                    
+                    content_to_add.append([content_outline[k][0]+int(this_offset),content_outline[k+1][1]])
+    
+    return content_outline+content_to_add
+
+#------------------------------------------------------------------------------
+"""
 Improve morphorlogy of outline
 
 Args:
@@ -38,6 +76,9 @@ Returns:
     content to add to outline image
 """
 def SurfaceOutlineImprovement(outline):
+    
+    print('')
+    print('-- Surface Outline Improvement')
     
     #store surface information
     map_surface={}
@@ -65,34 +106,10 @@ def SurfaceOutlineImprovement(outline):
         
     #plt.imshow(img_surface,cmap='gray')
     
-    #improve surface
-    content_to_add=[]
-        
-    for k in range(len(content_surface)-1):
-        
-        if content_surface[k] not in NeighborInImage(content_surface[k+1]):
-    
-            #calculate relative position and collect new coordinates
-            if content_surface[k][0]>content_surface[k+1][0]:
-                
-                offset=content_surface[k][0]-content_surface[k+1][0]
-                
-                for this_offset in range(1,offset):
-                    
-                    content_to_add.append([content_surface[k+1][0]+int(this_offset),content_surface[k+1][1]])
-            
-            if content_surface[k][0]<content_surface[k+1][0]:
-                
-                offset=content_surface[k+1][0]-content_surface[k][0]
-               
-                for this_offset in range(1,offset):
-                    
-                    content_to_add.append([content_surface[k][0]+int(this_offset),content_surface[k][1]])
-
     img_outline=np.full(np.shape(outline),np.nan)
     
     #plot surface
-    for this_i,this_j in content_surface+content_to_add:
+    for this_i,this_j in OutlineImprovement(content_surface):
         
         img_outline[this_i,this_j]=1
         
@@ -114,43 +131,143 @@ def OutlineFromMatrix(which_matrix):
     
     print('')
     print('-- Outline From Matrix')
-    
+
     #matrix to draw outline image
     outline_matrix=np.full(np.shape(which_matrix),np.nan)
     
-    #surface
+    #outline in all directions
+    surface_outline_content=[]
+    bottom_outline_content=[]
+    right_outline_content=[]
+    left_outline_content=[]
+    
+    #surface and bottom
     for j in range(np.shape(which_matrix)[1]):
+        
+        this_i_list=[]
         
         for i in range(np.shape(which_matrix)[0]):    
             
             if not np.isnan(which_matrix[i,j]):
-      
-                outline_matrix[i,j]=1
-
-                break
-            
-    #improve the surface
-    outline_matrix=SurfaceOutlineImprovement(outline_matrix)
-    
-    #left and right
-    for j in [0,-1]:
+                
+                this_i_list.append(i)
         
-        for i in range(np.shape(which_matrix)[0]): 
+        try:
+            
+            surface_outline_content.append([np.min(this_i_list)-1,j])
+            bottom_outline_content.append([np.max(this_i_list)+1,j])
+            
+        except:
+            
+            pass
+        
+    #left and right
+    for i in range(np.shape(which_matrix)[0]):
+        
+        this_j_list=[]
+        
+        for j in range(np.shape(which_matrix)[1]):    
             
             if not np.isnan(which_matrix[i,j]):
                 
-                outline_matrix[i:,j]=1   
+                this_j_list.append(j)
                 
-                break
-    
-    #bottom
-    for j in range(np.shape(which_matrix)[1]):    
+        try:
             
-        if not np.isnan(which_matrix[-1,j]):
+            right_outline_content.append([i,np.max(this_j_list)+1])
+            left_outline_content.append([i,np.min(this_j_list)-1])
+        
+        except:
             
-            outline_matrix[-1,j]=1
-    
+            pass
+        
+    #total outline content
+    content_outline=OutlineImprovement(surface_outline_content)+\
+                    OutlineImprovement(bottom_outline_content)+\
+                    OutlineImprovement(right_outline_content)+\
+                    OutlineImprovement(left_outline_content)
+                    
+    for this_i,this_j in content_outline:
+
+        outline_matrix[this_i,this_j]=1
+
     return outline_matrix
+
+#------------------------------------------------------------------------------
+"""
+Generate outline matrix from tag img 
+
+Args:
+    img_tag: img tag to be operated
+    
+Returns:
+    outline matrix
+"""
+def OutlineFromImgTag(img_tag):
+    
+    print('')
+    print('-- Outline From Img Tag')
+    
+    #matrix to draw outline img tag
+    outline_img_tag=np.full(np.shape(img_tag),np.nan)
+    
+    #outline in all directions
+    surface_outline_content=[]
+    bottom_outline_content=[]
+    right_outline_content=[]
+    left_outline_content=[]
+    
+    #surface and bottom
+    for j in range(np.shape(img_tag)[1]):
+        
+        this_i_list=[]
+        
+        for i in range(np.shape(img_tag)[0]):    
+            
+            if img_tag[i,j]!=-1:
+                
+                this_i_list.append(i)
+        
+        try:
+            
+            surface_outline_content.append([np.min(this_i_list)-1,j])
+            bottom_outline_content.append([np.max(this_i_list)+1,j])
+            
+        except:
+            
+            pass
+        
+    #left and right
+    for i in range(np.shape(img_tag)[0]):
+        
+        this_j_list=[]
+        
+        for j in range(np.shape(img_tag)[1]):    
+            
+            if img_tag[i,j]!=-1:
+                
+                this_j_list.append(j)
+                
+        try:
+            
+            right_outline_content.append([i,np.max(this_j_list)+1])
+            left_outline_content.append([i,np.min(this_j_list)-1])
+        
+        except:
+            
+            pass
+        
+    #total outline content
+    content_outline=OutlineImprovement(surface_outline_content)+\
+                    OutlineImprovement(bottom_outline_content)+\
+                    OutlineImprovement(right_outline_content)+\
+                    OutlineImprovement(left_outline_content)
+                    
+    for this_i,this_j in content_outline:
+
+        outline_img_tag[this_i,this_j]=1
+
+    return outline_img_tag
 
 #------------------------------------------------------------------------------
 """
@@ -159,11 +276,12 @@ Add bound to matrix
 Args:
     which_matrix: matrix to be operated
     cell_padding: bound size (default: 1)
+    bound_value: balue of bound (default: np.nan)
     
 Returns:
     matrix with bound
 """
-def AddBound(which_matrix,cell_padding=1):
+def AddBound(which_matrix,cell_padding=1,bound_value=np.nan):
     
     print('')
     print('-- Add Bound')
@@ -171,7 +289,7 @@ def AddBound(which_matrix,cell_padding=1):
     shape_new_mat=(np.shape(which_matrix)[0]+2*cell_padding,np.shape(which_matrix)[1]+2*cell_padding)
     
     #new matrix
-    new_mat=np.full(shape_new_mat,np.nan)
+    new_mat=np.full(shape_new_mat,bound_value)
     
     new_mat[cell_padding:-cell_padding,cell_padding:-cell_padding]=which_matrix
     

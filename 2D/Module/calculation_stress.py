@@ -85,7 +85,7 @@ def ScattersStress(which_spheres,which_plane,which_direction):
                                    this_sphere.stress_tensor[ix_y,ix_x])
             
         scatters.append(new_scatter)
-        
+    
     return scatters
 
 #============================================================================== 

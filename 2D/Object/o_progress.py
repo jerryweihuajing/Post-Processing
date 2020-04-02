@@ -13,12 +13,12 @@ import os
 import copy as cp
 import numpy as np
 
+import operation_path as O_P
+
 import calculation_image as C_I
 import calculation_matrix as C_M
 import calculation_matrix_outline as C_M_O
 import calculation_image_smoothing as C_I_S
-
-import operation_path as O_P
 
 from o_sphere import sphere
 
@@ -41,12 +41,11 @@ class progress:
                  rgb_map=None,
                  img_tag=None,
                  structural_deformation=None,
+                 structural_deformation_outline=None,
                  fracture=None,
                  map_matrix=None,
-                 outline_stress=None,
-                 outline_strain=None,
-                 outline_velocity=None,
-                 outline_displacement=None):
+                 map_outline=None):
+        
         self.path=path
         self.map_tag_id=map_tag_id
         self.map_id_spheres=map_id_spheres
@@ -58,12 +57,10 @@ class progress:
         self.rgb_map=rgb_map
         self.img_tag=img_tag
         self.structural_deformation=structural_deformation
+        self.structural_deformation_outline=structural_deformation_outline
         self.fracture=fracture
         self.map_matrix=map_matrix
-        self.outline_stress=outline_stress
-        self.outline_strain=outline_strain
-        self.outline_velocity=outline_velocity
-        self.outline_displacement=outline_displacement
+        self.map_outline=map_outline
         
     def InitCalculation(self,file_path):
         
@@ -188,9 +185,10 @@ class progress:
         self.percentage=O_P.ProgressPercentageFromTXT(progress_path)
         
         #img tag and img rgb of structural deformation
-        self.img_tag=C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path)))
+        self.img_tag=C_M_O.AddBound(C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path))),bound_value=-1)
         self.structural_deformation=C_I.ImageTag2RGB(self.img_tag,self.rgb_map)
-
+        self.structural_deformation_outline=C_M_O.OutlineFromImgTag(self.img_tag)
+        
         if not lite:
 
             case_path=progress_path.split('\\Structural Deformation')[0]
@@ -218,7 +216,7 @@ class progress:
                     this_matrix_path=progress_path.replace('Structural Deformation',this_title)
                     
                     #add bound before smoothing
-                    self.map_matrix[this_title]=C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(this_matrix_path)))
+                    self.map_matrix[this_title]=C_M_O.AddBound(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(this_matrix_path))))
                     self.map_outline[this_title]=C_M_O.OutlineFromMatrix(self.map_matrix[this_title])         
 
             #fracture matrix

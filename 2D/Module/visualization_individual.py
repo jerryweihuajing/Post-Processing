@@ -53,6 +53,9 @@ def IndividualStructuralDeformation(which_progress,
     #transform to RGB format
     structural_deformation_img_rgb=which_progress.structural_deformation
 
+    #outline matrix
+    outline_matrix=which_progress.structural_deformation_outline
+    
     #fracture matrix
     fracture_matrix=which_progress.fracture
     
@@ -70,6 +73,9 @@ def IndividualStructuralDeformation(which_progress,
             
             print('=> WARNING: without fracture')
 
+    #plot outline
+    plt.imshow(outline_matrix,cmap='gray') 
+    
     #decoration  
     O_D.TicksAndSpines(subplot_ax,1,1)
     O_D.TicksConfiguration(subplot_ax,which_progress.offset)
@@ -163,6 +169,7 @@ def IndividualStressOrStrain(which_progress,
             
             print('==> WARNING: without fracture')
             
+    #plot outline
     plt.imshow(np.flip(outline_matrix,0),cmap='gray')   
      
     #decoration  

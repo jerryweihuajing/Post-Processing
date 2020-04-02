@@ -101,7 +101,7 @@ def ScattersDisplacement(which_spheres,which_plane,which_direction,which_input_m
             continue
         
         scatters.append(new_scatter)
-        
+
     return scatters
 
 #============================================================================== 

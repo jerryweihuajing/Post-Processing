@@ -88,7 +88,7 @@ Plot stress or strain series
 Args:
     output_folder: folder to contain result
     which_case: case object to be proccessed
-    post_fix: post fix of txt file
+    post_fix: post fix of txt file (default: 'Structural Deformation')
     with_fracture: (bool) plot fracture or not 
     
 Returns:
@@ -110,21 +110,29 @@ def Series(output_folder,
         
     #subplot index
     index=0
-
+    
+    #whether to plot x ticks
+    x_ticks=False
+    
     for this_progress in which_case.list_progress:
               
         #iter
         index+=1
         
+        #only the last one need it
+        if index==len(which_case.list_progress):
+            
+            x_ticks=True
+            
         this_ax=plt.subplot(len(which_case.list_progress),1,index)
         
         if post_fix=='Structural Deformation':
         
-            V_I.IndividualStructuralDeformation(this_progress,this_ax,with_fracture) 
+            V_I.IndividualStructuralDeformation(this_progress,this_ax,x_ticks) 
       
         else:
             
-            V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,with_fracture)
+            V_I.IndividualStressOrStrain(this_progress,post_fix,this_ax,x_ticks)
                  
         '''double'''
         plus_offset=-this_progress.offset
@@ -192,6 +200,9 @@ def SeriesAll(output_folder,
         real_list_title=list_title
     
     #stress and strain
-    for this_post_fix in real_list_title:     
+    for this_post_fix in real_list_title:    
         
-        Series(output_folder,which_case,this_post_fix)
+        Series(output_folder,
+               which_case=which_case,
+               post_fix=this_post_fix,
+               with_fracture=with_fracture)

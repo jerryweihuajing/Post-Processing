@@ -43,9 +43,12 @@ def AnimationIntegralAnalysis(output_folder,
     figures=[]
     
     for this_progress in which_case.list_progress:
-        
+
         #path of integral analysis figure
-        this_fig_path=V_I_A.SingleIntegralAnalysis(output_folder,this_progress,mode,with_fracture)
+        this_fig_path=V_I_A.SingleIntegralAnalysis(output_folder=output_folder,
+                                                   which_progress=this_progress,
+                                                   mode=mode,
+                                                   with_fracture=with_fracture)
 
         #collect fig to create GIF
         figures.append(imageio.imread(this_fig_path))
@@ -73,7 +76,7 @@ Plot progress individual animation
 Args:
     output_folder: folder to contain result
     which_case: case object to be proccessed
-    post_fix: post fix of txt file (default: structural deformation)
+    post_fix: post fix of txt file (default: 'Structural Deformation')
     with_fracture: (bool) plot fracture or not 
 
 Returns:
@@ -99,7 +102,11 @@ def AnimationIndividual(output_folder,
     
     for this_progress in which_case.list_progress:
         
-        this_fig_path=V_I.Individual(output_folder,this_progress,post_fix,with_fracture)
+        this_fig_path=V_I.Individual(output_folder=output_folder,
+                                     which_progress=this_progress,
+                                     post_fix=post_fix,
+                                     x_ticks=True,
+                                     with_fracture=with_fracture)
         
         #collect fig to create GIF
         figures.append(imageio.imread(this_fig_path))    
@@ -156,4 +163,7 @@ def AnimationAll(output_folder,
     #stress and strain
     for this_post_fix in real_list_title:
         
-        AnimationIndividual(output_folder,which_case,this_post_fix,with_fracture)
+        AnimationIndividual(output_folder=output_folder,
+                            which_case=which_case,
+                            post_fix=this_post_fix,
+                            with_fracture=with_fracture)

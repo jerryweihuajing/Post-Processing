@@ -54,7 +54,9 @@ Args:
 Returns:
     None
 """ 
-def CaseVisualization(case_path,output_folder=None,with_fracture=False):
+def CaseVisualization(case_path,
+                      output_folder=None,
+                      with_fracture=False):
     
     print('')
     print('-- Case Visualization')
@@ -71,21 +73,24 @@ def CaseVisualization(case_path,output_folder=None,with_fracture=False):
         
         case_folder=case_path.replace('output','Figure')
         
-#    V_S.SeriesAll(case_folder,that_case,with_fracture)   
-#    V_A.AnimationAll(case_folder,that_case,with_fracture)
-#    V_I_A.IntegralAnalysisAll(case_folder,that_case,with_fracture)
+    V_S.SeriesAll(case_folder,that_case)   
+    V_A.AnimationAll(case_folder,that_case)
+    V_I_A.IntegralAnalysisAll(case_folder,that_case)
     
     #figures in different progress
     for this_progress in that_case.list_progress:
-        
+
         #imaging and output
-        V_P.ProgressAllIndividuals(case_folder,this_progress,with_fracture)
+        V_P.ProgressAllIndividuals(output_folder=case_folder,
+                                   which_progress=this_progress,
+                                   with_fracture=with_fracture)
         
         #integral analysis
         for this_mode in ['standard','all'][:-1]:
             
-            V_I_A.SingleIntegralAnalysis(case_folder,
-                                         this_progress,
-                                         this_mode,
-                                         with_fracture,
-                                         situation='progress')
+            V_I_A.SingleIntegralAnalysis(output_folder=case_folder,
+                                         which_progress=this_progress,
+                                         mode=this_mode,
+                                         situation='progress',
+                                         with_fracture=with_fracture)
+            

@@ -27,28 +27,22 @@ Plot integral analysis of a progress
 Args:
     output_folder: folder to contain result
     which_progress: progress object
-    mode: 'standard' 'all'
-    with_farcture: (bool) plot fracture and interface or not 
+    mode: mode for integral analysis ['standard' 'all']
     situation: mode for visualization ['case','progress']
-
+    with_farcture: (bool) plot fracture and interface or not (default: False)
+    
 Returns:
     Figure path
 """
 def SingleIntegralAnalysis(output_folder,
                            which_progress,
                            mode='standard',
-                           with_fracture=False,
-                           situation='case'):
+                           situation='case',
+                           with_fracture=False):
     
     print('')
     print('-- Single Integral Analysis In Progress')
     print('-> progress='+which_progress.percentage)
-    
-    #title font
-    title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=13)
-    
-    #annotation font
-    annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=13)
     
     #global shape of progress or integral analysis
     global_shape=which_progress.shape
@@ -74,28 +68,42 @@ def SingleIntegralAnalysis(output_folder,
     #new picture and ax
     figure=C_G_P.FigureForIntegralAnalysis(global_shape,mode)
      
-    #shape of this img
-    this_shape=np.shape(which_progress.fracture)
-    
     #subplot index
     index=0
+    
+    #whether to plot x ticks
+    x_ticks=False
     
     for this_post_fix in list_post_fix:
         
         #iter
         index+=1
         
+        #only the last one need it
+        if index==len(list_post_fix):
+            
+            x_ticks=True
+            
         this_ax=plt.subplot(len(list_post_fix),1,index)
         
         if this_post_fix=='Structural Deformation':
             
             #structural deformation
-            V_I.IndividualStructuralDeformation(which_progress,this_ax)
+            V_I.IndividualStructuralDeformation(which_progress,
+                                                this_ax,
+                                                x_ticks,
+                                                with_annotation=True,
+                                                with_title=True)
 
         else:
                   
             #stress and strain
-            V_I.IndividualStressOrStrain(which_progress,this_post_fix,this_ax)    
+            V_I.IndividualStressOrStrain(which_progress,
+                                         this_post_fix,
+                                         this_ax,
+                                         x_ticks,
+                                         with_annotation=True,
+                                         with_title=True)    
         
         '''double'''
         plus_offset=-which_progress.offset
@@ -112,18 +120,6 @@ def SingleIntegralAnalysis(output_folder,
         
         this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
         
-        #sub annotation
-        this_ax.annotate(which_progress.percentage,
-                         xy=(0,0),
-                         xytext=(plus_offset+1.01*this_shape[1],0.23*this_shape[0]),
-                         fontproperties=annotation_font)
-    
-        #sub title
-        this_ax.annotate(this_post_fix,
-                         xy=(0,0),
-                         xytext=(plus_offset+0.008*global_shape[1],0.8*global_shape[0]),
-                         fontproperties=title_font)
-     
     #figure path and name    
     if situation=='case':
         
@@ -160,7 +156,7 @@ Plot all integral analysis
 Args:
     output_folder: folder to contain result
     which_case: case object to be proccessed
-    with_fracture: (bool) plot fracture or not 
+    with_fracture: (bool) plot fracture or not (default: False)
     
 Returns:
     None
@@ -177,7 +173,7 @@ def IntegralAnalysisAll(output_folder,
     
     for this_mode in list_mode:
         
-        V_A.AnimationIntegralAnalysis(output_folder,
-                                      which_case,
-                                      this_mode,
-                                      with_fracture)
+        V_A.AnimationIntegralAnalysis(output_folder=output_folder,
+                                      which_case=which_case,
+                                      mode=this_mode,
+                                      with_fracture=with_fracture)

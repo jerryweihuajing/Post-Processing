@@ -75,8 +75,8 @@ def ProgressAllIndividuals(output_folder,
         V_I.Individual(output_folder,
                        which_progress,
                        this_post_fix,
-                       with_fracture,
-                       situation='progress')
+                       situation='progress',
+                       with_fracture=with_fracture)
         
 #------------------------------------------------------------------------------   
 """
@@ -106,9 +106,9 @@ def ProgressVisualization(progress_path,output_folder,with_fracture=False):
     
     #integral analysis
     for this_mode in ['standard','all']:
-        
+
         V_I_A.SingleIntegralAnalysis(output_folder,
                                      that_progress,
                                      this_mode,
-                                     with_fracture,
-                                     situation='progress')
+                                     situation='progress',
+                                     with_fracture=with_fracture)

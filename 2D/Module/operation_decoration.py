@@ -55,11 +55,12 @@ Configure ticks on ax
 Args:
     which_ax: axes to be plotted
     x_offset: translate distance in x axis (toward right)
-        
+    x_ticks: (bool) whether there is x ticks (default: True) 
+    
 Returns:
     None
 """        
-def TicksConfiguration(which_ax,x_offset):
+def TicksConfiguration(which_ax,x_offset,x_ticks=True):
       
     #x locator
     x_major_interval=100
@@ -69,8 +70,16 @@ def TicksConfiguration(which_ax,x_offset):
     x_max=1500
     
     x_major_realticks=np.array(list(range(x_min,x_max,x_major_interval)))-x_offset
-    x_major_showticks=(x_major_realticks+x_offset).astype(int)
     x_minor_realticks=np.array(list(range(x_min,x_max,x_minor_interval)))-x_offset
+    
+    if x_ticks:
+        
+        x_major_showticks=(x_major_realticks+x_offset).astype(int)
+        
+    else:
+        
+        x_major_showticks=len(x_major_realticks)*['']
+        
     x_minor_showticks=len(x_minor_realticks)*['']
     
     which_ax.set_xticks(x_major_realticks)

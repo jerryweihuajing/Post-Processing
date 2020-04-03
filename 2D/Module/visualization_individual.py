@@ -28,15 +28,17 @@ Plot single structural deformation in different progress with fracture (do not s
 Args:
     which_progress: progress object
     subplot_ax: sub ax in progress plot
-    with_fracture: (bool) plot fracture or not 
-    with_annotation: (bool) plot progress proportion
-    with_title: (bool) plot title which stands for postfix
+    x_ticks: (bool) whether there is x ticks (default: True) 
+    with_fracture: (bool) plot fracture or not (default: False)  
+    with_annotation: (bool) plot progress proportion (default: True) 
+    with_title: (bool) plot title which stands for postfix (default: False) 
 
 Returns:
     None
 """
 def IndividualStructuralDeformation(which_progress,
                                     subplot_ax,
+                                    x_ticks=True,
                                     with_fracture=False,
                                     with_annotation=True,
                                     with_title=False):
@@ -78,7 +80,7 @@ def IndividualStructuralDeformation(which_progress,
     
     #decoration  
     O_D.TicksAndSpines(subplot_ax,1,1)
-    O_D.TicksConfiguration(subplot_ax,which_progress.offset)
+    O_D.TicksConfiguration(subplot_ax,which_progress.offset,x_ticks)
 
     #sub annotation
     if with_annotation:
@@ -88,7 +90,7 @@ def IndividualStructuralDeformation(which_progress,
         
         subplot_ax.annotate(progress_percentage,
                             xy=(0,0),
-                            xytext=(-which_progress.offset+1.01*this_shape[1],0.23*this_shape[0]),
+                            xytext=(1.01*this_shape[1],0.23*this_shape[0]),
                             fontproperties=annotation_font)
 
     #sub title
@@ -110,9 +112,10 @@ Args:
     which_progress: progress object
     post_fix: post fix of txt file
     subplot_ax: sub ax in progress plot
-    with_fracture: (bool) plot fracture or not 
-    with_annotation: (bool) plot progress proportion
-    with_title: (bool) plot title which stands for postfix
+    x_ticks: (bool) whether there is x ticks (default: True) 
+    with_fracture: (bool) plot fracture or not (default: False) 
+    with_annotation: (bool) plot progress proportion (default: True) 
+    with_title: (bool) plot title which stands for postfix (default: False) 
     
 Returns:
     None
@@ -120,6 +123,7 @@ Returns:
 def IndividualStressOrStrain(which_progress,
                              post_fix,
                              subplot_ax,
+                             x_ticks=True,
                              with_fracture=False,
                              with_annotation=True,
                              with_title=False):
@@ -174,7 +178,7 @@ def IndividualStressOrStrain(which_progress,
      
     #decoration  
     O_D.TicksAndSpines(subplot_ax,1,1)
-    O_D.TicksConfiguration(subplot_ax,which_progress.offset)
+    O_D.TicksConfiguration(subplot_ax,which_progress.offset,x_ticks)
     
     #sub annotation
     if with_annotation:
@@ -184,7 +188,7 @@ def IndividualStressOrStrain(which_progress,
     
         subplot_ax.annotate(progress_percentage,
                             xy=(0,0),
-                            xytext=(-which_progress.offset+1.01*this_shape[1],0.23*this_shape[0]),
+                            xytext=(1.01*this_shape[1],0.23*this_shape[0]),
                             fontproperties=annotation_font)
         
     #sub title
@@ -205,18 +209,20 @@ Plot single figure
 Args:
     output_folder: folder to contain result
     which_progress: progress object
-    post_fix: post fix of txt file
-    with_fracture: (bool) plot fracture or not 
-    situation: for 'case' or 'progress'
-
+    post_fix: post fix of txt file (default: 'Structural Deformation')
+    situation: for ['case','progress'] (default: 'case')
+    x_ticks: (bool) whether there is x ticks (default: False) 
+    with_fracture: (bool) plot fracture or not (default: False) 
+    
 Returns:
     None
 """        
 def Individual(output_folder,
                which_progress,
                post_fix='Structural Deformation',
-               with_fracture=False,
-               situation='case'):
+               situation='case',
+               x_ticks=False,
+               with_fracture=False):
      
     print('')
     print('-- Single Individual In Progress')
@@ -233,11 +239,21 @@ def Individual(output_folder,
 
     if post_fix=='Structural Deformation':
         
-        IndividualStructuralDeformation(which_progress,this_ax,with_fracture,1,1)  
-        
+        IndividualStructuralDeformation(which_progress=which_progress,
+                                        subplot_ax=this_ax,
+                                        x_ticks=x_ticks,
+                                        with_fracture=with_fracture,
+                                        with_annotation=True,
+                                        with_title=True)
     else:
-           
-        IndividualStressOrStrain(which_progress,post_fix,this_ax,with_fracture,1,1)
+        
+        IndividualStressOrStrain(which_progress=which_progress,
+                                 post_fix=post_fix,
+                                 subplot_ax=this_ax,
+                                 x_ticks=x_ticks,
+                                 with_fracture=with_fracture,
+                                 with_annotation=True,
+                                 with_title=True)
 
     '''double'''
     plus_offset=-which_progress.offset

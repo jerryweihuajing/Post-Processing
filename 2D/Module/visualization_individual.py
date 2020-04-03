@@ -88,7 +88,7 @@ def IndividualStructuralDeformation(which_progress,
         
         subplot_ax.annotate(progress_percentage,
                             xy=(0,0),
-                            xytext=(1.01*this_shape[1],0.23*this_shape[0]),
+                            xytext=(-which_progress.offset+1.01*this_shape[1],0.23*this_shape[0]),
                             fontproperties=annotation_font)
 
     #sub title
@@ -99,7 +99,7 @@ def IndividualStructuralDeformation(which_progress,
     
         subplot_ax.annotate('Structural Deformation',
                             xy=(0,0),
-                            xytext=(0,1.023*global_shape[0]),
+                            xytext=(-which_progress.offset+0.008*global_shape[1],0.8*global_shape[0]),
                             fontproperties=title_font)
         
 #------------------------------------------------------------------------------
@@ -184,7 +184,7 @@ def IndividualStressOrStrain(which_progress,
     
         subplot_ax.annotate(progress_percentage,
                             xy=(0,0),
-                            xytext=(1.01*this_shape[1],0.23*this_shape[0]),
+                            xytext=(-which_progress.offset+1.01*this_shape[1],0.23*this_shape[0]),
                             fontproperties=annotation_font)
         
     #sub title
@@ -195,7 +195,7 @@ def IndividualStressOrStrain(which_progress,
     
         subplot_ax.annotate(post_fix,
                             xy=(0,0),
-                            xytext=(0,1.023*global_shape[0]),
+                            xytext=(-which_progress.offset+0.008*global_shape[1],0.8*global_shape[0]),
                             fontproperties=title_font)
         
 #------------------------------------------------------------------------------

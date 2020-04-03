@@ -341,6 +341,10 @@ def ScattersInGridIDW(which_scatters,
     #check where the nan is
     for j in range(np.shape(z_mesh_points)[1]):
         
+        if which_surface_bottom_map[j]==None:
+            
+            continue
+        
         i_min=which_surface_bottom_map[j][0]
         i_max=which_surface_bottom_map[j][1]
         

@@ -145,8 +145,14 @@ def SpheresTopAndBottomMap(which_spheres,length):
         
         this_i_list=np.where(that_mesh.img_tag[:,j]!=0)
         
-        map_j_i_top_bottom[j]=[np.min(this_i_list),np.max(this_i_list)]
+        try:
+            
+            map_j_i_top_bottom[j]=[np.min(this_i_list),np.max(this_i_list)]
         
+        except:
+            
+            map_j_i_top_bottom[j]=None
+            
     return map_j_i_top_bottom
 
 '''

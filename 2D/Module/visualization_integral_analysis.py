@@ -115,13 +115,13 @@ def SingleIntegralAnalysis(output_folder,
         #sub annotation
         this_ax.annotate(which_progress.percentage,
                          xy=(0,0),
-                         xytext=(1.01*this_shape[1],0.23*this_shape[0]),
+                         xytext=(plus_offset+1.01*this_shape[1],0.23*this_shape[0]),
                          fontproperties=annotation_font)
     
         #sub title
         this_ax.annotate(this_post_fix,
                          xy=(0,0),
-                         xytext=(plus_offset,1.023*global_shape[0]),
+                         xytext=(plus_offset+0.008*global_shape[1],0.8*global_shape[0]),
                          fontproperties=title_font)
      
     #figure path and name    

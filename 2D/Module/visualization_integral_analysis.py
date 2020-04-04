@@ -9,9 +9,7 @@ Created on Tue Nov  5 23:52:05 2019
 @title：Module-High Performance Calculation of Integral Analysis in a progress
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
 
 import operation_path as O_P
 
@@ -100,8 +98,8 @@ def SingleIntegralAnalysis(output_folder,
             #stress and strain
             V_I.IndividualStressOrStrain(which_progress,
                                          this_post_fix,
-                                         this_ax,
-                                         x_ticks,
+                                         which_subplots=[figure,this_ax],
+                                         x_ticks=x_ticks,
                                          with_annotation=True,
                                          with_title=True)    
         

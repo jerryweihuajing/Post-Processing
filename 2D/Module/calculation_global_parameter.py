@@ -97,6 +97,25 @@ def GlobalNormFromCase(file_path):
 
 #------------------------------------------------------------------------------
 """
+Calculate minimum and maximum from a case object
+
+Args:
+    which_case: case object
+    post_fix: post fix of value type
+    
+Returns:
+    minimum and maximum
+"""
+def GlobalValueRange(which_case,post_fix):
+    
+    #global maximum and minimum of matrix
+    values_min=[C_M.MatrixMinimum(this_progress.map_matrix[post_fix]) for this_progress in which_case.list_progress]
+    values_max=[C_M.MatrixMaximum(this_progress.map_matrix[post_fix]) for this_progress in which_case.list_progress]
+    
+    return np.min(values_min),np.max(values_max)
+        
+#------------------------------------------------------------------------------
+"""
 Calculate value norm from a case object
 
 Args:
@@ -112,21 +131,12 @@ def GlobalNorm(which_case,post_fix):
     if 'Strain' in post_fix:
         
         return colors.Normalize(vmin=-1,vmax=1)
+  
+    #minimum and maximum of a case
+    v_min,v_max=GlobalValueRange(which_case,post_fix)
     
-    #global maximum and minimum of matrix
-    values_max=[]
-    values_min=[]
-    
-    #traverse txt names
-    for this_progress in which_case.list_progress:
-
-        this_matrix=this_progress.map_matrix[post_fix]
-           
-        values_max.append(C_M.MatrixMaximum(this_matrix))
-        values_min.append(C_M.MatrixMinimum(this_matrix))
-      
     #values maximum and minimum norm
-    return colors.Normalize(vmin=np.min(values_min),vmax=np.max(values_max))
+    return colors.Normalize(vmin=v_min,vmax=v_max)
 
 #------------------------------------------------------------------------------
 """

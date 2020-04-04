@@ -12,6 +12,8 @@ Created on Mon May 27 14:01:01 2019
 import numpy as np
 import matplotlib.pyplot as plt
 
+import calculation_global_parameter as C_G_P
+
 from configuration_font import colorbar_font
 
 #------------------------------------------------------------------------------
@@ -74,14 +76,14 @@ def PositionInSubplot(position_relative,subplot_ax):
 Set Colorbar based on
 
 Args:
-    value_matrix: matrix to describe
+    which_progress: progress object to calculate
     post_fix: post fix of txt file (default: 'Structural Deformation')
     ax_img: AxesImage object
     
 Returns:
     absolute position of the object [left, bottom, width, height]
 """
-def SetColorbar(value_matrix,post_fix,ax_img):
+def SetColorbar(which_progress,post_fix,ax_img):
     
     this_ax=plt.gca()
     figure=plt.gcf()
@@ -98,8 +100,21 @@ def SetColorbar(value_matrix,post_fix,ax_img):
         this_colorbar.set_ticklabels(('-1','0','1'))
  
     if 'Stress' in post_fix:
-        
-        value_ticks=np.linspace(MinimumWithoutNan(value_matrix),MaximumWithoutNan(value_matrix),5)
+
+        if which_progress.case==None:
+            
+            print('--> Local Colorbar')
+            
+            value_matrix=which_progress.map_matrix[post_fix]
+            v_min,v_max=MinimumWithoutNan(value_matrix),MaximumWithoutNan(value_matrix)   
+            
+        else:
+            
+            print('--> Global Colorbar')
+            
+            v_min,v_max=C_G_P.GlobalValueRange(which_progress.case,post_fix)
+            
+        value_ticks=np.linspace(v_min,v_max,5)
 
         #real position
         ticks=list(value_ticks)

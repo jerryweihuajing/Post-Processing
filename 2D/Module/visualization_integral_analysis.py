@@ -110,7 +110,7 @@ def SingleIntegralAnalysis(output_folder,
         #colorbar position of stress and strain 
         if this_post_fix!='Structural Deformation':
         
-            O_C.SetColorbar(which_progress.map_matrix[this_post_fix],this_post_fix,this_ax_img)
+            O_C.SetColorbar(which_progress,this_post_fix,this_ax_img)
         
     #figure path and name    
     if situation=='case':

@@ -227,7 +227,7 @@ def Individual(output_folder,
     figure=C_G_P.FigureForSeriesAndIndividual(global_shape)
         
     #new picture and ax
-    this_ax=plt.subplot()
+    plt.subplot()
 
     if post_fix=='Structural Deformation':
         
@@ -252,7 +252,7 @@ def Individual(output_folder,
     #colorbar position of stress and strain 
     if post_fix!='Structural Deformation':
     
-        O_C.SetColorbar(which_progress.map_matrix[post_fix],post_fix,this_ax_img)
+        O_C.SetColorbar(which_progress,post_fix,this_ax_img)
             
     #figure path and name    
     if situation=='case':

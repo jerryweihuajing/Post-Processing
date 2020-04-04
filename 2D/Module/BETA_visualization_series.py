@@ -32,6 +32,74 @@ import Decoration as Dec
 import ImageSmoothing as ISm
 import IntegralAnalysisPlot as IAP
 
+import operation_path as O_P
+
+import visualization_individual as V_I
+
+import calculation_global_parameter as C_G_P
+
+#------------------------------------------------------------------------------
+"""
+Plot structural deformation series
+
+Args:
+    output_folder: folder to contain result
+    which_case: case object to be proccessed
+    with_fracture: (bool) plot fracture or not 
+    
+Returns:
+    None
+"""
+def SeriesStructuralDeformation(output_folder,
+                                which_case,
+                                with_fracture=False):
+    
+    print('')
+    print('-- Progress Structural Deformation')
+    
+    #global shape of progress or integral analysis
+    global_shape=which_case.list_progress[-1].shape 
+    
+    #new picture and ax
+    figure=C_G_P.FigureForSeriesAndIndividual(global_shape)
+        
+    #subplot index
+    index=0
+    
+    for this_progress in which_case.list_progress:
+              
+        #iter
+        index+=1
+        
+        this_ax=plt.subplot(len(which_case.list_progress),1,index)
+ 
+        V_I.IndividualStructuralDeformation(this_progress,with_fracture=with_fracture)
+        
+        this_ax.axis([0,global_shape[1]*1.13,0,global_shape[0]])
+ 
+    #animation folder path
+    series_folder=output_folder+'\\series\\'
+    post_fix_folder=output_folder+'\\Structural Deformation\\'
+    
+    O_P.GenerateFolder(series_folder)
+    O_P.GenerateFolder(post_fix_folder)
+    
+    #figure name
+    series_fig_name='Structural Deformation'
+    post_fix_fig_name='series'
+    
+    #re-name
+    if with_fracture:
+        
+        series_fig_name+=' with fracture'
+        series_fig_name+=' with fracture'
+    
+    #save this fig
+    figure.savefig(series_folder+series_fig_name+'.png',dpi=300,bbox_inches='tight')
+    figure.savefig(post_fix_folder+post_fix_fig_name+'.png',dpi=300,bbox_inches='tight')
+    
+    plt.close()
+
 #------------------------------------------------------------------------------
 """
 Calculate progress percentage from file path

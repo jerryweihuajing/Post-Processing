@@ -14,7 +14,7 @@ from __init__ import *
 case_path=r'D:\GitHub\YADEM\Controlling-Simulation\2D\compression 100-800\Data\input\single base uplift bT=2.4 uH=20 uW=200 uO=400'
 
 #step 1
-#C_C_E.CaseCalculation(case_path,which_mode_list=['Stress','-Cumulative'],exception='final only')
+C_C_E.CaseCalculation(case_path,which_mode_list=['Stress','-Cumulative'],exception='final only')
 
 #step 2
 case_path=case_path.replace('input','output')
@@ -27,27 +27,14 @@ V_C.CaseVisualization(case_path)
 #    
 #    C_C_E.CaseCalculation(case_folder+'\\'+this_case_name,which_mode_list=['structural_deformation'],final_only=False)
 #
-#import numpy as np
-#import matplotlib.pyplot as plt
-#
+import numpy as np
+import matplotlib.pyplot as plt
+
 #figure,ax=plt.subplots()
 #
 #this_ax=plt.subplot(211)
 #
-#mat=np.array([[1,2,np.nan],[3,4,5]])
+#mat=np.array([[1,2,1],[3,4,5]])
 #
-#np.max(mat.ravel())
-#pcm=this_ax.imshow(mat)
-#plt.axis([0,5,0,5])
-##
-#position_relative=[0.6, 0.6, 0.3, 0.1]
-#
-#'''fig.add_axes([left, bottom, width, height])'''
-#
-#
-#cbar=figure.colorbar(pcm,cax=figure.add_axes(position_relative),orientation='horizontal')
-#
-#plt.show()
-#
-#
-#cbar.set_label('a')
+#a=np.gradient(mat,axis=1)
+#b=np.gradient(mat,axis=0)

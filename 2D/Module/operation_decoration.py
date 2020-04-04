@@ -26,42 +26,44 @@ def ChineseTitle(which_title):
     
 #============================================================================== 
 #坐标轴和边框
-def TicksAndSpines(ax,
-                   ticks=False,
+def TicksAndSpines(ticks=False,
                    spines=False,
                    style='scaled'):
     
+    which_ax=plt.gca()
+    
     #拉长形态
-    ax.axis(style)
+    which_ax.axis(style)
 
     #去掉坐标轴
     if not ticks:
 
-        ax.set_xticks([])
-        ax.set_yticks([])
+        which_ax.set_xticks([])
+        which_ax.set_yticks([])
      
      #去掉上下左右边框
     if not spines:
 
-        ax.spines['top'].set_visible(False) 
-        ax.spines['bottom'].set_visible(False) 
-        ax.spines['left'].set_visible(False) 
-        ax.spines['right'].set_visible(False)
+        which_ax.spines['top'].set_visible(False) 
+        which_ax.spines['bottom'].set_visible(False) 
+        which_ax.spines['left'].set_visible(False) 
+        which_ax.spines['right'].set_visible(False)
         
 #------------------------------------------------------------------------------
 """
 Configure ticks on ax
 
 Args:
-    which_ax: axes to be plotted
     x_offset: translate distance in x axis (toward right)
     x_ticks: (bool) whether there is x ticks (default: True) 
     
 Returns:
     None
 """        
-def TicksConfiguration(which_ax,x_offset,x_ticks=True):
+def TicksConfiguration(x_offset,x_ticks=True):
       
+    which_ax=plt.gca()
+    
     #x locator
     x_major_interval=100
     x_minor_interval=int(x_major_interval/5)
@@ -97,3 +99,31 @@ def TicksConfiguration(which_ax,x_offset,x_ticks=True):
     plt.tick_params(labelsize=10)
     labels = which_ax.get_xticklabels() + which_ax.get_yticklabels()
     [label.set_fontname('Times New Roman') for label in labels]
+
+#------------------------------------------------------------------------------
+"""
+Call plt.axis on different case
+
+Args:
+    output_folder: folder to get case name
+    plus_offset: translate distance in x axis (toward right)
+    global_shape: global shape of all progress
+ 
+Returns:
+    None
+"""      
+def AxisLimit(output_folder,plus_offset,global_shape):
+    
+    subplot_ax=plt.gca()
+    
+    if 'double' in output_folder:
+        
+        if 'diff' in output_folder:
+            
+            plus_offset-=50
+            
+        else:
+            
+            plus_offset-=80
+    
+    subplot_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])

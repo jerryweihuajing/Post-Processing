@@ -14,48 +14,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import operation_path as O_P
+import operation_colorbar as O_C
 import operation_decoration as O_D
 
 import calculation_image as C_I
 import calculation_matrix as C_M
 import calculation_global_parameter as C_G_P
 
-from configuration_font import annotation_font,title_font,colorbar_font
-
-def MaximumWithoutNan(which_matrix):
-    
-    return which_matrix.ravel()[np.logical_not(np.isnan(which_matrix.ravel()))].max()
-
-def MinimumWithoutNan(which_matrix):
-    
-    return which_matrix.ravel()[np.logical_not(np.isnan(which_matrix.ravel()))].min()
-
-#------------------------------------------------------------------------------
-"""
-Convert relative position of subplot to global figure
-
-Args:
-    position_relative: relative [left, bottom, width, height] in colorbar
-    subplot_ax: subplot axes to plot
-    
-Returns:
-    absolute position of the object [left, bottom, width, height]
-"""
-def PositionInSubplot(position_relative,subplot_ax):
-    
-    #relative [left, bottom, width, height] in colorbar
-    left_in_ax,bottom_in_ax,width_in_ax,height_in_ax=position_relative
-    
-    #absolute position of axes
-    x_min,y_min,x_max,y_max=np.array(subplot_ax.get_position()).ravel()
-
-    #absolute position of colorbar
-    left=x_min+left_in_ax*(x_max-x_min)
-    bottom=y_min+bottom_in_ax*(y_max-y_min)
-    width=width_in_ax*(x_max-x_min)
-    height=height_in_ax*(y_max-y_min)
-    
-    return [left,bottom,width,height]
+from configuration_font import annotation_font,title_font
 
 #------------------------------------------------------------------------------
 """
@@ -63,7 +29,6 @@ Plot single structural deformation in different progress with fracture (do not s
 
 Args:
     which_progress: progress object
-    subplot_ax: subplot axes in progress plot
     x_ticks: (bool) whether there is x ticks (default: True) 
     with_fracture: (bool) plot fracture or not (default: False)  
     with_annotation: (bool) plot progress proportion (default: True) 
@@ -73,7 +38,6 @@ Returns:
     None
 """
 def IndividualStructuralDeformation(which_progress,
-                                    subplot_ax,
                                     x_ticks=True,
                                     with_fracture=False,
                                     with_annotation=True,
@@ -81,6 +45,8 @@ def IndividualStructuralDeformation(which_progress,
     print('')
     print('-- Structural Deformation')
     print('-> progress='+which_progress.percentage)
+    
+    subplot_ax=plt.gca()
     
     #global shape of progress or integral analysis
     global_shape=which_progress.shape
@@ -115,8 +81,8 @@ def IndividualStructuralDeformation(which_progress,
     subplot_ax.imshow(outline_matrix,cmap='gray') 
     
     #decoration  
-    O_D.TicksAndSpines(subplot_ax,1,1)
-    O_D.TicksConfiguration(subplot_ax,which_progress.offset,x_ticks)
+    O_D.TicksAndSpines(1,1)
+    O_D.TicksConfiguration(which_progress.offset,x_ticks)
 
     #sub annotation
     if with_annotation:
@@ -141,7 +107,6 @@ Plot single stress of strain in different progress with fracture (do not save)
 Args:
     which_progress: progress object
     post_fix: post fix of txt file
-    subplot_ax: subplot axes in progress plot
     x_ticks: (bool) whether there is x ticks (default: True) 
     with_fracture: (bool) plot fracture or not (default: False) 
     with_annotation: (bool) plot progress proportion (default: True) 
@@ -152,7 +117,6 @@ Returns:
 """
 def IndividualStressOrStrain(which_progress,
                              post_fix,
-                             subplot_ax,
                              x_ticks=True,
                              with_fracture=False,
                              with_annotation=True,
@@ -160,6 +124,8 @@ def IndividualStressOrStrain(which_progress,
     print('')
     print('-- '+post_fix)
     print('-> progress='+which_progress.percentage)
+    
+    subplot_ax=plt.gca()
     
     #global shape of progress or integral analysis
     global_shape=which_progress.shape
@@ -207,8 +173,8 @@ def IndividualStressOrStrain(which_progress,
     subplot_ax.imshow(np.flip(outline_matrix,0),cmap='gray')   
      
     #decoration  
-    O_D.TicksAndSpines(subplot_ax,1,1)
-    O_D.TicksConfiguration(subplot_ax,which_progress.offset,x_ticks)
+    O_D.TicksAndSpines(1,1)
+    O_D.TicksConfiguration(which_progress.offset,x_ticks)
     
     #sub annotation
     if with_annotation:
@@ -266,7 +232,6 @@ def Individual(output_folder,
     if post_fix=='Structural Deformation':
         
         IndividualStructuralDeformation(which_progress=which_progress,
-                                        subplot_ax=this_ax,
                                         x_ticks=x_ticks,
                                         with_fracture=with_fracture,
                                         with_annotation=True,
@@ -275,68 +240,19 @@ def Individual(output_folder,
         
         this_ax_img=IndividualStressOrStrain(which_progress=which_progress,
                                              post_fix=post_fix,
-                                             subplot_ax=this_ax,
                                              x_ticks=x_ticks,
                                              with_fracture=with_fracture,
                                              with_annotation=True,
                                              with_title=True)
 
-    '''double'''
-    plus_offset=-which_progress.offset
+    #set global axis
+    O_D.AxisLimit(output_folder,-which_progress.offset,global_shape)
     
-    if 'double' in output_folder:
-        
-        if 'diff' in output_folder:
-            
-            plus_offset-=50
-            
-        else:
-            
-            plus_offset-=80
-    
-    this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
-    
-    '''global shape would change the scale of sxes'''
+    '''global shape would change the scale of axes'''
     #colorbar position of stress and strain 
     if post_fix!='Structural Deformation':
-        
-        '''fig.add_axes([left, bottom, width, height]) so as the relative ones'''
-        this_colorbar_position=figure.add_axes(PositionInSubplot([0.84,0.72,0.15,0.22],this_ax))
     
-        #plot colorbar
-        this_colorbar=figure.colorbar(this_ax_img,cax=this_colorbar_position,orientation='horizontal')
-        
-        if 'Strain' in post_fix:
-            
-            this_colorbar.set_ticks([-1,0,1])
-            this_colorbar.set_ticklabels(('-1','0','1'))
-     
-        if 'Stress' in post_fix:
-            
-            #value matrix to be plotted
-            value_matrix=which_progress.map_matrix[post_fix]
-            
-            value_ticks=np.linspace(MinimumWithoutNan(value_matrix),MaximumWithoutNan(value_matrix),5)
-            
-            #real position
-            ticks=list(value_ticks)
-            
-            #str to display
-            ticklabels=tuple([str(int(np.round(10e-6*this_tick))) for this_tick in ticks])
-
-            this_colorbar.set_ticks(ticks)
-            this_colorbar.set_ticklabels(ticklabels)
-
-            #stress unit: MPa
-            this_colorbar.set_label('(MPa)',fontdict=colorbar_font)
-            
-        #set ticks
-        this_colorbar.ax.tick_params(labelsize=6)
-
-        #label fonts
-        for this_label in this_colorbar.ax.xaxis.get_ticklabels():
-            
-            this_label.set_fontname('serif')
+        O_C.SetColorbar(which_progress.map_matrix[post_fix],post_fix,this_ax_img)
             
     #figure path and name    
     if situation=='case':

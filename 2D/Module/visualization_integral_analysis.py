@@ -12,6 +12,8 @@ Created on Tue Nov  5 23:52:05 2019
 import matplotlib.pyplot as plt
 
 import operation_path as O_P
+import operation_colorbar as O_C
+import operation_decoration as O_D
 
 import visualization_animation as V_A
 import visualization_individual as V_I
@@ -82,13 +84,12 @@ def SingleIntegralAnalysis(output_folder,
             
             x_ticks=True
             
-        this_ax=plt.subplot(len(list_post_fix),1,index)
+        plt.subplot(len(list_post_fix),1,index)
         
         if this_post_fix=='Structural Deformation':
             
             #structural deformation
             V_I.IndividualStructuralDeformation(which_progress,
-                                                this_ax,
                                                 x_ticks,
                                                 with_annotation=True,
                                                 with_title=True)
@@ -96,27 +97,20 @@ def SingleIntegralAnalysis(output_folder,
         else:
                   
             #stress and strain
-            V_I.IndividualStressOrStrain(which_progress,
-                                         this_post_fix,
-                                         which_subplots=[figure,this_ax],
-                                         x_ticks=x_ticks,
-                                         with_annotation=True,
-                                         with_title=True)    
-        
-        '''double'''
-        plus_offset=-which_progress.offset
-        
-        if 'double' in output_folder:
+            this_ax_img=V_I.IndividualStressOrStrain(which_progress,
+                                                     this_post_fix,
+                                                     x_ticks=x_ticks,
+                                                     with_annotation=True,
+                                                     with_title=True)    
             
-            if 'diff' in output_folder:
-                
-                plus_offset-=50
-                
-            else:
-                
-                plus_offset-=80
+        #set global axis
+        O_D.AxisLimit(output_folder,-which_progress.offset,global_shape)
+            
+        '''global shape would change the scale of axes'''
+        #colorbar position of stress and strain 
+        if this_post_fix!='Structural Deformation':
         
-        this_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
+            O_C.SetColorbar(which_progress.map_matrix[this_post_fix],this_post_fix,this_ax_img)
         
     #figure path and name    
     if situation=='case':

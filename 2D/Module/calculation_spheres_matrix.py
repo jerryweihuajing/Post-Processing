@@ -17,7 +17,9 @@ demand:
 """
 Hint:
     Calculation for gradient on y need to add '-' for the geometry of mat and axis is not same
+    gradient always comes from larger index to the smaller one
 """
+
 import copy as cp
 import numpy as np
 
@@ -533,7 +535,7 @@ def SpheresStrainMatrix(pixel_step,
                                 which_surface_bottom_map,
                                 which_interpolation)
 
-    #axis=0 x gradient, axis=1 y gradient
+    #axis=0 x gradient(+), axis=1 y gradient(-)
     ε_xx=+np.gradient(X,axis=1)
     ε_yy=-np.gradient(Y,axis=0)
     γ_xy=+np.gradient(Y,axis=1)-np.gradient(X,axis=0)

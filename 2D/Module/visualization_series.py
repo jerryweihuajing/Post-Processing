@@ -53,6 +53,8 @@ def Series(output_folder,
     
     #whether to plot x ticks
     x_ticks=False
+    with_title=True
+    with_colorbar=True
     
     for this_progress in which_case.list_progress:
               
@@ -60,11 +62,11 @@ def Series(output_folder,
         index+=1
         
         #the first one need them
-        if index==1:
+        if index>1:
             
-            with_title=True
-            with_colorbar=True
-            
+            with_title=False
+            with_colorbar=False
+  
         #only the last one need it
         if index==len(which_case.list_progress):
             

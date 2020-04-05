@@ -12,39 +12,10 @@ Created on Mon May 27 14:01:01 2019
 import numpy as np
 import matplotlib.pyplot as plt
 
+import calculation_matrix as C_M
 import calculation_global_parameter as C_G_P
 
 from configuration_font import colorbar_font
-
-from configuration_circumstance import colorbar_orientation
-
-#------------------------------------------------------------------------------
-"""
-Calculate the maximum in a matrix regardless of nan
-
-Args:
-    which_matrix: matrix to calculate
-    
-Returns:
-    matrix maximum
-"""
-def MaximumWithoutNan(which_matrix):
-    
-    return which_matrix.ravel()[np.logical_not(np.isnan(which_matrix.ravel()))].max()
-
-#------------------------------------------------------------------------------
-"""
-Calculate the minimum in a matrix regardless of nan
-
-Args:
-    which_matrix: matrix to calculate
-    
-Returns:
-    matrix minimum
-"""
-def MinimumWithoutNan(which_matrix):
-    
-    return which_matrix.ravel()[np.logical_not(np.isnan(which_matrix.ravel()))].min()
 
 #------------------------------------------------------------------------------
 """
@@ -82,23 +53,33 @@ Args:
     which_progress: progress object to calculate
     post_fix: post fix of txt file (default: 'Structural Deformation')
     ax_img: AxesImage object
+    colorbar_orientation: orientation of colorbar in axes ['horizontal','vertical'] (default: 'horizontal')
     
 Returns:
     absolute position of the object [left, bottom, width, height]
 """
-def SetColorbar(which_progress,post_fix,ax_img):
+def SetColorbar(which_progress,
+                post_fix,
+                ax_img,
+                colorbar_orientation='horizontal'):
     
     figure=plt.gcf()
     
+    '''fig.add_axes([left, bottom, width, height]) so as the relative ones'''
     if colorbar_orientation=='vertical':
         
         relative_position=[0.88,0.06,0.03,0.88]
         
     if colorbar_orientation=='horizontal':
         
-        relative_position=[0.84,0.7,0.15,0.2]
+        if 'compression' in which_progress.path:
+            
+            relative_position=[0.83,0.7,0.16,0.2]
     
-    '''fig.add_axes([left, bottom, width, height]) so as the relative ones'''
+        if 'extension' in which_progress.path:
+            
+            relative_position=[0.8,0.7,0.17,0.17]
+            
     this_colorbar_position=figure.add_axes(PositionInSubplot(relative_position))
 
     #plot colorbar
@@ -126,7 +107,7 @@ def SetColorbar(which_progress,post_fix,ax_img):
             print('--> Local Colorbar')
             
             value_matrix=which_progress.map_matrix[post_fix]
-            v_min,v_max=MinimumWithoutNan(value_matrix),MaximumWithoutNan(value_matrix)   
+            v_min,v_max=C_M.MinimumWithoutNan(value_matrix),C_M.MaximumWithoutNan(value_matrix)   
             
         else:
             

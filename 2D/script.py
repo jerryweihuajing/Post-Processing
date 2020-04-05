@@ -16,12 +16,12 @@ demand:
 
 from __init__ import *
 
-case_path=r'D:\GitHub\YADEM\Controlling-Simulation\2D\extension 150-600\Data\input\double diff-1'
+case_path=r'D:\GitHub\YADEM\Controlling-Simulation\2D\compression 100-800\Data\input\single base uplift bT=2.4 uH=20 uW=200 uO=400'
 
 #step 1
-#C_C_E.CaseCalculation(case_path,which_mode_list=['-Periodical','-Instantaneous'])
+C_C_E.CaseCalculation(case_path,which_mode_list=['-Periodical','-Instantaneous','Velocity'])
 
-#step 2
-case_path=case_path.replace('input','output')
-
-V_C.CaseVisualization(case_path)
+##step 2
+#case_path=case_path.replace('input','output')
+#
+#V_C.CaseVisualization(case_path)

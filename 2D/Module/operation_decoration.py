@@ -127,3 +127,37 @@ def AxisLimit(output_folder,plus_offset,global_shape):
             plus_offset-=80
     
     subplot_ax.axis([plus_offset,plus_offset+global_shape[1]*1.13,0,global_shape[0]])
+    
+#------------------------------------------------------------------------------
+"""
+Calculate offset about title position
+
+Args:
+    which_progress: progress object to be calculated
+
+Returns:
+    None
+""" 
+def TitleOffset(which_progress):
+    
+    if 'compression' in which_progress.path:
+        
+        vertical_offset=-20
+        
+    if 'extension' in which_progress.path:
+        
+        vertical_offset=1
+        
+    horizontal_offset=-which_progress.offset
+    
+    if 'double' in which_progress.path:
+        
+        if 'diff' in which_progress.path:
+            
+            horizontal_offset-=50
+            
+        else:
+            
+            horizontal_offset-=80
+        
+    return horizontal_offset,vertical_offset

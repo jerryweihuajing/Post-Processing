@@ -24,6 +24,34 @@ demand:
 
 #------------------------------------------------------------------------------
 """
+Calculate the maximum in a matrix regardless of nan
+
+Args:
+    which_matrix: matrix to calculate
+    
+Returns:
+    matrix maximum
+"""
+def MaximumWithoutNan(which_matrix):
+    
+    return which_matrix.ravel()[np.logical_not(np.isnan(which_matrix.ravel()))].max()
+
+#------------------------------------------------------------------------------
+"""
+Calculate the minimum in a matrix regardless of nan
+
+Args:
+    which_matrix: matrix to calculate
+    
+Returns:
+    matrix minimum
+"""
+def MinimumWithoutNan(which_matrix):
+    
+    return which_matrix.ravel()[np.logical_not(np.isnan(which_matrix.ravel()))].min()
+
+#------------------------------------------------------------------------------
+"""
 Generate image matrix from txt file
 
 Args:

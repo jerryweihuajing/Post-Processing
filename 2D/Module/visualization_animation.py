@@ -33,12 +33,13 @@ Returns:
 """
 def AnimationIntegralAnalysis(output_folder,
                               which_case,
-                              mode='standard',
+                              mode='dynamics',
                               with_fracture=False):
     
     print('')
     print('-- Animation Integral Analysis')
-
+    print('-> mode:',mode)
+    
     #figures to generate GIF
     figures=[]
     

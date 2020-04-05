@@ -42,12 +42,12 @@ for this_case_name in list_case_output:
             
     if version=='pro':
         
-        '''all: '''
-        '''standard: 117'''
-        '''final only all: '''
-        '''final only standard: 33'''
-        '''original and final all: '''
-        '''original and final standard: 45'''
-        if this_case_name not in list_case_Figure or O_P.FilesAmount(folder_Figure+'\\'+this_case_name)[2]<45:
+        '''all progress all display : '''
+        '''all progress dynamics: 117'''
+        '''final only all display: '''
+        '''final only dynamics: 33'''
+        '''original and final all display: '''
+        '''original and final dynamics: 45'''
+#        if this_case_name not in list_case_Figure or O_P.FilesAmount(folder_Figure+'\\'+this_case_name)[2]<45:
             
-            V_C.CaseVisualization(folder_output+'\\'+this_case_name)
+        V_C.CaseVisualization(folder_output+'\\'+this_case_name)

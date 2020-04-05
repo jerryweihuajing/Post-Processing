@@ -22,7 +22,6 @@ import calculation_matrix as C_M
 import calculation_global_parameter as C_G_P
 
 from configuration_font import annotation_font,title_font
-from configuration_circumstance import title_position
 
 #------------------------------------------------------------------------------
 """
@@ -96,17 +95,11 @@ def IndividualStructuralDeformation(which_progress,
     #sub title
     if with_title:
         
-        if title_position=='exterior':
-            
-            vertical_offset=1.3
-            
-        if title_position=='interior':
-            
-            vertical_offset=-20
+        horizontal_offset,vertical_offset=O_D.TitleOffset(which_progress)
             
         subplot_ax.annotate('Structural Deformation',
                             xy=(0,0),
-                            xytext=(which_progress.offset+0.008*global_shape[1],vertical_offset+global_shape[0]),
+                            xytext=(horizontal_offset+0.008*global_shape[1],vertical_offset+global_shape[0]),
                             fontproperties=title_font)
         
 #------------------------------------------------------------------------------
@@ -197,17 +190,11 @@ def IndividualCloudImage(which_progress,
     #sub title
     if with_title:
         
-        if title_position=='exterior':
-            
-            vertical_offset=1.3
-            
-        if title_position=='interior':
-            
-            vertical_offset=-20
-            
+        horizontal_offset,vertical_offset=O_D.TitleOffset(which_progress)
+
         subplot_ax.annotate(post_fix,
                             xy=(0,0),
-                            xytext=(which_progress.offset+0.008*global_shape[1],vertical_offset+global_shape[0]),
+                            xytext=(horizontal_offset+0.008*global_shape[1],vertical_offset+global_shape[0]),
                             fontproperties=title_font)
         
     return this_ax_img

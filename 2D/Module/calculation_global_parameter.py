@@ -225,26 +225,16 @@ Returns:
 def FigureForSeriesAndIndividual(global_shape):
     
     '''compression'''
-    #100-1000
-    if global_shape==(100,1000):
-        
-        return plt.subplots(figsize=(13,13))[0]
-        
     #100-800
     if global_shape==(100,800):
     
         return plt.subplots(figsize=(10,13))[0]
-        
-    #100-500
-    if global_shape==(100,500):
-    
-        return plt.subplots(figsize=(7,13))[0]
 
     '''extension'''
-    #100-200
-    if global_shape==(100,400):
+    #100-400
+    if global_shape==(100,500):
     
-        return plt.subplots(figsize=(5,13))[0]
+        return plt.subplots(figsize=(10,13))[0]
         
 #------------------------------------------------------------------------------
 """
@@ -259,50 +249,31 @@ Returns:
 """
 def FigureForIntegralAnalysis(global_shape,mode):
     
-    if mode=='standard':
+    #5 subplots
+    if mode=='dynamics':
         
         '''compression'''
-        #100-1000
-        if global_shape==(100,1000):
-            
-            return plt.subplots(figsize=(13,8))[0]
-            
-        #100-800
         if global_shape==(100,800):
         
             return plt.subplots(figsize=(10,6))[0]
             
-        #100-500
+        '''extension'''
+        #100-400
         if global_shape==(100,500):
         
-            return plt.subplots(figsize=(7,9))[0]
+            return plt.subplots(figsize=(10,6))[0]
             
-        '''extension'''
-        #100-200
-        if global_shape==(100,400):
-        
-            return plt.subplots(figsize=(5,9))[0]
-            
+    #7 subplots
     if mode=='all':
     
         '''compression'''
-        #100-1000
-        if global_shape==(100,1000):
-            
-            return plt.subplots(figsize=(13,13))[0]
-        
         #100-800
         if global_shape==(100,800):
         
             return plt.subplots(figsize=(10,13))[0]
-        
-        #100-500
-        if global_shape==(100,500):
-            
-            return plt.subplots(figsize=(7,13))[0]
-            
+                    
         '''extension'''
         #100-200
-        if global_shape==(100,400):
+        if global_shape==(100,500):
             
             return plt.subplots(figsize=(5,13))[0]

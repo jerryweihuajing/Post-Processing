@@ -128,10 +128,14 @@ Returns:
 def GlobalNorm(which_case,post_fix):
 
     '''vmin and vmax stand for the value which is below and above'''
-    if 'Strain' in post_fix:
+    if 'Strain-Cumulative' in post_fix:
         
         return colors.Normalize(vmin=-1,vmax=1)
   
+    if 'Strain-Periodical' in post_fix:
+        
+        return colors.Normalize(vmin=-.1,vmax=.1)
+    
     #minimum and maximum of a case
     v_min,v_max=GlobalValueRange(which_case,post_fix)
     

@@ -122,6 +122,10 @@ Returns:
 """       
 def SpheresGrids(which_spheres,length,show=False):
 
+    print('')
+    print('-- Spheres Grids')
+    print('-> grid length:',length)
+    
     #find out the coordinate range of the grid
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
     y_spheres=[this_sphere.position[1] for this_sphere in which_spheres]
@@ -209,6 +213,7 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
 
     print('')
     print('-- Spheres Image')
+    print('-> grid length:',length)
     
     #generate spheres grids
     grids=SpheresGrids(which_spheres,length)
@@ -402,6 +407,10 @@ def SpheresVelocityMatrix(pixel_step,
                           which_surface_bottom_map,
                           which_interpolation):
     
+    print('')
+    print('-- Spheres Velocity Matrix')
+    print('-> plane:',which_plane)
+    
     #scatter objects: components of velocity
     scatters_velocity_x=C_V.ScattersVelocity(which_spheres,which_plane,'x')    
     scatters_velocity_y=C_V.ScattersVelocity(which_spheres,which_plane,'y')  
@@ -482,6 +491,12 @@ def SpheresDisplacementMatrix(pixel_step,
                               which_surface_bottom_map,
                               which_interpolation):
     
+    print('')
+    print('-- Spheres Displacement Matrix')
+    print('-> plane:',which_plane)
+    print('-> direction:',which_direction)
+    print('-> input mode:',which_input_mode)
+    
     #scatter objects
     scatters=C_Strain.ScattersDisplacement(which_spheres,
                                            which_plane,
@@ -516,6 +531,8 @@ def SpheresStrainMatrix(pixel_step,
     
     print('')
     print('-- Spheres Strain Matrix')
+    print('-> plane:',which_plane)
+    print('-> input mode:',which_input_mode)
     
     #displacemnt in x direction
     X=SpheresDisplacementMatrix(pixel_step,
@@ -639,6 +656,7 @@ def SpheresStressMatrix(pixel_step,
 
     print('')
     print('-- Spheres Stress Matrix')
+    print('-> plane:',which_plane)
     
     #component of stress scatters object
     scatters_σ_xx=C_Stress.ScattersStress(which_spheres,which_plane,'xx')   
@@ -666,10 +684,7 @@ def SpheresStressMatrix(pixel_step,
     map_stress['Minimal Normal']=0.5*(σ_xx+σ_yy)-np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
     map_stress['Maximal Shear']=+np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
     map_stress['Minimal Shear']=-np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
-    
-    map_stress['Mean Normal']=np.gradient(0.5*(σ_xx+σ_yy),axis=1)
-    map_stress['Maximal Shear']=-np.gradient(0.5*(σ_xx+σ_yy),axis=0)
-     
+
     return dict(zip([this_key+' Stress' for this_key in list(map_stress.keys())],list(map_stress.values())))
     
 #------------------------------------------------------------------------------
@@ -693,6 +708,12 @@ def SpheresValueMatrix(pixel_step,
                        which_input_mode,
                        which_surface_bottom_map,
                        which_interpolation):
+    
+    print('')
+    print('-> Spheres Value Matrix')
+    print('-> grid length:',pixel_step)
+    print('-> plane:',which_plane)
+    print('-> input mode:',which_input_mode)
     
     if '-' in which_input_mode:
         

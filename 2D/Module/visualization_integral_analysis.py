@@ -47,7 +47,7 @@ def SingleIntegralAnalysis(output_folder,
     #global shape of progress or integral analysis
     global_shape=which_progress.shape
     
-    if mode=='standard':
+    if mode=='dynamics':
     
         list_post_fix=['Structural Deformation',
                        'Mean Normal Stress',
@@ -55,16 +55,25 @@ def SingleIntegralAnalysis(output_folder,
                        'Volumetric Strain-Cumulative',
                        'Distortional Strain-Cumulative']
             
-    if mode=='all':
+    if mode=='kinematics':
         
-        list_post_fix=['Structural Deformation',
-                       'Mean Normal Stress',
-                       'Maximal Shear Stress',
-                       'Volumetric Strain-Cumulative',
-                       'Distortional Strain-Cumulative'
-                       'Volumetric Strain-Periodical',
+        list_post_fix=['Structural Deformation']
+    
+    if mode=='strain-cumulative':
+        
+        list_post_fix=['Volumetric Strain-Cumulative',
+                       'Distortional Strain-Cumulative']
+        
+    if mode=='strain-periodical':
+        
+        list_post_fix=['Volumetric Strain-Periodical',
                        'Distortional Strain-Periodical']
     
+    if mode=='strain-periodical':
+        
+        list_post_fix=['Volumetric Strain-Periodical',
+                       'Distortional Strain-Periodical']
+        
     #new picture and ax
     figure=C_G_P.FigureForIntegralAnalysis(global_shape,mode)
      

@@ -224,7 +224,13 @@ class progress:
                     self.map_matrix[this_title]=C_M_O.AddBound(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(this_matrix_path))))
                     self.map_outline[this_title]=C_M_O.OutlineFromMatrix(self.map_matrix[this_title])         
 
-            #fracture matrix
-            self.fracture=cp.deepcopy(self.map_matrix['Distortional Strain-Cumulative'])
+            try:
+                
+                #fracture matrix
+                self.fracture=cp.deepcopy(self.map_matrix['Distortional Strain-Cumulative'])
+            
+            except:
+                
+                pass
             
             '''outlines are different for the existence of gradient calculation'''

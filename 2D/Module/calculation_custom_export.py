@@ -88,10 +88,6 @@ def CaseCalculation(which_case_path,
     print('-- Case Calculation')
     print('-> case:',argument_str.strip('\\'))
     
-    print('')
-    print('...')
-    print('......')
-    
     #standard mode of output
     all_mode=['Structural Deformation',
               'Stress',
@@ -153,6 +149,11 @@ def CaseCalculation(which_case_path,
     '''Medival fold will be generated as well'''
     output_folder=which_case_path.replace('input','output')
     
+    print('')
+    print('...')
+    print('......')
+    print('.........')
+    
     #draws the form of different periods
     for k in range(len(spheres_list)):    
                    
@@ -161,8 +162,6 @@ def CaseCalculation(which_case_path,
         this_progress=this_file_name.strip('.txt').strip('A_')
         this_percentage=this_progress.strip('progress=')
         
-        print('')
-        print('======')
         print('-->',this_progress)
         
         #this txt name
@@ -173,7 +172,6 @@ def CaseCalculation(which_case_path,
             
         for this_mode in which_mode_list:
 
-            print('')
             print('---> input mode:',this_mode.replace('_',' '))
                 
             if this_mode=='Structural Deformation':

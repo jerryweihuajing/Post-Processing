@@ -240,6 +240,8 @@ def ScattersInGridIDW(which_scatters,
             
     print('')
     print('-- Scatters In Grid IDW')
+    print('-> grid length:',grid_length)
+    print('-> method:',method)
     
     #generate grid object
     that_mesh=C_S_M.ScattersMesh(which_scatters,grid_length)

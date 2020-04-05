@@ -129,9 +129,6 @@ Returns:
 """
 def OutlineFromMatrix(which_matrix):
     
-    print('')
-    print('-- Outline From Matrix')
-
     #matrix to draw outline image
     outline_matrix=np.full(np.shape(which_matrix),np.nan)
     
@@ -204,10 +201,7 @@ Returns:
     outline matrix
 """
 def OutlineFromImgTag(img_tag):
-    
-    print('')
-    print('-- Outline From Img Tag')
-    
+
     #matrix to draw outline img tag
     outline_img_tag=np.full(np.shape(img_tag),np.nan)
     
@@ -282,10 +276,7 @@ Returns:
     matrix with bound
 """
 def AddBound(which_matrix,cell_padding=1,bound_value=np.nan):
-    
-    print('')
-    print('-- Add Bound')
-    
+
     shape_new_mat=(np.shape(which_matrix)[0]+2*cell_padding,np.shape(which_matrix)[1]+2*cell_padding)
     
     #new matrix

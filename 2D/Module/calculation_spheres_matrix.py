@@ -637,6 +637,9 @@ def SpheresStressMatrix(pixel_step,
                         which_surface_bottom_map,
                         which_interpolation):
 
+    print('')
+    print('-- Spheres Stress Matrix')
+    
     #component of stress scatters object
     scatters_σ_xx=C_Stress.ScattersStress(which_spheres,which_plane,'xx')   
     scatters_σ_yy=C_Stress.ScattersStress(which_spheres,which_plane,'yy')  
@@ -664,6 +667,9 @@ def SpheresStressMatrix(pixel_step,
     map_stress['Maximal Shear']=+np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
     map_stress['Minimal Shear']=-np.sqrt((0.5*(σ_xx-σ_yy))**2+τ_xy**2)
     
+    map_stress['Mean Normal']=np.gradient(0.5*(σ_xx+σ_yy),axis=1)
+    map_stress['Maximal Shear']=-np.gradient(0.5*(σ_xx+σ_yy),axis=0)
+     
     return dict(zip([this_key+' Stress' for this_key in list(map_stress.keys())],list(map_stress.values())))
     
 #------------------------------------------------------------------------------

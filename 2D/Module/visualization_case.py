@@ -37,6 +37,7 @@ def CaseConstruction(case_path):
     that_case.InitOffset(case_path.replace('output','input'))
     that_case.InitVisualization(case_path)
     
+    print('')
     print('-> experiment:',that_case.experiment)
     print('-> condition:',that_case.condition)
         

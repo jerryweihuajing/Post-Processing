@@ -63,7 +63,7 @@ class progress:
         self.map_outline=map_outline
         
     def InitCalculation(self,file_path):
-        
+ 
         #all lines
         lines=open(file_path,'r').readlines()
         
@@ -158,6 +158,9 @@ class progress:
         
     def InitVisualization(self,progress_path,lite):
         
+        print('')
+        print('-- Init Visualization')
+        
         self.path=progress_path
         
         '''compression'''
@@ -176,7 +179,7 @@ class progress:
         '''extension'''
         if '100-200' in progress_path:
             
-            self.shape=(100,350) 
+            self.shape=(150,350) 
             
         #map between tag and YADE rgb
         self.rgb_map=yade_rgb_map
@@ -214,6 +217,8 @@ class progress:
                         continue
                     
                     this_matrix_path=progress_path.replace('Structural Deformation',this_title)
+                    
+                    print('->',this_title)
                     
                     #add bound before smoothing
                     self.map_matrix[this_title]=C_M_O.AddBound(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(this_matrix_path))))

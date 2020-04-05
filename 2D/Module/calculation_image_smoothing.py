@@ -196,9 +196,6 @@ def ImageSmooth(which_image,
                 smooth_operator='Gaussian',
                 algorithm='traverse'):
     
-    print('')
-    print('-- Image Smooth')
-    
     #image boundary length
     window_size=2*wingspan+1
     

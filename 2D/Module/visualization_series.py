@@ -40,7 +40,8 @@ def Series(output_folder,
            with_fracture=False):
     
     print('')
-    print('-- Progress Structural Deformation')
+    print('-- Series')
+    print('->',post_fix)
     
     #global shape of progress or integral analysis
     global_shape=which_case.list_progress[-1].shape 
@@ -82,10 +83,10 @@ def Series(output_folder,
       
         else:
             
-            this_ax_img=V_I.IndividualStressOrStrain(this_progress,
-                                                     post_fix,
-                                                     x_ticks=x_ticks,
-                                                     with_title=with_title)
+            this_ax_img=V_I.IndividualCloudImage(this_progress,
+                                                 post_fix,
+                                                 x_ticks=x_ticks,
+                                                 with_title=with_title)
                  
         #set global axis
         O_D.AxisLimit(output_folder,-this_progress.offset,global_shape)
@@ -138,7 +139,7 @@ def SeriesAll(output_folder,
               with_fracture=False):
 
     print('')
-    print('-- Progress Plot')
+    print('-- Series All')
     
     if flag_all:
                 

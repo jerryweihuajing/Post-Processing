@@ -79,7 +79,7 @@ def CaseCalculation(which_case_path,
     #argument information
     argument_str=''
     
-    for this_str in which_case_path.split('\\input\\'):
+    for this_str in which_case_path.split('\input\Data\\'):
         
         argument_str+='\\'
         argument_str+=this_str.split('\\')[-1]

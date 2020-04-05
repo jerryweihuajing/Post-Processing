@@ -41,7 +41,7 @@ def SingleIntegralAnalysis(output_folder,
                            with_fracture=False):
     
     print('')
-    print('-- Single Integral Analysis In Progress')
+    print('-- Single Integral Analysis')
     print('-> progress='+which_progress.percentage)
     
     #global shape of progress or integral analysis
@@ -97,11 +97,11 @@ def SingleIntegralAnalysis(output_folder,
         else:
                   
             #stress and strain
-            this_ax_img=V_I.IndividualStressOrStrain(which_progress,
-                                                     this_post_fix,
-                                                     x_ticks=x_ticks,
-                                                     with_annotation=True,
-                                                     with_title=True)    
+            this_ax_img=V_I.IndividualCloudImage(which_progress,
+                                                 this_post_fix,
+                                                 x_ticks=x_ticks,
+                                                 with_annotation=True,
+                                                 with_title=True)    
             
         #set global axis
         O_D.AxisLimit(output_folder,-which_progress.offset,global_shape)
@@ -158,7 +158,7 @@ def IntegralAnalysisAll(output_folder,
                         with_fracture=False):
     
     print('')
-    print('-- Integral Analysis Plot')
+    print('-- Integral Analysis All')
     
     #integral analysis
     list_mode=['standard','all'][:1]

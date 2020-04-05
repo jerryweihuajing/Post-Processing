@@ -44,6 +44,7 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     
     print('')
     print('-- Spheres Content')
+    print('-> grid length:',length)
     
     #首先找出网格的坐标范围
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
@@ -133,6 +134,7 @@ def SpheresTopAndBottomMap(which_spheres,length):
     
     print('')
     print('-- Spheres Top and Bottom Map')
+    print('-> grid length:',length)
     
     #fetch the mesh object
     that_mesh=SpheresContent(which_spheres,length)
@@ -175,6 +177,7 @@ def SpheresTopMap(which_spheres,length,factor=1):
 
     print('')
     print('-- Spheres Top Map')
+    print('-> grid length:',length)
     
     #fetch the mesh object
     that_mesh=SpheresContent(which_spheres,length)

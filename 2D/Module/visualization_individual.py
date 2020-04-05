@@ -115,14 +115,15 @@ Args:
 Returns:
     a matplotlib.image.AxesImage object
 """
-def IndividualStressOrStrain(which_progress,
-                             post_fix,
-                             x_ticks=True,
-                             with_fracture=False,
-                             with_annotation=True,
-                             with_title=False):
+def IndividualCloudImage(which_progress,
+                         post_fix,
+                         x_ticks=True,
+                         with_fracture=False,
+                         with_annotation=True,
+                         with_title=False):
     print('')
-    print('-- '+post_fix)
+    print('-- Individual Cloud Image')
+    print('-> '+post_fix)
     print('-> progress='+which_progress.percentage)
     
     subplot_ax=plt.gca()
@@ -217,7 +218,7 @@ def Individual(output_folder,
                with_fracture=False):
      
     print('')
-    print('-- Single Individual In Progress')
+    print('-- Individual')
     print('-> '+post_fix)
 
     #global shape of progress or integral analysis
@@ -238,12 +239,12 @@ def Individual(output_folder,
                                         with_title=True)
     else:
         
-        this_ax_img=IndividualStressOrStrain(which_progress=which_progress,
-                                             post_fix=post_fix,
-                                             x_ticks=x_ticks,
-                                             with_fracture=with_fracture,
-                                             with_annotation=True,
-                                             with_title=True)
+        this_ax_img=IndividualCloudImage(which_progress=which_progress,
+                                         post_fix=post_fix,
+                                         x_ticks=x_ticks,
+                                         with_fracture=with_fracture,
+                                         with_annotation=True,
+                                         with_title=True)
 
     #set global axis
     O_D.AxisLimit(output_folder,-which_progress.offset,global_shape)

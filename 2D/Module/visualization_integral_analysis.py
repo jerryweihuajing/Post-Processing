@@ -170,7 +170,7 @@ def IntegralAnalysisAll(output_folder,
     print('-- Integral Analysis All')
     
     #integral analysis
-    list_mode=['standard','all'][:1]
+    list_mode=['dynamics']
     
     for this_mode in list_mode:
         

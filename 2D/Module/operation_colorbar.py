@@ -16,6 +16,8 @@ import calculation_global_parameter as C_G_P
 
 from configuration_font import colorbar_font
 
+from configuration_circumstance import colorbar_orientation
+
 #------------------------------------------------------------------------------
 """
 Calculate the maximum in a matrix regardless of nan
@@ -80,20 +82,19 @@ Args:
     which_progress: progress object to calculate
     post_fix: post fix of txt file (default: 'Structural Deformation')
     ax_img: AxesImage object
-    orientation: orientation of colorbar
     
 Returns:
     absolute position of the object [left, bottom, width, height]
 """
-def SetColorbar(which_progress,post_fix,ax_img,orientation='vertical'):
+def SetColorbar(which_progress,post_fix,ax_img):
     
     figure=plt.gcf()
     
-    if orientation=='vertical':
+    if colorbar_orientation=='vertical':
         
         relative_position=[0.88,0.06,0.03,0.88]
         
-    if orientation=='horizontal':
+    if colorbar_orientation=='horizontal':
         
         relative_position=[0.84,0.7,0.15,0.2]
     
@@ -101,7 +102,7 @@ def SetColorbar(which_progress,post_fix,ax_img,orientation='vertical'):
     this_colorbar_position=figure.add_axes(PositionInSubplot(relative_position))
 
     #plot colorbar
-    this_colorbar=figure.colorbar(ax_img,cax=this_colorbar_position,orientation=orientation)  
+    this_colorbar=figure.colorbar(ax_img,cax=this_colorbar_position,orientation=colorbar_orientation)  
         
     if 'Strain-Cumulative' in post_fix:
         

@@ -87,7 +87,7 @@ def CaseVisualization(case_path,
                                    with_fracture=with_fracture)
         
         #integral analysis
-        for this_mode in ['standard','all'][:-1]:
+        for this_mode in ['dynamics']:
             
             V_I_A.SingleIntegralAnalysis(output_folder=case_folder,
                                          which_progress=this_progress,

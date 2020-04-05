@@ -9,7 +9,13 @@ Created on Sun Apr  5 19:27:48 2020
 @title：Module-variable of circumstance
 """
 
-circumstance='compression'
+'''
+circumstance: tectonic circumstance ['extension','compression']
+title_position: sub title is inside the axis or not ['exterior','interior'] (default: 'interior')
+colorbar_orientation: orientation of colorbar in axes ['horizontal','vertical'] (default: 'horizontal')
+'''
+
+circumstance='extension'
 
 if circumstance=='compression':
     

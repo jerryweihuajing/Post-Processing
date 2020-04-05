@@ -22,4 +22,6 @@ list_extra=['Volumetric Strain-Periodical',
             'Volumetric Strain-Instantaneous',
             'Distortional Strain-Instantaneous']
 
+list_extra=[]
+
 list_title=list_standard+list_extra

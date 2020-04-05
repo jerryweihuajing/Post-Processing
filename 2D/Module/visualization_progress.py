@@ -74,7 +74,7 @@ def ProgressAllIndividuals(output_folder,
         
         V_I.Individual(output_folder,
                        which_progress,
-                       this_post_fix,
+                       post_fix=this_post_fix,
                        situation='progress',
                        with_fracture=with_fracture)
         

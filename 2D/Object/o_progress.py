@@ -177,9 +177,9 @@ class progress:
             self.shape=(100,1000)   
             
         '''extension'''
-        if '100-200' in progress_path:
+        if '150-600' in progress_path:
             
-            self.shape=(150,350) 
+            self.shape=(100,400) 
             
         #map between tag and YADE rgb
         self.rgb_map=yade_rgb_map

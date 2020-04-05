@@ -52,12 +52,12 @@ Plot different phase image in a custom style
 
 Args:
     which_case_path: load path of all input files
-    which_mode_list: ['structural_deformation',
-                      'stress',
-                      'velocity',
-                      'cumulative_strain',
-                      'periodical strain',
-                      'instantaneous_strain']
+    which_mode_list: ['Structural Deformation',
+                      'Stress',
+                      'Velocity',
+                      '-Cumulative',
+                      '-Periodical',
+                      '-Instantaneous']
     which_plane: ['XoY','YoZ','ZoX'] displacement in 3 planes
     which_interpolation: ['scatters_in_grid','grids_in_scatter'] interpolation algorithm
     pixel_step: length of single pixel (int)
@@ -153,6 +153,7 @@ def CaseCalculation(which_case_path,
     print('...')
     print('......')
     print('.........')
+    print('')
     
     #draws the form of different periods
     for k in range(len(spheres_list)):    

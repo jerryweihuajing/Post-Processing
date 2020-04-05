@@ -33,6 +33,7 @@ Args:
     with_fracture: (bool) plot fracture or not (default: False)  
     with_annotation: (bool) plot progress proportion (default: True) 
     with_title: (bool) plot title which stands for postfix (default: False) 
+    title_position: sub title is inside the axis or not ['exterior','interior'] (default: 'interior')
 
 Returns:
     None
@@ -41,7 +42,8 @@ def IndividualStructuralDeformation(which_progress,
                                     x_ticks=True,
                                     with_fracture=False,
                                     with_annotation=True,
-                                    with_title=False):
+                                    with_title=False,
+                                    title_position='interior'):
     print('')
     print('-- Structural Deformation')
     print('-> progress='+which_progress.percentage)
@@ -95,9 +97,17 @@ def IndividualStructuralDeformation(which_progress,
     #sub title
     if with_title:
         
+        if title_position=='exterior':
+            
+            vertical_offset=1.3
+            
+        if title_position=='interior':
+            
+            vertical_offset=-20
+            
         subplot_ax.annotate('Structural Deformation',
                             xy=(0,0),
-                            xytext=(-which_progress.offset+0.008*global_shape[1],0.8*global_shape[0]),
+                            xytext=(which_progress.offset+0.008*global_shape[1],vertical_offset+global_shape[0]),
                             fontproperties=title_font)
         
 #------------------------------------------------------------------------------
@@ -111,6 +121,7 @@ Args:
     with_fracture: (bool) plot fracture or not (default: False) 
     with_annotation: (bool) plot progress proportion (default: True) 
     with_title: (bool) plot title which stands for postfix (default: False) 
+    title_position: sub title is inside the axis or not ['exterior','interior'] (default: 'interior')
     
 Returns:
     a matplotlib.image.AxesImage object
@@ -120,7 +131,8 @@ def IndividualCloudImage(which_progress,
                          x_ticks=True,
                          with_fracture=False,
                          with_annotation=True,
-                         with_title=False):
+                         with_title=False,
+                         title_position='interior'):
     print('')
     print('-- Individual Cloud Image')
     print('-> '+post_fix)
@@ -144,7 +156,7 @@ def IndividualCloudImage(which_progress,
     fracture_matrix=which_progress.fracture
     
     #shape of this img
-    this_shape=np.shape(fracture_matrix)
+    this_shape=np.shape(value_matrix)
     
     #plot main body
     if which_progress.case==None:
@@ -188,9 +200,17 @@ def IndividualCloudImage(which_progress,
     #sub title
     if with_title:
         
+        if title_position=='exterior':
+            
+            vertical_offset=1.3
+            
+        if title_position=='interior':
+            
+            vertical_offset=-20
+            
         subplot_ax.annotate(post_fix,
                             xy=(0,0),
-                            xytext=(-which_progress.offset+0.008*global_shape[1],0.8*global_shape[0]),
+                            xytext=(which_progress.offset+0.008*global_shape[1],vertical_offset+global_shape[0]),
                             fontproperties=title_font)
         
     return this_ax_img
@@ -206,6 +226,7 @@ Args:
     situation: for ['case','progress'] (default: 'case')
     x_ticks: (bool) whether there is x ticks (default: False) 
     with_fracture: (bool) plot fracture or not (default: False) 
+    title_position: sub title is inside the axis or not ['exterior','interior'] (default: 'interior')
     
 Returns:
     None
@@ -215,7 +236,8 @@ def Individual(output_folder,
                post_fix='Structural Deformation',
                situation='case',
                x_ticks=False,
-               with_fracture=False):
+               with_fracture=False,
+               title_position='exterior'):
      
     print('')
     print('-- Individual')
@@ -236,7 +258,8 @@ def Individual(output_folder,
                                         x_ticks=x_ticks,
                                         with_fracture=with_fracture,
                                         with_annotation=True,
-                                        with_title=True)
+                                        with_title=True,
+                                        title_position=title_position)
     else:
         
         this_ax_img=IndividualCloudImage(which_progress=which_progress,
@@ -244,7 +267,8 @@ def Individual(output_folder,
                                          x_ticks=x_ticks,
                                          with_fracture=with_fracture,
                                          with_annotation=True,
-                                         with_title=True)
+                                         with_title=True,
+                                         title_position=title_position)
 
     #set global axis
     O_D.AxisLimit(output_folder,-which_progress.offset,global_shape)

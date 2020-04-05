@@ -16,8 +16,10 @@ list_standard=['Structural Deformation',
                'Maximal Shear Stress',
                'Volumetric Strain-Cumulative',
                'Distortional Strain-Cumulative']
-list_standard=[]
+
 list_extra=['Volumetric Strain-Periodical',
-            'Distortional Strain-Periodical']
+            'Distortional Strain-Periodical',
+            'Volumetric Strain-Instantaneous',
+            'Distortional Strain-Instantaneous']
 
 list_title=list_standard+list_extra

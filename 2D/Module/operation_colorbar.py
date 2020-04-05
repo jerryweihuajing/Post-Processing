@@ -50,12 +50,13 @@ Convert relative position of subplot to global figure
 
 Args:
     position_relative: relative [left, bottom, width, height] in colorbar
-    subplot_ax: subplot axes to plot
     
 Returns:
     absolute position of the object [left, bottom, width, height]
 """
-def PositionInSubplot(position_relative,subplot_ax):
+def PositionInSubplot(position_relative):
+    
+    subplot_ax=plt.gca()
     
     #relative [left, bottom, width, height] in colorbar
     left_in_ax,bottom_in_ax,width_in_ax,height_in_ax=position_relative
@@ -79,26 +80,44 @@ Args:
     which_progress: progress object to calculate
     post_fix: post fix of txt file (default: 'Structural Deformation')
     ax_img: AxesImage object
+    orientation: orientation of colorbar
     
 Returns:
     absolute position of the object [left, bottom, width, height]
 """
-def SetColorbar(which_progress,post_fix,ax_img):
+def SetColorbar(which_progress,post_fix,ax_img,orientation='vertical'):
     
-    this_ax=plt.gca()
     figure=plt.gcf()
     
+    if orientation=='vertical':
+        
+        relative_position=[0.88,0.06,0.03,0.88]
+        
+    if orientation=='horizontal':
+        
+        relative_position=[0.84,0.7,0.15,0.2]
+    
     '''fig.add_axes([left, bottom, width, height]) so as the relative ones'''
-    this_colorbar_position=figure.add_axes(PositionInSubplot([0.84,0.7,0.15,0.2],this_ax))
+    this_colorbar_position=figure.add_axes(PositionInSubplot(relative_position))
 
     #plot colorbar
-    this_colorbar=figure.colorbar(ax_img,cax=this_colorbar_position,orientation='horizontal')  
+    this_colorbar=figure.colorbar(ax_img,cax=this_colorbar_position,orientation=orientation)  
         
-    if 'Strain' in post_fix:
+    if 'Strain-Cumulative' in post_fix:
         
         this_colorbar.set_ticks([-1,0,1])
         this_colorbar.set_ticklabels(('-1','0','1'))
  
+    if 'Strain-Periodical' in post_fix:
+        
+        this_colorbar.set_ticks([-.5,0,.5])
+        this_colorbar.set_ticklabels(('-0.5','0','0.5'))
+     
+    if 'Strain-Instantaneous' in post_fix:
+        
+        this_colorbar.set_ticks([-.1,0,.1])
+        this_colorbar.set_ticklabels(('-0.1','0','0.1'))
+        
     if 'Stress' in post_fix:
 
         if which_progress.case==None:

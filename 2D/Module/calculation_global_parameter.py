@@ -134,6 +134,10 @@ def GlobalNorm(which_case,post_fix):
   
     if 'Strain-Periodical' in post_fix:
         
+        return colors.Normalize(vmin=-.5,vmax=.5)
+    
+    if 'Strain-Instantaneous' in post_fix:
+        
         return colors.Normalize(vmin=-.1,vmax=.1)
     
     #minimum and maximum of a case
@@ -238,7 +242,7 @@ def FigureForSeriesAndIndividual(global_shape):
 
     '''extension'''
     #100-200
-    if global_shape==(100,350):
+    if global_shape==(100,400):
     
         return plt.subplots(figsize=(5,13))[0]
         
@@ -275,7 +279,7 @@ def FigureForIntegralAnalysis(global_shape,mode):
             
         '''extension'''
         #100-200
-        if global_shape==(100,350):
+        if global_shape==(100,400):
         
             return plt.subplots(figsize=(5,9))[0]
             
@@ -299,6 +303,6 @@ def FigureForIntegralAnalysis(global_shape,mode):
             
         '''extension'''
         #100-200
-        if global_shape==(100,350):
+        if global_shape==(100,400):
             
             return plt.subplots(figsize=(5,13))[0]

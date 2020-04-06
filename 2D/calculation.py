@@ -37,7 +37,8 @@ for this_case_name in list_case_input:
         '''all progress: 728'''
         '''original/final only: 91'''
         '''original and final: 182'''
-        if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]<182:
+        '''original and final standard: 66'''
+        if this_case_name not in list_case_output or O_P.FilesAmount(folder_output+'\\'+this_case_name)[2]<66:
             
-            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list=['-Periodical','-Instantaneous','Velocity'],exception='original and final')
+            C_C_E.CaseCalculation(folder_input+'\\'+this_case_name,which_mode_list='standard',exception='original and final')
        

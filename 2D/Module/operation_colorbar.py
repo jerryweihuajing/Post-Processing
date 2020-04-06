@@ -74,7 +74,7 @@ def SetColorbar(which_progress,
         
         if 'compression' in which_progress.path:
             
-            relative_position=[0.83,0.7,0.16,0.2]
+            relative_position=[0.83,0.73,0.16,0.2]
     
         if 'extension' in which_progress.path:
             

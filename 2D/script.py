@@ -19,9 +19,9 @@ from __init__ import *
 case_path=r'D:\GitHub\YADEM\Controlling-Simulation\2D\compression 100-800\Data\input\single base uplift bT=2.4 uH=20 uW=100 uO=300'
 
 #step 1
-C_C_E.CaseCalculation(case_path)
+#C_C_E.CaseCalculation(case_path)
 
 ##step 2
-#case_path=case_path.replace('input','output')
-#
-#V_C.CaseVisualization(case_path)
+case_path=case_path.replace('input','output')
+
+V_C.CaseVisualization(case_path)

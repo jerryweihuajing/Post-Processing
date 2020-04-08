@@ -21,9 +21,11 @@ list_standard=['Structural Deformation',
 list_extra=['Volumetric Strain-Periodical',
             'Distortional Strain-Periodical',
             'Volumetric Strain-Instantaneous',
-            'Distortional Strain-Instantaneous']
-
-list_extra=[]
+            'Distortional Strain-Instantaneous',
+            'X Velocity',
+            'Y Velocity',
+            'X Displacement-Cumulative',
+            'Y Displacement-Cumulative']
 
 list_title=list_standard+list_extra
 

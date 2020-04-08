@@ -113,7 +113,7 @@ def GlobalValueRange(which_case,post_fix):
     values_max=[C_M.MatrixMaximum(this_progress.map_matrix[post_fix]) for this_progress in which_case.list_progress]
     
     return np.min(values_min),np.max(values_max)
-        
+
 #------------------------------------------------------------------------------
 """
 Calculate value norm from a case object
@@ -128,20 +128,56 @@ Returns:
 def GlobalNorm(which_case,post_fix):
 
     '''vmin and vmax stand for the value which is below and above'''
-    if 'Strain-Cumulative' in post_fix:
+    if 'Strain' in post_fix:
+            
+        if '-Cumulative' in post_fix:
+            
+            return colors.Normalize(vmin=-1,vmax=1)
+      
+        if '-Periodical' in post_fix:
+            
+            return colors.Normalize(vmin=-.5,vmax=.5)
         
-        return colors.Normalize(vmin=-1,vmax=1)
-  
-    if 'Strain-Periodical' in post_fix:
-        
-        return colors.Normalize(vmin=-.5,vmax=.5)
-    
-    if 'Strain-Instantaneous' in post_fix:
-        
-        return colors.Normalize(vmin=-.1,vmax=.1)
+        if '-Instantaneous' in post_fix:
+            
+            return colors.Normalize(vmin=-.1,vmax=.1)
     
     #minimum and maximum of a case
     v_min,v_max=GlobalValueRange(which_case,post_fix)
+    
+    #values maximum and minimum norm
+    return colors.Normalize(vmin=v_min,vmax=v_max)
+
+#------------------------------------------------------------------------------
+"""
+Calculate value norm from a case object
+
+Args:
+    which_case: case object
+    post_fix: post fix of value type
+    
+Returns:
+    value norm
+"""
+def LocalNorm(which_progress,post_fix):
+
+    '''vmin and vmax stand for the value which is below and above'''
+    if 'Strain' in post_fix:
+            
+        if '-Cumulative' in post_fix:
+            
+            return colors.Normalize(vmin=-1,vmax=1)
+      
+        if '-Periodical' in post_fix:
+            
+            return colors.Normalize(vmin=-.5,vmax=.5)
+        
+        if '-Instantaneous' in post_fix:
+            
+            return colors.Normalize(vmin=-.1,vmax=.1)
+    
+    #minimum and maximum of a case
+    v_min,v_max=C_M.MatrixMinimum(which_progress.map_matrix[post_fix]),C_M.MatrixMaximum(which_progress.map_matrix[post_fix])
     
     #values maximum and minimum norm
     return colors.Normalize(vmin=v_min,vmax=v_max)
@@ -156,7 +192,7 @@ Args:
 Returns:
     colormap
 """
-def GlobalColormap(post_fix):
+def Colormap(post_fix):
 
     if 'Strain' in post_fix:
         
@@ -250,9 +286,10 @@ Returns:
 def FigureForIntegralAnalysis(global_shape,mode):
     
     #5 subplots
-    if mode=='dynamics':
+    if mode=='dynamics' or 'kinematics':
         
         '''compression'''
+        #100-800
         if global_shape==(100,800):
         
             return plt.subplots(figsize=(10,6))[0]
@@ -262,7 +299,12 @@ def FigureForIntegralAnalysis(global_shape,mode):
         if global_shape==(100,500):
         
             return plt.subplots(figsize=(10,6))[0]
-            
+        
+    #11 subplots       
+    if 'strain' in mode:
+        
+        return plt.subplots(figsize=(22,13.2))[0]
+        
     #7 subplots
     if mode=='all':
     

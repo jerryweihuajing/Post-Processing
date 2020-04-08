@@ -571,7 +571,7 @@ def SpheresStrainMatrix(pixel_step,
     
     map_strain['X Normal']=ε_xx
     map_strain['Y Normal']=ε_yy
-    map_strain['Shear Strain']=γ_xy
+    map_strain['Shear']=γ_xy
     map_strain['Mean Normal']=0.5*(ε_xx+ε_yy)
     map_strain['Diff Normal']=0.5*(ε_xx-ε_yy)
     

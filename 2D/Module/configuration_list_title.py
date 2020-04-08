@@ -21,13 +21,9 @@ list_standard=['Structural Deformation',
 list_extra=['Volumetric Strain-Periodical',
             'Distortional Strain-Periodical',
             'Volumetric Strain-Instantaneous',
-            'Distortional Strain-Instantaneous',
-            'X Velocity',
-            'Y Velocity',
-            'X Displacement-Cumulative',
-            'Y Displacement-Cumulative']
+            'Distortional Strain-Instantaneous']
 
-list_title=list_standard+list_extra
+#list_extra=[]
 
 #list post fix in integral analysis
 map_post_fix_list={}
@@ -44,11 +40,23 @@ map_post_fix_list['kinematics']=['Structural Deformation',
                                  'X Displacement-Cumulative',
                                  'Y Displacement-Cumulative']
 
-map_post_fix_list['strain-cumulative']=['Volumetric Strain-Cumulative',
+map_post_fix_list['strain-cumulative']=['X Normal Strain-Cumulative',
+                                        'Y Normal Strain-Cumulative',
+                                        'Diff Normal Strain-Cumulative',
+                                        'Mean Normal Strain-Cumulative',
+                                        'Minimal Normal Strain-Cumulative',
+                                        'Maximal Normal Strain-Cumulative',
+                                        'Shear Strain-Cumulative',
+                                        'Minimal Shear Strain-Cumulative',
+                                        'Maximal Shear Strain-Cumulative',
+                                        'Volumetric Strain-Cumulative',
                                         'Distortional Strain-Cumulative']
-        
+
 map_post_fix_list['strain-periodical']=['Volumetric Strain-Periodical',
                                         'Distortional Strain-Periodical']
     
 map_post_fix_list['strain-periodical']=['Volumetric Strain-Periodical',
                                         'Distortional Strain-Periodical']
+
+#the final output postfix
+list_title=map_post_fix_list['strain-cumulative']

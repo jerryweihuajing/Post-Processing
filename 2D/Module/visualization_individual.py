@@ -154,14 +154,15 @@ def IndividualCloudImage(which_progress,
         print('--> Local Norm')
         
         this_ax_img=subplot_ax.imshow(C_I.ImgFlip(value_matrix,0),
-                                      cmap=C_G_P.GlobalColormap(post_fix))
+                                      cmap=C_G_P.Colormap(post_fix),
+                                      norm=C_G_P.LocalNorm(which_progress,post_fix))
             
     else:
         
         print('--> Global Norm')
         
         this_ax_img=subplot_ax.imshow(C_I.ImgFlip(value_matrix,0),
-                                      cmap=C_G_P.GlobalColormap(post_fix),
+                                      cmap=C_G_P.Colormap(post_fix),
                                       norm=C_G_P.GlobalNorm(which_progress.case,post_fix))
    
     """regard cumulative distortional strain as fracture"""

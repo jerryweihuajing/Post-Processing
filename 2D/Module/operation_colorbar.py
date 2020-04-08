@@ -85,23 +85,25 @@ def SetColorbar(which_progress,
     #plot colorbar
     this_colorbar=figure.colorbar(ax_img,cax=this_colorbar_position,orientation=colorbar_orientation)  
         
-    if 'Strain-Cumulative' in post_fix:
+    if 'Strain' in post_fix:
         
-        this_colorbar.set_ticks([-1,0,1])
-        this_colorbar.set_ticklabels(('-1','0','1'))
- 
-    if 'Strain-Periodical' in post_fix:
-        
-        this_colorbar.set_ticks([-.5,0,.5])
-        this_colorbar.set_ticklabels(('-0.5','0','0.5'))
+        if '-Cumulative' in post_fix:
+            
+            this_colorbar.set_ticks([-1,0,1])
+            this_colorbar.set_ticklabels(('-1','0','1'))
      
-    if 'Strain-Instantaneous' in post_fix:
+        if '-Periodical' in post_fix:
+            
+            this_colorbar.set_ticks([-.5,0,.5])
+            this_colorbar.set_ticklabels(('-0.5','0','0.5'))
+     
+        if '-Instantaneous' in post_fix:
+            
+            this_colorbar.set_ticks([-.1,0,.1])
+            this_colorbar.set_ticklabels(('-0.1','0','0.1'))
         
-        this_colorbar.set_ticks([-.1,0,.1])
-        this_colorbar.set_ticklabels(('-0.1','0','0.1'))
+    else:
         
-    if 'Stress' in post_fix:
-
         if which_progress.case==None:
             
             print('--> Local Colorbar')
@@ -116,20 +118,38 @@ def SetColorbar(which_progress,
             v_min,v_max=C_G_P.GlobalValueRange(which_progress.case,post_fix)
             
         value_ticks=np.linspace(v_min,v_max,5)
-
+    
         #real position
         ticks=list(value_ticks)
-
-        #str to display
-        ticklabels=tuple([str(int(np.round(10e-6*this_tick))) for this_tick in ticks])
-
+        
+        if 'Stress' in post_fix:
+            
+            #str to display
+            ticklabels=tuple([str(int(np.round(10e-6*this_tick))) for this_tick in ticks])
+            
+            #stress unit: MPa
+            this_colorbar.set_label('(MPa)',fontdict=colorbar_font)
+            
+        if 'Velocity' in post_fix:
+            
+            #str to display
+            ticklabels=tuple([str(np.round(this_tick,2)) for this_tick in ticks])
+            
+            #stress unit: MPa
+            this_colorbar.set_label('(m/s)',fontdict=colorbar_font)
+          
+        if 'Displacement' in post_fix:
+            
+            #str to display
+            ticklabels=tuple([str(int(np.round(this_tick))) for this_tick in ticks])
+            
+            #stress unit: MPa
+            this_colorbar.set_label('(m)',fontdict=colorbar_font)
+            
         #major ticks
         this_colorbar.set_ticks(ticks)
         this_colorbar.set_ticklabels(ticklabels)
-        
-        #stress unit: MPa
-        this_colorbar.set_label('(MPa)',fontdict=colorbar_font)
-        
+ 
     #set ticks
     this_colorbar.ax.tick_params(labelsize=5)
 

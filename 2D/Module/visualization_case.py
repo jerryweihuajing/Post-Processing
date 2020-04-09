@@ -83,10 +83,10 @@ def CaseVisualization(case_path,
     #figures in different progress
     for this_progress in that_case.list_progress:
 
-        #imaging and output
-        V_P.ProgressAllIndividuals(output_folder=case_folder,
-                                   which_progress=this_progress,
-                                   with_fracture=with_fracture)
+#        #imaging and output
+#        V_P.ProgressAllIndividuals(output_folder=case_folder,
+#                                   which_progress=this_progress,
+#                                   with_fracture=with_fracture)
         
         #integral analysis
         for this_mode in mode_list:

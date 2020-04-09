@@ -58,8 +58,11 @@ map_post_fix_list['strain-periodical']=['Volumetric Strain-Periodical',
 map_post_fix_list['strain-periodical']=['Volumetric Strain-Periodical',
                                         'Distortional Strain-Periodical']
 
+map_post_fix_list['velocity']=['X Velocity',
+                               'Y Velocity']
+
 #list of integral analysis names
-mode_list=['dynamics']
+mode_list=['strain-cumulative']
 
 #the final output postfix
 list_title=[]

@@ -303,7 +303,7 @@ def FigureForIntegralAnalysis(global_shape,mode):
     #11 subplots       
     if 'strain' in mode:
         
-        return plt.subplots(figsize=(10,13))[0]
+        return plt.subplots(figsize=(22,13.2))[0]
         
     #7 subplots
     if mode=='all':

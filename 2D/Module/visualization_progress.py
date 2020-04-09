@@ -76,6 +76,7 @@ def ProgressAllIndividuals(output_folder,
                        which_progress,
                        post_fix=this_post_fix,
                        situation='progress',
+                       x_ticks=True,
                        with_fracture=with_fracture)
         
 #------------------------------------------------------------------------------   

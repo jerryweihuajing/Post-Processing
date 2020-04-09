@@ -16,6 +16,8 @@ import visualization_progress as V_P
 import visualization_animation as V_A
 import visualization_integral_analysis as V_I_A
 
+from configuration_list_title import mode_list
+
 #------------------------------------------------------------------------------   
 """
 Construct a case object (in visualization)
@@ -81,13 +83,13 @@ def CaseVisualization(case_path,
     #figures in different progress
     for this_progress in that_case.list_progress:
 
-#        #imaging and output
-#        V_P.ProgressAllIndividuals(output_folder=case_folder,
-#                                   which_progress=this_progress,
-#                                   with_fracture=with_fracture)
-#        
+        #imaging and output
+        V_P.ProgressAllIndividuals(output_folder=case_folder,
+                                   which_progress=this_progress,
+                                   with_fracture=with_fracture)
+        
         #integral analysis
-        for this_mode in ['strain-cumulative']:
+        for this_mode in mode_list:
             
             V_I_A.SingleIntegralAnalysis(output_folder=case_folder,
                                          which_progress=this_progress,

@@ -20,7 +20,7 @@ import visualization_individual as V_I
 
 import calculation_global_parameter as C_G_P
 
-from configuration_list_title import map_post_fix_list
+from configuration_list_title import map_post_fix_list,mode_list
 
 #------------------------------------------------------------------------------
 """
@@ -149,9 +149,7 @@ def IntegralAnalysisAll(output_folder,
     print('-- Integral Analysis All')
     
     #integral analysis
-    list_mode=['dynamics','kinematics']
-    
-    for this_mode in list_mode:
+    for this_mode in mode_list:
         
         V_A.AnimationIntegralAnalysis(output_folder=output_folder,
                                       which_case=which_case,

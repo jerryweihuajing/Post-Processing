@@ -130,11 +130,11 @@ def SpheresGrids(which_spheres,length,show=False):
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
     y_spheres=[this_sphere.position[1] for this_sphere in which_spheres]
     
-    #最大最小值对应的半径
+    #minimal and maximal radius
     radius_of_min=which_spheres[x_spheres.index(min(x_spheres))].radius
     radius_of_max=which_spheres[y_spheres.index(max(y_spheres))].radius
     
-    #xy边界
+    #xy boundaries
     boundary_x=[min(x_spheres)-radius_of_min,max(x_spheres)+radius_of_min]
     boundary_y=[min(y_spheres)-radius_of_max,max(y_spheres)+radius_of_max]
     
@@ -248,10 +248,10 @@ def SpheresImage(which_spheres,length,show=False,method='A',factor=1):
         #calculate the number of certain colors           
         for this_grid in grids:     
             
-            #每个grid都会有的
+            #every grid has its spheres inside
             this_grid.map_tag_color=cp.deepcopy(grid_map_tag_color)
             
-            #grid内的所有sphere
+            #all spheres in grid
             for this_sphere_inside in this_grid.spheres_inside:
                 
                 this_grid.map_tag_color[this_sphere_inside.tag]+=1

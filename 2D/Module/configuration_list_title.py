@@ -62,7 +62,7 @@ map_post_fix_list['velocity']=['X Velocity',
                                'Y Velocity']
 
 #list of integral analysis names
-mode_list=['strain-cumulative']
+mode_list=['dynamics']
 
 #the final output postfix
 list_title=[]

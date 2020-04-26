@@ -147,7 +147,7 @@ def GlobalNorm(which_case,post_fix):
     
     #values maximum and minimum norm
     return colors.Normalize(vmin=v_min,vmax=v_max)
-
+    
 #------------------------------------------------------------------------------
 """
 Calculate value norm from a case object

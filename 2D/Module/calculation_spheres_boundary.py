@@ -46,23 +46,23 @@ def SpheresContent(which_spheres,length,factor=1,show=False):
     print('-- Spheres Content')
     print('-> grid length:',length)
     
-    #首先找出网格的坐标范围
+    #find out the coordinate range of the grid
     x_spheres=[this_sphere.position[0] for this_sphere in which_spheres]
     y_spheres=[this_sphere.position[1] for this_sphere in which_spheres]
     
-    #最大最小值对应的半径
+    #the radius of the maximum and minimum
     radius_of_min=which_spheres[x_spheres.index(min(x_spheres))].radius
     radius_of_max=which_spheres[y_spheres.index(max(y_spheres))].radius
     
-    #xy边界
+    #x,y boundary
     boundary_x=[min(x_spheres)-radius_of_min,max(x_spheres)+radius_of_min]
     boundary_y=[min(y_spheres)-radius_of_max,max(y_spheres)+radius_of_max]
     
-    #xy边长
+    #x,y length
     length_x=boundary_x[1]-boundary_x[0]
     length_y=boundary_y[1]-boundary_y[0]
 
-    #xy方向上的网格数
+    #The number of grids in the x,y direction
     amount_grid_x=int(np.ceil(length_x/length))
     amount_grid_y=int(np.ceil(length_y/length))
 

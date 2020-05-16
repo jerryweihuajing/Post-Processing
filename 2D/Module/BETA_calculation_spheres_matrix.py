@@ -31,25 +31,30 @@ import calculation_rasterization as C_R
 import calculation_interpolation as C_In
 import calculation_spheres_boundary as C_S_B
 
-from variable_yade_color import yade_rgb_list
+from configuration_yade_color import yade_rgb_list
 
 #------------------------------------------------------------------------------
 """
 Draws all sphere objects via MatplotLib
+
 Args:
     which_spheres: spheres object to be operated
+    zoom_factor: zoom factor of radius
     
 Returns:
     None
 """
-def SpheresPlot(which_spheres):
+def SpheresPlot(which_spheres,zoom_factor=1):
+    
+    print('')
+    print('-- Spheres Plot')
     
     for this_sphere in which_spheres:
         
         plt.plot(this_sphere.position[0],
                  this_sphere.position[1],
                  marker='o',
-                 markersize=this_sphere.radius,
+                 markersize=this_sphere.radius*zoom_factor,
                  color=this_sphere.color)      
         
 #------------------------------------------------------------------------------

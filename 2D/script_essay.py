@@ -16,6 +16,70 @@ demand:
 
 from __init__ import *
 
+def PlotGrid(xpos_grid,
+             ypos_grid,
+             length_grid,
+             length_virtual_grid):
+
+    xpos_grid-=0.5
+    ypos_grid-=0.5
+    
+    #left lower corner point of grid
+    
+    xpos_virtual_grid,ypos_virtual_grid=xpos_grid-maximum_radius,ypos_grid-maximum_radius
+    
+    #plt.figure(figsize=(6,6))
+    
+    #draw a virtual border with a radius of a+r_max
+    plt.vlines(xpos_grid,
+               ypos_grid,
+               ypos_grid+length_grid,
+               color='r',
+               linestyles="-")
+    
+    plt.vlines(xpos_grid+length_grid,
+               ypos_grid,
+               ypos_grid+length_grid,
+               color='r',
+               linestyles="-")
+    
+    plt.hlines(ypos_grid,
+               xpos_grid,
+               xpos_grid+length_grid,
+               color='r',
+               linestyles="-")
+    
+    plt.hlines(ypos_grid+length_grid,
+               xpos_grid,
+               xpos_grid+length_grid,
+               color='r',
+               linestyles="-")
+    
+    #draw a concrete border with a radius of a+r_max
+    plt.vlines(xpos_virtual_grid,
+               ypos_virtual_grid,
+               ypos_virtual_grid+length_virtual_grid,
+               color='r',
+               linestyles="--")
+    
+    plt.vlines(xpos_virtual_grid+length_virtual_grid,
+               ypos_virtual_grid,
+               ypos_virtual_grid+length_virtual_grid,
+               color='r',
+               linestyles="--")
+    
+    plt.hlines(ypos_virtual_grid,
+               xpos_virtual_grid,
+               xpos_virtual_grid+length_virtual_grid,
+               color='r',
+               linestyles="--")
+    
+    plt.hlines(ypos_virtual_grid+length_virtual_grid,
+               xpos_virtual_grid,
+               xpos_virtual_grid+length_virtual_grid,
+               color='r',
+               linestyles="--")
+    
 case_path=r'E:\GitHub\YADEM\Controlling-Simulation\2D\compression 100-800\Data\input\single base salt bT=2.4 sT=5 sD=24 sO=200 sW=400'
 
 '''spheres generation'''
@@ -39,132 +103,41 @@ radius_of_max=global_spheres[y_spheres.index(max(y_spheres))].radius
 boundary_x=[min(x_spheres)-radius_of_min,max(x_spheres)+radius_of_min]
 boundary_y=[min(y_spheres)-radius_of_max,max(y_spheres)+radius_of_max]
     
-local_spheres=[this_sphere for this_sphere in global_spheres if 400<=this_sphere.position[0]<=500]
+#maximum of radius
+maximum_radius=np.max([this_sphere.radius for this_sphere in global_spheres])
+
+#left lower corner point of virtual grid
+xpos_grid,ypos_grid=52,47
+
+length_grid=pixel_step
+length_virtual_grid=maximum_radius*2+pixel_step
+
+local_spheres=[this_sphere for this_sphere in global_spheres if 470<=this_sphere.position[0]<=570]
 
 '''about consumption'''
 spheres=cp.deepcopy(local_spheres)
 
-##fetch the mesh object
-#that_mesh=C_S_B.SpheresContent(spheres,pixel_step)
-#
-##surface_map=C_S_B.SpheresTopMap(spheres,pixel_step) 
-#
-#img_tag=that_mesh.img_tag
+#fetch the mesh object
+that_mesh=C_S_B.SpheresContent(spheres,pixel_step)
 
-#'''effect of content'''
-###image
-#plt.figure(figsize=(6,6))
-#
-#plt.imshow(np.flip(that_mesh.img_tag,axis=0),cmap='gray_r')
-#plt.axis([0,100,0,100])
+#surface_map=C_S_B.SpheresTopMap(spheres,pixel_step) 
 
-#ax_showticks=plt.gca()
-#x_major_showticks=[this_tick.get_text() for this_tick in ax_showticks.get_xticklabels()]
+img_tag=that_mesh.img_tag
 
-##graphics
-#plt.figure(figsize=(6,6))
-#
-#BETA_C_S_M.SpheresPlot(spheres,6)
-#
-#plt.axis([400,500,0,100])
-#
-##ax_real=plt.gca()
-##x_major_realticks=[int(this_tick.get_text()) for this_tick in ax_real.get_xticklabels()]
-#
-#'''could not get ticklabel'''
-##change ticks
-#ax=plt.gca()
-#
-#x_major_realticks=np.linspace(400,500,6)
-#x_major_showticks=[str(int(item)) for item in list(np.linspace(0,100,6))]
-#
-#ax.set_xticks(x_major_realticks)
-#ax.set_xticklabels(x_major_showticks)
 
-#'''effect of outline'''
-##matrix to draw outline image
-#outline_matrix=np.full(np.shape(img_tag),np.nan)
-#
-##outline in all directions
-#surface_outline_content=[]
-#bottom_outline_content=[]
-#right_outline_content=[]
-#left_outline_content=[]
-#
-##surface and bottom
-#for j in range(np.shape(outline_matrix)[1]):
-#    
-#    this_i_list=[]
-#    
-#    for i in range(np.shape(outline_matrix)[0]):    
-#        
-#        if img_tag[i,j]:
-#            
-#            this_i_list.append(i)
-#    
-#    try:
-#        
-#        surface_outline_content.append([np.min(this_i_list),j])
-#        bottom_outline_content.append([np.max(this_i_list),j])
-#        
-#    except:
-#        
-#        pass
-#    
-##left and right
-#for i in range(np.shape(outline_matrix)[0]):
-#    
-#    this_j_list=[]
-#    
-#    for j in range(np.shape(outline_matrix)[1]):    
-#        
-#        if not np.isnan(outline_matrix[i,j]):
-#            
-#            this_j_list.append(j)
-#            
-#    try:
-#        
-#        right_outline_content.append([i,np.max(this_j_list)])
-#        left_outline_content.append([i,np.min(this_j_list)])
-#    
-#    except:
-#        
-#        pass
-#
-##total outline content before improvement
-#content_outline=surface_outline_content+\
-#                bottom_outline_content+\
-#                right_outline_content+\
-#                left_outline_content
-#
-#for this_i,this_j in content_outline:
-#
-#    outline_matrix[this_i,this_j]=1
-#
-#plt.figure(figsize=(6,6))
-#
-#plt.imshow(np.flip(outline_matrix,axis=0),cmap='gray')
-#plt.axis([0,100,0,100])
-#
-#'''effect of outline improvement: edge tracing'''
-##total outline content after improvement
-#content_outline=C_M_O.OutlineImprovement(surface_outline_content)+\
-#                C_M_O.OutlineImprovement(bottom_outline_content)+\
-#                C_M_O.OutlineImprovement(right_outline_content)+\
-#                C_M_O.OutlineImprovement(left_outline_content)
-#                    
-#for this_i,this_j in content_outline:
-#
-#    outline_matrix[this_i,this_j]=1
-#    
-#plt.figure(figsize=(6,6))
-#
-#plt.imshow(np.flip(outline_matrix,axis=0),cmap='gray')
-#plt.axis([0,100,0,100])
 
-'''effect of rasterization'''
-#plot boundary box
-#plot image
+
+#PlotGrid(xpos_grid+400,
+#         ypos_grid,
+#         pixel_step,
+#         maximum_radius*2+pixel_step)
+#
+#plt.axis([450,456,44,50])
+
+'''effect of interplation'''
+#plot scatter points in grid
+
+
 #import matrix from txt
 progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.01%.txt'
 
@@ -180,46 +153,13 @@ plt.figure(figsize=(6,6))
 plt.imshow(img_rgb_from_data[:,start_index:start_index+length_ROI])
 plt.axis([0,100,0,100])
 
-'''effect of interplation'''
-#plot scatter in grid
-radius_average=[]
+ax=plt.gca()
 
-maximum_radius=np.max([this_sphere.radius for this_sphere in global_spheres])
+plt.tick_params(labelsize=10)
+[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-#left lower corner point of virtual grid
-xpos_grid,ypos_grid=52-0.5,47-0.5
-length_grid=pixel_step
-
-#left lower corner point of grid
-length_virtual_grid=maximum_radius*2+pixel_step
-xpos_virtual_grid,ypos_virtual_grid=xpos_grid-maximum_radius,ypos_grid-maximum_radius
-
-#plt.figure(figsize=(6,6))
-
-#draw a virtual border with a radius of a+r_max
-plt.vlines(xpos_grid,
-           ypos_grid,
-           ypos_grid+length_grid,
-           color='r',
-           linestyles="--")
-
-plt.vlines(xpos_grid+length_grid,
-           ypos_grid,
-           ypos_grid+length_grid,
-           color='r',
-           linestyles="--")
-
-plt.hlines(ypos_grid,
-           xpos_grid,
-           xpos_grid+length_grid,
-           color='r',
-           linestyles="--")
-
-plt.hlines(ypos_grid+length_grid,
-           xpos_grid,
-           xpos_grid+length_grid,
-           color='r',
-           linestyles="--")
+plt.savefig('rasterization.png',dpi=300,bbox_inches='tight')
+plt.close()
 
 #for this_sphere in spheres:
 #        
@@ -228,6 +168,7 @@ plt.hlines(ypos_grid+length_grid,
 #             marker='o',
 #             markersize=this_sphere.radius,
 #             color=this_sphere.color)     
+
 
 #plot gird without value
 

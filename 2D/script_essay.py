@@ -11,7 +11,7 @@ Created on Mon Mar 16 13:59:03 2020
 
 """
 demand:
-    improve the label font
+。    improve the label font
 """
 
 from __init__ import *
@@ -44,12 +44,12 @@ local_spheres=[this_sphere for this_sphere in global_spheres if 400<=this_sphere
 '''about consumption'''
 spheres=cp.deepcopy(local_spheres)
 
-#fetch the mesh object
-that_mesh=C_S_B.SpheresContent(spheres,pixel_step)
-
-#surface_map=C_S_B.SpheresTopMap(spheres,pixel_step) 
-
-img_tag=that_mesh.img_tag
+##fetch the mesh object
+#that_mesh=C_S_B.SpheresContent(spheres,pixel_step)
+#
+##surface_map=C_S_B.SpheresTopMap(spheres,pixel_step) 
+#
+#img_tag=that_mesh.img_tag
 
 #'''effect of content'''
 ###image
@@ -61,25 +61,25 @@ img_tag=that_mesh.img_tag
 #ax_showticks=plt.gca()
 #x_major_showticks=[this_tick.get_text() for this_tick in ax_showticks.get_xticklabels()]
 
-#graphics
-plt.figure(figsize=(6,6))
-
-BETA_C_S_M.SpheresPlot(spheres,6)
-
-plt.axis([400,500,0,100])
-
-#ax_real=plt.gca()
-#x_major_realticks=[int(this_tick.get_text()) for this_tick in ax_real.get_xticklabels()]
-
-'''could not get ticklabel'''
-#change ticks
-ax=plt.gca()
-
-x_major_realticks=np.linspace(400,500,6)
-x_major_showticks=[str(int(item)) for item in list(np.linspace(0,100,6))]
-
-ax.set_xticks(x_major_realticks)
-ax.set_xticklabels(x_major_showticks)
+##graphics
+#plt.figure(figsize=(6,6))
+#
+#BETA_C_S_M.SpheresPlot(spheres,6)
+#
+#plt.axis([400,500,0,100])
+#
+##ax_real=plt.gca()
+##x_major_realticks=[int(this_tick.get_text()) for this_tick in ax_real.get_xticklabels()]
+#
+#'''could not get ticklabel'''
+##change ticks
+#ax=plt.gca()
+#
+#x_major_realticks=np.linspace(400,500,6)
+#x_major_showticks=[str(int(item)) for item in list(np.linspace(0,100,6))]
+#
+#ax.set_xticks(x_major_realticks)
+#ax.set_xticklabels(x_major_showticks)
 
 #'''effect of outline'''
 ##matrix to draw outline image
@@ -182,6 +182,53 @@ plt.axis([0,100,0,100])
 
 '''effect of interplation'''
 #plot scatter in grid
+radius_average=[]
+
+maximum_radius=np.max([this_sphere.radius for this_sphere in global_spheres])
+
+#left lower corner point of virtual grid
+xpos_grid,ypos_grid=52-0.5,47-0.5
+length_grid=pixel_step
+
+#left lower corner point of grid
+length_virtual_grid=maximum_radius*2+pixel_step
+xpos_virtual_grid,ypos_virtual_grid=xpos_grid-maximum_radius,ypos_grid-maximum_radius
+
+#plt.figure(figsize=(6,6))
+
+#draw a virtual border with a radius of a+r_max
+plt.vlines(xpos_grid,
+           ypos_grid,
+           ypos_grid+length_grid,
+           color='r',
+           linestyles="--")
+
+plt.vlines(xpos_grid+length_grid,
+           ypos_grid,
+           ypos_grid+length_grid,
+           color='r',
+           linestyles="--")
+
+plt.hlines(ypos_grid,
+           xpos_grid,
+           xpos_grid+length_grid,
+           color='r',
+           linestyles="--")
+
+plt.hlines(ypos_grid+length_grid,
+           xpos_grid,
+           xpos_grid+length_grid,
+           color='r',
+           linestyles="--")
+
+#for this_sphere in spheres:
+#        
+#    plt.plot(this_sphere.position[0],
+#             this_sphere.position[1],
+#             marker='o',
+#             markersize=this_sphere.radius,
+#             color=this_sphere.color)     
+
 #plot gird without value
 
 '''effect of smmothing: structural deformation, stress, strain'''

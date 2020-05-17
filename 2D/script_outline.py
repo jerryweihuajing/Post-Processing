@@ -53,6 +53,7 @@ for j in range(np.shape(outline_matrix)[1]):
     except:
         
         pass
+    
 #left and right
 for i in range(np.shape(outline_matrix)[0]):
     
@@ -113,8 +114,8 @@ plt.close()
 #total outline content after improvement
 content_outline_improvement=C_M_O.OutlineImprovement(surface_outline_content)+\
                             C_M_O.OutlineImprovement(bottom_outline_content)+\
-                            C_M_O.OutlineImprovement(right_outline_content)+\
-                            C_M_O.OutlineImprovement(left_outline_content)
+                            right_outline_content+\
+                            left_outline_content
 
 for this_i,this_j in content_outline_improvement:
 

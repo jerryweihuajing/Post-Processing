@@ -12,7 +12,6 @@ Created on Sun May 17 21:53:45 2020
 from script_essay import *
 
 '''effect of rasterization'''
-#plot boundary box
 #plot image
 #import matrix from txt
 progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.01%.txt'

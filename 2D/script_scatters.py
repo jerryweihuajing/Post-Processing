@@ -14,15 +14,15 @@ from script_essay import *
 '''effect graphics'''
 plt.figure(figsize=(6,6))
 
-BETA_C_S_M.SpheresPlot(spheres,6)
+BETA_C_S_M.SpheresPlot(spheres,5)
 
-plt.axis([470-10,570+10,-10,110])
+plt.axis([400-10,500+10,-10,110])
 
 '''could not get ticklabel'''
 #change ticks
 ax=plt.gca()
 
-x_major_realticks=np.linspace(470,570,6)
+x_major_realticks=np.linspace(400,500,6)
 x_major_showticks=[str(int(item)) for item in list(np.linspace(0,100,6))]
 
 ax.set_xticks(x_major_realticks)

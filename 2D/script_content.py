@@ -16,7 +16,8 @@ from script_essay import *
 plt.figure(figsize=(6,6))
 
 plt.imshow(np.flip(that_mesh.img_tag,axis=0),cmap='gray_r')
-plt.axis([0,100,0,100])
+
+plt.axis([-10,110,-10,110])
 
 ax=plt.gca()
 

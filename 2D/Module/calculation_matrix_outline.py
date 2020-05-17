@@ -151,6 +151,7 @@ def OutlineFromMatrix(which_matrix):
         
         try:
             
+            '''which matrix need a bound added'''
             surface_outline_content.append([np.min(this_i_list)-1,j])
             bottom_outline_content.append([np.max(this_i_list)+1,j])
             
@@ -171,6 +172,7 @@ def OutlineFromMatrix(which_matrix):
                 
         try:
             
+            '''which matrix need a bound added'''
             right_outline_content.append([i,np.max(this_j_list)+1])
             left_outline_content.append([i,np.min(this_j_list)-1])
         

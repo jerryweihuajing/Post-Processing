@@ -20,13 +20,16 @@ img_tag_from_data=C_M.ImportMatrixFromTXT(progress_path)
 img_rgb_from_data=C_I.ImageTag2RGB(img_tag_from_data,yade_rgb_map)
 
 #have a test to find the ROI
-start_index=400
-length_ROI=100
+start_index=x_min
+length_ROI=x_max-x_min
 
 plt.figure(figsize=(6,6))
 
 plt.imshow(img_rgb_from_data[:,start_index:start_index+length_ROI])
-plt.axis([-10,110,-10,110])
+plt.axis([x_min_relative-cell_padding_boundary,
+          x_max_relative+cell_padding_boundary,
+          y_min_relative-cell_padding_boundary,
+          y_max_relative+cell_padding_boundary])
 
 ax=plt.gca()
 

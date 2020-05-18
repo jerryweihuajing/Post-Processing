@@ -16,6 +16,64 @@ demand:
 
 from __init__ import *
 
+def PlotGrid(xpos_grid,
+             ypos_grid,
+             length_grid,
+             style_line='-',
+             color_lines='r'):
+
+#    xpos_grid-=0.5
+#    ypos_grid-=0.5
+    
+    #draw a concrete border with a length of a
+    plt.plot([xpos_grid,xpos_grid],
+             [ypos_grid,ypos_grid+length_grid],
+             color=color_lines,
+             linestyle=style_line)
+    
+    plt.plot([xpos_grid+length_grid,xpos_grid+length_grid],
+             [ypos_grid,ypos_grid+length_grid],
+             color=color_lines,
+             linestyle=style_line)
+    
+    plt.plot([xpos_grid,xpos_grid+length_grid],
+             [ypos_grid,ypos_grid],
+             color=color_lines,
+             linestyle=style_line)
+    
+    plt.plot([xpos_grid,xpos_grid+length_grid],
+             [ypos_grid+length_grid,ypos_grid+length_grid],
+             color=color_lines,
+             linestyle=style_line)
+    
+def PlotRectangle(xpos_grid,
+                  ypos_grid,
+                  width,
+                  height,
+                  style_line='-',
+                  color_lines='r'):
+
+    #draw a concrete border with a length of a
+    plt.plot([xpos_grid,xpos_grid],
+             [ypos_grid,ypos_grid+height],
+             color=color_lines,
+             linestyle=style_line)
+    
+    plt.plot([xpos_grid+width,xpos_grid+width],
+             [ypos_grid,ypos_grid+height],
+             color=color_lines,
+             linestyle=style_line)
+    
+    plt.plot([xpos_grid,xpos_grid+width],
+             [ypos_grid,ypos_grid],
+             color=color_lines,
+             linestyle=style_line)
+    
+    plt.plot([xpos_grid,xpos_grid+width],
+             [ypos_grid+height,ypos_grid+height],
+             color=color_lines,
+             linestyle=style_line)
+    
 case_path=r'E:\GitHub\YADEM\Controlling-Simulation\2D\compression 100-800\Data\input\single base salt bT=2.4 sT=5 sD=24 sO=200 sW=400'
 
 '''spheres generation'''
@@ -49,15 +107,15 @@ length_grid=pixel_step
 length_virtual_grid=maximum_radius*2+pixel_step
 
 #4 boundary of interpolation area
-x_min,x_max=400,500
+x_min,x_max=320,420
 y_min,y_max=0,100
 
 '''real boundary box for image'''
-x_min_relative,x_max_relative=0,x_max-x_min
-y_min_relative,y_max_relative=0,y_max-y_min
+x_min_relative,x_max_relative=0,(x_max-x_min)/pixel_step
+y_min_relative,y_max_relative=0,(y_max-y_min)/pixel_step
 
 #axis display
-cell_padding_boundary=10
+cell_padding_boundary=10/pixel_step
 
 local_spheres=[this_sphere for this_sphere in global_spheres\
                if x_min<=this_sphere.position[0]<=x_max\
@@ -69,7 +127,7 @@ spheres=cp.deepcopy(local_spheres)
 #fetch the mesh object
 that_mesh=C_S_B.SpheresContent(spheres,pixel_step)
 
-#surface_map=C_S_B.SpheresTopMap(spheres,pixel_step) 
+surface_map=C_S_B.SpheresTopMap(spheres,pixel_step) 
 
 img_tag=that_mesh.img_tag
 

@@ -100,7 +100,10 @@ for this_i,this_j in content_outline:
 plt.figure(figsize=(6,6))
 
 plt.imshow(np.flip(outline_matrix,axis=0),cmap='gray')
-plt.axis([-10,110,-10,110])
+plt.axis([x_min_relative-cell_padding_boundary,
+          x_max_relative+cell_padding_boundary,
+          y_min_relative-cell_padding_boundary,
+          y_max_relative+cell_padding_boundary])
 
 ax=plt.gca()
 
@@ -111,20 +114,26 @@ plt.savefig('outline.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 '''effect of outline improvement: edge tracing'''
+outline_matrix_improvement=np.full(np.shape(img_tag),np.nan)
+
 #total outline content after improvement
 content_outline_improvement=C_M_O.OutlineImprovement(surface_outline_content)+\
-                            C_M_O.OutlineImprovement(bottom_outline_content)+\
+                            bottom_outline_content+\
                             right_outline_content+\
                             left_outline_content
 
 for this_i,this_j in content_outline_improvement:
 
-    outline_matrix[this_i,this_j]=1
+    outline_matrix_improvement[this_i,this_j]=1
     
 plt.figure(figsize=(6,6))
 
-plt.imshow(np.flip(outline_matrix,axis=0),cmap='gray')
-plt.axis([-10,110,-10,110])
+plt.imshow(np.flip(outline_matrix_improvement,axis=0),cmap='gray')
+
+plt.axis([x_min_relative-cell_padding_boundary,
+          x_max_relative+cell_padding_boundary,
+          y_min_relative-cell_padding_boundary,
+          y_max_relative+cell_padding_boundary])
 
 ax=plt.gca()
 

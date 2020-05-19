@@ -18,15 +18,13 @@ plt.figure(figsize=(6,6))
 radius_local_spheres=[this_sphere.radius for this_sphere in local_spheres]
 radius_maximum=np.max(radius_local_spheres)
 
-"""存在一个取整运算，为了直接通过坐标给出网格的索引，需要这样的运算！"""
-'''描述这个映射的过程，考虑radius'''
 for this_sphere in window_spheres:
         
-    plt.plot(int(this_sphere.position[0]-0)+0.5,
-             int(this_sphere.position[1]-0)+0.5,
+    plt.plot(this_sphere.position[0]-0.3,
+             this_sphere.position[1]-0.6,
              marker='o',
              markersize=6,
-             color='b')  
+             color='k')  
 
 x_lines=list(range(x_min,x_min+length_window))+[x_min+length_window]
 y_lines=list(range(y_min,y_min+length_window))+[y_min+length_window]
@@ -69,6 +67,24 @@ plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
 plt.savefig('interpolation with mesh.png',dpi=300,bbox_inches='tight')
+
+#value point to calculate
+value_point=[x_min+5,y_min+5]
+
+#red grid
+PlotGrid(value_point[0],
+         value_point[1],
+         pixel_step,
+         '-')
+
+#blue point
+plt.plot(value_point[0]+0.5,
+         value_point[1]+0.5,
+         marker='o',
+         markersize=6,
+         color='b')  
+
+plt.savefig('interpolation with mesh and grid.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 '''effect of interpolation'''
@@ -129,6 +145,40 @@ plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
 plt.savefig('interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
+
+
+#value point to calculate
+value_point=[x_min_relative+4-0.5,y_min_relative+5-0.5]
+
+#red grid
+PlotGrid(value_point[0],
+         value_point[1],
+         pixel_step,
+         '-')
+
+#red grid virtual
+PlotGrid(value_point[0]-pixel_step,
+         value_point[1]-pixel_step,
+         pixel_step+pixel_step*2,
+         '--')
+
+#blue point
+plt.plot(value_point[0]+0.5,
+         value_point[1]+0.5,
+         marker='o',
+         markersize=6,
+         color='b')  
+
+for this_sphere in window_spheres:
+        
+    plt.plot(this_sphere.position[0]-0.8-x_min,
+             this_sphere.position[1]-1.1,
+             marker='o',
+             markersize=6,
+             color='k')  
+    
+plt.savefig('interpolation effect with mesh and grid.png',dpi=300,bbox_inches='tight')
+
 plt.close()
 
 '''effect of filling'''

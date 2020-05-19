@@ -23,7 +23,7 @@ for this_sphere in spheres:
              this_sphere.position[1],
              marker='o',
              markersize=1,
-             color='b')  
+             color='k')  
     
 plt.axis([x_min-cell_padding_boundary,
           x_max+cell_padding_boundary,

@@ -1,56 +1,76 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun May 17 23:00:21 2020
+Created on Tue May 19 13:24:22 2020
 
 @author: Wei Huajing
 @company: Nanjing University
 @e-mail: jerryweihuajing@126.com
 
-@title：script for essay-interpolation
+@title：script for essay-grid for interpolation
 """
 
 from script_essay import *
 
-'''samples of interplation'''
-#plot scatter points in grid
-
+'''for interpolation'''
 plt.figure(figsize=(6,6))
 
-#plot gird without value
-for this_sphere in spheres:
+#collate the position
+radius_local_spheres=[this_sphere.radius for this_sphere in local_spheres]
+radius_maximum=np.max(radius_local_spheres)
+
+for this_sphere in local_spheres:
         
     plt.plot(this_sphere.position[0],
              this_sphere.position[1],
              marker='o',
-             markersize=1,
+             markersize=6,
              color='b')  
+
+x_lines=list(range(x_min,x_min+length_window))+[x_min+length_window]
+y_lines=list(range(y_min,y_min+length_window))+[y_min+length_window]
+
+for this_x in x_lines:
     
-plt.axis([x_min-cell_padding_boundary,
-          x_max+cell_padding_boundary,
-          y_min-cell_padding_boundary,
-          y_max+cell_padding_boundary])   
+    plt.vlines(this_x,
+               y_min,
+               y_min+length_window,
+               color='k',
+               linestyles="-")
+
+for this_y in y_lines:
     
+    plt.hlines(this_y,
+               x_min,
+               x_min+length_window,
+               color='k',
+               linestyles="-")
+    
+plt.axis([x_min,
+          x_min+length_window,
+          y_min,
+          y_min+length_window])
+
 #change ticks
 ax=plt.gca()
 
-x_major_realticks=np.linspace(x_min,x_max,6)
-x_major_showticks=[str(int(item)) for item in list(np.linspace(x_min_relative,x_max_relative,6))]
-y_major_realticks=np.linspace(y_min,y_max,6)
-y_major_showticks=[str(int(item)) for item in list(np.linspace(y_min_relative,y_max_relative,6))]
+x_major_realticks=np.linspace(x_min,x_min+length_window,6)
+x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
+y_major_realticks=np.linspace(y_min,y_min+length_window,6)
+y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
 
 ax.set_xticks(x_major_realticks)
 ax.set_xticklabels(x_major_showticks)
 ax.set_yticks(y_major_realticks)
 ax.set_yticklabels(y_major_showticks)
 
-plt.tick_params(labelsize=10)
+plt.tick_params(labelsize=10)                                             
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('interpolation samples.png',dpi=300,bbox_inches='tight')  
+plt.savefig('interpolation with mesh.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 '''effect of interpolation'''
-scatters=C_Stress.ScattersStress(spheres,'XoY','xy') 
+scatters=C_Stress.ScattersStress(window_spheres,'XoY','xy') 
 
 #generate grid object
 that_mesh=C_S_Mesh.ScattersMesh(scatters,pixel_step)
@@ -96,12 +116,17 @@ for this_grid in grids:
 z_mesh_points=C_Im.ImgFlip(C_Im.ImgRotate(img_tag),0)
 
 plt.figure(figsize=(6,6))
-plt.imshow(np.flip(z_mesh_points,axis=0),cmap='ocean')
 
-plt.axis([x_min_relative-cell_padding_boundary,
-          x_max_relative+cell_padding_boundary,
-          y_min_relative-cell_padding_boundary,
-          y_max_relative+cell_padding_boundary])   
+plt.imshow(np.flip(z_mesh_points,axis=0)[1:,1:],cmap='ocean')
+PlotMesh(x_min_relative,y_min_relative,length_window)
+
+for this_sphere in local_spheres:
+        
+    plt.plot(this_sphere.position[0]-400,
+             this_sphere.position[1]+0.5,
+             marker='o',
+             markersize=6,
+             color='b')  
     
 #change ticks
 ax=plt.gca()
@@ -109,11 +134,11 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('interpolation effect.png',dpi=300,bbox_inches='tight')  
+plt.savefig('interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
 plt.close()
 
 '''effect of filling'''
-surface_bottom_map=C_S_B.SpheresTopAndBottomMap(spheres,pixel_step)
+surface_bottom_map=C_S_B.SpheresTopAndBottomMap(window_spheres,pixel_step)
 
 #default: which_surface does not exist
 if surface_bottom_map==None:
@@ -181,22 +206,18 @@ else:
                 z_mesh_points[i,j]=np.dot(z_this_neighbor,this_weight)
                 
 plt.figure(figsize=(6,6))
-plt.imshow(np.flip(z_mesh_points,axis=0),cmap='ocean')
 
-plt.axis([x_min_relative-cell_padding_boundary,
-          x_max_relative+cell_padding_boundary,
-          y_min_relative-cell_padding_boundary,
-          y_max_relative+cell_padding_boundary])   
-        
+plt.imshow(np.flip(z_mesh_points,axis=0),cmap='ocean')
+PlotMesh(x_min_relative,y_min_relative,length_window)
+    
 #change ticks
 ax=plt.gca()
-
-
+    
 #change ticks
 ax=plt.gca()
 
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('filled interpolation effect.png',dpi=300,bbox_inches='tight')  
+plt.savefig('filled interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
 plt.close()

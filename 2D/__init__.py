@@ -22,10 +22,14 @@ import matplotlib.pyplot as plt
 
 import operation_path as O_P
 
-import calculation_image as C_I
+import calculation_stress as C_Stress
+
 import calculation_matrix as C_M
+import calculation_image as C_Im
+import calculation_interpolation as C_In
 import calculation_custom_export as C_C_E
-import calculation_spheres_matrix as C_S_M
+import calculation_spheres_matrix as C_S_Mat
+import calculation_scatters_mesh as C_S_Mesh
 import calculation_matrix_outline as C_M_O
 import calculation_image_smoothing as C_I_S
 import calculation_spheres_boundary as C_S_B

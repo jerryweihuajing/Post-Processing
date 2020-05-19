@@ -18,10 +18,12 @@ plt.figure(figsize=(6,6))
 radius_local_spheres=[this_sphere.radius for this_sphere in local_spheres]
 radius_maximum=np.max(radius_local_spheres)
 
-for this_sphere in local_spheres:
+"""存在一个取整运算，为了直接通过坐标给出网格的索引，需要这样的运算！"""
+'''描述这个映射的过程，考虑radius'''
+for this_sphere in window_spheres:
         
-    plt.plot(this_sphere.position[0],
-             this_sphere.position[1],
+    plt.plot(int(this_sphere.position[0]-0)+0.5,
+             int(this_sphere.position[1]-0)+0.5,
              marker='o',
              markersize=6,
              color='b')  
@@ -120,14 +122,6 @@ plt.figure(figsize=(6,6))
 plt.imshow(np.flip(z_mesh_points,axis=0)[1:,1:],cmap='ocean')
 PlotMesh(x_min_relative,y_min_relative,length_window)
 
-for this_sphere in local_spheres:
-        
-    plt.plot(this_sphere.position[0]-400,
-             this_sphere.position[1]+0.5,
-             marker='o',
-             markersize=6,
-             color='b')  
-    
 #change ticks
 ax=plt.gca()
 
@@ -207,7 +201,7 @@ else:
                 
 plt.figure(figsize=(6,6))
 
-plt.imshow(np.flip(z_mesh_points,axis=0),cmap='ocean')
+plt.imshow(np.flip(z_mesh_points,axis=0)[1:,1:],cmap='ocean')
 PlotMesh(x_min_relative,y_min_relative,length_window)
     
 #change ticks

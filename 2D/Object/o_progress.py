@@ -188,7 +188,7 @@ class progress:
         self.percentage=O_P.ProgressPercentageFromTXT(progress_path)
         
         #img tag and img rgb of structural deformation
-        self.img_tag=C_M_O.AddBound(C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path))),bound_value=-1)
+        self.img_tag=C_M_O.AddBound(C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path),bound_value=-1)),bound_value=-1)
         self.structural_deformation=C_I.ImageTag2RGB(self.img_tag,self.rgb_map)
         self.structural_deformation_outline=C_M_O.OutlineFromImgTag(self.img_tag)
         

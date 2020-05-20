@@ -12,7 +12,6 @@ Created on Sat Aug 24 14:11:13 2019
 import sys,os
     
 sys.path.append(os.getcwd())
-sys.path.append(os.getcwd()+'\\Thesis')
 sys.path.append(os.getcwd()+'\\Module')
 sys.path.append(os.getcwd()+'\\Object')
 sys.path=list(set(sys.path)) 

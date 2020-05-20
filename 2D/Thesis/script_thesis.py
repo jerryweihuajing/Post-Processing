@@ -9,11 +9,6 @@ Created on Mon Mar 16 13:59:03 2020
 @title：script for essay
 """
 
-"""
-demand:
-。    improve the label font
-"""
-
 from __init__ import *
 
 def PlotMesh(x_min_relative,

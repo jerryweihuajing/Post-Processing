@@ -80,11 +80,14 @@ progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.
 img_tag_from_data=C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path),bound_value=-1))
 img_rgb_from_data=C_Im.ImageTag2RGB(img_tag_from_data,yade_rgb_map)
 
+img_strain=C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','Shear Strain-Cumulative'))))
+
 #have a test to find the ROI
 start_index=x_min
 length_ROI=x_max-x_min
 
 img_tag_ROI=img_tag_from_data[:,start_index:start_index+length_ROI]
+img_strain_ROI=img_strain[:,start_index:start_index+length_ROI]
 
 #binary image
 img_binary=np.zeros(np.shape(img_tag_ROI))
@@ -104,9 +107,18 @@ for i,j in content_boundary:
     
     img_boundary[i,j]=1
 
+for i in range(np.shape(img_boundary)[0]):
+    
+    for j in range(np.shape(img_boundary)[1]):
+        
+        if img_boundary[i,j]==0:
+            
+            img_boundary[i,j]=np.nan
+            
 plt.figure(figsize=(6,6))
 
-plt.imshow(img_boundary,cmap='gray_r')
+plt.imshow(np.flip(img_strain_ROI,axis=0),cmap='PuOr',norm=colors.Normalize(vmin=-1,vmax=1))
+plt.imshow(img_boundary,cmap='gray')
 
 plt.axis([x_min_relative-cell_padding_boundary,
           x_max_relative+cell_padding_boundary,
@@ -118,5 +130,23 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-#plt.savefig('rasterization.png',dpi=300,bbox_inches='tight')
-#plt.close()
+plt.savefig('strain ROI.png',dpi=300,bbox_inches='tight')
+plt.close()
+
+'''ROI boundary'''
+plt.figure(figsize=(6,6))
+
+plt.imshow(img_boundary,cmap='gray')
+
+plt.axis([x_min_relative-cell_padding_boundary,
+          x_max_relative+cell_padding_boundary,
+          y_min_relative-cell_padding_boundary,
+          y_max_relative+cell_padding_boundary])
+
+ax=plt.gca()
+
+plt.tick_params(labelsize=10)
+[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+
+plt.savefig('ROI boundary.png',dpi=300,bbox_inches='tight')
+plt.close()

@@ -9,7 +9,7 @@ Created on Tue May 19 13:24:22 2020
 @title：script for essay-grid for interpolation
 """
 
-from script_essay import *
+from script_thesis import *
 
 '''for interpolation'''
 plt.figure(figsize=(6,6))

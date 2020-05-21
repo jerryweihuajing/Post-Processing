@@ -9,7 +9,8 @@ Created on Sun May 17 23:00:21 2020
 @title：script for essay-interpolation
 """
 
-from script_essay import *
+from script_thesis import *
+from script_boundary import *
 
 '''samples of interplation'''
 #plot scatter points in grid
@@ -181,16 +182,13 @@ else:
                 z_mesh_points[i,j]=np.dot(z_this_neighbor,this_weight)
                 
 plt.figure(figsize=(6,6))
+
 plt.imshow(np.flip(z_mesh_points,axis=0),cmap='ocean')
 
 plt.axis([x_min_relative-cell_padding_boundary,
           x_max_relative+cell_padding_boundary,
           y_min_relative-cell_padding_boundary,
           y_max_relative+cell_padding_boundary])   
-        
-#change ticks
-ax=plt.gca()
-
 
 #change ticks
 ax=plt.gca()
@@ -199,4 +197,7 @@ plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
 plt.savefig('filled interpolation effect.png',dpi=300,bbox_inches='tight')  
+
+plt.imshow(img_boundary,cmap='gray')
+plt.savefig('stress ROI.png',dpi=300,bbox_inches='tight')  
 plt.close()

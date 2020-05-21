@@ -9,7 +9,8 @@ Created on Sun May 17 21:48:13 2020
 @title：script for essay-outline
 """
 
-from script_essay import *
+from script_thesis import *
+from script_boundary import *
 
 '''effect of outline'''
 #matrix to draw outline image
@@ -113,22 +114,28 @@ plt.tick_params(labelsize=10)
 plt.savefig('outline.png',dpi=300,bbox_inches='tight')
 plt.close()
 
-'''effect of outline improvement: edge tracing'''
-outline_matrix_improvement=np.full(np.shape(img_tag),np.nan)
+'''effect of outline improvement: erosion'''
+#binary image
+img_binary=np.zeros(np.shape(img_tag))
+img_binary[img_tag==1]=1
 
-#total outline content after improvement
-content_outline_improvement=C_M_O.OutlineImprovement(surface_outline_content)+\
-                            bottom_outline_content+\
-                            right_outline_content+\
-                            left_outline_content
+content_ROI=[[i,j] for i in range(np.shape(img_binary)[0]) for j in range(np.shape(img_binary)[1]) if img_binary[i,j]==1]
 
-for this_i,this_j in content_outline_improvement:
+new_content=Erode(content_ROI)
 
-    outline_matrix_improvement[this_i,this_j]=1
+#extraction boundary
+content_boundary=[item for item in content_ROI if item not in new_content]
+
+#new binary image
+img_boundary=np.zeros(np.shape(img_binary))
+
+for i,j in content_boundary:
     
+    img_boundary[i,j]=1
+
 plt.figure(figsize=(6,6))
 
-plt.imshow(np.flip(outline_matrix_improvement,axis=0),cmap='gray')
+plt.imshow(np.flip(img_boundary,axis=0),cmap='gray_r')
 
 plt.axis([x_min_relative-cell_padding_boundary,
           x_max_relative+cell_padding_boundary,

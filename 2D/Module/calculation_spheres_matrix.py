@@ -675,7 +675,7 @@ def SpheresStressMatrix(pixel_step,
     
     map_stress['X Normal']=σ_xx
     map_stress['Y Normal']=σ_yy
-    map_stress['Shear Stress']=τ_xy
+    map_stress['Shear']=τ_xy
     
     map_stress['Mean Normal']=0.5*(σ_xx+σ_yy)
     map_stress['Diff Normal']=0.5*(σ_xx-σ_yy)

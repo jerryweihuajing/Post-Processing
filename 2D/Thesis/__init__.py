@@ -20,6 +20,8 @@ import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
+from matplotlib import colors
+
 import operation_path as O_P
 
 import calculation_stress as C_Stress

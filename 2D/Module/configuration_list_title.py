@@ -62,7 +62,7 @@ map_post_fix_list['velocity']=['X Velocity',
                                'Y Velocity']
 
 #list of integral analysis names
-mode_list=['dynamics']
+mode_list=list(map_post_fix_list.keys())
 
 #the final output postfix
 list_title=[]

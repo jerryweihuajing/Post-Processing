@@ -42,7 +42,7 @@ def PositionInSubplot(position_relative):
     bottom=y_min+bottom_in_ax*(y_max-y_min)
     width=width_in_ax*(x_max-x_min)
     height=height_in_ax*(y_max-y_min)
-    
+
     return [left,bottom,width,height]
 
 #------------------------------------------------------------------------------

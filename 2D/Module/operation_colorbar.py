@@ -85,7 +85,7 @@ def SetColorbar(which_progress,
     #plot colorbar
     this_colorbar=figure.colorbar(ax_img,cax=this_colorbar_position,orientation=colorbar_orientation)  
         
-    if 'Strain' in post_fix:
+    if 'Strain' in post_fix or ('Displacement' in post_fix and 'Gradient' in post_fix):
         
         if '-Cumulative' in post_fix:
             
@@ -101,7 +101,12 @@ def SetColorbar(which_progress,
             
             this_colorbar.set_ticks([-.1,0,.1])
             this_colorbar.set_ticklabels(('-0.1','0','0.1'))
-        
+            
+    elif 'Gradient' in post_fix and 'Velocity' in post_fix:
+  
+        this_colorbar.set_ticks([-.25,0,.25])
+        this_colorbar.set_ticklabels(('-0.25','0','0.25'))
+            
     else:
         
         if which_progress.case==None:
@@ -132,19 +137,23 @@ def SetColorbar(which_progress,
             
         if 'Velocity' in post_fix:
             
-            #str to display
-            ticklabels=tuple([str(np.round(this_tick,2)) for this_tick in ticks])
-            
-            #stress unit: MPa
-            this_colorbar.set_label('(m/s)',fontdict=colorbar_font)
+            if 'Gradient' not in post_fix:
+                
+                #str to display
+                ticklabels=tuple([str(np.round(this_tick,2)) for this_tick in ticks])
+                
+                #stress unit: MPa
+                this_colorbar.set_label('(m/s)',fontdict=colorbar_font)
           
         if 'Displacement' in post_fix:
             
-            #str to display
-            ticklabels=tuple([str(int(np.round(this_tick))) for this_tick in ticks])
-            
-            #stress unit: MPa
-            this_colorbar.set_label('(m)',fontdict=colorbar_font)
+            if 'Gradient' not in post_fix:
+                
+                #str to display
+                ticklabels=tuple([str(int(np.round(this_tick))) for this_tick in ticks])
+                
+                #stress unit: MPa
+                this_colorbar.set_label('(m)',fontdict=colorbar_font)
             
         #major ticks
         this_colorbar.set_ticks(ticks)

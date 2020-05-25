@@ -128,7 +128,7 @@ Returns:
 def GlobalNorm(which_case,post_fix):
 
     '''vmin and vmax stand for the value which is below and above'''
-    if 'Strain' in post_fix:
+    if 'Strain' in post_fix or ('Displacement' in post_fix and 'Gradient' in post_fix):
             
         if '-Cumulative' in post_fix:
             
@@ -141,6 +141,10 @@ def GlobalNorm(which_case,post_fix):
         if '-Instantaneous' in post_fix:
             
             return colors.Normalize(vmin=-.1,vmax=.1)
+    
+    if 'Gradient' in post_fix and 'Velocity' in post_fix:
+
+        return colors.Normalize(vmin=-.25,vmax=.25)
     
     #minimum and maximum of a case
     v_min,v_max=GlobalValueRange(which_case,post_fix)
@@ -162,7 +166,7 @@ Returns:
 def LocalNorm(which_progress,post_fix):
 
     '''vmin and vmax stand for the value which is below and above'''
-    if 'Strain' in post_fix:
+    if 'Strain' in post_fix or ('Displacement' in post_fix and 'Gradient' in post_fix):
             
         if '-Cumulative' in post_fix:
             
@@ -176,6 +180,10 @@ def LocalNorm(which_progress,post_fix):
             
             return colors.Normalize(vmin=-.1,vmax=.1)
     
+    if 'Gradient' in post_fix and 'Velocity' in post_fix:
+
+        return colors.Normalize(vmin=-.25,vmax=.25)
+
     #minimum and maximum of a case
     v_min,v_max=C_M.MatrixMinimum(which_progress.map_matrix[post_fix]),C_M.MatrixMaximum(which_progress.map_matrix[post_fix])
     

@@ -10,7 +10,6 @@ Created on Sun May 17 23:00:21 2020
 """
 
 from script_thesis import *
-from script_boundary import *
 
 '''samples of interplation'''
 #plot scatter points in grid
@@ -197,7 +196,4 @@ plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
 plt.savefig('filled interpolation effect.png',dpi=300,bbox_inches='tight')  
-
-plt.imshow(img_boundary,cmap='gray')
-plt.savefig('stress ROI.png',dpi=300,bbox_inches='tight')  
 plt.close()

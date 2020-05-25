@@ -52,17 +52,59 @@ map_post_fix_list['strain-cumulative']=['X Normal Strain-Cumulative',
                                         'Volumetric Strain-Cumulative',
                                         'Distortional Strain-Cumulative']
 
-map_post_fix_list['strain-periodical']=['Volumetric Strain-Periodical',
+map_post_fix_list['strain-periodical']=['X Normal Strain-Periodical',
+                                        'Y Normal Strain-Periodical',
+                                        'Diff Normal Strain-Periodical',
+                                        'Mean Normal Strain-Periodical',
+                                        'Minimal Normal Strain-Periodical',
+                                        'Maximal Normal Strain-Periodical',
+                                        'Shear Strain-Periodical',
+                                        'Minimal Shear Strain-Periodical',
+                                        'Maximal Shear Strain-Periodical',
+                                        'Volumetric Strain-Periodical',
                                         'Distortional Strain-Periodical']
     
-map_post_fix_list['strain-periodical']=['Volumetric Strain-Periodical',
-                                        'Distortional Strain-Periodical']
+map_post_fix_list['strain-instantaneous']=['X Normal Strain-Instantaneous',
+                                           'Y Normal Strain-Instantaneous',
+                                           'Diff Normal Strain-Instantaneous',
+                                           'Mean Normal Strain-Instantaneous',
+                                           'Minimal Normal Strain-Instantaneous',
+                                           'Maximal Normal Strain-Instantaneous',
+                                           'Shear Strain-Instantaneous',
+                                           'Minimal Shear Strain-Instantaneous',
+                                           'Maximal Shear Strain-Instantaneous',
+                                           'Volumetric Strain-Instantaneous',
+                                           'Distortional Strain-Instantaneous']
 
 map_post_fix_list['velocity']=['X Velocity',
-                               'Y Velocity']
+                               'Y Velocity',
+                               'X Gradient of X Velocity',
+                               'Y Gradient of Y Velocity',
+                               'Resultant Velocity',]
+
+map_post_fix_list['displacement-cumulative']=['X Displacement-Cumulative',
+                                              'Y Displacement-Cumulative',
+                                              'X Gradient of X Displacement-Cumulative',
+                                              'Y Gradient of Y Displacement-Cumulative',
+                                              'Resultant Displacement-Cumulative']
+
+map_post_fix_list['displacement-periodical']=['X Displacement-Periodical',
+                                              'Y Displacement-Periodical',
+                                              'X Gradient of X Displacement-Periodical',
+                                              'Y Gradient of Y Displacement-Periodical',
+                                              'Resultant Y Displacement-Periodical']
+
+map_post_fix_list['displacement-instantaneous']=['X Displacement-Instantaneous',
+                                                 'Y Displacement-Instantaneous',
+                                                 'X Gradient of X Displacement-Instantaneous',
+                                                 'Y Gradient of Y Displacement-Instantaneous',
+                                                 'Resultant Y Displacement-Instantaneous']
 
 #list of integral analysis names
-mode_list=list(map_post_fix_list.keys())
+mode_list=['velocity',
+           'displacement-cumulative',
+           'displacement-periodical',
+           'displacement-instantaneous']
 
 #the final output postfix
 list_title=[]

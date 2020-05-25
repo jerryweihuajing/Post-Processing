@@ -78,22 +78,21 @@ def CaseVisualization(case_path,
         
     V_S.SeriesAll(case_folder,that_case)   
     V_A.AnimationAll(case_folder,that_case)
-#    V_I_A.IntegralAnalysisAll(case_folder,that_case)
+    V_I_A.IntegralAnalysisAll(case_folder,that_case)
     
     #figures in different progress
     for this_progress in that_case.list_progress:
 
         #imaging and output
         V_P.ProgressAllIndividuals(output_folder=case_folder,
-                                   which_progress=this_progress,
-                                   with_fracture=with_fracture)
+                                    which_progress=this_progress,
+                                    with_fracture=with_fracture)
         
         #integral analysis
-#        for this_mode in mode_list:
-#            
-#            V_I_A.SingleIntegralAnalysis(output_folder=case_folder,
-#                                         which_progress=this_progress,
-#                                         mode=this_mode,
-#                                         situation='progress',
-#                                         with_fracture=with_fracture)
-#            
+        for this_mode in mode_list:
+            
+            V_I_A.SingleIntegralAnalysis(output_folder=case_folder,
+                                        which_progress=this_progress,
+                                        mode=this_mode,
+                                        situation='progress',
+                                        with_fracture=with_fracture)

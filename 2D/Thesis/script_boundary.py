@@ -72,7 +72,80 @@ def Expand(which_content):
                         
     return new_content
         
+def TagBoundaryExtraction(img_tag_ROI,tag_foreground=None,tag_background=None):
+    
+    #binary image
+    img_binary=np.zeros(np.shape(img_tag_ROI))
+    
+    if tag_foreground!=None:
         
+        img_binary[img_tag_ROI==tag_foreground]=1
+    
+    if tag_background!=None:
+        
+        img_binary[img_tag_ROI!=tag_background]=1
+        
+    content_ROI=[[i,j] for i in range(np.shape(img_binary)[0]) for j in range(np.shape(img_binary)[1]) if img_binary[i,j]==1]
+    
+    new_content=Erode(content_ROI)
+    
+    #extraction boundary
+    content_boundary=[item for item in content_ROI if item not in new_content]
+    
+    #new binary image
+    img_boundary=np.zeros(np.shape(img_binary))
+    
+    for i,j in content_boundary:
+        
+        img_boundary[i,j]=1
+    
+    for i in range(np.shape(img_boundary)[0]):
+        
+        for j in range(np.shape(img_boundary)[1]):
+            
+            if img_boundary[i,j]==0:
+                
+                img_boundary[i,j]=np.nan
+                
+    return img_boundary
+        
+def NanBoundaryExtraction(img_ROI):
+    
+    #binary image
+    img_binary=np.zeros(np.shape(img_ROI))
+    
+    for i in range(np.shape(img_ROI)[0]):
+        
+        for j in range(np.shape(img_ROI)[1]):
+            
+            if not np.isnan(img_ROI[i,j]):
+                
+                img_binary[i,j]=1
+
+    content_ROI=[[i,j] for i in range(np.shape(img_binary)[0]) for j in range(np.shape(img_binary)[1]) if img_binary[i,j]==1]
+    
+    new_content=Erode(content_ROI)
+    
+    #extraction boundary
+    content_boundary=[item for item in content_ROI if item not in new_content]
+    
+    #new binary image
+    img_boundary=np.zeros(np.shape(img_binary))
+    
+    for i,j in content_boundary:
+        
+        img_boundary[i,j]=1
+    
+    for i in range(np.shape(img_boundary)[0]):
+        
+        for j in range(np.shape(img_boundary)[1]):
+            
+            if img_boundary[i,j]==0:
+                
+                img_boundary[i,j]=np.nan
+                
+    return img_boundary
+
 #plot image
 #import matrix from txt
 progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.01%.txt'
@@ -80,44 +153,24 @@ progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.
 img_tag_from_data=C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path),bound_value=-1))
 img_rgb_from_data=C_Im.ImageTag2RGB(img_tag_from_data,yade_rgb_map)
 
-img_strain=C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','Shear Strain-Cumulative'))))
+img_strain=C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','Shear Strain-Cumulative'))))
+img_stress=C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','Shear Stress'))))
 
 #have a test to find the ROI
 start_index=x_min
 length_ROI=x_max-x_min
 
 img_tag_ROI=img_tag_from_data[:,start_index:start_index+length_ROI]
-img_strain_ROI=img_strain[:,start_index:start_index+length_ROI]
+img_strain_ROI=np.flip(img_strain[:,start_index:start_index+length_ROI],axis=0)
+img_stress_ROI=np.flip(img_strain[:,start_index:start_index+length_ROI],axis=0)
 
-#binary image
-img_binary=np.zeros(np.shape(img_tag_ROI))
-img_binary[img_tag_ROI==1]=1
+img_boundary=TagBoundaryExtraction(img_tag_ROI,tag_foreground=1)
 
-content_ROI=[[i,j] for i in range(np.shape(img_binary)[0]) for j in range(np.shape(img_binary)[1]) if img_binary[i,j]==1]
-
-new_content=Erode(content_ROI)
-
-#extraction boundary
-content_boundary=[item for item in content_ROI if item not in new_content]
-
-#new binary image
-img_boundary=np.zeros(np.shape(img_binary))
-
-for i,j in content_boundary:
-    
-    img_boundary[i,j]=1
-
-for i in range(np.shape(img_boundary)[0]):
-    
-    for j in range(np.shape(img_boundary)[1]):
-        
-        if img_boundary[i,j]==0:
-            
-            img_boundary[i,j]=np.nan
-            
+'''ROI strain'''
 plt.figure(figsize=(6,6))
 
-plt.imshow(np.flip(img_strain_ROI,axis=0),cmap='PuOr',norm=colors.Normalize(vmin=-1,vmax=1))
+plt.imshow(img_strain_ROI,cmap='PuOr',norm=colors.Normalize(vmin=-1,vmax=1))
+plt.imshow(NanBoundaryExtraction(img_strain_ROI),cmap='gray')
 plt.imshow(img_boundary,cmap='gray')
 
 plt.axis([x_min_relative-cell_padding_boundary,
@@ -133,9 +186,30 @@ plt.tick_params(labelsize=10)
 plt.savefig('strain ROI.png',dpi=300,bbox_inches='tight')
 plt.close()
 
+'''ROI stress'''
+plt.figure(figsize=(6,6))
+
+plt.imshow(img_stress_ROI,cmap='ocean')
+plt.imshow(NanBoundaryExtraction(img_stress_ROI),cmap='gray')
+plt.imshow(img_boundary,cmap='gray_r')
+
+plt.axis([x_min_relative-cell_padding_boundary,
+          x_max_relative+cell_padding_boundary,
+          y_min_relative-cell_padding_boundary,
+          y_max_relative+cell_padding_boundary])
+
+ax=plt.gca()
+
+plt.tick_params(labelsize=10)
+[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+
+plt.savefig('stress ROI.png',dpi=300,bbox_inches='tight')
+plt.close()
+
 '''ROI boundary'''
 plt.figure(figsize=(6,6))
 
+plt.imshow(TagBoundaryExtraction(img_tag_ROI,tag_background=-1),cmap='gray')
 plt.imshow(img_boundary,cmap='gray')
 
 plt.axis([x_min_relative-cell_padding_boundary,

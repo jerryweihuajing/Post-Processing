@@ -76,32 +76,34 @@ map_post_fix_list['strain-instantaneous']=['X Normal Strain-Instantaneous',
                                            'Volumetric Strain-Instantaneous',
                                            'Distortional Strain-Instantaneous']
 
-map_post_fix_list['velocity']=['X Velocity',
+map_post_fix_list['velocity']=['Resultant Velocity',
+                               'X Velocity',
                                'Y Velocity',
                                'X Gradient of X Velocity',
-                               'Y Gradient of Y Velocity',
-                               'Resultant Velocity',]
+                               'Y Gradient of Y Velocity']
 
-map_post_fix_list['displacement-cumulative']=['X Displacement-Cumulative',
+map_post_fix_list['displacement-cumulative']=['Resultant Displacement-Cumulative',
+                                              'X Displacement-Cumulative',
                                               'Y Displacement-Cumulative',
                                               'X Gradient of X Displacement-Cumulative',
-                                              'Y Gradient of Y Displacement-Cumulative',
-                                              'Resultant Displacement-Cumulative']
+                                              'Y Gradient of Y Displacement-Cumulative']
 
-map_post_fix_list['displacement-periodical']=['X Displacement-Periodical',
+map_post_fix_list['displacement-periodical']=['Resultant Displacement-Periodical',
+                                              'X Displacement-Periodical',
                                               'Y Displacement-Periodical',
                                               'X Gradient of X Displacement-Periodical',
-                                              'Y Gradient of Y Displacement-Periodical',
-                                              'Resultant Y Displacement-Periodical']
+                                              'Y Gradient of Y Displacement-Periodical']
 
-map_post_fix_list['displacement-instantaneous']=['X Displacement-Instantaneous',
+map_post_fix_list['displacement-instantaneous']=['Resultant Displacement-Instantaneous',
+                                                 'X Displacement-Instantaneous',
                                                  'Y Displacement-Instantaneous',
                                                  'X Gradient of X Displacement-Instantaneous',
-                                                 'Y Gradient of Y Displacement-Instantaneous',
-                                                 'Resultant Y Displacement-Instantaneous']
+                                                 'Y Gradient of Y Displacement-Instantaneous']
 
 #list of integral analysis names
-mode_list=['velocity',
+mode_list=['dynamics',
+           'kinematics',
+           'velocity',
            'displacement-cumulative',
            'displacement-periodical',
            'displacement-instantaneous']

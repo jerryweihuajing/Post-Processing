@@ -35,10 +35,10 @@ map_post_fix_list['dynamics']=['Structural Deformation',
                                'Distortional Strain-Cumulative']
             
 map_post_fix_list['kinematics']=['Structural Deformation',
-                                 'X Velocity',
-                                 'Y Velocity',
-                                 'X Displacement-Cumulative',
-                                 'Y Displacement-Cumulative']
+                                 'Resultant Velocity',
+                                 'Resultant Displacement-Cumulative',
+                                 'X Gradient of Y Velocity',
+                                 'Y Gradient of X Displacement-Cumulative']
 
 map_post_fix_list['strain-cumulative']=['X Normal Strain-Cumulative',
                                         'Y Normal Strain-Cumulative',
@@ -106,7 +106,7 @@ mode_list=['dynamics',
            'velocity',
            'displacement-cumulative',
            'displacement-periodical',
-           'displacement-instantaneous']
+           'displacement-instantaneous'][:2]
 
 #the final output postfix
 list_title=[]

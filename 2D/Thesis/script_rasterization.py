@@ -9,7 +9,7 @@ Created on Sun May 17 21:53:45 2020
 @title：script for essay-outline
 """
 
-from script_essay import *
+from script_thesis import *
 
 '''effect of rasterization'''
 #plot image
@@ -17,7 +17,7 @@ from script_essay import *
 progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.01%.txt'
 
 img_tag_from_data=C_M.ImportMatrixFromTXT(progress_path)
-img_rgb_from_data=C_I.ImageTag2RGB(img_tag_from_data,yade_rgb_map)
+img_rgb_from_data=C_Im.ImageTag2RGB(img_tag_from_data,yade_rgb_map)
 
 #have a test to find the ROI
 start_index=x_min

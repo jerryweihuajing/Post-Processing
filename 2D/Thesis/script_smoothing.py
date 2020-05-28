@@ -15,23 +15,35 @@ from script_thesis import *
 #import matrix from txt
 progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.01%.txt'
 
-img_tag_from_data=C_I_S.TagImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path),bound_value=-1))
-img_rgb_from_data=C_Im.ImageTag2RGB(img_tag_from_data,yade_rgb_map)
-
-img_strain=C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','Shear Strain-Cumulative'))))
-img_stress=C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','Shear Stress'))))
+#original img
+img_tag_original=C_M.ImportMatrixFromTXT(progress_path)
+img_rgb_original=C_Im.ImageTag2RGB(img_tag_original,yade_rgb_map)
+img_strain_original=C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','Shear Strain-Cumulative'))
+img_stress_original=C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','Shear Stress'))
+              
+#smoothed img
+img_tag_smoothed=C_I_S.TagImageSmooth(C_M_O.AddBound(img_tag_original,bound_value=-1))
+img_rgb_smoothed=C_Im.ImageTag2RGB(img_tag_smoothed,yade_rgb_map)
+img_strain_smoothed=C_I_S.ImageSmooth(C_M_O.AddBound(img_strain_original))
+img_stress_smoothed=C_I_S.ImageSmooth(C_M_O.AddBound(img_stress_original))
 
 #have a test to find the ROI
 start_index=x_min
 length_ROI=x_max-x_min
 
-img_tag_ROI=img_tag_from_data[:,start_index:start_index+length_ROI]
-img_strain_ROI=np.flip(img_strain[:,start_index:start_index+length_ROI],axis=0)
-img_stress_ROI=np.flip(img_strain[:,start_index:start_index+length_ROI],axis=0)
+#original img ROI
+img_rgb_original_ROI=img_rgb_original[:,start_index:start_index+length_ROI]
+img_strain_original_ROI=np.flip(img_strain_original[:,start_index:start_index+length_ROI],axis=0)
+img_stress_original_ROI=np.flip(img_strain_original[:,start_index:start_index+length_ROI],axis=0)
+
+#smoothed img ROI
+img_rgb_smoothed_ROI=img_rgb_smoothed[:,start_index:start_index+length_ROI]
+img_strain_smoothed_ROI=np.flip(img_strain_smoothed[:,start_index:start_index+length_ROI],axis=0)
+img_stress_smoothed_ROI=np.flip(img_strain_smoothed[:,start_index:start_index+length_ROI],axis=0)
 
 plt.figure(figsize=(6,6))
 
-plt.imshow(C_I_S.ImageSmooth(C_M_O.AddBound(z_mesh_points))),cmap='ocean')
+plt.imshow(img_rgb_smoothed_ROI)
     
 plt.axis([x_min_relative-cell_padding_boundary,
           x_max_relative+cell_padding_boundary,
@@ -44,5 +56,5 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('filled interpolation effect.png',dpi=300,bbox_inches='tight') 
-plt.close()
+# plt.savefig('-original.png',dpi=300,bbox_inches='tight') 
+# plt.close()

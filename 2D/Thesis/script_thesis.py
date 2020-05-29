@@ -45,10 +45,12 @@ def PlotMesh(x_min_relative,
     #change ticks
     ax=plt.gca()
     
-    x_major_realticks=np.linspace(x_min_relative-0.5,x_min_relative-0.5+length_window,6)
-    x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
-    y_major_realticks=np.linspace(y_min_relative-0.5,y_min_relative-0.5+length_window,6)
-    y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
+    num_ticks=6
+    
+    x_major_realticks=np.linspace(x_min_relative-0.5,x_min_relative-0.5+length_window,num_ticks)
+    x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,num_ticks))]
+    y_major_realticks=np.linspace(y_min_relative-0.5,y_min_relative-0.5+length_window,num_ticks)
+    y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,num_ticks))]
     
     ax.set_xticks(x_major_realticks)
     ax.set_xticklabels(x_major_showticks)
@@ -158,7 +160,7 @@ x_min_relative,x_max_relative=0,(x_max-x_min)/pixel_step
 y_min_relative,y_max_relative=0,(y_max-y_min)/pixel_step
 
 #axis display
-cell_padding_boundary=10/pixel_step
+cell_padding_boundary=5/pixel_step
 
 local_spheres=[this_sphere for this_sphere in global_spheres\
                if x_min<=this_sphere.position[0]<=x_max\

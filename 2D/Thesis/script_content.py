@@ -9,7 +9,7 @@ Created on Sun May 17 21:44:06 2020
 @title：script for essay-content
 """
 
-from script_essay import *
+from script_thesis import *
 
 '''effect of content'''
 ##image

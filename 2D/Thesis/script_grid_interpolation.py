@@ -257,11 +257,23 @@ PlotMesh(x_min_relative,y_min_relative,length_window)
 #change ticks
 ax=plt.gca()
     
-#change ticks
-ax=plt.gca()
-
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
 plt.savefig('filled interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
+plt.close()
+
+'''effect of smoothing'''
+plt.figure(figsize=(6,6))
+              
+plt.imshow(np.flip(C_I_S.ImageSmooth(C_M_O.AddBound(z_mesh_points)),axis=0)[1:,1:],cmap='ocean')
+PlotMesh(x_min_relative,y_min_relative,length_window)
+    
+#change ticks
+ax=plt.gca()
+    
+plt.tick_params(labelsize=10)
+[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+
+plt.savefig('filled interpolation effect with mesh-smoothed.png',dpi=300,bbox_inches='tight')  
 plt.close()

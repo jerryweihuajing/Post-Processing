@@ -14,7 +14,7 @@ demand:
     boundary box of interpolation and rasterization
 """
 
-from script_essay import *
+from script_thesis import *
 
 '''for rasterization'''
 plt.figure(figsize=(6,6))
@@ -81,7 +81,7 @@ plt.close()
 progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.01%.txt'
 
 img_tag_from_data=C_M.ImportMatrixFromTXT(progress_path)
-img_rgb_from_data=C_I.ImageTag2RGB(img_tag_from_data,yade_rgb_map)
+img_rgb_from_data=C_Im.ImageTag2RGB(img_tag_from_data,yade_rgb_map)
 
 #have a test to find the ROI
 start_j=x_min
@@ -112,5 +112,59 @@ plt.imshow(new_img_grid)
 PlotMesh(x_min_relative,y_min_relative,length_window)
 
 plt.savefig('rasterization with mesh.png',dpi=300,bbox_inches='tight')
+
+'''effect of smoothing'''
+value_point=[7-0.5,4+0.5]
+
+#red grid
+PlotGrid(value_point[0],
+         value_point[1],
+         pixel_step,
+         '-')
+
+#red grid virtual
+PlotGrid(value_point[0]-pixel_step,
+         value_point[1]-pixel_step,
+         pixel_step+pixel_step*2,
+         '--')
+
+plt.savefig('rasterization with mesh and grid.png',dpi=300,bbox_inches='tight')  
 plt.close()
+
+plt.figure(figsize=(6,6))
+
+#img tag corresponding
+new_img_tag=np.zeros(np.shape(new_img_grid)[:2])
+
+list_rgb=[]
+
+#traverse and rgb to tag
+for i in range(np.shape(new_img_grid)[0]):
     
+    for j in range(np.shape(new_img_grid)[1]):
+        
+        if list(new_img_grid[i,j]) not in list_rgb:
+            
+            list_rgb.append(list(new_img_grid[i,j]))
+        
+        #give tag to pixel
+        new_img_tag[i,j]=list_rgb.index(list(new_img_grid[i,j]))
+                  
+#map between tag and rgb
+map_rgb=dict(zip(range(len(list_rgb)),list_rgb))
+map_rgb[-1]=[1,1,1]
+
+new_img_tag_smoothed=C_I_S.TagImageSmooth(C_M_O.AddBound(new_img_tag,bound_value=-1))
+new_img_rgb_smoothed=C_Im.ImageTag2RGB(new_img_tag_smoothed,map_rgb)
+
+plt.imshow(new_img_rgb_smoothed)
+PlotMesh(x_min_relative,y_min_relative,length_window)
+    
+#change ticks
+ax=plt.gca()
+    
+plt.tick_params(labelsize=10)
+[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+
+plt.savefig('rasterization with mesh-smoothed.png',dpi=300,bbox_inches='tight')  
+plt.close()

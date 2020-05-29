@@ -197,3 +197,22 @@ plt.tick_params(labelsize=10)
 
 plt.savefig('filled interpolation effect.png',dpi=300,bbox_inches='tight')  
 plt.close()
+
+'''effect of smoothing'''
+plt.figure(figsize=(6,6))
+              
+plt.imshow(np.flip(C_I_S.ImageSmooth(C_M_O.AddBound(z_mesh_points)),axis=0),cmap='ocean')
+
+plt.axis([x_min_relative-cell_padding_boundary,
+          x_max_relative+cell_padding_boundary,
+          y_min_relative-cell_padding_boundary,
+          y_max_relative+cell_padding_boundary])  
+    
+#change ticks
+ax=plt.gca()
+    
+plt.tick_params(labelsize=10)
+[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+
+plt.savefig('filled interpolation effect-smoothed.png',dpi=300,bbox_inches='tight')  
+plt.close()

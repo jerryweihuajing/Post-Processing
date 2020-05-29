@@ -307,8 +307,15 @@ def TagImageSmooth(which_img_tag,wingspan=1):
             list_window=list(Window(which_img_tag,i,j,2*wingspan+1).flatten())
             
             list_tag=list(set(list_window))
-            list_frequency=[list_window.count(this_tag) for this_tag in list_tag]
             
-            smooth_img_tag[i,j]=list_tag[list_frequency.index(np.max(list_frequency))]
+            if len(list_tag)>1:
+                
+                list_frequency=[list_window.count(this_tag) for this_tag in list_tag if this_tag!=-1]
+                
+                smooth_img_tag[i,j]=list_tag[list_frequency.index(np.max(list_frequency))]
    
+            if len(list_tag)==1:
+                
+                smooth_img_tag[i,j]=list_tag[0]
+                
     return smooth_img_tag[wingspan:-wingspan,wingspan:-wingspan]

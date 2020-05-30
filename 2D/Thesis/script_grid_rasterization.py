@@ -63,16 +63,16 @@ for this_y in y_lines:
 plt.savefig('scatters with mesh.png',dpi=300,bbox_inches='tight')
 
 #plot concrete boundary box
-PlotGrid(x_min+4,
-         y_min+4,
-         pixel_step,
-         '-')
+O_G.PlotGrid(x_min+4,
+             y_min+4,
+             pixel_step,
+             '-')
 
 #plot virtual boundary box
-PlotGrid(x_min+4-maximum_radius,
-         y_min+4-maximum_radius,
-         maximum_radius*2+pixel_step,
-         '--')
+O_G.PlotGrid(x_min+4-maximum_radius,
+             y_min+4-maximum_radius,
+             maximum_radius*2+pixel_step,
+             '--')
 
 plt.savefig('scatters with grid.png',dpi=300,bbox_inches='tight')
 plt.close()
@@ -109,7 +109,7 @@ new_img_grid[5,7]=img_rgb_2
 new_img_grid[1,6]=img_rgb_2
 
 plt.imshow(new_img_grid)
-PlotMesh(x_min_relative,y_min_relative,length_window)
+O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
 
 plt.savefig('rasterization with mesh.png',dpi=300,bbox_inches='tight')
 
@@ -117,16 +117,16 @@ plt.savefig('rasterization with mesh.png',dpi=300,bbox_inches='tight')
 value_point=[7-0.5,4+0.5]
 
 #red grid
-PlotGrid(value_point[0],
-         value_point[1],
-         pixel_step,
-         '-')
+O_G.PlotGrid(value_point[0],
+             value_point[1],
+             pixel_step,
+             '-')
 
 #red grid virtual
-PlotGrid(value_point[0]-pixel_step,
-         value_point[1]-pixel_step,
-         pixel_step+pixel_step*2,
-         '--')
+O_G.PlotGrid(value_point[0]-pixel_step,
+             value_point[1]-pixel_step,
+             pixel_step+pixel_step*2,
+             '--')
 
 plt.savefig('rasterization with mesh and grid.png',dpi=300,bbox_inches='tight')  
 plt.close()
@@ -158,7 +158,7 @@ new_img_tag_smoothed=C_I_S.TagImageSmooth(C_M_O.AddBound(new_img_tag,bound_value
 new_img_rgb_smoothed=C_Im.ImageTag2RGB(new_img_tag_smoothed,map_rgb)
 
 plt.imshow(new_img_rgb_smoothed)
-PlotMesh(x_min_relative,y_min_relative,length_window)
+O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
     
 #change ticks
 ax=plt.gca()

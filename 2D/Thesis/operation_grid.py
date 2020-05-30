@@ -9,6 +9,10 @@ Created on Sat May 30 13:43:31 2020
 @title：Module-Plot
 """
 
+import numpy as np
+
+import matplotlib.pyplot as plt
+
 def PlotMesh(x_min_relative,
              y_min_relative,
              length_window):

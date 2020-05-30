@@ -17,7 +17,7 @@ method_boundary_extraction='expansion'
 # mode_img_content='square'
 mode_img_content='irregular'
     
-folder_path=os.getcwd()+'\\'+method_boundary_extraction+'\\'+mode_img_content
+folder_path=os.getcwd()+'\\'+method_boundary_extraction+'\\'+mode_img_content+'\\'
 O_P.GenerateFolder(folder_path)
 
 if method_boundary_extraction=='erosion':
@@ -68,7 +68,7 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig(folder_path+'\\content with mesh.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'content with mesh.png',dpi=300,bbox_inches='tight')  
 
 #red grid
 O_G.PlotGrid(value_point[0],
@@ -82,7 +82,7 @@ O_G.PlotGrid(value_point[0]-pixel_step,
              pixel_step+pixel_step*2,
              '--')
     
-plt.savefig(folder_path+'\\content with mesh and grid.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'content with mesh and grid.png',dpi=300,bbox_inches='tight')  
 plt.close()
 
 '''inlier and original'''
@@ -99,7 +99,7 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig(folder_path+'\\content and boundary with mesh.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'content and boundary with mesh.png',dpi=300,bbox_inches='tight')  
 
 #red grid
 O_G.PlotGrid(value_point[0],
@@ -113,7 +113,7 @@ O_G.PlotGrid(value_point[0]-pixel_step,
              pixel_step+pixel_step*2,
              '--')
 
-plt.savefig(folder_path+'\\boundary with mesh and grid.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'boundary with mesh and grid.png',dpi=300,bbox_inches='tight')  
 plt.close()
 
 '''only inlier'''
@@ -129,7 +129,7 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig(folder_path+'\\boundary with mesh.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'boundary with mesh.png',dpi=300,bbox_inches='tight')  
 plt.close()
 
 '''content without figure'''
@@ -154,5 +154,5 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig(folder_path+'\\content without boundary with mesh.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'content without boundary with mesh.png',dpi=300,bbox_inches='tight')  
 plt.close()

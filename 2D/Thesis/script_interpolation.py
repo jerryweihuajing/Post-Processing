@@ -11,9 +11,11 @@ Created on Sun May 17 23:00:21 2020
 
 from script_thesis import *
 
+folder_path=os.getcwd()+'\\interpolation\\'
+O_P.GenerateFolder(folder_path)
+
 '''samples of interplation'''
 #plot scatter points in grid
-
 plt.figure(figsize=(6,6))
 
 #plot gird without value
@@ -46,7 +48,17 @@ ax.set_yticklabels(y_major_showticks)
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('interpolation samples.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'interpolation samples.png',dpi=300,bbox_inches='tight')  
+
+#plot boundary box
+O_G.PlotRectangle(spheres_x_min-1,
+                  spheres_y_min-1,
+                  spheres_x_max-spheres_x_min+2,
+                  spheres_y_max-spheres_y_min+2,
+                  '--',
+                  'k')
+
+plt.savefig(folder_path+'interpolation samples with boundary box.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 '''effect of interpolation'''
@@ -109,7 +121,17 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('interpolation effect.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'interpolation effect.png',dpi=300,bbox_inches='tight')  
+
+#plot boundary box
+O_G.PlotRectangle(-1,
+                  -1,
+                  spheres_x_max-spheres_x_min+2,
+                  spheres_y_max-spheres_y_min+2,
+                  '--',
+                  'k')
+
+plt.savefig(folder_path+'interpolation effect with boundary box.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 '''effect of filling'''
@@ -195,7 +217,17 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('filled interpolation effect.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'filled interpolation effect.png',dpi=300,bbox_inches='tight')  
+
+#plot boundary box
+O_G.PlotRectangle(-1,
+                  -1,
+                  spheres_x_max-spheres_x_min+2,
+                  spheres_y_max-spheres_y_min+2,
+                  '--',
+                  'k')
+
+plt.savefig(folder_path+'filled interpolation effect with boundary box.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 '''effect of smoothing'''
@@ -214,5 +246,5 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('filled interpolation effect-smoothed.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'filled interpolation effect-smoothed.png',dpi=300,bbox_inches='tight')  
 plt.close()

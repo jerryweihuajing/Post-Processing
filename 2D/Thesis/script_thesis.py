@@ -61,6 +61,14 @@ local_spheres=[this_sphere for this_sphere in global_spheres\
 '''about consumption'''
 spheres=cp.deepcopy(local_spheres)
 
+#to plot boundary box
+x_spheres=[this_sphere.position[0] for this_sphere in spheres]
+y_spheres=[this_sphere.position[1] for this_sphere in spheres]
+
+#minimum and maximum of coordinates
+spheres_x_min,spheres_x_max=np.min(x_spheres),np.max(x_spheres)
+spheres_y_min,spheres_y_max=np.min(y_spheres),np.max(y_spheres)
+
 #fetch the mesh object
 that_mesh=C_S_B.SpheresContent(spheres,pixel_step)
 
@@ -73,6 +81,3 @@ window_spheres=[this_sphere for this_sphere in local_spheres\
                if x_min<=this_sphere.position[0]<=x_min+length_window\
                and y_min<=this_sphere.position[1]<=y_min+length_window]
 
-'''effect of smmothing: structural deformation, stress, strain'''
-
-'''effect of boundary extraction: erosion and expansion'''

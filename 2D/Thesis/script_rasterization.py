@@ -11,6 +11,9 @@ Created on Sun May 17 21:53:45 2020
 
 from script_thesis import *
 
+folder_path=os.getcwd()+'\\rasterization\\'
+O_P.GenerateFolder(folder_path)
+
 '''effect of rasterization'''
 #plot image
 #import matrix from txt
@@ -36,5 +39,16 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('rasterization.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'rasterization.png',dpi=300,bbox_inches='tight')
+
+#plot boundary box
+O_G.PlotRectangle(-1,
+                  -1,
+                  spheres_x_max-spheres_x_min+2,
+                  spheres_y_max-spheres_y_min+2,
+                  '--',
+                  'k')
+
+plt.savefig(folder_path+'rasterization with boundary box.png',dpi=300,bbox_inches='tight')
 plt.close()
+

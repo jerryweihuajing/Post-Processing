@@ -9,6 +9,8 @@ Created on Sat May 30 13:44:29 2020
 @title：Module-boundary extraction
 """
 
+import numpy as np
+
 def Erode(which_content):
         
     #逆时针遍历邻域内的点

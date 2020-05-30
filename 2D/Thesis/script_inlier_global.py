@@ -10,7 +10,6 @@ Created on Mon May 25 15:59:21 2020
 """
 
 from script_thesis import *
-from script_inlier import TagBoundaryExtraction
         
 '''outline'''
 #plot image
@@ -30,8 +29,8 @@ img_displacement=np.flip(C_M_O.AddBound(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.Imp
 img_gradient_velocity=np.flip(C_M_O.AddBound(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','X Gradient of Y Velocity'))))),axis=0)
 img_gradient_displacement=np.flip(C_M_O.AddBound(C_I_S.ImageSmooth(C_M_O.AddBound(C_M.ImportMatrixFromTXT(progress_path.replace('Structural Deformation','X Gradient of Y Displacement-Cumulative'))))),axis=0)
 
-img_boundary=TagBoundaryExtraction(img_tag_from_data,tag_foreground=1)
-# img_boundary=TagBoundaryExtraction(img_tag_from_data,tag_foreground=4)        
+img_boundary=C_B_A.TagBoundaryExtraction(img_tag_from_data,tag_foreground=1)
+# img_boundary=C_B_A.TagBoundaryExtraction(img_tag_from_data,tag_foreground=4)        
 
 '''strain for global'''
 plt.figure(figsize=(10,13))

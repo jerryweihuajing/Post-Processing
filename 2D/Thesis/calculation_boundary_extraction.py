@@ -72,7 +72,10 @@ def Expand(which_content):
                         
     return new_content
         
-def TagBoundaryExtraction(img_tag_ROI,tag_foreground=None,tag_background=None):
+def TagBoundaryExtraction(img_tag_ROI,
+                          method='erosion',
+                          tag_foreground=None,
+                          tag_background=None):
     
     #binary image
     img_binary=np.zeros(np.shape(img_tag_ROI))
@@ -87,11 +90,15 @@ def TagBoundaryExtraction(img_tag_ROI,tag_foreground=None,tag_background=None):
         
     content_ROI=[[i,j] for i in range(np.shape(img_binary)[0]) for j in range(np.shape(img_binary)[1]) if img_binary[i,j]==1]
     
-    new_content=Erode(content_ROI)
-    
     #extraction boundary
-    content_boundary=[item for item in content_ROI if item not in new_content]
+    if method=='erosion':
     
+        content_boundary=[item for item in content_ROI if item not in Erode(content_ROI)]
+    
+    if method=='expansion':
+        
+        content_boundary=[item for item in Expand(content_ROI) if item not in content_ROI]
+        
     #new binary image
     img_boundary=np.zeros(np.shape(img_binary))
     
@@ -108,8 +115,8 @@ def TagBoundaryExtraction(img_tag_ROI,tag_foreground=None,tag_background=None):
                 img_boundary[i,j]=np.nan
                 
     return img_boundary
-        
-def NanBoundaryExtraction(img_ROI):
+
+def NanBoundaryExtraction(img_ROI,method='erosion'):
     
     #binary image
     img_binary=np.zeros(np.shape(img_ROI))
@@ -124,8 +131,15 @@ def NanBoundaryExtraction(img_ROI):
 
     content_ROI=[[i,j] for i in range(np.shape(img_binary)[0]) for j in range(np.shape(img_binary)[1]) if img_binary[i,j]==1]
     
-    new_content=Erode(content_ROI)
+    #extraction boundary
+    if method=='erosion':
     
+        content_boundary=[item for item in content_ROI if item not in Erode(content_ROI)]
+    
+    if method=='expansion':
+        
+        content_boundary=[item for item in Expand(content_ROI) if item not in content_ROI]
+        
     #extraction boundary
     content_boundary=[item for item in content_ROI if item not in new_content]
     

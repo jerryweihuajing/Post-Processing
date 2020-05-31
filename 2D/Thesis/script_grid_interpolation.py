@@ -11,6 +11,9 @@ Created on Tue May 19 13:24:22 2020
 
 from script_thesis import *
 
+folder_path=os.getcwd()+'\\interpolation-grid\\'
+O_P.GenerateFolder(folder_path)
+
 '''for interpolation'''
 plt.figure(figsize=(6,6))
 
@@ -50,32 +53,35 @@ plt.axis([x_min,
           y_min,
           y_min+length_window])
 
-#change ticks
-ax=plt.gca()
+plt.xticks([])
+plt.yticks([])
 
-x_major_realticks=np.linspace(x_min,x_min+length_window,6)
-x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
-y_major_realticks=np.linspace(y_min,y_min+length_window,6)
-y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
+# #change ticks
+# ax=plt.gca()
 
-ax.set_xticks(x_major_realticks)
-ax.set_xticklabels(x_major_showticks)
-ax.set_yticks(y_major_realticks)
-ax.set_yticklabels(y_major_showticks)
+# x_major_realticks=np.linspace(x_min,x_min+length_window,6)
+# x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
+# y_major_realticks=np.linspace(y_min,y_min+length_window,6)
+# y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
 
-plt.tick_params(labelsize=10)                                             
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+# ax.set_xticks(x_major_realticks)
+# ax.set_xticklabels(x_major_showticks)
+# ax.set_yticks(y_major_realticks)
+# ax.set_yticklabels(y_major_showticks)
 
-plt.savefig('interpolation with mesh.png',dpi=300,bbox_inches='tight')
+# plt.tick_params(labelsize=10)                                             
+# [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+
+plt.savefig(folder_path+'interpolation with mesh.png',dpi=300,bbox_inches='tight')
 
 #value point to calculate
 value_point=[x_min+5,y_min+5]
 
 #red grid
-PlotGrid(value_point[0],
-         value_point[1],
-         pixel_step,
-         '-')
+O_G.PlotGrid(value_point[0],
+             value_point[1],
+             pixel_step,
+             '-')
 
 #blue point
 plt.plot(value_point[0]+0.5,
@@ -84,7 +90,7 @@ plt.plot(value_point[0]+0.5,
          markersize=6,
          color='b')  
 
-plt.savefig('interpolation with mesh and grid.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'interpolation with mesh and grid.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 '''effect of interpolation'''
@@ -136,7 +142,7 @@ z_mesh_points=C_Im.ImgFlip(C_Im.ImgRotate(img_tag),0)
 plt.figure(figsize=(6,6))
 
 plt.imshow(np.flip(z_mesh_points,axis=0)[1:,1:],cmap='ocean')
-PlotMesh(x_min_relative,y_min_relative,length_window)
+O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
 
 #change ticks
 ax=plt.gca()
@@ -144,23 +150,23 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
 
 
 #value point to calculate
 value_point=[x_min_relative+4-0.5,y_min_relative+5-0.5]
 
 #red grid
-PlotGrid(value_point[0],
-         value_point[1],
-         pixel_step,
-         '-')
+O_G.PlotGrid(value_point[0],
+             value_point[1],
+             pixel_step,
+             '-')
 
 #red grid virtual
-PlotGrid(value_point[0]-pixel_step,
-         value_point[1]-pixel_step,
-         pixel_step+pixel_step*2,
-         '--')
+O_G.PlotGrid(value_point[0]-pixel_step,
+             value_point[1]-pixel_step,
+             pixel_step+pixel_step*2,
+             '--')
 
 #blue point
 plt.plot(value_point[0]+0.5,
@@ -177,7 +183,7 @@ for this_sphere in window_spheres:
              markersize=6,
              color='k')  
     
-plt.savefig('interpolation effect with mesh and grid.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'interpolation effect with mesh and grid.png',dpi=300,bbox_inches='tight')
 
 plt.close()
 
@@ -252,7 +258,7 @@ else:
 plt.figure(figsize=(6,6))
 
 plt.imshow(np.flip(z_mesh_points,axis=0)[1:,1:],cmap='ocean')
-PlotMesh(x_min_relative,y_min_relative,length_window)
+O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
     
 #change ticks
 ax=plt.gca()
@@ -260,14 +266,14 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('filled interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'filled interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
 plt.close()
 
 '''effect of smoothing'''
 plt.figure(figsize=(6,6))
               
 plt.imshow(np.flip(C_I_S.ImageSmooth(C_M_O.AddBound(z_mesh_points)),axis=0)[1:,1:],cmap='ocean')
-PlotMesh(x_min_relative,y_min_relative,length_window)
+O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
     
 #change ticks
 ax=plt.gca()
@@ -275,5 +281,5 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('filled interpolation effect with mesh-smoothed.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'filled interpolation effect with mesh-smoothed.png',dpi=300,bbox_inches='tight')  
 plt.close()

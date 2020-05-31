@@ -47,20 +47,23 @@ def PlotMesh(x_min_relative,
     #change ticks
     ax=plt.gca()
     
-    num_ticks=6
+    plt.xticks([])
+    plt.yticks([])
     
-    x_major_realticks=np.linspace(x_min_relative-0.5,x_min_relative-0.5+length_window,num_ticks)
-    x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,num_ticks))]
-    y_major_realticks=np.linspace(y_min_relative-0.5,y_min_relative-0.5+length_window,num_ticks)
-    y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,num_ticks))]
+    # num_ticks=6
     
-    ax.set_xticks(x_major_realticks)
-    ax.set_xticklabels(x_major_showticks)
-    ax.set_yticks(y_major_realticks)
-    ax.set_yticklabels(y_major_showticks)
+    # x_major_realticks=np.linspace(x_min_relative-0.5,x_min_relative-0.5+length_window,num_ticks)
+    # x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,num_ticks))]
+    # y_major_realticks=np.linspace(y_min_relative-0.5,y_min_relative-0.5+length_window,num_ticks)
+    # y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,num_ticks))]
     
-    plt.tick_params(labelsize=10)
-    [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+    # ax.set_xticks(x_major_realticks)
+    # ax.set_xticklabels(x_major_showticks)
+    # ax.set_yticks(y_major_realticks)
+    # ax.set_yticklabels(y_major_showticks)
+    
+    # plt.tick_params(labelsize=10)
+    # [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
     
     
 def PlotGrid(xpos_grid,

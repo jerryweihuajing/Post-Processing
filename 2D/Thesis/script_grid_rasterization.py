@@ -9,12 +9,10 @@ Created on Sun May 17 22:51:56 2020
 @title：script for essay-grid for rasterization
 """
 
-"""
-demand:
-    boundary box of interpolation and rasterization
-"""
-
 from script_thesis import *
+
+folder_path=os.getcwd()+'\\rasterization-grid\\'
+O_P.GenerateFolder(folder_path)
 
 '''for rasterization'''
 plt.figure(figsize=(6,6))
@@ -26,21 +24,24 @@ plt.axis([x_min,
           y_min,
           y_min+length_window])
 
-#change ticks
-ax=plt.gca()
+plt.xticks([])
+plt.yticks([])
 
-x_major_realticks=np.linspace(x_min,x_min+length_window,6)
-x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
-y_major_realticks=np.linspace(y_min,y_min+length_window,6)
-y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
+# #change ticks
+# ax=plt.gca()
 
-ax.set_xticks(x_major_realticks)
-ax.set_xticklabels(x_major_showticks)
-ax.set_yticks(y_major_realticks)
-ax.set_yticklabels(y_major_showticks)
+# x_major_realticks=np.linspace(x_min,x_min+length_window,6)
+# x_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
+# y_major_realticks=np.linspace(y_min,y_min+length_window,6)
+# y_major_showticks=[str(int(item)) for item in list(np.linspace(0,length_window,6))]
 
-plt.tick_params(labelsize=10)
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+# ax.set_xticks(x_major_realticks)
+# ax.set_xticklabels(x_major_showticks)
+# ax.set_yticks(y_major_realticks)
+# ax.set_yticklabels(y_major_showticks)
+
+# plt.tick_params(labelsize=10)
+# [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
 x_lines=list(range(x_min,x_min+length_window))+[x_min+length_window]
 y_lines=list(range(y_min,y_min+length_window))+[y_min+length_window]
@@ -60,7 +61,7 @@ for this_y in y_lines:
              color='k',
              linestyle='-')
     
-plt.savefig('scatters with mesh.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'scatters with mesh.png',dpi=300,bbox_inches='tight')
 
 #plot concrete boundary box
 O_G.PlotGrid(x_min+4,
@@ -74,7 +75,7 @@ O_G.PlotGrid(x_min+4-maximum_radius,
              maximum_radius*2+pixel_step,
              '--')
 
-plt.savefig('scatters with grid.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'scatters with grid.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 #import matrix from txt
@@ -111,7 +112,7 @@ new_img_grid[1,6]=img_rgb_2
 plt.imshow(new_img_grid)
 O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
 
-plt.savefig('rasterization with mesh.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'rasterization with mesh.png',dpi=300,bbox_inches='tight')
 
 '''effect of smoothing'''
 value_point=[7-0.5,4+0.5]
@@ -128,7 +129,7 @@ O_G.PlotGrid(value_point[0]-pixel_step,
              pixel_step+pixel_step*2,
              '--')
 
-plt.savefig('rasterization with mesh and grid.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'rasterization with mesh and grid.png',dpi=300,bbox_inches='tight')  
 plt.close()
 
 plt.figure(figsize=(6,6))
@@ -166,5 +167,5 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('rasterization with mesh-smoothed.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'rasterization with mesh-smoothed.png',dpi=300,bbox_inches='tight')  
 plt.close()

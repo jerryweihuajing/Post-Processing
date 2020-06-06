@@ -10,7 +10,10 @@ Created on Sun May 17 21:48:13 2020
 """
 
 from script_thesis import *
-from script_inlier import *
+# from script_inlier import *
+
+folder_path=os.getcwd()+'\\outlier'
+O_P.GenerateFolder(folder_path)
 
 '''effect of outline'''
 #matrix to draw outline image
@@ -111,31 +114,13 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('outline.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'outlier.png',dpi=300,bbox_inches='tight')
 plt.close()
 
 '''effect of outline improvement: erosion'''
-#binary image
-img_binary=np.zeros(np.shape(img_tag))
-img_binary[img_tag==1]=1
-
-content_ROI=[[i,j] for i in range(np.shape(img_binary)[0]) for j in range(np.shape(img_binary)[1]) if img_binary[i,j]==1]
-
-new_content=Erode(content_ROI)
-
-#extraction boundary
-content_boundary=[item for item in content_ROI if item not in new_content]
-
-#new binary image
-img_boundary=np.zeros(np.shape(img_binary))
-
-for i,j in content_boundary:
-    
-    img_boundary[i,j]=1
-
 plt.figure(figsize=(6,6))
 
-plt.imshow(np.flip(img_boundary,axis=0),cmap='gray_r')
+plt.imshow(C_B_E.TagBoundaryExtraction(img_tag,tag_background=-1),cmap='gray')
 
 plt.axis([x_min_relative-cell_padding_boundary,
           x_max_relative+cell_padding_boundary,
@@ -147,5 +132,5 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('outline improvement.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'ROI boundary.png',dpi=300,bbox_inches='tight')
 plt.close()

@@ -47,4 +47,4 @@ import BETA_calculation_spheres_matrix as BETA_C_S_M
 from configuration_yade_color import yade_rgb_map
 
 import operation_grid as O_G
-import calculation_boundary_extraction as C_B_A
+import calculation_boundary_extraction as C_B_E

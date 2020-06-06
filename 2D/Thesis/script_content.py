@@ -46,3 +46,4 @@ O_G.PlotRectangle(image_x_min-1,
     
 plt.savefig(folder_path+'content with boundary box.png',dpi=300,bbox_inches='tight')
 plt.close()
+

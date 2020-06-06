@@ -11,6 +11,9 @@ Created on Wed May 20 18:24:03 2020
 
 from script_thesis import *
 
+folder_path=os.getcwd()+'\\inlier\\'
+O_P.GenerateFolder(folder_path)
+
 #plot image
 #import matrix from txt
 progress_path=case_path.replace('input','output')+'\\Structural Deformation\\30.01%.txt'
@@ -43,7 +46,7 @@ img_boundary=C_B_A.TagBoundaryExtraction(img_tag_ROI,tag_foreground=1)
 plt.figure(figsize=(6,6))
 
 plt.imshow(img_strain_ROI,cmap='PuOr',norm=colors.Normalize(vmin=-1,vmax=1))
-plt.imshow(img_boundary,cmap='gray')
+# plt.imshow(img_boundary,cmap='gray')
 plt.imshow(C_B_A.NanBoundaryExtraction(img_strain_ROI),cmap='gray')
 
 plt.axis([x_min_relative-cell_padding_boundary,
@@ -56,114 +59,114 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('strain ROI.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'strain ROI.png',dpi=300,bbox_inches='tight')
 plt.close()
 
-'''ROI stress'''
-plt.figure(figsize=(6,6))
+# '''ROI stress'''
+# plt.figure(figsize=(6,6))
 
-plt.imshow(img_stress_ROI,cmap='ocean')
-plt.imshow(img_boundary,cmap='gray_r')
-plt.imshow(C_B_A.NanBoundaryExtraction(img_stress_ROI),cmap='gray')
+# plt.imshow(img_stress_ROI,cmap='ocean')
+# plt.imshow(img_boundary,cmap='gray_r')
+# plt.imshow(C_B_A.NanBoundaryExtraction(img_stress_ROI),cmap='gray')
 
-plt.axis([x_min_relative-cell_padding_boundary,
-          x_max_relative+cell_padding_boundary,
-          y_min_relative-cell_padding_boundary,
-          y_max_relative+cell_padding_boundary])
+# plt.axis([x_min_relative-cell_padding_boundary,
+#           x_max_relative+cell_padding_boundary,
+#           y_min_relative-cell_padding_boundary,
+#           y_max_relative+cell_padding_boundary])
 
-ax=plt.gca()
+# ax=plt.gca()
 
-plt.tick_params(labelsize=10)
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+# plt.tick_params(labelsize=10)
+# [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('stress ROI.png',dpi=300,bbox_inches='tight')
-plt.close()
+# plt.savefig(folder_path+'stress ROI.png',dpi=300,bbox_inches='tight')
+# plt.close()
 
-'''ROI velocity'''
-plt.figure(figsize=(6,6))
+# '''ROI velocity'''
+# plt.figure(figsize=(6,6))
 
-plt.imshow(img_velocity_ROI,cmap='hot')
-plt.imshow(img_boundary,cmap='gray_r')
-plt.imshow(C_B_A.NanBoundaryExtraction(img_velocity_ROI),cmap='gray')
+# plt.imshow(img_velocity_ROI,cmap='hot')
+# plt.imshow(img_boundary,cmap='gray_r')
+# plt.imshow(C_B_A.NanBoundaryExtraction(img_velocity_ROI),cmap='gray')
 
-plt.axis([x_min_relative-cell_padding_boundary,
-          x_max_relative+cell_padding_boundary,
-          y_min_relative-cell_padding_boundary,
-          y_max_relative+cell_padding_boundary])
+# plt.axis([x_min_relative-cell_padding_boundary,
+#           x_max_relative+cell_padding_boundary,
+#           y_min_relative-cell_padding_boundary,
+#           y_max_relative+cell_padding_boundary])
 
-ax=plt.gca()
+# ax=plt.gca()
 
-plt.tick_params(labelsize=10)
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+# plt.tick_params(labelsize=10)
+# [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('velocity ROI.png',dpi=300,bbox_inches='tight')
-plt.close()
+# plt.savefig(folder_path+'velocity ROI.png',dpi=300,bbox_inches='tight')
+# plt.close()
 
-'''ROI displacement'''
-plt.figure(figsize=(6,6))
+# '''ROI displacement'''
+# plt.figure(figsize=(6,6))
 
-plt.imshow(img_displacement_ROI,cmap='cool')
-plt.imshow(img_boundary,cmap='gray')
-plt.imshow(C_B_A.NanBoundaryExtraction(img_displacement_ROI),cmap='gray')
+# plt.imshow(img_displacement_ROI,cmap='cool')
+# plt.imshow(img_boundary,cmap='gray')
+# plt.imshow(C_B_A.NanBoundaryExtraction(img_displacement_ROI),cmap='gray')
 
-plt.axis([x_min_relative-cell_padding_boundary,
-          x_max_relative+cell_padding_boundary,
-          y_min_relative-cell_padding_boundary,
-          y_max_relative+cell_padding_boundary])
+# plt.axis([x_min_relative-cell_padding_boundary,
+#           x_max_relative+cell_padding_boundary,
+#           y_min_relative-cell_padding_boundary,
+#           y_max_relative+cell_padding_boundary])
 
-ax=plt.gca()
+# ax=plt.gca()
 
-plt.tick_params(labelsize=10)
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+# plt.tick_params(labelsize=10)
+# [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('displacement ROI.png',dpi=300,bbox_inches='tight')
-plt.close()
+# plt.savefig('displacement ROI.png',dpi=300,bbox_inches='tight')
+# plt.close()
 
-'''ROI gradient velocity'''
-plt.figure(figsize=(6,6))
+# '''ROI gradient velocity'''
+# plt.figure(figsize=(6,6))
 
-plt.imshow(img_gradient_velocity_ROI,cmap='Spectral',norm=colors.Normalize(vmin=-0.25,vmax=0.25))
-plt.imshow(img_boundary,cmap='gray')
-plt.imshow(C_B_A.NanBoundaryExtraction(img_gradient_velocity_ROI),cmap='gray')
+# plt.imshow(img_gradient_velocity_ROI,cmap='Spectral',norm=colors.Normalize(vmin=-0.25,vmax=0.25))
+# plt.imshow(img_boundary,cmap='gray')
+# plt.imshow(C_B_A.NanBoundaryExtraction(img_gradient_velocity_ROI),cmap='gray')
 
-plt.axis([x_min_relative-cell_padding_boundary,
-          x_max_relative+cell_padding_boundary,
-          y_min_relative-cell_padding_boundary,
-          y_max_relative+cell_padding_boundary])
+# plt.axis([x_min_relative-cell_padding_boundary,
+#           x_max_relative+cell_padding_boundary,
+#           y_min_relative-cell_padding_boundary,
+#           y_max_relative+cell_padding_boundary])
 
-ax=plt.gca()
+# ax=plt.gca()
 
-plt.tick_params(labelsize=10)
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+# plt.tick_params(labelsize=10)
+# [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('gradient velocity ROI.png',dpi=300,bbox_inches='tight')
-plt.close()
+# plt.savefig(folder_path+'gradient velocity ROI.png',dpi=300,bbox_inches='tight')
+# plt.close()
 
-'''ROI gradient displacement'''
-plt.figure(figsize=(6,6))
+# '''ROI gradient displacement'''
+# plt.figure(figsize=(6,6))
 
-plt.imshow(img_gradient_displacement_ROI,cmap='seismic',norm=colors.Normalize(vmin=-1,vmax=1))
-plt.imshow(img_boundary,cmap='gray')
-plt.imshow(C_B_A.NanBoundaryExtraction(img_gradient_displacement_ROI),cmap='gray')
+# plt.imshow(img_gradient_displacement_ROI,cmap='seismic',norm=colors.Normalize(vmin=-1,vmax=1))
+# plt.imshow(img_boundary,cmap='gray')
+# plt.imshow(C_B_A.NanBoundaryExtraction(img_gradient_displacement_ROI),cmap='gray')
 
-plt.axis([x_min_relative-cell_padding_boundary,
-          x_max_relative+cell_padding_boundary,
-          y_min_relative-cell_padding_boundary,
-          y_max_relative+cell_padding_boundary])
+# plt.axis([x_min_relative-cell_padding_boundary,
+#           x_max_relative+cell_padding_boundary,
+#           y_min_relative-cell_padding_boundary,
+#           y_max_relative+cell_padding_boundary])
 
-ax=plt.gca()
+# ax=plt.gca()
 
-plt.tick_params(labelsize=10)
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+# plt.tick_params(labelsize=10)
+# [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('gradient displacement ROI.png',dpi=300,bbox_inches='tight')
-plt.close()
+# plt.savefig(folder_path+'gradient displacement ROI.png',dpi=300,bbox_inches='tight')
+# plt.close()
 
 '''ROI boundary'''
 plt.figure(figsize=(6,6))
 
 plt.imshow(img_boundary,cmap='gray')
-plt.imshow(C_B_A.TagBoundaryExtraction(img_tag_ROI,tag_background=-1),cmap='gray')
+# plt.imshow(C_B_A.TagBoundaryExtraction(img_tag_ROI,tag_background=-1),cmap='gray')
 
 plt.axis([x_min_relative-cell_padding_boundary,
           x_max_relative+cell_padding_boundary,
@@ -175,5 +178,5 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('ROI boundary.png',dpi=300,bbox_inches='tight')
+plt.savefig(folder_path+'ROI boundary.png',dpi=300,bbox_inches='tight')
 plt.close()

@@ -9,7 +9,10 @@ Created on Fri May 29 21:35:07 2020
 @title：script for essay-histogram
 """
 
-import matplotlib.pyplot as plt 
+from script_thesis import *
+
+folder_path=os.getcwd()+'\\smoothing\\'
+O_P.GenerateFolder(folder_path)
 
 plt.figure(figsize=(3,3))
 plt.bar(['black','gray'],[4,5])
@@ -20,5 +23,5 @@ ax=plt.gca()
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
 
-plt.savefig('window histogram.png',dpi=300,bbox_inches='tight')  
+plt.savefig(folder_path+'window histogram.png',dpi=300,bbox_inches='tight')  
 plt.close()

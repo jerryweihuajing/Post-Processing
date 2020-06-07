@@ -140,9 +140,6 @@ def NanBoundaryExtraction(img_ROI,method='erosion'):
         
         content_boundary=[item for item in Expand(content_ROI) if item not in content_ROI]
         
-    #extraction boundary
-    content_boundary=[item for item in content_ROI if item not in new_content]
-    
     #new binary image
     img_boundary=np.zeros(np.shape(img_binary))
     

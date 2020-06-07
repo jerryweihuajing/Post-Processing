@@ -12,7 +12,7 @@ Created on Sun May 17 21:48:13 2020
 from script_thesis import *
 # from script_inlier import *
 
-folder_path=os.getcwd()+'\\outlier'
+folder_path=os.getcwd()+'\\outlier\\'
 O_P.GenerateFolder(folder_path)
 
 '''effect of outline'''

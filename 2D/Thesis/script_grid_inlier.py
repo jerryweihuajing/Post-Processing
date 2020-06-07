@@ -11,8 +11,8 @@ Created on Sat May 30 15:11:13 2020
 
 from script_thesis import *
 
-method_boundary_extraction='expansion'
-# method_boundary_extraction='erosion'
+# method_boundary_extraction='expansion'
+method_boundary_extraction='erosion'
 
 # mode_img_content='square'
 mode_img_content='irregular'
@@ -124,9 +124,11 @@ plt.close()
 '''fine outlier'''
 plt.figure(figsize=(6,6))
 
-img_outlier[2,3]=value_content
-img_outlier[4,4]=value_content
-img_outlier[3,6]=value_content
+#red grid
+O_G.PlotGrid(3.5,5.5,pixel_step,'-')
+
+#red grid virtual
+O_G.PlotGrid(3.5-pixel_step,5.5-pixel_step,pixel_step+pixel_step*2,'--')
 
 plt.imshow(np.flip(img_outlier,axis=0),cmap='gray_r',norm=colors.Normalize(vmin=0,vmax=1))
 O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
@@ -136,13 +138,31 @@ ax=plt.gca()
     
 plt.tick_params(labelsize=10)
 [label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
-plt.savefig(os.getcwd()+'\\inlier-grid\\fine outlier with mesh.png',dpi=300,bbox_inches='tight')  
+plt.savefig(os.getcwd()+'\\inlier-grid\\simple outlier with grid and mesh.png',dpi=300,bbox_inches='tight')  
 plt.close()
 
-# img_boundary=C_B_A.TagBoundayExtraction(img_content,
-#                                           method=method_boundary_extraction,
-#                                           tag_foreground=value_content)
-# img_boundary[img_boundary==1]=value_boundary
+'''fine outlier'''
+plt.figure(figsize=(6,6))
+
+img_outlier[2,3]=value_content
+img_outlier[4,5]=value_content
+img_outlier[3,7]=value_content
+
+plt.imshow(np.flip(img_outlier,axis=0),cmap='gray_r',norm=colors.Normalize(vmin=0,vmax=1))
+O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
+
+#change ticks
+ax=plt.gca()
+    
+plt.tick_params(labelsize=10)
+[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
+plt.savefig(os.getcwd()+'\\inlier-grid\\fine outlier and mesh.png',dpi=300,bbox_inches='tight')  
+plt.close()
+
+img_boundary=C_B_E.TagBoundaryExtraction(img_content,
+                                         method=method_boundary_extraction,
+                                         tag_foreground=value_content)
+img_boundary[img_boundary==1]=value_boundary
 
 # '''original'''
 # plt.figure(figsize=(6,6))
@@ -160,15 +180,15 @@ plt.close()
 
 # #red grid
 # O_G.PlotGrid(value_point[0],
-#              value_point[1],
-#              pixel_step,
-#              '-')
+#               value_point[1],
+#               pixel_step,
+#               '-')
 
 # #red grid virtual
 # O_G.PlotGrid(value_point[0]-pixel_step,
-#              value_point[1]-pixel_step,
-#              pixel_step+pixel_step*2,
-#              '--')
+#               value_point[1]-pixel_step,
+#               pixel_step+pixel_step*2,
+#               '--')
     
 # plt.savefig(folder_path+'content with mesh and grid.png',dpi=300,bbox_inches='tight')  
 # plt.close()
@@ -191,15 +211,15 @@ plt.close()
 
 # #red grid
 # O_G.PlotGrid(value_point[0],
-#              value_point[1],
-#              pixel_step,
-#              '-')
+#               value_point[1],
+#               pixel_step,
+#               '-')
 
 # #red grid virtual
 # O_G.PlotGrid(value_point[0]-pixel_step,
-#              value_point[1]-pixel_step,
-#              pixel_step+pixel_step*2,
-#              '--')
+#               value_point[1]-pixel_step,
+#               pixel_step+pixel_step*2,
+#               '--')
 
 # plt.savefig(folder_path+'boundary with mesh and grid.png',dpi=300,bbox_inches='tight')  
 # plt.close()

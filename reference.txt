@@ -1,0 +1,50 @@
+Vincent, Chaplot, Frederic, et al. Accuracy of interpolation techniques for the derivation of digital elevation models in relation to landform types and data density[J]. Geomorphology, 2006.
+
+Shepard D. A two-dimensional interpolation function for irregularly-spaced data[C]//Proceedings of the 1968 23rd ACM national conference. 1968: 517-524.
+
+张锦明, 郭丽萍, 张小丹. 反距离加权插值算法中插值参数对DEM插值误差的影响[J]. 测绘科学技术学报, 2012(01):55-60.
+
+N. L. Luo, P. J. Sullivan, Kenneth J. Stout. Gaussian filtering of three-dimensional engineering surface topography[C]// Measurement Technology & Intelligent Instruments. International Society for Optics and Photonics, 1993.
+
+Serra, Jean. Image analysis and mathematical morphology, v.1[M]// Image analysis and mathematical morphology. Academic Press, 1982.
+
+孙大鹏. 柴达木盆地盐类沉积的形成及与油气的关系[J]. 石油与天然气地质, 1984(02):58-65.
+马新华, 魏国齐, 钱凯,等. 我国中西部前陆盆地天然气勘探的几点认识[J]. 石油与天然气地质, 2000, 21(2):114-117.
+费琪, 王燮培. 初论中国东部含油气盆地的底辟构造[J]. 石油与天然气地质, 3(2).
+王燮培, 费琪, 张家骅,等. 苏北含油气盆地的区域构造格局和局部构造圈闭的形成机制[J]. 石油勘探与开发, 1982(03):4-18.
+吴景富, 吴冲龙, 等. 含油气盆地成藏动力学系统模拟评价方法[J]. 中国海上油气:地质, 1999.
+汤良杰, 贾承造, 金之钧,等. 塔里木盆地库车前陆褶皱带中段盐相关构造特征与油气聚集[J]. 地质论评, 2003, 049(005):501-506.
+汤良杰, 贾承造, 皮学军,等. 库车前陆褶皱带盐相关构造样式[J]. 中国科学(地球科学), 2003, 033(001):38-46.
+贾承造. 未来中国石油工业与石油教育的发展趋势[C]// 21世纪石油工业与高等教育过国际论坛. 2003.
+杨长清. 江陵凹陷盐构造及与油气聚集的关系[J]. 断块油气田, 2004, 011(003):4-6.
+余一欣, 汤良杰, 马达德,等. 柴达木盆地构造圈闭特征与含油气性[J]. 西安石油大学学报:自然科学版, 2006, 21(5):1-5.
+尹宏伟, 王哲, 汪新,等. 库车前陆盆地新生代盐构造特征及形成机制:物理模拟和讨论[J]. 高校地质学报, 2011(02):162-171.
+汤良杰, 杨克明, 金文正,等. 龙门山冲断带多层次滑脱带与滑脱构造变形[J]. 中国科学:地球科学, 2008, 038(0z1):30-40.
+何雨丹, 魏春光. 裂缝型油气藏勘探评价面临的挑战及发展方向%The present situation and research direction of evaluation methods in fracture type reservoir[J]. 地球物理学进展, 2007, 022(002):537-543.
+龙鹏宇, 张金川, 唐玄,等. 泥页岩裂缝发育特征及其对页岩气勘探和开发的影响[J]. 天然气地球科学, 2016, 22(03).
+徐波, 郑兆慧, 唐玄,等. 页岩气和根缘气成藏特征及成藏机理对比研究[J]. 石油天然气学报, 2009, 031(001):26-30.
+Gale J F W , Reed R M , Holder J . Natural fractures in the Barnett Shale and their importance for hydraulic fracture treatments[J]. AAPG Bulletin, 2007, 91(4):603-622.
+Lee S , Dan N T . Probabilistic landslide susceptibility mapping in the Lai Chau province of Vietnam: focus on the relationship between tectonic fractures and landslides[J]. Environmental Geology, 2005, 48(6):p.778-787.
+蔡申阳, 尹宏伟, 李长圣,等. 基于离散元数值模拟的应变分析和裂缝预测技术[J]. 高校地质学报, 2016, 022(001):183-193.
+曾联波, 漆家福, 王永秀. 低渗透储层构造裂缝的成因类型及其形成地质条件[J]. 石油学报, 2007, 028(004):52-56.
+王琪, 张培震, 马宗晋. 中国大陆现今构造变形GPS观测数据与速度场[J]. 地学前缘, 2002, 009(002):415-429.
+杨小秋, 施小斌, 许鹤华, et al. 台湾海峡及其邻区现今构造应力场数值模拟[J]. 地球物理学报, 2012, 55(7):2307-2318.
+李艳洁, 吴腾, 林剑辉,等. 基于离散元法的贯入圆锥对沙土颗粒运动特性分析[J]. 农业工程学报, 2012, 000(024):55-61.
+石福周, 常明丰, 裴建中,等. 基于离散元方法的沥青混合料矢量场细观分析[J]. 长安大学学报(自然科学版), 2014, 034(002):9-15.
+
+朱臻, 尹宏伟, 贾东, et al. 四川盆地膏盐岩层对页岩气保存及勘探前景的影响[J]. 天然气地球科学, 2015, 26(8):1472-1480.
+
+Li Z G , Jia D , Chen W . Structural geometry and deformation mechanism of the Longquan anticline in the 
+Longmen Shan fold-and-thrust belt, eastern Tibet[J]. Journal of Asian earth ences, 2013, 64(Mar.5):223-234.
+Li S , Wang X , Suppe J . Compressional salt tectonics and synkinematic strata of the western Kuqa foreland basin, southern Tian Shan, China[J]. Basin Research, 2012, 24(4):0-0.
+
+Canny J . A Computational Approach To Edge Detection[J]. IEEE Transactions on Pattern Analysis and Machine Intelligence, 1986, PAMI-8(6):679-698.
+
+Lloyd S P . Least square quantization in PCM[J]. IEEE Transactions on Information Theory, 1982, 28.
+
+Stuart et al. (2018) 用离散元数值模拟模拟了断层传播褶皱，并讨论了生长地层岩性对褶皱和断层的影响。基底断层性质控制了凹陷的沉积模式。基底贯穿断层控制的断陷，其沉积中心随断层下盘移动而移动，基底滑脱断层控制的断陷，其沉积中心位置相对更稳定（李长圣，2018）
+Suppe et al.(1979)提出“断弯褶皱”，并基于体积和层厚守恒的原则，利用膝折带迁移的运动学模式给出了完整的数学模型。Suppe et al. (1982)又在 1982 年对自己的模型进行了完善。Suppe et al. (1990) 在利用面积守恒原则，给出了能够确定断面形态与褶皱形态之间关系的数学模型，并将其称为断展褶皱，褶皱在背斜脊部发生破裂后停止生长
+
+John L. Rich. Mechanics of Low-Angle Overthrust Faulting as Illustrated by Cumberland Thrust Block, Virginia, Kentucky, and Tennessee[J]. research, 1934, 18(12):1584-1596.
+
+Mount V S, Suppe J, Hook S C, et al. A Forward Modeling Strategy for Balancing Cross Sections (1)[J]. AAPG Bulletin, 1990, 74(5): 521-531.

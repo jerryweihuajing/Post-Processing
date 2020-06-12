@@ -106,7 +106,7 @@ mode_list=['dynamics',
            'velocity',
            'displacement-cumulative',
            'displacement-periodical',
-           'displacement-instantaneous']
+           'displacement-instantaneous'][:2]
 
 #the final output postfix
 list_title=[]

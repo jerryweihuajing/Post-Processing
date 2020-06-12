@@ -151,14 +151,8 @@ def SeriesAll(output_folder,
     
     #stress and strain
     for this_post_fix in real_list_title:    
-        
-        try:
-            
-            Series(output_folder,
-                   which_case=which_case,
-                   post_fix=this_post_fix,
-                   with_fracture=with_fracture)
-            
-        except:
-            
-            pass
+
+        Series(output_folder,
+               which_case=which_case,
+               post_fix=this_post_fix,
+               with_fracture=with_fracture)

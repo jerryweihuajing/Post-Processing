@@ -150,14 +150,8 @@ def IntegralAnalysisAll(output_folder,
     
     #integral analysis
     for this_mode in mode_list:
-        
-        try:
-            
-            V_A.AnimationIntegralAnalysis(output_folder=output_folder,
-                                          which_case=which_case,
-                                          mode=this_mode,
-                                          with_fracture=with_fracture)
-            
-        except:
-            
-            pass
+ 
+        V_A.AnimationIntegralAnalysis(output_folder=output_folder,
+                                      which_case=which_case,
+                                      mode=this_mode,
+                                      with_fracture=with_fracture)

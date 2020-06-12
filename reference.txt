@@ -1,3 +1,6 @@
+Suppe J, Medwedeff D A. Geometry and kinematics of fault-propagation folding[J]. Eclogae Geologicae Helvetiae, 1990, 83(83): 409-454.
+Suppe J. Geometry and kinematics of fault-bend folding[J]. American Journal of Science, 1983, 283(7): 684-721.
+
 Vincent, Chaplot, Frederic, et al. Accuracy of interpolation techniques for the derivation of digital elevation models in relation to landform types and data density[J]. Geomorphology, 2006.
 
 Shepard D. A two-dimensional interpolation function for irregularly-spaced data[C]//Proceedings of the 1968 23rd ACM national conference. 1968: 517-524.
@@ -7,7 +10,15 @@ Shepard D. A two-dimensional interpolation function for irregularly-spaced data[
 N. L. Luo, P. J. Sullivan, Kenneth J. Stout. Gaussian filtering of three-dimensional engineering surface topography[C]// Measurement Technology & Intelligent Instruments. International Society for Optics and Photonics, 1993.
 
 Serra, Jean. Image analysis and mathematical morphology, v.1[M]// Image analysis and mathematical morphology. Academic Press, 1982.
+Cundall P A, Strack O D. A discrete numerical model for granular assemblies[J]. Geotechnique, 1979, 29(1): 47-65.
 
+Morgan J K. Effects of cohesion on the structural and mechanical evolution of fold and thrust belts and contractional wedges: Discrete element simulations[J]. Journal of Geophysical Research, 2015, 120(5): 3870-3896.
+
+Hardy S, Finch E. Discrete‐element modelling of detachment folding[J]. Basin Research, 2005, 17(4): 507-520.
+
+Hughes A N, Benesh N P, Shaw J H, et al. Factors that control the development of fault-bend versus fault-propagation folds: Insights from mechanical models based on the discrete element method (DEM)[J]. Journal of Structural Geology, 2014: 121-141.
+
+汪伟, 尹宏伟, 周鹏,等. 塔里木盆地含盐褶皱冲断带变形特征与变形机制[J]. 新疆石油地质, 2019(01).
 孙大鹏. 柴达木盆地盐类沉积的形成及与油气的关系[J]. 石油与天然气地质, 1984(02):58-65.
 马新华, 魏国齐, 钱凯,等. 我国中西部前陆盆地天然气勘探的几点认识[J]. 石油与天然气地质, 2000, 21(2):114-117.
 费琪, 王燮培. 初论中国东部含油气盆地的底辟构造[J]. 石油与天然气地质, 3(2).
@@ -47,3 +58,4 @@ John L. Rich. Mechanics of Low-Angle Overthrust Faulting as Illustrated by Cumbe
 Mount V S, Suppe J, Hook S C, et al. A Forward Modeling Strategy for Balancing Cross Sections (1)[J]. AAPG Bulletin, 1990, 74(5): 521-531.
 
 
+Davis D M, Suppe J, Dahlen F A, et al. Mechanics of Fold-and-Thrust Belts and Accretionary Wedges[J]. Journal of Geophysical Research, 1983: 1153-1172.

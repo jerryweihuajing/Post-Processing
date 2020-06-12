@@ -91,8 +91,13 @@ def CaseVisualization(case_path,
         #integral analysis
         for this_mode in mode_list:
             
-            V_I_A.SingleIntegralAnalysis(output_folder=case_folder,
-                                        which_progress=this_progress,
-                                        mode=this_mode,
-                                        situation='progress',
-                                        with_fracture=with_fracture)
+            try:
+                
+                V_I_A.SingleIntegralAnalysis(output_folder=case_folder,
+                                            which_progress=this_progress,
+                                            mode=this_mode,
+                                            situation='progress',
+                                            with_fracture=with_fracture)
+            except:
+                
+                pass

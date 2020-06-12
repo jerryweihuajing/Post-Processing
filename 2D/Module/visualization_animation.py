@@ -164,7 +164,13 @@ def AnimationAll(output_folder,
     #stress and strain
     for this_post_fix in real_list_title:
         
-        AnimationIndividual(output_folder=output_folder,
-                            which_case=which_case,
-                            post_fix=this_post_fix,
-                            with_fracture=with_fracture)
+        try:
+                   
+            AnimationIndividual(output_folder=output_folder,
+                                which_case=which_case,
+                                post_fix=this_post_fix,
+                                with_fracture=with_fracture)
+       
+        except:
+            
+            pass

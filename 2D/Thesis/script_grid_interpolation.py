@@ -259,14 +259,22 @@ plt.figure(figsize=(6,6))
 
 plt.imshow(np.flip(z_mesh_points,axis=0)[1:,1:],cmap='ocean')
 O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
-    
-#change ticks
-ax=plt.gca()
-    
-plt.tick_params(labelsize=10)
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
-
+     
 plt.savefig(folder_path+'filled interpolation effect with mesh.png',dpi=300,bbox_inches='tight')  
+
+#red grid
+O_G.PlotGrid(value_point[0],
+             value_point[1],
+             pixel_step,
+             '-')
+
+#red grid virtual
+O_G.PlotGrid(value_point[0]-pixel_step,
+             value_point[1]-pixel_step,
+             pixel_step+pixel_step*2,
+             '--')
+
+plt.savefig(folder_path+'filled interpolation effect with mesh and grid.png',dpi=300,bbox_inches='tight')  
 plt.close()
 
 '''effect of smoothing'''
@@ -275,11 +283,5 @@ plt.figure(figsize=(6,6))
 plt.imshow(np.flip(C_I_S.ImageSmooth(C_M_O.AddBound(z_mesh_points)),axis=0)[1:,1:],cmap='ocean')
 O_G.PlotMesh(x_min_relative,y_min_relative,length_window)
     
-#change ticks
-ax=plt.gca()
-    
-plt.tick_params(labelsize=10)
-[label.set_fontname('Times New Roman') for label in ax.get_xticklabels() + ax.get_yticklabels()]
-
 plt.savefig(folder_path+'filled interpolation effect with mesh-smoothed.png',dpi=300,bbox_inches='tight')  
 plt.close()

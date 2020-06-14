@@ -11,7 +11,7 @@ Created on Wed May 20 18:24:03 2020
 
 from script_thesis import *
 
-folder_path=os.getcwd()+'\\inlier\\'
+folder_path=os.getcwd()+'\\boundary\\'
 O_P.GenerateFolder(folder_path)
 
 #plot image

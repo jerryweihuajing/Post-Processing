@@ -17,7 +17,7 @@ method_boundary_extraction='erosion'
 # mode_img_content='square'
 mode_img_content='irregular'
     
-folder_path=os.getcwd()+'\\inlier-grid\\'+method_boundary_extraction+'\\'+mode_img_content+'\\'
+folder_path=os.getcwd()+'\\boundary-grid\\'+method_boundary_extraction+'\\'+mode_img_content+'\\'
 O_P.GenerateFolder(folder_path)
 
 if method_boundary_extraction=='erosion':

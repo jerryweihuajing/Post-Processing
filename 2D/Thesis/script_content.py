@@ -18,7 +18,7 @@ O_P.GenerateFolder(folder_path)
 ##image
 plt.figure(figsize=(6,6))
 
-plt.imshow(np.flip(that_mesh.img_tag,axis=0),'terrain_r')
+plt.imshow(np.flip(that_mesh.img_tag,axis=0),'BuPu')
 
 plt.axis([x_min_relative-cell_padding_boundary,
           x_max_relative+cell_padding_boundary,

@@ -11,6 +11,9 @@ Created on Mon May 25 15:59:21 2020
 
 from script_thesis import *
         
+folder_path=os.getcwd()+'\\boundary-global\\'
+O_P.GenerateFolder(folder_path)
+
 '''outline'''
 #plot image
 #import matrix from txt

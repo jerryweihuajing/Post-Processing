@@ -183,7 +183,7 @@ this_circle.Init()
 
 for this_i,this_j in this_circle.points_inside:
     
-    canvas[this_i,this_j]=0.5   
+    canvas[this_i,this_j]=0.39
     
 plt.imshow(canvas,cmap='gray_r',norm=colors.Normalize(vmin=0,vmax=1))
 
@@ -197,12 +197,13 @@ plt.figure(figsize=(6,6))
 O_G.PlotMesh(0,0,20)
 
 '''plt.plot is better'''
-plt.scatter(x=this_circle.center[0]-0.5,
-            y=this_circle.center[1]-0.5,
-            s=this_circle.radius*10000,
-            linewidth=1.5,
-            c='gray',
-            edgecolors='k') 
+plt.plot(this_circle.center[0]-0.5,
+         this_circle.center[1]-0.5,
+         marker='o',
+         markersize=this_circle.radius*10,
+         markeredgewidth=1.3,
+         markeredgecolor='black',
+         markerfacecolor='grey') 
 
 plt.savefig(folder_path+'single scatter with mesh.png',dpi=300,bbox_inches='tight')  
 plt.close()

@@ -41,6 +41,7 @@ import visualization_progress as V_P
 import visualization_individual as V_I
 
 from o_case import case
+from o_circle import circle
 
 import BETA_calculation_spheres_matrix as BETA_C_S_M
 

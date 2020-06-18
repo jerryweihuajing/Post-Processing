@@ -200,7 +200,7 @@ O_G.PlotMesh(0,0,20)
 plt.plot(this_circle.center[0]-0.5,
          this_circle.center[1]-0.5,
          marker='o',
-         markersize=this_circle.radius*10,
+         markersize=this_circle.radius*34,
          markeredgewidth=1.3,
          markeredgecolor='black',
          markerfacecolor='grey') 

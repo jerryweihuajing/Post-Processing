@@ -16,10 +16,10 @@ demand:
 
 from __init__ import *
 
-case_path=r'E:\GitHub\YADEM\Controlling-Simulation\2D\compression 100-800\Data\input\single'
+case_path=r'E:\GitHub\YADEM\Controlling-Simulation\2D\compression 100-800\Data\input\single base fracture bT=2.4 fI=-30 fO=50 fD=0-50'
 
 #step 1
-#C_C_E.CaseCalculation(case_path)
+C_C_E.CaseCalculation(case_path)
 
 ##step 2
 case_path=case_path.replace('input','output')

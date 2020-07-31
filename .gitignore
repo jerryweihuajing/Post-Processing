@@ -7,3 +7,4 @@ __pycache__/
 *.vcxproj.user
 *.vcxproj.filters
 cpp/2D/.vs/
+cpp/2D/Debug

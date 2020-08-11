@@ -72,7 +72,6 @@ sliced_spheres=[this_sphere for this_sphere in global_spheres if 16<this_sphere.
 
 # plt.imshow(spheres_grids.img_color)
 
-
 surface_bottom_map=C_S_B.SpheresTopAndBottomMap(sliced_spheres,pixel_step)
 
 #final matrix map

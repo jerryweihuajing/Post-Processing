@@ -58,14 +58,13 @@ pos_V=np.matmul(pos_P,M)
 '''traverse and transform'''
 for this_sphere in global_spheres:
     
-    this_sphere.position=10*np.array(np.matmul(this_sphere.position,M)).ravel()
-    this_sphere.radius*=10
+    this_sphere.position=np.array(np.matmul(this_sphere.position,M)).ravel()
     
 z_spheres=[this_sphere.position[2] for this_sphere in global_spheres]
 
 z_min,z_max=np.min(z_spheres),np.max(z_spheres)    
 
-sliced_spheres=[this_sphere for this_sphere in global_spheres if 16<this_sphere.position[2]<20]
+sliced_spheres=[this_sphere for this_sphere in global_spheres if 16<this_sphere.position[2]<28]
 
 # #spheres image
 # spheres_grids=C_S_Mat.SpheresImage(sliced_spheres,pixel_step)

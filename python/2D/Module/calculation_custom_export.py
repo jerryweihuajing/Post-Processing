@@ -184,7 +184,7 @@ def CaseCalculation(which_case_path,
                 
                 O_P.GenerateFolder(values_folder)
                 
-                #Spheres image
+                #spheres image
                 spheres_grids=C_S_M.SpheresImage(this_spheres,pixel_step)
                 
                 #image

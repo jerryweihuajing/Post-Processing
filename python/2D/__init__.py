@@ -33,6 +33,7 @@ import calculation_scatters_mesh as C_S_Mesh
 import calculation_matrix_outline as C_M_O
 import calculation_image_smoothing as C_I_S
 import calculation_spheres_boundary as C_S_B
+import calculation_global_parameter as C_G_P
 
 import visualization_case as V_C
 import visualization_progress as V_P

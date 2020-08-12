@@ -60,27 +60,45 @@ for this_sphere in global_spheres:
     
     this_sphere.position=np.array(np.matmul(this_sphere.position,M)).ravel()
     
+#depth of spheres
 z_spheres=[this_sphere.position[2] for this_sphere in global_spheres]
 
-z_min,z_max=np.min(z_spheres),np.max(z_spheres)    
+n_slice=64
 
-sliced_spheres=[this_sphere for this_sphere in global_spheres if 16<this_sphere.position[2]<28]
+#slicing
+list_sliced_spheres=[]
 
-# #spheres image
-# spheres_grids=C_S_Mat.SpheresImage(sliced_spheres,pixel_step)
+#depth node list
+list_nodes_depth_sliced=np.linspace(np.min(z_spheres),np.max(z_spheres),n_slice+1)
 
-# plt.imshow(spheres_grids.img_color)
+count=0
 
-surface_bottom_map=C_S_B.SpheresTopAndBottomMap(sliced_spheres,pixel_step)
+for k in range(n_slice):
 
-#final matrix map
-map_matrix=C_S_Mat.SpheresValueMatrix(pixel_step,
-                                      sliced_spheres,
-                                      'XoY',
-                                      '-Cumulative',
-                                      surface_bottom_map,
-                                      'scatters_in_grid')
+    this_sliced_spheres=[this_sphere for this_sphere in global_spheres\
+                         if list_nodes_depth_sliced[k]<=this_sphere.position[2]<=list_nodes_depth_sliced[k+1]]
 
-post_fix='Volumetric Strain-Cumulative'
+    list_sliced_spheres.append(this_sliced_spheres)
+    
+    count+=len(this_sliced_spheres)
 
-plt.imshow(map_matrix[post_fix],cmap=C_G_P.Colormap(post_fix))
+# sliced_spheres=[this_sphere for this_sphere in global_spheres if 16<this_sphere.position[2]<28]
+
+# # #spheres image
+# # spheres_grids=C_S_Mat.SpheresImage(sliced_spheres,pixel_step)
+
+# # plt.imshow(spheres_grids.img_color)
+
+# surface_bottom_map=C_S_B.SpheresTopAndBottomMap(sliced_spheres,pixel_step)
+
+# #final matrix map
+# map_matrix=C_S_Mat.SpheresValueMatrix(pixel_step,
+#                                       sliced_spheres,
+#                                       'XoY',
+#                                       '-Cumulative',
+#                                       surface_bottom_map,
+#                                       'scatters_in_grid')
+
+# post_fix='Volumetric Strain-Cumulative'
+
+# plt.imshow(map_matrix[post_fix],cmap=C_G_P.Colormap(post_fix))

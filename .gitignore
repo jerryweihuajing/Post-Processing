@@ -8,3 +8,8 @@ __pycache__/
 *.vcxproj.filters
 cpp/2D/.vs/
 cpp/2D/Debug
+
+*.jpg
+*.png
+*.mat
+*.txt

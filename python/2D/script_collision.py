@@ -67,6 +67,7 @@ n_slice=64
 
 #slicing
 list_sliced_spheres=[]
+list_sliced_sphere_depth=[]
 
 #depth node list
 list_nodes_depth_sliced=np.linspace(np.min(z_spheres),np.max(z_spheres),n_slice+1)
@@ -79,26 +80,95 @@ for k in range(n_slice):
                          if list_nodes_depth_sliced[k]<=this_sphere.position[2]<=list_nodes_depth_sliced[k+1]]
 
     list_sliced_spheres.append(this_sliced_spheres)
+    list_sliced_sphere_depth.append(0.5*(list_nodes_depth_sliced[k]+list_nodes_depth_sliced[k+1]))
     
     count+=len(this_sliced_spheres)
 
-# sliced_spheres=[this_sphere for this_sphere in global_spheres if 16<this_sphere.position[2]<28]
+#to restrict boundary
+x_min=np.min([this_sphere.position[0] for this_sphere in global_spheres])
+x_max=np.max([this_sphere.position[0] for this_sphere in global_spheres])
+y_min=np.min([this_sphere.position[1] for this_sphere in global_spheres])
+y_max=np.max([this_sphere.position[1] for this_sphere in global_spheres])
 
-# # #spheres image
-# # spheres_grids=C_S_Mat.SpheresImage(sliced_spheres,pixel_step)
+#diff in x and y
+offset_x=x_max-x_min
+offset_y=y_max-y_min
 
-# # plt.imshow(spheres_grids.img_color)
+standard_depth=100
+maximum_depth=np.max(list_sliced_sphere_depth)
 
-# surface_bottom_map=C_S_B.SpheresTopAndBottomMap(sliced_spheres,pixel_step)
+#scale base point
+standard_point=[0,0]
 
-# #final matrix map
-# map_matrix=C_S_Mat.SpheresValueMatrix(pixel_step,
-#                                       sliced_spheres,
-#                                       'XoY',
-#                                       '-Cumulative',
-#                                       surface_bottom_map,
-#                                       'scatters_in_grid')
+import scipy.io as io
 
-# post_fix='Volumetric Strain-Cumulative'
+#calculate zoom factor
+for this_depth in list_sliced_sphere_depth:
+    
+    k=list_sliced_sphere_depth.index(this_depth)
+    
+    this_zoom_factor=6
+    
+    # #for scaling
+    # this_zoom_factor*=(100-maximum_depth)/(100-this_depth)
+    
+    this_sliced_spheres=list_sliced_spheres[k]
+    
+    #scaling the coordinates
+    for this_sphere in this_sliced_spheres:
+        
+        #scaling
+        this_sphere.position[0]=standard_point[0]+(this_sphere.position[0]-standard_point[0])*this_zoom_factor
+        this_sphere.position[1]=standard_point[1]+(this_sphere.position[1]-standard_point[1])*this_zoom_factor
+    
+        this_sphere.radius*=this_zoom_factor
+        
+    #feature map
+    surface_bottom_map=C_S_B.SpheresTopAndBottomMap(this_sliced_spheres,pixel_step)
 
-# plt.imshow(map_matrix[post_fix],cmap=C_G_P.Colormap(post_fix))
+    #final matrix map
+    map_matrix=C_S_Mat.SpheresValueMatrix(pixel_step,
+                                          this_sliced_spheres,
+                                          'XoY',
+                                          '-Cumulative',
+                                          surface_bottom_map,
+                                          'scatters_in_grid')
+    
+    post_fix='Volumetric Strain-Cumulative'
+    
+    plt.figure(figsize=(8,6))
+    plt.imshow(map_matrix[post_fix],cmap=C_G_P.Colormap(post_fix),vmin=-.05,vmax=.05)
+    # plt.axis([0,6*offset_x,0,6*offset_y])
+    plt.xticks([])
+    plt.yticks([])
+    
+    plt.savefig('frames\\feature_'+str(k)+'.png',dpi=300,bbox='tight')
+    plt.close()
+    
+    #feature matrix
+    io.savemat('frames\\feature_'+str(k)+'.mat', {'name': map_matrix[post_fix]})
+    
+    #spheres image
+    this_spheres_grids=C_S_Mat.SpheresImage(this_sliced_spheres,pixel_step)
+    
+    plt.imshow(this_spheres_grids.img_color)
+    
+    plt.xticks([])
+    plt.yticks([])
+    # plt.axis([0,6*offset_x,0,6*offset_y])
+    plt.savefig('frames\\image_'+str(k)+'.png',dpi=300,bbox='tight')
+    plt.close()
+    
+    #feature matrix
+    io.savemat('frames\\image_'+str(k)+'.mat', {'name': this_spheres_grids.img_tag})
+    
+    #standard point
+    this_point=[int(np.round(np.min([this_sphere.position[0] for this_sphere in this_sliced_spheres]))),
+                int(np.round(np.min([this_sphere.position[1] for this_sphere in this_sliced_spheres])))]
+    
+    with open('frames\\point_'+str(k)+'.txt','w') as file: 
+        
+        file.write('%d'%this_point[0])
+        file.write(',')
+        file.write('%d'%this_point[1])
+

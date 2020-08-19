@@ -67,7 +67,7 @@ n_slice=64
 
 #slicing
 list_sliced_spheres=[]
-list_sliced_sphere_depth=[]
+list_sliced_spheres_depth=[]
 
 #depth node list
 list_nodes_depth_sliced=np.linspace(np.min(z_spheres),np.max(z_spheres),n_slice+1)
@@ -80,7 +80,7 @@ for k in range(n_slice):
                          if list_nodes_depth_sliced[k]<=this_sphere.position[2]<=list_nodes_depth_sliced[k+1]]
 
     list_sliced_spheres.append(this_sliced_spheres)
-    list_sliced_sphere_depth.append(0.5*(list_nodes_depth_sliced[k]+list_nodes_depth_sliced[k+1]))
+    list_sliced_spheres_depth.append(0.5*(list_nodes_depth_sliced[k]+list_nodes_depth_sliced[k+1]))
     
     count+=len(this_sliced_spheres)
 
@@ -95,17 +95,18 @@ offset_x=x_max-x_min
 offset_y=y_max-y_min
 
 standard_depth=100
-maximum_depth=np.max(list_sliced_sphere_depth)
+maximum_depth=np.max(list_sliced_spheres_depth)
 
 #scale base point
 standard_point=[0,0]
 
-import scipy.io as io
+list_sliced_spheres_img_tag=[]
+list_sliced_spheres_strat_point=[]
 
 #calculate zoom factor
-for this_depth in list_sliced_sphere_depth:
+for this_depth in list_sliced_spheres_depth:
     
-    k=list_sliced_sphere_depth.index(this_depth)
+    k=list_sliced_spheres_depth.index(this_depth)
     
     this_zoom_factor=6
     
@@ -163,12 +164,15 @@ for this_depth in list_sliced_sphere_depth:
     io.savemat('frames\\image_'+str(k)+'.mat', {'name': this_spheres_grids.img_tag})
     
     #standard point
-    this_point=[int(np.round(np.min([this_sphere.position[0] for this_sphere in this_sliced_spheres]))),
-                int(np.round(np.min([this_sphere.position[1] for this_sphere in this_sliced_spheres])))]
+    this_start_point=[int(np.round(np.min([this_sphere.position[0] for this_sphere in this_sliced_spheres]))),
+                      int(np.round(np.min([this_sphere.position[1] for this_sphere in this_sliced_spheres])))]
+    
+    list_sliced_spheres_img_tag.append(this_spheres_grids.img_tag)
+    list_sliced_spheres_strat_point.append(this_start_point)
     
     with open('frames\\point_'+str(k)+'.txt','w') as file: 
         
-        file.write('%d'%this_point[0])
+        file.write('%d'%this_start_point[0])
         file.write(',')
-        file.write('%d'%this_point[1])
+        file.write('%d'%this_start_point[1])
 

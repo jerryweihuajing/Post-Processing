@@ -16,8 +16,10 @@ sys.path.append(os.getcwd()+'\\Module')
 sys.path.append(os.getcwd()+'\\Object')
 sys.path=list(set(sys.path)) 
 
+
 import copy as cp
 import numpy as np
+import scipy.io as io
 import matplotlib.pyplot as plt
 
 import operation_path as O_P

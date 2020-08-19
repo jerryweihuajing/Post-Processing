@@ -109,8 +109,8 @@ for this_depth in list_sliced_sphere_depth:
     
     this_zoom_factor=6
     
-    # #for scaling
-    # this_zoom_factor*=(100-maximum_depth)/(100-this_depth)
+    #for scaling
+    this_zoom_factor*=(100-maximum_depth)/(100-this_depth)
     
     this_sliced_spheres=list_sliced_spheres[k]
     

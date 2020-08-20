@@ -143,7 +143,7 @@ for this_depth in list_sliced_spheres_depth:
     plt.xticks([])
     plt.yticks([])
     
-    plt.savefig('frames\\feature_'+str(k)+'.png',dpi=300,bbox='tight')
+    plt.savefig('frames\\feature_'+str(k)+'.png',dpi=300)
     plt.close()
     
     #feature matrix
@@ -157,7 +157,7 @@ for this_depth in list_sliced_spheres_depth:
     plt.xticks([])
     plt.yticks([])
     # plt.axis([0,6*offset_x,0,6*offset_y])
-    plt.savefig('frames\\image_'+str(k)+'.png',dpi=300,bbox='tight')
+    plt.savefig('frames\\image_'+str(k)+'.png',dpi=300)
     plt.close()
     
     #feature matrix

@@ -11,7 +11,7 @@ Created on Tue Aug 11 16:15:58 2020
 
 from __init__ import *
 
-case_path=r'F:\GitHub\YADEM\Controlling-Simulation\3D\aerolite\Data\input\collision'
+case_path=os.getcwd()+'\\Data\input\collision'
 
 '''spheres generation'''
 pixel_step=1
@@ -124,44 +124,44 @@ for this_depth in list_sliced_spheres_depth:
     
         this_sphere.radius*=this_zoom_factor
         
-    #feature map
-    surface_bottom_map=C_S_B.SpheresTopAndBottomMap(this_sliced_spheres,pixel_step)
-
-    #final matrix map
-    map_matrix=C_S_Mat.SpheresValueMatrix(pixel_step,
-                                          this_sliced_spheres,
-                                          'XoY',
-                                          '-Cumulative',
-                                          surface_bottom_map,
-                                          'scatters_in_grid')
-    
-    post_fix='Volumetric Strain-Cumulative'
-    
-    plt.figure(figsize=(8,6))
-    plt.imshow(map_matrix[post_fix],cmap=C_G_P.Colormap(post_fix),vmin=-.05,vmax=.05)
-    # plt.axis([0,6*offset_x,0,6*offset_y])
-    plt.xticks([])
-    plt.yticks([])
-    
-    plt.savefig('frames\\feature_'+str(k)+'.png',dpi=300)
-    plt.close()
-    
-    #feature matrix
-    io.savemat('frames\\feature_'+str(k)+'.mat', {'name': map_matrix[post_fix]})
-    
+#    #feature map
+#    surface_bottom_map=C_S_B.SpheresTopAndBottomMap(this_sliced_spheres,pixel_step)
+#
+#    #final matrix map
+#    map_matrix=C_S_Mat.SpheresValueMatrix(pixel_step,
+#                                          this_sliced_spheres,
+#                                          'XoY',
+#                                          '-Cumulative',
+#                                          surface_bottom_map,
+#                                          'scatters_in_grid')
+#    
+#    post_fix='Volumetric Strain-Cumulative'
+#    
+#    plt.figure(figsize=(8,6))
+#    plt.imshow(map_matrix[post_fix],cmap=C_G_P.Colormap(post_fix),vmin=-.05,vmax=.05)
+#    # plt.axis([0,6*offset_x,0,6*offset_y])
+#    plt.xticks([])
+#    plt.yticks([])
+#    
+#    plt.savefig('frames\\feature_'+str(k)+'.png',dpi=300)
+#    plt.close()
+#    
+#    #feature matrix
+#    io.savemat('frames\\feature_'+str(k)+'.mat', {'name': map_matrix[post_fix]})
+#    
     #spheres image
     this_spheres_grids=C_S_Mat.SpheresImage(this_sliced_spheres,pixel_step)
-    
-    plt.imshow(this_spheres_grids.img_color)
-    
-    plt.xticks([])
-    plt.yticks([])
-    # plt.axis([0,6*offset_x,0,6*offset_y])
-    plt.savefig('frames\\image_'+str(k)+'.png',dpi=300)
-    plt.close()
-    
-    #feature matrix
-    io.savemat('frames\\image_'+str(k)+'.mat', {'name': this_spheres_grids.img_tag})
+#    
+#    plt.imshow(this_spheres_grids.img_color)
+#    
+#    plt.xticks([])
+#    plt.yticks([])
+#    # plt.axis([0,6*offset_x,0,6*offset_y])
+#    plt.savefig('frames\\image_'+str(k)+'.png',dpi=300)
+#    plt.close()
+#    
+#    #feature matrix
+#    io.savemat('frames\\image_'+str(k)+'.mat', {'name': this_spheres_grids.img_tag})
     
     #standard point
     this_start_point=[int(np.round(np.min([this_sphere.position[0] for this_sphere in this_sliced_spheres]))),
@@ -176,3 +176,36 @@ for this_depth in list_sliced_spheres_depth:
         file.write(',')
         file.write('%d'%this_start_point[1])
 
+
+final_frame_tag=np.full((160,230),-1)
+
+#Z Buffering
+for k in range(len(list_sliced_spheres_strat_point)):
+    
+    this_frame=list_sliced_spheres_img_tag[k]
+    this_start_point=list_sliced_spheres_strat_point[k]
+    
+    start_i=this_start_point[0]+20
+    start_j=this_start_point[1]+20
+    
+    final_frame_tag[start_i:start_i+np.shape(this_frame)[0],
+                start_j:start_j+np.shape(this_frame)[1]]=this_frame
+    
+final_frame_color=np.zeros((160,230,3))
+
+from configuration_yade_color import yade_rgb_map
+
+#tag to color
+for i in range(np.shape(final_frame_tag)[0]):
+    
+    for j in range(np.shape(final_frame_tag)[1]):
+        
+        final_frame_color[i,j,:]=yade_rgb_map[final_frame_tag[i,j]]
+        
+plt.figure(figsize=(8,6))
+plt.imshow(final_frame_color)
+
+plt.xticks([])
+plt.yticks([])
+
+plt.savefig('z-buffer frame.png',dpi=300)

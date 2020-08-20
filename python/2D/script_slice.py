@@ -11,7 +11,7 @@ Created on Tue Aug 11 16:15:58 2020
 
 from __init__ import *
 
-case_path=os.getcwd()+'\\Data\input\collision'
+case_path=r'D:\GitHub\YADEM\Controlling-Simulation\3D\aerolite\Data\input\collision'
 
 '''spheres generation'''
 pixel_step=1

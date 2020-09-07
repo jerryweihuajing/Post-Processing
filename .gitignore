@@ -1,16 +1,22 @@
+#python
 *.pyc
-Data/
-__pycache__/
+Data
+__pycache__
 
+#cpp
 *.sln
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters
-cpp/2D/.vs/
+
+cpp/2D/.vs
 cpp/2D/Debug
 
+#imge
 *.jpg
 *.png
+
+#else
 *.mat
 *.txt
 *.rar

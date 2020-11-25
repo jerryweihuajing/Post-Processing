@@ -1,3 +1,7 @@
+#image
+python/*.jpg
+python/*.png
+
 #python
 *.pyc
 Data

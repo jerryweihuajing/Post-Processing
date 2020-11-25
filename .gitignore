@@ -12,10 +12,6 @@ __pycache__
 cpp/2D/.vs
 cpp/2D/Debug
 
-#imge
-*.jpg
-*.png
-
 #else
 *.mat
 *.txt

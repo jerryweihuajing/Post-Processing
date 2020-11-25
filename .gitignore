@@ -1,6 +1,6 @@
 #image
-python/*.jpg
-python/*.png
+*.jpg
+*.png
 
 #python
 *.pyc

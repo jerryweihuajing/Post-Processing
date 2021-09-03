@@ -14,5 +14,5 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Welcome to YADEM!\n";
 }

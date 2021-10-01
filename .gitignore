@@ -22,5 +22,9 @@ cpp/2D/Debug
 *.rar
 
 #folder
+.vscode
+.vs
+x64
 Material
 Outcome
+build
